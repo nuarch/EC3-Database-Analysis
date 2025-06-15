@@ -1,4 +1,5 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
+from collections import Counter
 from database_connection_utility import DatabaseManager
 
 # Object types to include
@@ -68,16 +69,48 @@ def fetch_database_objects(db_manager: DatabaseManager, schemas: List[str]) -> L
     return db_manager.execute_query(sql_query, params)
 
 
-def generate_markdown(db_objects: List[Tuple[str, str, str]]) -> str:
+def generate_markdown(db_objects: List[Tuple[str, str, str]], schemas: List[str]) -> str:
     """Generates hierarchical Markdown from database objects.
 
     Args:
         db_objects: List of tuples containing (schema_name, object_name, object_type)
+        schemas: List of schema names that were queried
 
     Returns:
         Formatted markdown string
     """
     markdown_output = []
+    
+    # Count objects by type for the summary section
+    object_type_counts = Counter()
+    for _, _, object_type in db_objects:
+        friendly_object_type = get_friendly_object_type(object_type)
+        object_type_counts[friendly_object_type] += 1
+    
+    # Add summary section at the top (always show)
+    markdown_output.append("# Database Object Summary")
+    markdown_output.append("")
+    
+    total_schemas = len(schemas)
+    total_objects = sum(object_type_counts.values())
+    
+    markdown_output.append(f"**Total Schemas:** {total_schemas}")
+    markdown_output.append(f"**Total Objects:** {total_objects}")
+    markdown_output.append("")
+    
+    # Only show object type breakdown if there are objects
+    if object_type_counts:
+        # Sort object types alphabetically for consistent output
+        for object_type in sorted(object_type_counts.keys()):
+            count = object_type_counts[object_type]
+            markdown_output.append(f"- **{object_type}:** {count}")
+        
+        markdown_output.append("")
+    
+    markdown_output.append("---")
+    markdown_output.append("")
+    
+    # Generate the detailed hierarchical listing
     current_schema = None
     current_type = None
 
@@ -113,7 +146,7 @@ def main():
     db_objects = fetch_database_objects(db_manager, non_empty_schemas)
     
     # Generate and print markdown output
-    markdown_output = generate_markdown(db_objects)
+    markdown_output = generate_markdown(db_objects, non_empty_schemas)
     print(markdown_output)
 
 
