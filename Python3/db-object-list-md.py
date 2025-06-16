@@ -63,7 +63,7 @@ def fetch_database_objects(db_manager: DatabaseManager, schemas: List[str]) -> L
         s.name, o.type_desc, o.name
     """
     
-    # Combine parameters: object types + schema names
+    # Combine parameters: object types and schema names
     params = OBJECT_TYPES + tuple(schemas)
     
     return db_manager.execute_query(sql_query, params)
@@ -87,7 +87,15 @@ def generate_markdown(db_objects: List[Tuple[str, str, str]], schemas: List[str]
         friendly_object_type = get_friendly_object_type(object_type)
         object_type_counts[friendly_object_type] += 1
     
-    # Add summary section at the top (always show)
+    # Count objects by schema and type
+    schema_type_counts = {}
+    for schema_name, _, object_type in db_objects:
+        friendly_object_type = get_friendly_object_type(object_type)
+        if schema_name not in schema_type_counts:
+            schema_type_counts[schema_name] = Counter()
+        schema_type_counts[schema_name][friendly_object_type] += 1
+    
+    # Add a summary section at the top (always show)
     markdown_output.append("# Database Object Summary")
     markdown_output.append("")
     
@@ -100,13 +108,37 @@ def generate_markdown(db_objects: List[Tuple[str, str, str]], schemas: List[str]
     
     # Only show object type breakdown if there are objects
     if object_type_counts:
-        # Sort object types alphabetically for consistent output
+        # Sort object types alphabetically for a consistent output
         for object_type in sorted(object_type_counts.keys()):
             count = object_type_counts[object_type]
             markdown_output.append(f"- **{object_type}:** {count}")
         
         markdown_output.append("")
     
+    # Add objects per schema table with object type breakdown
+    markdown_output.append("## Objects per Schema")
+    markdown_output.append("")
+    
+    # Get all unique object types present in the data, sorted alphabetically
+    all_object_types = sorted(set(OBJECT_TYPE_MAPPING.values()))
+    
+    # Create a table header
+    header = "| Schema | " + " | ".join(all_object_types) + " |"
+    separator = "|--------|" + "|".join(["----------" for _ in all_object_types]) + "|"
+    
+    markdown_output.append(header)
+    markdown_output.append(separator)
+    
+    # Sort schemas alphabetically for a consistent output
+    for schema in sorted(schemas):
+        schema_counts = schema_type_counts.get(schema, Counter())
+        row = f"| {schema} |"
+        for object_type in all_object_types:
+            count = schema_counts.get(object_type, 0)
+            row += f" {count} |"
+        markdown_output.append(row)
+    
+    markdown_output.append("")
     markdown_output.append("---")
     markdown_output.append("")
     
