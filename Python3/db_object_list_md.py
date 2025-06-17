@@ -3,7 +3,8 @@ from collections import Counter
 from database_connection_utility import DatabaseManager
 
 # Object types to include
-OBJECT_TYPES = ('U', 'P', 'FN', 'TF', 'IF', 'TT')
+OBJECT_TYPES = ('U', 'P', 'FN', 'TF', 'IF', 'TT', 'V','PC', 'FS', 'FT', 'AF',
+                'SN')
 
 # Mapping of SQL Server object type descriptions to friendly names
 OBJECT_TYPE_MAPPING = {
@@ -96,7 +97,7 @@ def generate_markdown(db_objects: List[Tuple[str, str, str]], schemas: List[str]
         schema_type_counts[schema_name][friendly_object_type] += 1
     
     # Add a summary section at the top (always show)
-    markdown_output.append("# Database Object Summary")
+    markdown_output.append("# Summary")
     markdown_output.append("")
     
     total_schemas = len(schemas)
@@ -141,7 +142,9 @@ def generate_markdown(db_objects: List[Tuple[str, str, str]], schemas: List[str]
     markdown_output.append("")
     markdown_output.append("---")
     markdown_output.append("")
-    
+
+    markdown_output.append("# Objects by Schema and Type")
+
     # Generate the detailed hierarchical listing
     current_schema = None
     current_type = None
