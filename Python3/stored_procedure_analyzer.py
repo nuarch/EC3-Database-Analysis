@@ -65,23 +65,57 @@ class StoredProcedureAnalyzer:
             logger.warning("No ChatGPT API key found - will run in simulation mode")
     
     def get_all_stored_procedures(self, schema_name: str = 'dbo') -> List[Dict[str, Any]]:
-        """Retrieve all stored procedures from the database."""
-        query = """
-        SELECT 
-            ROUTINE_SCHEMA,
-            ROUTINE_NAME,
-            ROUTINE_DEFINITION,
-            CREATED,
-            LAST_ALTERED,
-            ROUTINE_TYPE
-        FROM INFORMATION_SCHEMA.ROUTINES 
-        WHERE ROUTINE_TYPE = 'PROCEDURE'
-        AND ROUTINE_SCHEMA = ?
-        ORDER BY ROUTINE_NAME
-        """
+        """Retrieve all stored procedures from the database, filtering by non-empty schemas."""
+        
+        # Get list of valid non-empty schemas
+        valid_schemas = self.db_manager.get_non_empty_schemas()
+        
+        if not valid_schemas:
+            logger.warning("No non-empty schemas found in the database")
+            return []
+        
+        # If a specific schema is requested, check if it's in the valid schemas list
+        if schema_name and schema_name not in valid_schemas:
+            logger.warning(f"Schema '{schema_name}' is not in the list of non-empty schemas: {valid_schemas}")
+            return []
+        
+        # Build the query with IN clause for multiple schemas
+        if schema_name:
+            # Single schema query
+            query = """
+            SELECT 
+                ROUTINE_SCHEMA,
+                ROUTINE_NAME,
+                ROUTINE_DEFINITION,
+                CREATED,
+                LAST_ALTERED,
+                ROUTINE_TYPE
+            FROM INFORMATION_SCHEMA.ROUTINES 
+            WHERE ROUTINE_TYPE = 'PROCEDURE'
+            AND ROUTINE_SCHEMA = ?
+            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+            """
+            query_params = (schema_name,)
+        else:
+            # Multiple schemas query - get procedures from all non-empty schemas
+            placeholders = ','.join(['?'] * len(valid_schemas))
+            query = f"""
+            SELECT 
+                ROUTINE_SCHEMA,
+                ROUTINE_NAME,
+                ROUTINE_DEFINITION,
+                CREATED,
+                LAST_ALTERED,
+                ROUTINE_TYPE
+            FROM INFORMATION_SCHEMA.ROUTINES 
+            WHERE ROUTINE_TYPE = 'PROCEDURE'
+            AND ROUTINE_SCHEMA IN ({placeholders})
+            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+            """
+            query_params = tuple(valid_schemas)
         
         try:
-            rows = self.db_manager.execute_query(query, (schema_name,))
+            rows = self.db_manager.execute_query(query, query_params)
             procedures = []
             
             for row in rows:
@@ -95,7 +129,11 @@ class StoredProcedureAnalyzer:
                 }
                 procedures.append(procedure)
             
-            logger.info(f"Retrieved {len(procedures)} stored procedures from schema '{schema_name}'")
+            if schema_name:
+                logger.info(f"Retrieved {len(procedures)} stored procedures from schema '{schema_name}'")
+            else:
+                logger.info(f"Retrieved {len(procedures)} stored procedures from {len(valid_schemas)} non-empty schemas")
+            
             return procedures
             
         except Exception as e:
@@ -158,12 +196,11 @@ SQL Code:
 Please provide:
 1. A clear explanation of what this stored procedure does
 2. Analysis of its complexity level (Low/Medium/High)
-3. List of main operations performed (SELECT, INSERT, UPDATE, DELETE, etc.)
-4. Input parameters and their purposes
-5. Business logic and workflow
-6. Performance considerations
-7. Recommendations for improvement
-8. Potential issues or risks
+3. Input parameters and their purposes
+4. Business logic and workflow
+5. Performance considerations
+6. Recommendations for improvement
+7. Potential issues or risks
 
 Format your response as a structured analysis that is easy to read and understand.
 """
@@ -437,60 +474,163 @@ Note: This is a simulated analysis. For detailed AI-powered analysis, please pro
         except Exception as e:
             logger.error(f"Error generating analysis report: {e}")
 
+    def analyze_all_procedures_from_all_schemas(self, output_file: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Analyze all stored procedures from all non-empty schemas."""
+        # Get procedures from all non-empty schemas
+        procedures = self.get_all_stored_procedures(schema_name=None)  # None means all schemas
+        results = []
+        
+        if not procedures:
+            logger.warning("No stored procedures found in any non-empty schemas")
+            return results
+        
+        # Group procedures by schema for better logging
+        schema_counts = {}
+        for proc in procedures:
+            schema = proc['schema']
+            schema_counts[schema] = schema_counts.get(schema, 0) + 1
+        
+        logger.info(f"Starting analysis of {len(procedures)} stored procedures across {len(schema_counts)} schemas:")
+        for schema, count in schema_counts.items():
+            logger.info(f"  - {schema}: {count} procedures")
+        
+        for i, procedure in enumerate(procedures, 1):
+            logger.info(f"Analyzing procedure {i}/{len(procedures)}: {procedure['schema']}.{procedure['name']}")
+            
+            # Get procedure parameters
+            parameters = self.get_procedure_parameters(procedure['name'], procedure['schema'])
+            
+            # Send to ChatGPT for explanation
+            explanation = self.send_to_chatgpt_api(procedure['definition'], procedure['name'])
+            
+            analysis_result = {
+                'procedure_info': procedure,
+                'parameters': parameters,
+                'chatgpt_explanation': explanation,
+                'analysis_timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            
+            results.append(analysis_result)
+            
+            # Small delay to avoid overwhelming the API
+            time.sleep(1)
+        
+        # Save results to file if specified
+        if output_file:
+            self.save_results_to_file(results, output_file)
+        
+        logger.info(f"Analysis completed for {len(results)} stored procedures across {len(schema_counts)} schemas")
+        return results
+
 def main():
     """Main function to run the stored procedure analysis."""
     print("🤖 Stored Procedure Analyzer for ChatGPT Integration")
     print("=" * 60)
-    
-    # Initialize the analyzer - will load an API key from chatgpt_config.py
+
+    # Initialize the analyzer - will load API key from chatgpt_config.py
     analyzer = StoredProcedureAnalyzer()
-    
+
     # Test database connection
     if not analyzer.db_manager.test_connection():
         print("❌ Failed to connect to database. Please check your configuration.")
         return
-    
+
     print("✅ Database connection successful!")
-    
+
     # Check API configuration
     if analyzer.api_key:
         print(f"✅ ChatGPT API key loaded from configuration (Model: {analyzer.model})")
     else:
         print("⚠️  No ChatGPT API key found - running in simulation mode")
         print("   Create chatgpt_config.py from chatgpt_config.py.sample to use actual API")
-    
+
     # Get available schemas
     schemas = analyzer.db_manager.get_non_empty_schemas()
-    print(f"📊 Available schemas: {schemas}")
-    
-    # Choose schema to analyze (default to 'dbo')
-    schema_to_analyze = input(f"Enter schema name to analyze (default: dbo): ").strip() or 'dbo'
-    
-    # Perform analysis
-    print(f"\n🚀 Starting analysis of stored procedures in schema '{schema_to_analyze}'...")
-    
-    results = analyzer.analyze_all_procedures(
-        schema_name=schema_to_analyze,
-        output_file=f'stored_procedures_analysis_{schema_to_analyze}.json'
-    )
-    
-    if results:
-        # Generate a Markdown report
-        analyzer.generate_analysis_report(
-            results, 
-            f'stored_procedures_report_{schema_to_analyze}.md'
+    print(f"📊 Available non-empty schemas: {schemas}")
+
+    if not schemas:
+        print("❌ No non-empty schemas found in the database.")
+        return
+
+    # Choose analysis scope
+    print("\nAnalysis Options:")
+    print("1. Analyze specific schema")
+    print("2. Analyze all non-empty schemas")
+
+    choice = input("Choose option (1 or 2, default: 1): ").strip() or "1"
+
+    if choice == "2":
+        # Analyze all schemas
+        print(f"\n🚀 Starting analysis of stored procedures from all non-empty schemas...")
+
+        results = analyzer.analyze_all_procedures_from_all_schemas(
+            output_file='stored_procedures_analysis_all_schemas.json'
         )
-        
-        print(f"\n✅ Analysis complete!")
-        print(f"📁 Results saved to export directory")
-        print(f"📋 {len(results)} stored procedures analyzed")
-        
-        # Display summary
-        if analyzer.api_key:
-            total_tokens = sum(r.get('chatgpt_explanation', {}).get('tokens_used', 0) for r in results)
-            print(f"🔢 Total tokens used: {total_tokens}")
+
+        if results:
+            # Generate markdown report
+            analyzer.generate_analysis_report(
+                results,
+                'stored_procedures_report_all_schemas.md'
+            )
+
+            print(f"\n✅ Analysis complete!")
+            print(f"📁 Results saved to export directory")
+            print(f"📋 {len(results)} stored procedures analyzed across all schemas")
+
+            # Display summary by schema
+            schema_summary = {}
+            for result in results:
+                schema = result['procedure_info']['schema']
+                schema_summary[schema] = schema_summary.get(schema, 0) + 1
+
+            print("\n📊 Summary by schema:")
+            for schema, count in schema_summary.items():
+                print(f"   {schema}: {count} procedures")
+
+            # Display token usage if using real API
+            if analyzer.api_key:
+                total_tokens = sum(r.get('chatgpt_explanation', {}).get('tokens_used', 0) for r in results)
+                print(f"🔢 Total tokens used: {total_tokens}")
+        else:
+            print(f"\n⚠️ No stored procedures found in any schemas")
+
     else:
-        print(f"\n⚠️ No stored procedures found in schema '{schema_to_analyze}'")
+        # Analyze specific schema
+        # Choose schema to analyze (default to 'dbo' if it exists, otherwise first schema)
+        default_schema = 'dbo' if 'dbo' in schemas else schemas[0]
+        schema_to_analyze = input(f"Enter schema name to analyze (default: {default_schema}): ").strip() or default_schema
+
+        # Validate schema choice
+        if schema_to_analyze not in schemas:
+            print(f"❌ Schema '{schema_to_analyze}' is not in the list of non-empty schemas: {schemas}")
+            return
+
+        # Perform analysis
+        print(f"\n🚀 Starting analysis of stored procedures in schema '{schema_to_analyze}'...")
+
+        results = analyzer.analyze_all_procedures(
+            schema_name=schema_to_analyze,
+            output_file=f'stored_procedures_analysis_{schema_to_analyze}.json'
+        )
+
+        if results:
+            # Generate markdown report
+            analyzer.generate_analysis_report(
+                results,
+                f'stored_procedures_report_{schema_to_analyze}.md'
+            )
+
+            print(f"\n✅ Analysis complete!")
+            print(f"📁 Results saved to export directory")
+            print(f"📋 {len(results)} stored procedures analyzed")
+
+            # Display summary
+            if analyzer.api_key:
+                total_tokens = sum(r.get('chatgpt_explanation', {}).get('tokens_used', 0) for r in results)
+                print(f"🔢 Total tokens used: {total_tokens}")
+        else:
+            print(f"\n⚠️ No stored procedures found in schema '{schema_to_analyze}'")
 
 if __name__ == "__main__":
     main()

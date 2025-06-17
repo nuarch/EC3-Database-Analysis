@@ -176,6 +176,82 @@ class DatabaseManager:
             logger.error(f"Error getting non-empty schemas: {e}")
             return []
 
+    def get_all_stored_procedures(self, schema_name: str = 'dbo') -> List[Dict[str, Any]]:
+        """Retrieve all stored procedures from the database, filtering by non-empty schemas."""
+        
+        # Get list of valid non-empty schemas
+        valid_schemas = self.get_non_empty_schemas()
+        
+        if not valid_schemas:
+            logger.warning("No non-empty schemas found in the database")
+            return []
+        
+        # If a specific schema is requested, check if it's in the valid schemas list
+        if schema_name and schema_name not in valid_schemas:
+            logger.warning(f"Schema '{schema_name}' is not in the list of non-empty schemas: {valid_schemas}")
+            return []
+        
+        # Build the query with IN clause for multiple schemas
+        if schema_name:
+            # Single schema query
+            query = """
+            SELECT 
+                ROUTINE_SCHEMA,
+            ROUTINE_NAME,
+            ROUTINE_DEFINITION,
+            CREATED,
+            LAST_ALTERED,
+            ROUTINE_TYPE
+            FROM INFORMATION_SCHEMA.ROUTINES 
+            WHERE ROUTINE_TYPE = 'PROCEDURE'
+            AND ROUTINE_SCHEMA = ?
+            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+            """
+            query_params = (schema_name,)
+        else:
+            # Multiple schemas query - get procedures from all non-empty schemas
+            placeholders = ','.join(['?'] * len(valid_schemas))
+            query = f"""
+            SELECT 
+                ROUTINE_SCHEMA,
+            ROUTINE_NAME,
+            ROUTINE_DEFINITION,
+            CREATED,
+            LAST_ALTERED,
+            ROUTINE_TYPE
+            FROM INFORMATION_SCHEMA.ROUTINES 
+            WHERE ROUTINE_TYPE = 'PROCEDURE'
+            AND ROUTINE_SCHEMA IN ({placeholders})
+            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+            """
+            query_params = tuple(valid_schemas)
+        
+        try:
+            rows = self.execute_query(query, query_params)
+            procedures = []
+            
+            for row in rows:
+                procedure = {
+                    'schema': row[0],
+                    'name': row[1],
+                    'definition': row[2],
+                    'created': row[3],
+                    'last_altered': row[4],
+                    'type': row[5]
+                }
+                procedures.append(procedure)
+            
+            if schema_name:
+                logger.info(f"Retrieved {len(procedures)} stored procedures from schema '{schema_name}'")
+            else:
+                logger.info(f"Retrieved {len(procedures)} stored procedures from {len(valid_schemas)} non-empty schemas")
+            
+            return procedures
+            
+        except Exception as e:
+            logger.error(f"Error retrieving stored procedures: {e}")
+            return []
+
 # Convenience functions for backward compatibility
 def create_db_connection():
     """Legacy function - creates database connection context manager."""
