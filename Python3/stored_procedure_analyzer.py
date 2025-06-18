@@ -178,10 +178,7 @@ class StoredProcedureAnalyzer:
     
     def send_to_chatgpt_api(self, procedure_code: str, procedure_name: str) -> Optional[Dict[str, Any]]:
         """Send stored procedure code to ChatGPT API for explanation."""
-        if not self.api_key:
-            logger.warning("No API key provided. Simulating API call...")
-            return self._simulate_api_response(procedure_code, procedure_name)
-        
+
         # Create a comprehensive prompt for ChatGPT
         prompt = f"""
 Please analyze the following SQL stored procedure and provide a detailed explanation:
@@ -199,8 +196,7 @@ Please provide:
 3. Input parameters and their purposes
 4. Business logic and workflow
 5. Performance considerations
-6. Recommendations for improvement
-7. Potential issues or risks
+6. Potential issues or risks
 
 Format your response as a structured analysis that is easy to read and understand.
 """
@@ -271,97 +267,48 @@ Format your response as a structured analysis that is easy to read and understan
         elif "HIGH COMPLEXITY" in explanation_upper or "COMPLEX" in explanation_upper:
             complexity = "High"
         
-        # Extract operations mentioned
-        operations = []
-        sql_keywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'ALTER', 'EXEC', 'EXECUTE']
-        for keyword in sql_keywords:
-            if keyword in explanation_upper:
-                operations.append(keyword)
+        # # Extract operations mentioned
+        # operations = []
+        # sql_keywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'ALTER', 'EXEC', 'EXECUTE']
+        # for keyword in sql_keywords:
+        #     if keyword in explanation_upper:
+        #         operations.append(keyword)
         
-        # Extract recommendations (look for common recommendation patterns)
-        recommendations = []
-        recommendation_patterns = [
-            "consider adding error handling",
-            "add proper indexing",
-            "use parameterized queries",
-            "implement transaction management",
-            "add input validation",
-            "consider performance optimization",
-            "add comments for maintainability"
-        ]
+        # # Extract recommendations (look for common recommendation patterns)
+        # recommendations = []
+        # recommendation_patterns = [
+        #     "consider adding error handling",
+        #     "add proper indexing",
+        #     "use parameterized queries",
+        #     "implement transaction management",
+        #     "add input validation",
+        #     "consider performance optimization",
+        #     "add comments for maintainability"
+        # ]
         
-        for pattern in recommendation_patterns:
-            if pattern.replace(" ", "").lower() in explanation_text.replace(" ", "").lower():
-                recommendations.append(pattern.title())
-        
-        # If no specific recommendations found, add generic ones
-        if not recommendations:
-            recommendations = [
-                "Review for error handling implementation",
-                "Consider adding performance monitoring",
-                "Ensure proper documentation is in place"
-            ]
+        # for pattern in recommendation_patterns:
+        #     if pattern.replace(" ", "").lower() in explanation_text.replace(" ", "").lower():
+        #         recommendations.append(pattern.title())
+        #
+        # # If no specific recommendations found, add generic ones
+        # if not recommendations:
+        #     recommendations = [
+        #         "Review for error handling implementation",
+        #         "Consider adding performance monitoring",
+        #         "Ensure proper documentation is in place"
+        #     ]
         
         return {
             "procedure_name": procedure_name,
             "explanation": explanation_text,
             "complexity": complexity,
-            "operations": operations,
-            "recommendations": recommendations,
+            # "operations": operations,
+            # "recommendations": recommendations,
             "model_used": api_response.get('model', self.model),
             "tokens_used": api_response.get('usage', {}).get('total_tokens', 0),
-            "api_response_id": api_response.get('id', ''),
-            "simulated": False
+            "api_response_id": api_response.get('id', '')
         }
-    
-    def _simulate_api_response(self, procedure_code: str, procedure_name: str) -> Dict[str, Any]:
-        """Simulate API response when no actual API key is provided."""
-        # Basic analysis of the procedure
-        lines = procedure_code.split('\n') if procedure_code else []
-        line_count = len(lines)
-        
-        # Simple keyword analysis
-        keywords = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'IF', 'WHILE', 'DECLARE', 'SET', 'EXEC', 'CREATE']
-        keyword_counts = {kw: procedure_code.upper().count(kw) if procedure_code else 0 for kw in keywords}
-        operations = [kw for kw, count in keyword_counts.items() if count > 0]
-        
-        # Generate a basic explanation
-        explanation = f"""
-SIMULATED ANALYSIS for Stored Procedure: {procedure_name}
 
-Overview:
-This stored procedure '{procedure_name}' contains {line_count} lines of code and appears to perform the following operations: {', '.join(operations) if operations else 'Basic SQL operations'}.
-
-Complexity Analysis:
-Based on the code length and structure, this procedure has {'Medium' if line_count > 50 else 'Low'} complexity.
-
-Operations Detected:
-{', '.join(operations) if operations else 'No major SQL operations detected'}
-
-Recommendations:
-- Consider adding comprehensive error handling
-- Ensure proper parameter validation
-- Add detailed comments for maintainability
-- Review for potential performance optimizations
-
-Note: This is a simulated analysis. For detailed AI-powered analysis, please provide a valid OpenAI API key.
-"""
-        
-        return {
-            "procedure_name": procedure_name,
-            "explanation": explanation,
-            "complexity": "Medium" if line_count > 50 else "Low",
-            "operations": operations,
-            "keyword_analysis": keyword_counts,
-            "recommendations": [
-                "Consider adding comprehensive error handling",
-                "Ensure proper parameter validation",
-                "Add detailed comments for maintainability",
-                "Review for potential performance optimizations"
-            ],
-            "simulated": True
-        }
-    
     def analyze_all_procedures(self, schema_name: str = 'dbo', output_file: Optional[str] = None) -> List[Dict[str, Any]]:
         """Analyze all stored procedures in a schema."""
         procedures = self.get_all_stored_procedures(schema_name)
@@ -542,7 +489,7 @@ def main():
         print(f"✅ ChatGPT API key loaded from configuration (Model: {analyzer.model})")
     else:
         print("⚠️  No ChatGPT API key found - running in simulation mode")
-        print("   Create chatgpt_config.py from chatgpt_config.py.sample to use actual API")
+        return
 
     # Get available schemas
     schemas = analyzer.db_manager.get_non_empty_schemas()
