@@ -362,64 +362,6 @@ Format your response as a structured analysis that is easy to read and understan
             
         except Exception as e:
             logger.error(f"Error saving results to file: {e}")
-    
-    def generate_analysis_report(self, results: List[Dict[str, Any]], output_file: str = 'procedure_analysis_report.md'):
-        """Generate a Markdown report from the analysis results."""
-        try:
-            os.makedirs('export', exist_ok=True)
-            filepath = os.path.join('export', output_file)
-            
-            with open(filepath, 'w', encoding='utf-8') as f:
-                f.write("# Stored Procedure Analysis Report (ChatGPT)\n\n")
-                f.write(f"Generated on: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
-                f.write(f"Total procedures analyzed: {len(results)}\n\n")
-                
-                for result in results:
-                    proc_info = result['procedure_info']
-                    params = result['parameters']
-                    explanation = result['chatgpt_explanation']
-                    
-                    f.write(f"## {proc_info['name']}\n\n")
-                    f.write(f"**Schema:** {proc_info['schema']}\n\n")
-                    f.write(f"**Created:** {proc_info['created']}\n\n")
-                    f.write(f"**Last Modified:** {proc_info['last_altered']}\n\n")
-                    
-                    if params:
-                        f.write("### Parameters\n\n")
-                        for param in params:
-                            f.write(f"- **{param['name']}** ({param['data_type']}) - {param['mode']}\n")
-                        f.write("\n")
-                    
-                    if explanation:
-                        f.write("### ChatGPT Analysis\n\n")
-                        if explanation.get('simulated'):
-                            f.write("*Note: This is a simulated analysis (no API key provided)*\n\n")
-                        else:
-                            f.write(f"*Model used: {explanation.get('model_used', 'N/A')}*\n\n")
-                            if explanation.get('tokens_used'):
-                                f.write(f"*Tokens used: {explanation.get('tokens_used')}*\n\n")
-                        
-                        f.write(f"**Complexity:** {explanation.get('complexity', 'N/A')}\n\n")
-                        
-                        if explanation.get('operations'):
-                            f.write("**Operations:** " + ", ".join(explanation['operations']) + "\n\n")
-                        
-                        # Write the full explanation
-                        f.write("**Detailed Analysis:**\n\n")
-                        f.write(f"{explanation.get('explanation', 'N/A')}\n\n")
-                        
-                        if explanation.get('recommendations'):
-                            f.write("**Recommendations:**\n")
-                            for rec in explanation['recommendations']:
-                                f.write(f"- {rec}\n")
-                            f.write("\n")
-                    
-                    f.write("---\n\n")
-            
-            logger.info(f"Analysis report generated: {filepath}")
-            
-        except Exception as e:
-            logger.error(f"Error generating analysis report: {e}")
 
     def analyze_all_procedures_from_all_schemas(self, output_file: Optional[str] = None) -> List[Dict[str, Any]]:
         """Analyze all stored procedures from all non-empty schemas."""
@@ -562,12 +504,6 @@ def main():
         )
 
         if results:
-            # Generate markdown report
-            analyzer.generate_analysis_report(
-                results,
-                f'stored_procedures_report_{schema_to_analyze}.md'
-            )
-
             print(f"\n✅ Analysis complete!")
             print(f"📁 Results saved to export directory")
             print(f"📋 {len(results)} stored procedures analyzed")
