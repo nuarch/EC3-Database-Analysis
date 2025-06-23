@@ -13,7 +13,7 @@ import pandas as pd
 
 # Import the database connection utility
 try:
-    from database_connection_utility import DatabaseManager
+    from DatabaseConnectionUtility import DatabaseManager
 except ImportError:
     print("Error: Could not import database_connection_utility.py")
     print("Please ensure the file exists in the same directory or Python path")

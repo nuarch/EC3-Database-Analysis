@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 from collections import Counter
-from database_connection_utility import DatabaseManager
+from DatabaseConnectionUtility import DatabaseManager
 
 # Object types to include
 OBJECT_TYPES = ('U', 'P', 'FN', 'TF', 'IF', 'TT', 'V','PC', 'FS', 'FT', 'AF',

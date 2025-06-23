@@ -62,16 +62,6 @@ def select_schemas_interactive(available_schemas):
             print("\nOperation cancelled.")
             return None
 
-def escape_xml(text):
-    """Escape XML special characters"""
-    if not text:
-        return text
-    return (text.replace('&', '&amp;')
-                .replace('<', '&lt;')
-                .replace('>', '&gt;')
-                .replace('"', '&quot;')
-                .replace("'", '&#39;'))
-
 def create_safe_filename(schema_name, procedure_name):
     """Create a safe filename from schema and procedure names"""
     # Remove or replace characters that are problematic in filenames
@@ -79,220 +69,380 @@ def create_safe_filename(schema_name, procedure_name):
     safe_procedure = re.sub(r'[<>:"/\\|?*]', '_', procedure_name)
     return f"{safe_schema} - {safe_procedure}"
 
-def convert_markdown_to_html(markdown_text):
+def convert_markdown_to_adf(markdown_text):
     """
-    Convert markdown text to HTML.
-
+    Convert markdown text to Atlassian Document Format (ADF).
+    
     Args:
         markdown_text (str): The markdown text to convert
-
+        
     Returns:
-        str: The converted HTML text
+        dict: The ADF document structure
     """
-    html = markdown_text
+    # Initialize ADF document structure
+    adf_doc = {
+        "version": 1,
+        "type": "doc",
+        "content": []
+    }
+    
+    lines = markdown_text.split('\n')
+    current_content = []
+    
+    i = 0
+    while i < len(lines):
+        line = lines[i].rstrip()
+        
+        # Skip empty lines
+        if not line:
+            i += 1
+            continue
+        
+        # Handle headers
+        if line.startswith('#'):
+            # First, add any pending paragraph content
+            if current_content:
+                para_content = _create_paragraph_content(' '.join(current_content))
+                if para_content:
+                    adf_doc["content"].append(_create_paragraph(para_content))
+                current_content = []
+            
+            # Determine header level
+            level = len(line) - len(line.lstrip('#'))
+            header_text = line.lstrip('#').strip()
+            
+            adf_doc["content"].append(_create_heading(header_text, level))
+        
+        # Handle code blocks
+        elif line.startswith('```'):
+            # First, add any pending paragraph content
+            if current_content:
+                para_content = _create_paragraph_content(' '.join(current_content))
+                if para_content:
+                    adf_doc["content"].append(_create_paragraph(para_content))
+                current_content = []
 
-    # Convert headers (### -> h3, #### -> h4, etc.)
-    html = re.sub(r'^### (.*?)$', r'<h3>\1</h3>', html, flags=re.MULTILINE)
-    html = re.sub(r'^#### (.*?)$', r'<h4>\1</h4>', html, flags=re.MULTILINE)
-    html = re.sub(r'^##### (.*?)$', r'<h5>\1</h5>', html, flags=re.MULTILINE)
-    html = re.sub(r'^###### (.*?)$', r'<h6>\1</h6>', html, flags=re.MULTILINE)
-    html = re.sub(r'^## (.*?)$', r'<h2>\1</h2>', html, flags=re.MULTILINE)
-    html = re.sub(r'^# (.*?)$', r'<h1>\1</h1>', html, flags=re.MULTILINE)
+            # Extract content after the opening ``` (if any)
+            opening_line = line[3:].strip()  # Remove ``` and get remainder
 
-    # Convert bold text (**text** -> <strong>text</strong>)
-    html = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', html)
+            # Find the end of the code block
+            code_lines = []
 
-    # Convert italic text (*text* -> <em>text</em>)
-    html = re.sub(r'\*(.*?)\*', r'<em>\1</em>', html)
+            # Add opening line content if it exists
+            if opening_line:
+                code_lines.append(opening_line)
 
-    # Convert inline code (`code` -> <code>code</code>)
-    html = re.sub(r'`([^`]+)`', r'<code>\1</code>', html)
+            i += 1
+            while i < len(lines):
+                current_line = lines[i]
 
-    # Convert code blocks (```language\ncode\n``` -> <pre><code>code</code></pre>)
-    html = re.sub(r'```[\w]*\n(.*?)\n```', r'<pre><code>\1</code></pre>', html, flags=re.DOTALL)
+                # Check if this line ends the code block
+                if current_line.rstrip().endswith('```'):
+                    # Extract content before the closing ```
+                    closing_content = current_line[:-3].rstrip()
+                    if closing_content:
+                        code_lines.append(closing_content)
+                    break
+                elif current_line.startswith('```'):
+                    # Line starts with ``` (alternative closing pattern)
+                    break
+                else:
+                    # Regular code line
+                    code_lines.append(current_line)
 
-    # Convert bullet points and nested ordered lists
-    lines = html.split('\n')
-    result_lines = []
-    in_unordered_list = False
-    in_ordered_list = False
-    in_nested_ordered_list = False
+                i += 1
 
-    for line in lines:
-        stripped_line = line.strip()
-        original_line = line
+            code_content = '\n'.join(code_lines)
+            adf_doc["content"].append(_create_code_block(code_content, "sql"))
 
-        # Check if this is a bullet point
-        if stripped_line.startswith('- '):
-            # Close any nested ordered list
-            if in_nested_ordered_list:
-                result_lines.append('    </ol>')
-                in_nested_ordered_list = False
-            # Close standalone ordered list if we were in one
-            if in_ordered_list and not in_unordered_list:
-                result_lines.append('</ol>')
-                in_ordered_list = False
-
-            if not in_unordered_list:
-                result_lines.append('<ul>')
-                in_unordered_list = True
-            # Remove the '- ' and wrap in <li>
-            list_item = stripped_line[2:]
-            result_lines.append(f'  <li>{list_item}</li>')
-
-        # Check if this is an indented numbered list item (nested within bullet points)
-        elif re.match(r'^\s+\d+\.\s+', original_line):
-            if not in_nested_ordered_list:
-                result_lines.append('    <ol>')
-                in_nested_ordered_list = True
-            # Remove the indentation, number and dot, wrap in <li>
-            list_item = re.sub(r'^\s+\d+\.\s+', '', original_line)
-            result_lines.append(f'      <li>{list_item}</li>')
-
-        # Check if this is a top-level numbered list item
-        elif re.match(r'^\d+\.\s+', stripped_line):
-            # Close nested ordered list if we were in one
-            if in_nested_ordered_list:
-                result_lines.append('    </ol>')
-                in_nested_ordered_list = False
-            # Close unordered list if we were in one
-            if in_unordered_list:
-                result_lines.append('</ul>')
-                in_unordered_list = False
-
-            if not in_ordered_list:
-                result_lines.append('<ol>')
-                in_ordered_list = True
-            # Remove the number and dot, wrap in <li>
-            list_item = re.sub(r'^\d+\.\s+', '', stripped_line)
-            result_lines.append(f'  <li>{list_item}</li>')
-
+        
+        # Handle unordered lists
+        elif line.startswith('- '):
+            # First, add any pending paragraph content
+            if current_content:
+                para_content = _create_paragraph_content(' '.join(current_content))
+                if para_content:
+                    adf_doc["content"].append(_create_paragraph(para_content))
+                current_content = []
+            
+            # Collect all list items
+            list_items = []
+            while i < len(lines) and (lines[i].startswith('- ') or lines[i].startswith('  ')):
+                current_line = lines[i]
+                if current_line.startswith('- '):
+                    item_text = current_line[2:].strip()
+                    nested_items = []
+                    
+                    # Check for nested numbered items
+                    j = i + 1
+                    while j < len(lines) and lines[j].startswith('  '):
+                        nested_line = lines[j].strip()
+                        if re.match(r'^\d+\.\s+', nested_line):
+                            nested_text = re.sub(r'^\d+\.\s+', '', nested_line)
+                            nested_items.append(nested_text)
+                            j += 1
+                        else:
+                            break
+                    
+                    list_items.append({
+                        "text": item_text,
+                        "nested": nested_items
+                    })
+                    i = j - 1
+                i += 1
+            i -= 1  # Adjust for the outer loop increment
+            
+            adf_doc["content"].append(_create_bullet_list(list_items))
+        
+        # Handle numbered lists
+        elif re.match(r'^\d+\.\s+', line):
+            # First, add any pending paragraph content
+            if current_content:
+                para_content = _create_paragraph_content(' '.join(current_content))
+                if para_content:
+                    adf_doc["content"].append(_create_paragraph(para_content))
+                current_content = []
+            
+            # Collect all numbered list items
+            list_items = []
+            while i < len(lines) and re.match(r'^\d+\.\s+', lines[i]):
+                item_text = re.sub(r'^\d+\.\s+', '', lines[i])
+                list_items.append(item_text)
+                i += 1
+            i -= 1  # Adjust for the outer loop increment
+            
+            adf_doc["content"].append(_create_numbered_list(list_items))
+        
+        # Regular text - accumulate for paragraphs
         else:
-            # If we were in any list and this line is not a list item, close the lists
-            if in_nested_ordered_list:
-                result_lines.append('    </ol>')
-                in_nested_ordered_list = False
-            if in_unordered_list:
-                result_lines.append('</ul>')
-                in_unordered_list = False
-            if in_ordered_list:
-                result_lines.append('</ol>')
-                in_ordered_list = False
-            result_lines.append(line)
+            current_content.append(line)
+        
+        i += 1
+    
+    # Add any remaining paragraph content
+    if current_content:
+        para_content = _create_paragraph_content(' '.join(current_content))
+        if para_content:
+            adf_doc["content"].append(_create_paragraph(para_content))
+    
+    return adf_doc
 
-    # Close any remaining open lists
-    if in_nested_ordered_list:
-        result_lines.append('    </ol>')
-    if in_unordered_list:
-        result_lines.append('</ul>')
-    if in_ordered_list:
-        result_lines.append('</ol>')
+def _create_heading(text, level):
+    """Create ADF heading node"""
+    return {
+        "type": "heading",
+        "attrs": {
+            "level": min(level, 6)  # ADF supports levels 1-6
+        },
+        "content": [
+            {
+                "type": "text",
+                "text": text
+            }
+        ]
+    }
 
-    html = '\n'.join(result_lines)
+def _create_paragraph(content):
+    """Create ADF paragraph node"""
+    return {
+        "type": "paragraph",
+        "content": content
+    }
 
-    # Convert line breaks to paragraphs
-    # Split by double line breaks to identify paragraphs
-    paragraphs = html.split('\n\n')
-    html_paragraphs = []
+def _create_paragraph_content(text):
+    """Create paragraph content with inline formatting"""
+    if not text.strip():
+        return []
+    
+    content = []
+    parts = _split_text_with_formatting(text)
+    
+    for part in parts:
+        if part["type"] == "text":
+            content.append({
+                "type": "text",
+                "text": part["text"]
+            })
+        elif part["type"] == "strong":
+            content.append({
+                "type": "text",
+                "text": part["text"],
+                "marks": [{"type": "strong"}]
+            })
+        elif part["type"] == "em":
+            content.append({
+                "type": "text",
+                "text": part["text"],
+                "marks": [{"type": "em"}]
+            })
+        elif part["type"] == "code":
+            content.append({
+                "type": "text",
+                "text": part["text"],
+                "marks": [{"type": "code"}]
+            })
+    
+    return content
 
-    for paragraph in paragraphs:
-        paragraph = paragraph.strip()
-        if paragraph:
-            # Don't wrap headers, lists, code blocks, or already wrapped HTML in <p> tags
-            if not (paragraph.startswith('<h') or paragraph.startswith('<ul>') or
-                    paragraph.startswith('<ol>') or paragraph.startswith('<pre>') or
-                    paragraph.startswith('<li>') or paragraph.startswith('</ul>') or
-                    paragraph.startswith('</ol>') or paragraph.endswith('</h1>') or
-                    paragraph.endswith('</h2>') or paragraph.endswith('</h3>') or
-                    paragraph.endswith('</h4>') or paragraph.endswith('</h5>') or
-                    paragraph.endswith('</h6>')):
-                # Replace single line breaks with <br> within paragraphs
-                paragraph = paragraph.replace('\n', '<br>\n')
-                paragraph = f'<p>{paragraph}</p>'
-            html_paragraphs.append(paragraph)
+def _split_text_with_formatting(text):
+    """Split text into parts with formatting information"""
+    parts = []
+    current_pos = 0
 
-    html = '\n\n'.join(html_paragraphs)
+    # Find all formatting patterns - ORDER MATTERS: more specific patterns first
+    patterns = [
+        (r'\*\*(.*?)\*\*', 'strong'),  # Bold (must come before italic)
+        (r'\*(.*?)\*', 'em'),          # Italic
+        (r'`(.*?)`', 'code')           # Inline code
+    ]
 
-    return html
+    matches = []
+    for pattern, format_type in patterns:
+        for match in re.finditer(pattern, text):
+            matches.append({
+                'start': match.start(),
+                'end': match.end(),
+                'text': match.group(1),
+                'type': format_type,
+                'full_match': match.group(0)
+            })
 
-def convert_html_to_confluence_storage_format(html_content):
+    # Sort matches by start position
+    matches.sort(key=lambda x: x['start'])
+
+    # Remove overlapping matches (keep the first one found)
+    filtered_matches = []
+    for match in matches:
+        # Check if this match overlaps with any already accepted match
+        overlaps = False
+        for existing in filtered_matches:
+            if (match['start'] < existing['end'] and match['end'] > existing['start']):
+                overlaps = True
+                break
+
+        if not overlaps:
+            filtered_matches.append(match)
+
+    # Process non-overlapping matches
+    for match in filtered_matches:
+        # Add text before the match
+        if current_pos < match['start']:
+            before_text = text[current_pos:match['start']]
+            if before_text:
+                parts.append({
+                    'type': 'text',
+                    'text': before_text
+                })
+
+        # Add the formatted text
+        parts.append({
+            'type': match['type'],
+            'text': match['text']
+        })
+
+        current_pos = match['end']
+
+    # Add remaining text
+    if current_pos < len(text):
+        remaining_text = text[current_pos:]
+        if remaining_text:
+            parts.append({
+                'type': 'text',
+                'text': remaining_text
+            })
+
+    # If no formatting found, return the whole text
+    if not parts:
+        parts.append({
+            'type': 'text',
+            'text': text
+        })
+
+    return parts
+
+
+def _create_code_block(code, language="sql"):
+    """Create ADF code block node"""
+    return {
+        "type": "codeBlock",
+        "attrs": {
+            "language": language
+        },
+        "content": [
+            {
+                "type": "text",
+                "text": code
+            }
+        ]
+    }
+
+def _create_bullet_list(items):
+    """Create ADF bullet list node"""
+    list_items = []
+    
+    for item in items:
+        item_content = []
+        
+        # Add main item content
+        para_content = _create_paragraph_content(item["text"])
+        if para_content:
+            item_content.append(_create_paragraph(para_content))
+        
+        # Add nested ordered list if present
+        if item.get("nested"):
+            nested_items = []
+            for nested_text in item["nested"]:
+                nested_para_content = _create_paragraph_content(nested_text)
+                if nested_para_content:
+                    nested_items.append({
+                        "type": "listItem",
+                        "content": [_create_paragraph(nested_para_content)]
+                    })
+            
+            if nested_items:
+                item_content.append({
+                    "type": "orderedList",
+                    "content": nested_items
+                })
+        
+        list_items.append({
+            "type": "listItem",
+            "content": item_content
+        })
+    
+    return {
+        "type": "bulletList",
+        "content": list_items
+    }
+
+def _create_numbered_list(items):
+    """Create ADF numbered list node"""
+    list_items = []
+    
+    for item_text in items:
+        para_content = _create_paragraph_content(item_text)
+        if para_content:
+            list_items.append({
+                "type": "listItem",
+                "content": [_create_paragraph(para_content)]
+            })
+    
+    return {
+        "type": "orderedList",
+        "content": list_items
+    }
+
+def format_confluence_content(text):
     """
-    Convert HTML content to Confluence Storage Format.
-
-    Args:
-        html_content (str): The HTML content to convert
-
-    Returns:
-        str: The Confluence Storage Format XML
-    """
-    confluence_xml = html_content
-
-    # Convert headers to Confluence format
-    confluence_xml = re.sub(r'<h1>(.*?)</h1>', r'<h1>\1</h1>', confluence_xml)
-    confluence_xml = re.sub(r'<h2>(.*?)</h2>', r'<h2>\1</h2>', confluence_xml)
-    confluence_xml = re.sub(r'<h3>(.*?)</h3>', r'<h3>\1</h3>', confluence_xml)
-    confluence_xml = re.sub(r'<h4>(.*?)</h4>', r'<h4>\1</h4>', confluence_xml)
-    confluence_xml = re.sub(r'<h5>(.*?)</h5>', r'<h5>\1</h5>', confluence_xml)
-    confluence_xml = re.sub(r'<h6>(.*?)</h6>', r'<h6>\1</h6>', confluence_xml)
-
-    # Convert paragraphs to Confluence format
-    confluence_xml = re.sub(r'<p>(.*?)</p>', r'<p>\1</p>', confluence_xml, flags=re.DOTALL)
-
-    # Convert line breaks
-    confluence_xml = re.sub(r'<br\s*/?>', r'<br/>', confluence_xml)
-
-    # Convert strong/bold to Confluence format
-    confluence_xml = re.sub(r'<strong>(.*?)</strong>', r'<strong>\1</strong>', confluence_xml)
-
-    # Convert emphasis/italic to Confluence format
-    confluence_xml = re.sub(r'<em>(.*?)</em>', r'<em>\1</em>', confluence_xml)
-
-    # Convert inline code to Confluence code macro
-    confluence_xml = re.sub(r'<code>(.*?)</code>', r'<ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[\1]]></ac:plain-text-body></ac:structured-macro>', confluence_xml)
-
-    # Convert code blocks to Confluence code macro
-    confluence_xml = re.sub(
-        r'<pre><code>(.*?)</code></pre>',
-        r'<ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:parameter ac:name="theme">Confluence</ac:parameter><ac:plain-text-body><![CDATA[\1]]></ac:plain-text-body></ac:structured-macro>',
-        confluence_xml,
-        flags=re.DOTALL
-    )
-
-    # Convert unordered lists - Confluence uses the same ul/li structure
-    # No changes needed for basic ul/li
-
-    # Convert ordered lists - Confluence uses the same ol/li structure
-    # No changes needed for basic ol/li
-
-    # Clean up any remaining HTML tags that don't have direct Confluence equivalents
-    # Remove any standalone <br> that might interfere with formatting
-    confluence_xml = re.sub(r'<br/>\s*</p>', '</p>', confluence_xml)
-    confluence_xml = re.sub(r'<p>\s*<br/>', '<p>', confluence_xml)
-
-    # Wrap in Confluence storage format structure
-    confluence_storage_format = f'''<ac:confluence xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/" xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/">
-{confluence_xml}
-</ac:confluence>'''
-
-    return confluence_storage_format
-
-def format_confluence_content(text) :
-    """
-    Format Markdown text content for Confluence storage format.
-
+    Format Markdown text content for Confluence ADF format.
+    
     Args:
         text (str): The text content to format
-
+        
     Returns:
-        str: The formatted Confluence storage format content
+        dict: The formatted Confluence ADF document
     """
-    # Convert Markdown to HTML
-    html_content = convert_markdown_to_html(text)
-
-    # Convert HTML to Confluence storage format
-    confluence_content = convert_html_to_confluence_storage_format(html_content)
-
-    return confluence_content
+    return convert_markdown_to_adf(text)
 
 def create_procedure_metadata(proc):
     """Create metadata JSON for a stored procedure"""
@@ -345,7 +495,7 @@ def create_procedure_metadata(proc):
     return metadata
 
 def generate_procedure_page(proc):
-    """Generate Confluence storage format content for a single stored procedure"""
+    """Generate Confluence ADF content for a single stored procedure"""
     proc_info = proc['procedure_info']
     analysis = proc.get('analysis', {}) or proc.get('chatgpt_explanation', {})
     
@@ -353,64 +503,38 @@ def generate_procedure_page(proc):
     procedure_name = proc_info['name']
     
     content = ''
-    
-    # Page title
-    content += f'<h1>{escape_xml(schema_name)} - {escape_xml(procedure_name)}</h1>\n\n'
 
     # Analysis sections
     if isinstance(analysis, dict):
         # Detailed explanation
         if analysis.get('explanation'):
-            content += '<h2>Detailed Analysis</h2>\n'
-
-            # Remove any existing header that might conflict
+            # Remove some content that is not needed
             text = analysis['explanation']
-            text = re.sub(r'###\s+Analysis\s+of\s+Stored\s+Procedure:\s*(\w+)\s*\n\s*\n', '', text, flags=re.MULTILINE)
+            text = re.sub(r'###\s+Analysis\s+of\s+Stored\s+Procedure:\s+.*\n\n', '', text, flags=re.MULTILINE)
+            text = re.sub(r'####\s+Recommendations(.|\s)*$', '', text, flags=re.MULTILINE)
+            text = re.sub(r'#\s+\d+\.', '#', text, flags=re.MULTILINE)
 
-            # Promote all headings up one level (remove one # from each heading)
+            # Promote all headings up three levels (remove one # from each heading)
             # Process from most specific to least specific to avoid conflicts
-            text = re.sub(r'^## (.*?)$', r'# \1', text, flags=re.MULTILINE)          # h2 -> h1
-            text = re.sub(r'^### (.*?)$', r'## \1', text, flags=re.MULTILINE)        # h3 -> h2
-            text = re.sub(r'^#### (.*?)$', r'### \1', text, flags=re.MULTILINE)      # h4 -> h3
-            text = re.sub(r'^##### (.*?)$', r'#### \1', text, flags=re.MULTILINE)    # h5 -> h4
-            text = re.sub(r'^###### (.*?)$', r'##### \1', text, flags=re.MULTILINE)  # h6 -> h5
+            text = re.sub(r'^#### (.*?)$', r'# \1', text, flags=re.MULTILINE)      # h4 -> h1
+            text = re.sub(r'^##### (.*?)$', r'## \1', text, flags=re.MULTILINE)    # h5 -> h2
+            text = re.sub(r'^###### (.*?)$', r'### \1', text, flags=re.MULTILINE)  # h6 -> h3
 
-            formatted_explanation = format_confluence_content(text)
-            content += formatted_explanation + '\n\n'
+            content += text
     
     # Procedure Definition/Source Code
     definition_field = proc_info.get('definition') or proc_info.get('source_code')
     if definition_field:
-        content += '<h2>Procedure Definition</h2>\n'
-        content += '<ac:structured-macro ac:name="code" ac:schema-version="1">\n'
-        content += '<ac:parameter ac:name="language">sql</ac:parameter>\n'
-        content += '<ac:parameter ac:name="collapse">false</ac:parameter>\n'
-        content += '<ac:plain-text-body><![CDATA['
-        content += definition_field
-        content += ']]></ac:plain-text-body>\n'
-        content += '</ac:structured-macro>\n\n'
+        content += '# Stored Procedure Definition\n\n'
+        content += '```' + definition_field + '```\n'
+
+    # Convert to ADF format
+    adf_content = format_confluence_content(content)
     
-    # Analysis Metadata
-    if isinstance(analysis, dict) and analysis.get('metadata'):
-        metadata = analysis['metadata']
-        content += '<h2>Analysis Metadata</h2>\n'
-        content += '<table>\n<tbody>\n'
-        
-        if metadata.get('analyzed_date'):
-            content += f'<tr><td><strong>Analysis Date</strong></td><td>{escape_xml(metadata["analyzed_date"])}</td></tr>\n'
-        
-        if metadata.get('analysis_version'):
-            content += f'<tr><td><strong>Analysis Version</strong></td><td>{escape_xml(metadata["analysis_version"])}</td></tr>\n'
-        
-        if metadata.get('tokens_used'):
-            content += f'<tr><td><strong>Tokens Used</strong></td><td>{escape_xml(str(metadata["tokens_used"]))}</td></tr>\n'
-        
-        content += '</tbody>\n</table>\n'
-    
-    return content
+    return adf_content
 
 def generate_procedure_confluence_files(json_file_path, output_dir="./confluence_docs/sps", selected_schemas=None):
-    """Generate separate Confluence storage format files and metadata for each procedure"""
+    """Generate separate Confluence ADF files and metadata for each procedure"""
     
     # Load JSON data
     procedures = load_json_data(json_file_path)
@@ -445,41 +569,41 @@ def generate_procedure_confluence_files(json_file_path, output_dir="./confluence
         schema_name = proc_info['schema']
         procedure_name = proc_info['name']
         
-        # Generate Confluence content
-        confluence_content = generate_procedure_page(proc)
+        # Generate Confluence ADF content
+        adf_content = generate_procedure_page(proc)
         
         # Create metadata
         metadata = create_procedure_metadata(proc)
         
         # Create filename base - keeping original capitalization
         filename_base = create_safe_filename(schema_name, procedure_name)
-        xml_filename = f"{filename_base}.xml"
-        json_filename = f"{filename_base}.json"
+        adf_filename = f"{filename_base}.json"  # ADF content in JSON format
+        metadata_filename = f"{filename_base}_metadata.json"  # Separate metadata file
         
-        xml_output_file = os.path.join(output_dir, xml_filename)
-        json_output_file = os.path.join(output_dir, json_filename)
+        adf_output_file = os.path.join(output_dir, adf_filename)
+        metadata_output_file = os.path.join(output_dir, metadata_filename)
         
         # Count procedures per schema for summary
         schema_counts[schema_name] += 1
         
-        # Write XML file
+        # Write ADF file
         try:
-            with open(xml_output_file, 'w', encoding='utf-8') as file:
-                file.write(confluence_content)
-            print(f"Generated XML: {xml_filename}")
-            generated_files.append(xml_output_file)
+            with open(adf_output_file, 'w', encoding='utf-8') as file:
+                json.dump(adf_content, file, indent=2, ensure_ascii=False)
+            print(f"Generated ADF: {adf_filename}")
+            generated_files.append(adf_output_file)
         except Exception as e:
-            print(f"Error writing XML file {xml_output_file}: {e}")
+            print(f"Error writing ADF file {adf_output_file}: {e}")
             return False
         
-        # Write JSON metadata file
+        # Write metadata file
         try:
-            with open(json_output_file, 'w', encoding='utf-8') as file:
+            with open(metadata_output_file, 'w', encoding='utf-8') as file:
                 json.dump(metadata, file, indent=2, ensure_ascii=False)
-            print(f"Generated JSON: {json_filename}")
-            generated_files.append(json_output_file)
+            print(f"Generated metadata: {metadata_filename}")
+            generated_files.append(metadata_output_file)
         except Exception as e:
-            print(f"Error writing JSON file {json_output_file}: {e}")
+            print(f"Error writing metadata file {metadata_output_file}: {e}")
             return False
     
     # Print summary
@@ -570,13 +694,13 @@ def main():
         print("\nConfluence generation completed successfully!")
         print(f"Files generated in: {output_dir}")
         print("\nEach procedure now has:")
-        print("  - XML file for Confluence import")
+        print("  - JSON file with ADF content for Confluence import")
         print("  - JSON metadata file with procedure info")
         print("\nTo import into Confluence:")
         print("1. Use the ConfluencePageCreator.py interactive mode")
         print("2. Select option 3 or 4 to create pages from confluence_docs content")
-        print("3. The XML content will be used for the page body")
-        print("4. The JSON metadata will be set as page properties")
+        print("3. The ADF JSON content will be used for the page body")
+        print("4. The metadata will be set as page properties")
         print("5. Page titles will be set automatically from the metadata")
     else:
         print("Confluence generation failed!")

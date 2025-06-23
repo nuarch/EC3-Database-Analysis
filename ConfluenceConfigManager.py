@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Any
+from typing import Dict, Any, List
 import json
 
 class ConfluenceConfigManager:
@@ -28,6 +28,7 @@ class ConfluenceConfigManager:
             'api_token': os.getenv('CONFLUENCE_API_TOKEN', config.get('api_token', '')),
             'space_key': os.getenv('CONFLUENCE_SPACE_KEY', config.get('space_key', '')),
             'default_parent_title': config.get('default_parent_title', ''),
+            'default_labels': config.get('default_labels', []),
         })
         
         return config
@@ -35,6 +36,17 @@ class ConfluenceConfigManager:
     def get(self, key: str, default: Any = None) -> Any:
         """Get configuration value"""
         return self._config.get(key, default)
+    
+    def get_default_labels(self) -> List[str]:
+        """Get default labels as a list"""
+        labels = self.get('default_labels', [])
+        if isinstance(labels, list):
+            return labels
+        elif isinstance(labels, str):
+            # Handle case where labels are stored as comma-separated string
+            return [label.strip() for label in labels.split(',') if label.strip()]
+        else:
+            return []
     
     def is_complete(self) -> bool:
         """Check if all required configuration is present"""
