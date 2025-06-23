@@ -1,6 +1,9 @@
+
 import requests
 import json
 import base64
+import os
+import glob
 from typing import Optional, Dict, Any, List
 from ConfluenceConfigManager import ConfluenceConfigManager
 
@@ -46,6 +49,129 @@ class ConfluencePageCreator:
             username=config.get('username'),
             api_token=config.get('api_token')
         )
+    
+    def get_available_content_files(self, content_dir: str = "./confluence_docs") -> List[Dict[str, str]]:
+        """
+        Get available content files from the confluence_docs directory.
+        
+        Args:
+            content_dir: Directory containing pre-generated content files
+            
+        Returns:
+            List of dictionaries containing file information
+        """
+        available_files = []
+        
+        if not os.path.exists(content_dir):
+            print(f"⚠️  Content directory '{content_dir}' does not exist")
+            return available_files
+        
+        # Look for XML files (Confluence storage format) and their corresponding JSON metadata
+        xml_files = glob.glob(os.path.join(content_dir, "**/*.xml"), recursive=True)
+        
+        for xml_file in xml_files:
+            base_name = os.path.splitext(xml_file)[0]
+            json_file = f"{base_name}.json"
+            
+            file_info = {
+                'xml_file': xml_file,
+                'json_file': json_file if os.path.exists(json_file) else None,
+                'name': os.path.basename(base_name),
+                'relative_path': os.path.relpath(xml_file, content_dir)
+            }
+            
+            # Try to read metadata if a JSON file exists'
+            file_info['title'] = file_info['name']
+            if file_info['json_file']:
+                try:
+                    with open(file_info['json_file'], 'r', encoding='utf-8') as f:
+                        metadata = json.load(f)
+                        file_info['name'] = metadata.get('stored_procedure_name', 'Unknown')
+                        file_info['schema'] = metadata.get('schema_name', 'Unknown')
+                        file_info['complexity'] = metadata.get('complexity', 'Unknown')
+                        file_info['metadata'] = metadata
+                except Exception as e:
+                    print(f"Warning: Could not read metadata from {file_info['json_file']}: {e}")
+                    file_info['metadata'] = {}
+            else:
+                file_info['metadata'] = {}
+
+            # Add properties so that the page is full width
+            file_info['metadata']['content-appearance-draft'] = 'full-width'
+            file_info['metadata']['content-appearance-published'] = 'full-width'
+
+            available_files.append(file_info)
+        
+        return sorted(available_files, key=lambda x: x['title'])
+    
+    def load_content_from_file(self, file_path: str) -> Optional[str]:
+        """
+        Load content from a file.
+        
+        Args:
+            file_path: Path to the content file
+            
+        Returns:
+            File content as string, or None if error
+        """
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except Exception as e:
+            print(f"Error loading content from {file_path}: {e}")
+            return None
+    
+    def set_page_properties(self, page_id: str, properties: Dict[str, Any]) -> bool:
+        """
+        Set properties for a Confluence page.
+        
+        Args:
+            page_id: The ID of the page
+            properties: Dictionary of properties to set
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        url = f"{self.base_url}/wiki/rest/api/content/{page_id}/property"
+        
+        success_count = 0
+        total_properties = len(properties)
+        
+        for key, value in properties.items():
+            # Skip certain keys that shouldn't be page properties
+            if key.lower() in ['title', 'id', 'content', 'body']:
+                continue
+                
+            property_data = {
+                'key': key,
+                'value': value
+            }
+            
+            try:
+                # Check if property already exists
+                get_response = self.session.get(f"{url}/{key}")
+                
+                if get_response.status_code == 200:
+                    # Property exists, update it
+                    existing_property = get_response.json()
+                    property_data['version'] = {
+                        'number': existing_property['version']['number'] + 1
+                    }
+                    response = self.session.put(f"{url}/{key}", data=json.dumps(property_data))
+                else:
+                    # Property doesn't exist, create it
+                    response = self.session.post(url, data=json.dumps(property_data))
+                
+                if response.status_code in [200, 201]:
+                    success_count += 1
+                    print(f"   ✅ Set property '{key}': {str(value)[:50]}{'...' if len(str(value)) > 50 else ''}")
+                else:
+                    print(f"   ❌ Failed to set property '{key}': {response.status_code} - {response.text[:100]}")
+                    
+            except requests.exceptions.RequestException as e:
+                print(f"   ❌ Error setting property '{key}': {e}")
+        
+        return success_count > 0
     
     def get_page_by_title(self, space_key: str, title: str) -> Optional[Dict[str, Any]]:
         """
@@ -299,6 +425,36 @@ class ConfluencePageCreator:
                 print("Response content:", response.text)
             return None
     
+    def create_page_with_properties(self, space_key: str, title: str, content: str, 
+                                  properties: Dict[str, Any], parent_page_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Create a new page in Confluence and set its properties.
+        
+        Args:
+            space_key: The space key where the page will be created
+            title: The title of the new page
+            content: The HTML content of the page
+            properties: Dictionary of properties to set for the page
+            parent_page_id: Optional parent page ID to create the page under
+            
+        Returns:
+            Created page information if successful, None otherwise
+        """
+        # First create the page
+        result = self.create_page(space_key, title, content, parent_page_id)
+        
+        if result and properties:
+            page_id = result['id']
+            print(f"📝 Setting page properties for '{title}' (ID: {page_id})...")
+            
+            # Set the properties
+            if self.set_page_properties(page_id, properties):
+                print(f"✅ Properties set successfully for page '{title}'")
+            else:
+                print(f"⚠️  Page created but some properties may not have been set")
+        
+        return result
+    
     def create_child_page(self, space_key: str, parent_title: str, 
                          child_title: str, child_content: str) -> Optional[Dict[str, Any]]:
         """
@@ -324,6 +480,34 @@ class ConfluencePageCreator:
         
         # Create the child page
         return self.create_page(space_key, child_title, child_content, parent_id)
+    
+    def create_child_page_with_properties(self, space_key: str, parent_title: str, 
+                                        child_title: str, child_content: str, 
+                                        properties: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Create a child page under a specified parent page and set its properties.
+        
+        Args:
+            space_key: The space key
+            parent_title: Title of the parent page
+            child_title: Title of the new child page
+            child_content: HTML content of the child page
+            properties: Dictionary of properties to set for the page
+            
+        Returns:
+            Created page information if successful, None otherwise
+        """
+        # First, find the parent page
+        parent_page = self.get_page_by_title(space_key, parent_title)
+        if not parent_page:
+            print(f"Parent page '{parent_title}' not found in space '{space_key}'")
+            return None
+        
+        parent_id = parent_page['id']
+        print(f"Found parent page: {parent_title} (ID: {parent_id})")
+        
+        # Create the child page with properties
+        return self.create_page_with_properties(space_key, child_title, child_content, properties, parent_id)
 
 
 def main():
@@ -425,6 +609,7 @@ def main():
 def interactive_mode():
     """
     Interactive mode for creating and reading pages with user input.
+    Enhanced to support content selection from ./confluence_docs directory.
     """
     print("=== Confluence Page Creator & Reader ===")
     
@@ -454,13 +639,16 @@ def interactive_mode():
         print("\n" + "="*50)
         print("1. Create a standalone page")
         print("2. Create a child page under existing page")
-        print("3. Read a page")
-        print("4. Get page information")
-        print("5. Search pages")
-        print("6. List child pages")
-        print("7. Exit")
+        print("3. Create page from confluence_docs content")
+        print("4. Create child page from confluence_docs content")
+        print("5. Browse available content files")
+        print("6. Read a page")
+        print("7. Get page information")
+        print("8. Search pages")
+        print("9. List child pages")
+        print("10. Exit")
         
-        choice = input("\nSelect an option (1-7): ").strip()
+        choice = input("\nSelect an option (1-10): ").strip()
         
         if choice == "1":
             title = input("Enter page title: ").strip()
@@ -489,6 +677,140 @@ def interactive_mode():
                 print("❌ Failed to create child page")
         
         elif choice == "3":
+            # Create standalone page from confluence_docs content
+            available_files = creator.get_available_content_files()
+            if not available_files:
+                print("❌ No content files found in ./confluence_docs directory")
+                continue
+            
+            print(f"\n📁 Available Content Files ({len(available_files)}):")
+            for i, file_info in enumerate(available_files, 1):
+                schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
+                print(f"   {i}. {file_info['title']}{schema_info}")
+                if file_info.get('description'):
+                    print(f"      Description: {file_info['description'][:100]}...")
+            
+            try:
+                selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
+                if 1 <= selection <= len(available_files):
+                    selected_file = available_files[selection - 1]
+                    
+                    # Load content from XML file
+                    content = creator.load_content_from_file(selected_file['xml_file'])
+                    if content:
+                        # Use the title from metadata or allow user to override
+                        default_title = selected_file['title']
+                        title = input(f"Enter page title [{default_title}]: ").strip() or default_title
+                        
+                        # Create page with properties from JSON metadata
+                        properties = selected_file.get('metadata', {})
+                        result = creator.create_page_with_properties(space_key, title, content, properties)
+                        
+                        if result:
+                            print(f"✅ Page '{title}' created successfully from {selected_file['name']}!")
+                            print(f"   URL: {confluence_url}/spaces/{space_key}/pages/{result['id']}")
+                        else:
+                            print("❌ Failed to create page")
+                    else:
+                        print("❌ Failed to load content from selected file")
+                else:
+                    print("❌ Invalid selection")
+            except ValueError:
+                print("❌ Please enter a valid number")
+        
+        elif choice == "4":
+            # Create child page from confluence_docs content
+            available_files = creator.get_available_content_files()
+            if not available_files:
+                print("❌ No content files found in ./confluence_docs directory")
+                continue
+            
+            # Get parent page first
+            default_parent = config.get('default_parent_title', '')
+            parent_prompt = f"Enter parent page title{f' [{default_parent}]' if default_parent else ''}: "
+            parent_title = input(parent_prompt).strip() or default_parent
+            
+            if not parent_title:
+                print("❌ Parent page title is required")
+                continue
+            
+            print(f"\n📁 Available Content Files ({len(available_files)}):")
+            for i, file_info in enumerate(available_files, 1):
+                schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
+                print(f"   {i}. {file_info['title']}{schema_info}")
+                if file_info.get('description'):
+                    print(f"      Description: {file_info['description'][:100]}...")
+            
+            try:
+                selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
+                if 1 <= selection <= len(available_files):
+                    selected_file = available_files[selection - 1]
+                    
+                    # Load content from XML file
+                    content = creator.load_content_from_file(selected_file['xml_file'])
+                    if content:
+                        # Use the title from metadata or allow user to override
+                        default_title = selected_file['title']
+                        child_title = input(f"Enter child page title [{default_title}]: ").strip() or default_title
+                        
+                        # Create child page with properties from JSON metadata
+                        properties = selected_file.get('metadata', {})
+                        result = creator.create_child_page_with_properties(space_key, parent_title, child_title, content, properties)
+                        
+                        if result:
+                            print(f"✅ Child page '{child_title}' created successfully from {selected_file['name']}!")
+                            print(f"   URL: {confluence_url}/spaces/{space_key}/pages/{result['id']}")
+                        else:
+                            print("❌ Failed to create child page")
+                    else:
+                        print("❌ Failed to load content from selected file")
+                else:
+                    print("❌ Invalid selection")
+            except ValueError:
+                print("❌ Please enter a valid number")
+        
+        elif choice == "5":
+            # Browse available content files
+            available_files = creator.get_available_content_files()
+            if not available_files:
+                print("❌ No content files found in ./confluence_docs directory")
+                continue
+            
+            print(f"\n📁 Available Content Files ({len(available_files)}):")
+            print("-" * 80)
+            
+            # Group by schema if available
+            by_schema = {}
+            for file_info in available_files:
+                schema = file_info.get('schema', 'Unknown')
+                if schema not in by_schema:
+                    by_schema[schema] = []
+                by_schema[schema].append(file_info)
+            
+            for schema, files in sorted(by_schema.items()):
+                print(f"\n📊 Schema: {schema} ({len(files)} files)")
+                for file_info in files:
+                    print(f"   • {file_info['title']}")
+                    print(f"     XML: {file_info['relative_path']}")
+                    if file_info.get('json_file'):
+                        json_relative = os.path.relpath(file_info['json_file'], './confluence_docs')
+                        print(f"     JSON: {json_relative}")
+                    if file_info.get('description'):
+                        print(f"     Description: {file_info['description'][:100]}...")
+                    if file_info.get('type'):
+                        print(f"     Type: {file_info['type']}")
+                    
+                    # Show some properties from metadata
+                    metadata = file_info.get('metadata', {})
+                    if metadata:
+                        properties_preview = []
+                        for key, value in list(metadata.items())[:3]:  # Show first 3 properties
+                            if key not in ['title', 'description', 'schema', 'type']:
+                                properties_preview.append(f"{key}: {str(value)[:30]}{'...' if len(str(value)) > 30 else ''}")
+                        if properties_preview:
+                            print(f"     Properties: {', '.join(properties_preview)}")
+
+        elif choice == "6":
             page_title = input("Enter page title to read: ").strip()
             content = creator.read_page_content(space_key, page_title)
             if content == "" or content:
@@ -498,8 +820,8 @@ def interactive_mode():
                 print("-" * 50)
             else:
                 print(f"❌ Could not read page '{page_title}'")
-        
-        elif choice == "4":
+
+        elif choice == "7":
             page_title = input("Enter page title: ").strip()
             info = creator.get_page_info(space_key, page_title)
             if info:
@@ -515,12 +837,12 @@ def interactive_mode():
                     print(f"   Parent: {info['parent']['title']}")
             else:
                 print(f"❌ Page '{page_title}' not found")
-        
-        elif choice == "5":
+
+        elif choice == "8":
             query = input("Enter search query: ").strip()
-            limit = input("Enter number of results (default 10): ").strip()
+            limit = input("Enter number of results (default 1   0): ").strip()
             limit = int(limit) if limit.isdigit() else 10
-            
+
             results = creator.search_pages(space_key, query, limit)
             if results:
                 print(f"\n🔍 Search Results ({len(results)}):")
@@ -528,8 +850,8 @@ def interactive_mode():
                     print(f"   {i}. {page['title']} (ID: {page['id']})")
             else:
                 print("❌ No pages found")
-        
-        elif choice == "6":
+
+        elif choice == "9":
             page_title = input("Enter parent page title: ").strip()
             parent_page = creator.get_page_by_title(space_key, page_title)
             if parent_page:
@@ -542,12 +864,12 @@ def interactive_mode():
                     print(f"ℹ️  No child pages found for '{page_title}'")
             else:
                 print(f"❌ Parent page '{page_title}' not found")
-                
-        elif choice == "7":
+
+        elif choice == "10":
             print("Goodbye!")
             break
         else:
-            print("Invalid choice. Please select 1-7.")
+            print("Invalid choice. Please select 1-10.")
 
 
 if __name__ == "__main__":
@@ -555,10 +877,11 @@ if __name__ == "__main__":
     print("Choose mode:")
     print("1. Interactive mode")
     print("2. Script mode (uses configuration file)")
-    
+
     mode = input("Select mode (1 or 2): ").strip()
-    
+
     if mode == "1":
         interactive_mode()
     else:
         main()
+

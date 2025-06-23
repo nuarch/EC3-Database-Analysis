@@ -1,0 +1,58 @@
+<ac:confluence xmlns:ac="http://www.atlassian.com/schema/confluence/4/ac/" xmlns:ri="http://www.atlassian.com/schema/confluence/4/ri/">
+<h3>Analysis of Stored Procedure: usp_ArchiveConEdisonRawDataFile</h3>
+
+<h4>1. Clear Explanation of Functionality</h4>
+The stored procedure <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[usp_ArchiveConEdisonRawDataFile]]></ac:plain-text-body></ac:structured-macro> is designed to archive raw data from Con Edison into historical tables. It performs the following operations:
+<ul>
+  <li>Inserts data from the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonAccount]]></ac:plain-text-body></ac:structured-macro> table into the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawAccountData]]></ac:plain-text-body></ac:structured-macro> table.</li>
+  <li>Inserts data from the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonMeter]]></ac:plain-text-body></ac:structured-macro> table into the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawMeterData]]></ac:plain-text-body></ac:structured-macro> table.</li>
+  <li>Inserts data from the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonCancellation]]></ac:plain-text-body></ac:structured-macro> table into the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawCancellationData]]></ac:plain-text-body></ac:structured-macro> table.</li>
+</ul>
+
+<p>Each of these operations involves copying all columns from the source tables to the corresponding destination tables.</p>
+
+<h4>2. Complexity Level</h4>
+<ul>
+  <li><strong>Complexity Level: Low</strong></li>
+  <li>The procedure consists of straightforward <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[INSERT INTO ... SELECT]]></ac:plain-text-body></ac:structured-macro> statements without any conditional logic, loops, or complex transformations.</li>
+</ul>
+
+<h4>3. Input Parameters and Their Purposes</h4>
+<ul>
+  <li><strong>@Status AS INT OUTPUT</strong>: This parameter is intended to return a status code indicating the success or failure of the procedure. However, the current implementation does not set or modify this parameter, which means it does not serve its intended purpose.</li>
+</ul>
+
+<h4>4. Business Logic and Workflow</h4>
+<ul>
+  <li><strong>Business Logic</strong>: The procedure is used to archive data from current tables into historical tables. This is typically done to maintain a record of past data for auditing, reporting, or backup purposes.</li>
+  <li><strong>Workflow</strong>:</li>
+    <ol>
+      <li>Data from <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonAccount]]></ac:plain-text-body></ac:structured-macro> is copied to <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawAccountData]]></ac:plain-text-body></ac:structured-macro>.</li>
+      <li>Data from <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonMeter]]></ac:plain-text-body></ac:structured-macro> is copied to <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawMeterData]]></ac:plain-text-body></ac:structured-macro>.</li>
+      <li>Data from <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ConEd.UploadConEdisonCancellation]]></ac:plain-text-body></ac:structured-macro> is copied to <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[ActualBill.HistoryUploadLegacyConEdisonRawCancellationData]]></ac:plain-text-body></ac:structured-macro>.</li>
+    </ol>
+</ul>
+
+<h4>5. Performance Considerations</h4>
+<ul>
+  <li><strong>Bulk Inserts</strong>: The procedure performs bulk inserts, which can be efficient but may also lock tables and impact performance if the tables are large or heavily accessed.</li>
+  <li><strong>Indexing</strong>: Ensure that the destination tables are properly indexed to handle large volumes of data efficiently.</li>
+  <li><strong>Transaction Management</strong>: The procedure does not explicitly manage transactions. If one insert fails, the others will still execute, potentially leading to inconsistent data states.</li>
+</ul>
+
+<h4>6. Potential Issues or Risks</h4>
+<ul>
+  <li><strong>Lack of Error Handling</strong>: The procedure does not include error handling or transaction management, which could lead to partial data archiving if an error occurs.</li>
+  <li><strong>Unused Output Parameter</strong>: The <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[@Status]]></ac:plain-text-body></ac:structured-macro> output parameter is not utilized, which could lead to confusion or misinterpretation of the procedure's success.</li>
+  <li><strong>Data Consistency</strong>: Without transaction management, there's a risk of data inconsistency if one of the insert operations fails.</li>
+  <li><strong>Scalability</strong>: As data grows, the performance of bulk inserts may degrade, and additional strategies such as partitioning or batching may be required.</li>
+</ul>
+
+<h4>Recommendations</h4>
+<ul>
+  <li>Implement error handling and transaction management to ensure data consistency and reliability.</li>
+  <li>Utilize the <ac:structured-macro ac:name="code" ac:schema-version="1"><ac:parameter ac:name="language">text</ac:parameter><ac:plain-text-body><![CDATA[@Status]]></ac:plain-text-body></ac:structured-macro> parameter to provide meaningful feedback on the procedure's execution.</li>
+  <li>Consider indexing strategies and performance tuning for large datasets.</li>
+  <li>Evaluate the need for archiving frequency and adjust the procedure to handle data growth effectively.</li>
+</ul>
+</ac:confluence>

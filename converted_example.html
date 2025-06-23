@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stored Procedure Analysis</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin: 0.5em 0;
+        }
+        strong {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+<h3>Analysis of Stored Procedure: usp_ArchiveConEdisonRawDataFile</h3>
+
+<h4>1. Clear Explanation of Functionality</h4>
+The stored procedure <code>usp_ArchiveConEdisonRawDataFile</code> is designed to archive raw data from Con Edison into historical tables. It performs the following operations:
+<ul>
+  <li>Inserts data from the <code>ConEd.UploadConEdisonAccount</code> table into the <code>ActualBill.HistoryUploadLegacyConEdisonRawAccountData</code> table.</li>
+  <li>Inserts data from the <code>ConEd.UploadConEdisonMeter</code> table into the <code>ActualBill.HistoryUploadLegacyConEdisonRawMeterData</code> table.</li>
+  <li>Inserts data from the <code>ConEd.UploadConEdisonCancellation</code> table into the <code>ActualBill.HistoryUploadLegacyConEdisonRawCancellationData</code> table.</li>
+</ul>
+
+<p>Each of these operations involves copying all columns from the source tables to the corresponding destination tables.</p>
+
+<h4>2. Complexity Level</h4>
+<ul>
+  <li><strong>Complexity Level: Low</strong></li>
+  <li>The procedure consists of straightforward <code>INSERT INTO ... SELECT</code> statements without any conditional logic, loops, or complex transformations.</li>
+</ul>
+
+<h4>3. Input Parameters and Their Purposes</h4>
+<ul>
+  <li><strong>@Status AS INT OUTPUT</strong>: This parameter is intended to return a status code indicating the success or failure of the procedure. However, the current implementation does not set or modify this parameter, which means it does not serve its intended purpose.</li>
+</ul>
+
+<h4>4. Business Logic and Workflow</h4>
+<ul>
+  <li><strong>Business Logic</strong>: The procedure is used to archive data from current tables into historical tables. This is typically done to maintain a record of past data for auditing, reporting, or backup purposes.</li>
+  <li><strong>Workflow</strong>:</li>
+    <ol>
+      <li>Data from <code>ConEd.UploadConEdisonAccount</code> is copied to <code>ActualBill.HistoryUploadLegacyConEdisonRawAccountData</code>.</li>
+      <li>Data from <code>ConEd.UploadConEdisonMeter</code> is copied to <code>ActualBill.HistoryUploadLegacyConEdisonRawMeterData</code>.</li>
+      <li>Data from <code>ConEd.UploadConEdisonCancellation</code> is copied to <code>ActualBill.HistoryUploadLegacyConEdisonRawCancellationData</code>.</li>
+    </ol>
+</ul>
+
+<h4>5. Performance Considerations</h4>
+<ul>
+  <li><strong>Bulk Inserts</strong>: The procedure performs bulk inserts, which can be efficient but may also lock tables and impact performance if the tables are large or heavily accessed.</li>
+  <li><strong>Indexing</strong>: Ensure that the destination tables are properly indexed to handle large volumes of data efficiently.</li>
+  <li><strong>Transaction Management</strong>: The procedure does not explicitly manage transactions. If one insert fails, the others will still execute, potentially leading to inconsistent data states.</li>
+</ul>
+
+<h4>6. Potential Issues or Risks</h4>
+<ul>
+  <li><strong>Lack of Error Handling</strong>: The procedure does not include error handling or transaction management, which could lead to partial data archiving if an error occurs.</li>
+  <li><strong>Unused Output Parameter</strong>: The <code>@Status</code> output parameter is not utilized, which could lead to confusion or misinterpretation of the procedure's success.</li>
+  <li><strong>Data Consistency</strong>: Without transaction management, there's a risk of data inconsistency if one of the insert operations fails.</li>
+  <li><strong>Scalability</strong>: As data grows, the performance of bulk inserts may degrade, and additional strategies such as partitioning or batching may be required.</li>
+</ul>
+
+<h4>Recommendations</h4>
+<ul>
+  <li>Implement error handling and transaction management to ensure data consistency and reliability.</li>
+  <li>Utilize the <code>@Status</code> parameter to provide meaningful feedback on the procedure's execution.</li>
+  <li>Consider indexing strategies and performance tuning for large datasets.</li>
+  <li>Evaluate the need for archiving frequency and adjust the procedure to handle data growth effectively.</li>
+</ul>
+</body>
+</html>
