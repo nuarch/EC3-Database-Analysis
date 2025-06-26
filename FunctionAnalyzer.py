@@ -205,7 +205,7 @@ class FunctionAnalyzer:
 
     # Create a comprehensive prompt for ChatGPT
     prompt = f"""
-Please analyze the following SQL function and provide a detailed explanation:
+Please analyze the following Microsoft SQL Server SQL function and provide a detailed explanation:
 
 Function Name: {function_name}
 Function Type: {function_subtype}
@@ -221,12 +221,20 @@ Please provide:
 6. Business logic and workflow
 7. Performance considerations
 8. Potential issues or risks
-9. Function type classification ({function_subtype} specific analysis)
+
 
 Answer 2 - 9 using assumptions made in 1.
-Pull out complexity to a single line, e.g. "Complexity Level: Low".
 
-Format your response as a structured analysis that is easy to read and understand.  
+Format your response as a structured analysis that is easy to read and understand.  Format your response as follows:
+
+#### 1. Overview & Assumptions
+#### 2. Complexity Level: (Low/Medium/High)
+#### 3. Input Parameters
+#### 4. Return Type
+#### 5. Business Logic and Workflow
+#### 6. Performance Considerations
+#### 7. Potential Issues or Risks
+  
 """
 
     payload = {

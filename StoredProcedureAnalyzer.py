@@ -181,7 +181,7 @@ class StoredProcedureAnalyzer:
 
         # Create a comprehensive prompt for ChatGPT
         prompt = f"""
-Please analyze the following SQL stored procedure and provide a detailed explanation:
+Please analyze the following Microsoft SQL Server SQL stored procedure and provide a detailed explanation:
 
 Procedure Name: {procedure_name}
 
@@ -198,7 +198,15 @@ Please provide:
 5. Performance considerations
 6. Potential issues or risks
 
-Format your response as a structured analysis that is easy to read and understand.
+Format your response as a structured analysis that is easy to read and understand.  Fomrat your response as follows:
+
+#### 1. Overview & Assumptions
+#### 2. Complexity Level: (Low/Medium/High)
+#### 3. Input Parameters
+#### 4. Business Logic and Workflow
+#### 5. Performance Considerations
+#### 6. Potential Issues or Risks
+
 """
         
         payload = {
