@@ -225,7 +225,7 @@ Please provide:
 
 Answer 2 - 9 using assumptions made in 1.
 
-Format your response as a structured analysis that is easy to read and understand.  Format your response as follows:
+Format your response as a structured analysis that is easy to read and understand.  Format your response as follows.  Do not include any additional text outside of the structured analysis.
 
 #### 1. Overview & Assumptions
 #### 2. Complexity Level: (Low/Medium/High)

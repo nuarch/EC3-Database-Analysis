@@ -1,3 +1,4 @@
+
 import json
 import os
 import sys
@@ -14,11 +15,11 @@ def load_json_data(file_path):
         print(f"Error loading JSON file: {e}")
         return None
 
-def get_available_schemas(procedures):
-    """Get list of all available schemas from the procedures data"""
+def get_available_schemas(functions):
+    """Get list of all available schemas from the functions data"""
     schemas = set()
-    for proc in procedures:
-        schema = proc['procedure_info']['schema']
+    for func in functions:
+        schema = func['function_info']['schema']
         schemas.add(schema)
     return sorted(list(schemas))
 
@@ -62,12 +63,12 @@ def select_schemas_interactive(available_schemas):
             print("\nOperation cancelled.")
             return None
 
-def create_safe_filename(schema_name, procedure_name):
-    """Create a safe filename from schema and procedure names"""
+def create_safe_filename(schema_name, function_name):
+    """Create a safe filename from schema and function names"""
     # Remove or replace characters that are problematic in filenames
     safe_schema = re.sub(r'[<>:"/\\|?*]', '_', schema_name)
-    safe_procedure = re.sub(r'[<>:"/\\|?*]', '_', procedure_name)
-    return f"{safe_schema} - {safe_procedure}"
+    safe_function = re.sub(r'[<>:"/\\|?*]', '_', function_name)
+    return f"{safe_schema} - {safe_function}"
 
 def convert_markdown_to_adf(markdown_text):
     """
@@ -654,13 +655,13 @@ def format_confluence_content(text):
     """
     return convert_markdown_to_adf(text)
 
-def create_procedure_metadata(proc):
-    """Create metadata JSON for a stored procedure"""
-    proc_info = proc['procedure_info']
-    analysis = proc.get('analysis', {}) or proc.get('chatgpt_explanation', {})
+def create_function_metadata(func):
+    """Create metadata JSON for a function"""
+    func_info = func['function_info']
+    analysis = func.get('analysis', {}) or func.get('chatgpt_explanation', {})
     
-    schema_name = proc_info['schema']
-    procedure_name = proc_info['name']
+    schema_name = func_info['schema']
+    function_name = func_info['name']
     
     # Get complexity from analysis
     complexity = 'N/A'
@@ -672,24 +673,28 @@ def create_procedure_metadata(proc):
     
     # Basic metadata
     metadata = {
-        "title": f"{schema_name} - {procedure_name}",
-        "stored_procedure_name": procedure_name,
+        "title": f"{schema_name} - {function_name}",
+        "function_name": function_name,
         "schema": schema_name,
-        "type": "Stored Procedure",
+        "type": "Function",
         "complexity": complexity,
         "generated_date": datetime.now().isoformat(),
-        "description": f"Analysis and documentation for stored procedure {procedure_name} in schema {schema_name}"
+        "description": f"Analysis and documentation for function {function_name} in schema {schema_name}"
     }
     
-    # Add additional metadata from procedure info
-    if proc_info.get('created_date'):
-        metadata['created_date'] = proc_info['created_date']
+    # Add additional metadata from function info
+    if func_info.get('created_date'):
+        metadata['created_date'] = func_info['created_date']
     
-    if proc_info.get('modified_date'):
-        metadata['modified_date'] = proc_info['modified_date']
+    if func_info.get('modified_date'):
+        metadata['modified_date'] = func_info['modified_date']
     
-    if proc_info.get('description'):
-        metadata['description'] = proc_info['description']
+    if func_info.get('description'):
+        metadata['description'] = func_info['description']
+    
+    # Add return type if available
+    if func_info.get('return_type'):
+        metadata['return_type'] = func_info['return_type']
     
     # Add analysis metadata if available
     if isinstance(analysis, dict):
@@ -705,7 +710,6 @@ def create_procedure_metadata(proc):
     return metadata
 
 def _extract_last_heading_number(text):
-
     """Extract the first heading number from the last section"""
     # Split into sections by main headings
     sections = re.split(r'\n#[^#]', text)
@@ -714,53 +718,14 @@ def _extract_last_heading_number(text):
 
     return len(sections)
 
-def create_content_properties_adf(schema_name, procedure_name, complexity):
-    """
-    Create ADF content for page properties section using Confluence content-properties extension
-    
-    Args:
-        schema_name (str): Name of the schema
-        procedure_name (str): Name of the stored procedure
-        complexity (str): Complexity level of the procedure
-        
-    Returns:
-        list: ADF content blocks for the properties section
-    """
-    properties_content = [
-        {
-            "type": "extension",
-            "attrs": {
-                "extensionType": "com.atlassian.confluence.macro.core",
-                "extensionKey": "content-properties",
-                "parameters": {
-                    "Schema Name": schema_name,
-                    "Store Procedure Name": procedure_name,
-                    "Complexity Level": str(complexity) if complexity else "N/A"
-                },
-                "layout": {}
-            }
-        }
-    ]
-    
-    return properties_content
+def generate_function_page(func):
+    """Generate Confluence ADF content for a single function"""
+    func_info = func['function_info']
+    analysis = func.get('analysis', {}) or func.get('chatgpt_explanation', {})
 
-def generate_procedure_page(proc):
-    """Generate Confluence ADF content for a single stored procedure"""
-    proc_info = proc['procedure_info']
-    analysis = proc.get('analysis', {}) or proc.get('chatgpt_explanation', {})
+    schema_name = func_info['schema']
+    function_name = func_info['name']
 
-    schema_name = proc_info['schema']
-    procedure_name = proc_info['name']
-    
-    # Get complexity from analysis
-    complexity = 'N/A'
-    if isinstance(analysis, dict):
-        if 'complexity' in analysis and analysis['complexity']:
-            complexity = analysis['complexity']
-        elif 'complexity_score' in analysis and analysis['complexity_score']:
-            complexity = analysis['complexity_score']
-
-    # Start with empty content
     content = ''
 
     # Analysis sections
@@ -782,33 +747,23 @@ def generate_procedure_page(proc):
     # Extract the last heading number from the explanation
     last_heading_number = _extract_last_heading_number(content)
 
-    # Procedure Definition/Source Code
-    definition_field = proc_info.get('definition') or proc_info.get('source_code')
+    # Function Definition/Source Code
+    definition_field = func_info.get('definition') or func_info.get('source_code')
     if definition_field:
-        content += f"\n\n# {last_heading_number + 1}. Stored Procedure Definition\n\n"
+        content += f"\n\n# {last_heading_number + 1}. Function Definition\n\n"
         content += '```' + definition_field + '```\n'
 
-    # Convert markdown content to ADF format
+    # Convert to ADF format
     adf_content = format_confluence_content(content)
-    
-    # Create properties section using proper Confluence extension
-    properties_adf = create_content_properties_adf(schema_name, procedure_name, complexity)
-    
-    # Insert properties at the beginning of the content
-    # Combine properties + existing content
-    final_content = properties_adf + adf_content["content"]
-    
-    # Update the ADF document with the new content
-    adf_content["content"] = final_content
     
     return adf_content
 
-def generate_procedure_confluence_files(json_file_path, output_dir="./confluence_docs/sps", selected_schemas=None):
-    """Generate separate Confluence ADF files and metadata for each procedure"""
+def generate_function_confluence_files(json_file_path, output_dir="./confluence_docs/funcs", selected_schemas=None):
+    """Generate separate Confluence ADF files and metadata for each function"""
     
     # Load JSON data
-    procedures = load_json_data(json_file_path)
-    if not procedures:
+    functions = load_json_data(json_file_path)
+    if not functions:
         print("Failed to load JSON data")
         return False
     
@@ -817,43 +772,43 @@ def generate_procedure_confluence_files(json_file_path, output_dir="./confluence
         os.makedirs(output_dir)
         print(f"Created output directory: {output_dir}")
     
-    # Filter procedures by selected schemas if specified
+    # Filter functions by selected schemas if specified
     if selected_schemas:
-        filtered_procedures = []
-        for proc in procedures:
-            schema = proc['procedure_info']['schema']
+        filtered_functions = []
+        for func in functions:
+            schema = func['function_info']['schema']
             if schema in selected_schemas:
-                filtered_procedures.append(proc)
-        procedures = filtered_procedures
+                filtered_functions.append(func)
+        functions = filtered_functions
     
-    if not procedures:
-        print("No procedures to process")
+    if not functions:
+        print("No functions to process")
         return False
     
     generated_files = []
     schema_counts = defaultdict(int)
     
-    # Generate Confluence file and metadata for each procedure
-    for proc in procedures:
-        proc_info = proc['procedure_info']
-        schema_name = proc_info['schema']
-        procedure_name = proc_info['name']
+    # Generate Confluence file and metadata for each function
+    for func in functions:
+        func_info = func['function_info']
+        schema_name = func_info['schema']
+        function_name = func_info['name']
         
         # Generate Confluence ADF content
-        adf_content = generate_procedure_page(proc)
+        adf_content = generate_function_page(func)
         
         # Create metadata
-        metadata = create_procedure_metadata(proc)
+        metadata = create_function_metadata(func)
         
         # Create filename base - keeping original capitalization
-        filename_base = create_safe_filename(schema_name, procedure_name)
+        filename_base = create_safe_filename(schema_name, function_name)
         adf_filename = f"{filename_base}.json"  # ADF content in JSON format
         metadata_filename = f"{filename_base}_metadata.json"  # Separate metadata file
         
         adf_output_file = os.path.join(output_dir, adf_filename)
         metadata_output_file = os.path.join(output_dir, metadata_filename)
         
-        # Count procedures per schema for summary
+        # Count functions per schema for summary
         schema_counts[schema_name] += 1
         
         # Write ADF file
@@ -877,10 +832,10 @@ def generate_procedure_confluence_files(json_file_path, output_dir="./confluence
             return False
     
     # Print summary
-    print(f"\nSuccessfully generated {len(generated_files)} files ({len(generated_files)//2} procedures):")
-    print("\nProcedures by schema:")
+    print(f"\nSuccessfully generated {len(generated_files)} files ({len(generated_files)//2} functions):")
+    print("\nFunctions by schema:")
     for schema, count in sorted(schema_counts.items()):
-        print(f"  {schema}: {count} procedures")
+        print(f"  {schema}: {count} functions")
     
     return True
 
@@ -888,11 +843,11 @@ def parse_command_line_args():
     """Parse command line arguments"""
     import argparse
     
-    parser = argparse.ArgumentParser(description='Generate individual Confluence pages and metadata for stored procedures')
-    parser.add_argument('--input', '-i', default='./export/stored_procedures_analysis_all_schemas.json',
-                        help='Input JSON file path (default: ./export/stored_procedures_analysis_all_schemas.json)')
-    parser.add_argument('--output', '-o', default='./confluence_docs/sps',
-                        help='Output directory (default: ./confluence_docs/sps)')
+    parser = argparse.ArgumentParser(description='Generate individual Confluence pages and metadata for functions')
+    parser.add_argument('--input', '-i', default='./export/functions_analysis_all_schemas.json',
+                        help='Input JSON file path (default: ./export/functions_analysis_all_schemas.json)')
+    parser.add_argument('--output', '-o', default='./confluence_docs/funcs',
+                        help='Output directory (default: ./confluence_docs/funcs)')
     parser.add_argument('--schemas', '-s', nargs='*',
                         help='Specific schemas to process (space-separated). If not provided, interactive selection will be used.')
     parser.add_argument('--all', '-a', action='store_true',
@@ -913,12 +868,12 @@ def main():
         return
     
     # Load JSON data to get available schemas
-    procedures = load_json_data(json_file)
-    if not procedures:
+    functions = load_json_data(json_file)
+    if not functions:
         print("Failed to load JSON data")
         return
     
-    available_schemas = get_available_schemas(procedures)
+    available_schemas = get_available_schemas(functions)
     
     if not available_schemas:
         print("No schemas found in the data")
@@ -957,15 +912,15 @@ def main():
         else:
             print(f"Processing {len(selected_schemas)} selected schemas: {', '.join(selected_schemas)}")
     
-    # Generate the procedure Confluence files
-    success = generate_procedure_confluence_files(json_file, output_dir, selected_schemas)
+    # Generate the function Confluence files
+    success = generate_function_confluence_files(json_file, output_dir, selected_schemas)
     
     if success:
         print("\nConfluence generation completed successfully!")
         print(f"Files generated in: {output_dir}")
-        print("\nEach procedure now has:")
+        print("\nEach function now has:")
         print("  - JSON file with ADF content for Confluence import")
-        print("  - JSON metadata file with procedure info")
+        print("  - JSON metadata file with function info")
         print("\nTo import into Confluence:")
         print("1. Use the ConfluencePageCreator.py interactive mode")
         print("2. Select option 3 or 4 to create pages from confluence_docs content")

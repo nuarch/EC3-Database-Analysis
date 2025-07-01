@@ -1026,6 +1026,43 @@ def interactive_mode():
             else:
                 return []
     
+    def select_confluence_docs_subdirectory():
+        """Helper function to select a subdirectory from ./confluence_docs"""
+        base_dir = "./confluence_docs"
+        
+        if not os.path.exists(base_dir):
+            print(f"❌ Base directory '{base_dir}' does not exist")
+            return None
+        
+        # Get all subdirectories
+        subdirs = [d for d in os.listdir(base_dir) 
+                  if os.path.isdir(os.path.join(base_dir, d)) and not d.startswith('.')]
+        
+        if not subdirs:
+            print(f"❌ No subdirectories found in '{base_dir}'")
+            return None
+        
+        print(f"\n📁 Available subdirectories in {base_dir}:")
+        for i, subdir in enumerate(subdirs, 1):
+            subdir_path = os.path.join(base_dir, subdir)
+            # Count JSON files in subdirectory
+            json_count = len([f for f in os.listdir(subdir_path) 
+                            if f.endswith('.json') and not f.endswith('_metadata.json')])
+            print(f"   {i}. {subdir} ({json_count} content files)")
+        
+        try:
+            selection = int(input(f"\nSelect subdirectory (1-{len(subdirs)}): ").strip())
+            if 1 <= selection <= len(subdirs):
+                selected_subdir = os.path.join(base_dir, subdirs[selection - 1])
+                print(f"✅ Selected directory: {selected_subdir}")
+                return selected_subdir
+            else:
+                print("❌ Invalid selection")
+                return None
+        except ValueError:
+            print("❌ Please enter a valid number")
+            return None
+    
     while True:
         print("\n" + "="*50)
         print("1. Create a standalone page")
@@ -1078,9 +1115,13 @@ def interactive_mode():
         
         elif choice == "3":
             # Create standalone page from confluence_docs ADF content
-            available_files = creator.get_available_content_files()
+            selected_dir = select_confluence_docs_subdirectory()
+            if not selected_dir:
+                continue
+                
+            available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
-                print("❌ No ADF content files found in ./confluence_docs directory")
+                print(f"❌ No ADF content files found in {selected_dir}")
                 continue
             
             print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
@@ -1124,9 +1165,13 @@ def interactive_mode():
         
         elif choice == "4":
             # Create child page from confluence_docs ADF content
-            available_files = creator.get_available_content_files()
+            selected_dir = select_confluence_docs_subdirectory()
+            if not selected_dir:
+                continue
+                
+            available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
-                print("❌ No ADF content files found in ./confluence_docs directory")
+                print(f"❌ No ADF content files found in {selected_dir}")
                 continue
             
             # Get parent page ID
@@ -1179,6 +1224,11 @@ def interactive_mode():
         
         elif choice == "5":
             # Create child pages for ALL ADF files in directory
+            selected_dir = select_confluence_docs_subdirectory()
+            if not selected_dir:
+                continue
+                
+            # Get parent page ID
             default_parent_id = config.get('default_parent_page_id', '')
             parent_prompt = f"Enter parent page ID{f' [{default_parent_id}]' if default_parent_id else ''}: "
             parent_page_id = input(parent_prompt).strip() or default_parent_id
@@ -1187,44 +1237,32 @@ def interactive_mode():
                 print("❌ Parent page ID is required")
                 continue
             
-            # Get labels from user for bulk operation
+            # Get labels from user
             labels = get_labels_from_user(default_labels)
             
-            # Confirm bulk operation
-            labels_info = f" with labels: {', '.join(labels)}" if labels else ""
-            confirm = input(f"⚠️  This will create child pages for ALL ADF files in ./confluence_docs under page ID '{parent_page_id}'{labels_info}. Continue? (y/N): ").strip().lower()
-            if confirm != 'y':
-                print("❌ Bulk operation cancelled")
-                continue
-            
-            result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, labels=labels)
-            
-            if result['success']:
-                print(f"\n✅ Bulk operation completed successfully!")
-                print(f"   Created: {len(result['created_pages'])} pages")
-                print(f"   Failed: {len(result['failed_pages'])} pages")
-                
-                if result['created_pages']:
-                    print(f"\n📝 Created pages:")
-                    for page in result['created_pages']:
-                        print(f"   • {page['title']} (ID: {page['id']})")
-                        print(f"     URL: {page['url']}")
-                
-                if result['failed_pages']:
-                    print(f"\n❌ Failed pages:")
-                    for page in result['failed_pages']:
-                        print(f"   • {page['title']}: {page['error']}")
+            # Process ALL ADF files in the directory
+            result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir,
+                                                              labels)
+            if result:
+                print(f"✅ Successfully created {result['successful']} child pages!")
+                if result['failed'] > 0:
+                    print(f"⚠️  {result['failed']} pages failed to create")
+                print(f"   Parent URL: {confluence_url}/pages/{parent_page_id}")
             else:
-                print(f"\n❌ Bulk operation failed: {result['message']}")
+                print("❌ Failed to create child pages")
         
         elif choice == "6":
             # Browse available content files
-            available_files = creator.get_available_content_files()
+            selected_dir = select_confluence_docs_subdirectory()
+            if not selected_dir:
+                continue
+                
+            available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
-                print("❌ No ADF content files found in ./confluence_docs directory")
+                print(f"❌ No ADF content files found in {selected_dir}")
                 continue
             
-            print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
+            print(f"\n📁 Available ADF Content Files in {selected_dir} ({len(available_files)}):")
             for i, file_info in enumerate(available_files, 1):
                 schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
                 complexity_info = f" (Complexity: {file_info.get('complexity', 'Unknown')})" if file_info.get('complexity') else ""
@@ -1236,97 +1274,83 @@ def interactive_mode():
         
         elif choice == "7":
             # Read a page by ID
-            page_id = input("Enter page ID: ").strip()
-            if not page_id:
-                print("❌ Page ID is required")
-                continue
-            
-            content = creator.read_page_content_by_id(page_id)
-            if content:
-                print(f"\n📄 Page Content (ID: {page_id}):")
-                print("-" * 50)
-                # Show first 500 characters of content
-                display_content = content[:500]
-                if len(content) > 500:
-                    display_content += "... (truncated)"
-                print(display_content)
-                print("-" * 50)
+            page_id = input("Enter page ID to read: ").strip()
+            if page_id:
+                content = creator.read_page_content_by_id_with_space_id(space_id, page_id)
+                if content:
+                    print("\n" + "="*50)
+                    print(f"📄 Page Content (ID: {page_id}):")
+                    print("="*50)
+                    print(content)
+                    print("="*50)
+                else:
+                    print("❌ Failed to read page content")
             else:
-                print(f"❌ Could not retrieve content for page ID: {page_id}")
+                print("❌ Page ID is required")
         
         elif choice == "8":
             # Get page information by ID
-            page_id = input("Enter page ID: ").strip()
-            if not page_id:
-                print("❌ Page ID is required")
-                continue
-            
-            info = creator.get_page_info_by_id_with_space_id(space_id, page_id)
-            if info:
-                print(f"\n📄 Page Information:")
-                print(f"   ID: {info['id']}")
-                print(f"   Title: {info['title']}")
-                print(f"   Type: {info['type']}")
-                print(f"   Status: {info['status']}")
-                print(f"   Space ID: {info['spaceId']}")
-                print(f"   Version: {info['version']['number']}")
-                print(f"   Last Modified: {info['version']['when']}")
-                print(f"   Modified By: {info['version']['by']}")
-                if info.get('parentPageId'):
-                    print(f"   Parent Page ID: {info['parentPageId']}")
-                print(f"   URL: {info['url']}")
-                print(f"   Edit URL: {info['edit_url']}")
-                
-                # Get and display labels
-                labels = creator.get_page_labels(page_id)
-                if labels:
-                    print(f"   Labels: {', '.join(labels)}")
+            page_id = input("Enter page ID to get info: ").strip()
+            if page_id:
+                page_info = creator.get_page_info_by_id_with_space_id(space_id, page_id)
+                if page_info:
+                    print("\n" + "="*50)
+                    print(f"📄 Page Information (ID: {page_id}):")
+                    print("="*50)
+                    print(f"Title: {page_info.get('title', 'N/A')}")
+                    print(f"Status: {page_info.get('status', 'N/A')}")
+                    print(f"Created: {page_info.get('createdAt', 'N/A')}")
+                    print(f"Version: {page_info.get('version', {}).get('number', 'N/A')}")
+                    print(f"URL: {confluence_url}/pages/{page_id}")
+                    
+                    # Show labels if they exist
+                    labels = creator.get_page_labels(page_id)
+                    if labels:
+                        print(f"Labels: {', '.join(labels)}")
+                    
+                    print("="*50)
                 else:
-                    print(f"   Labels: None")
+                    print("❌ Failed to get page information")
             else:
-                print(f"❌ Could not retrieve information for page ID: {page_id}")
+                print("❌ Page ID is required")
         
         elif choice == "9":
             # Search pages
-            query = input("Enter search query: ").strip()
-            if not query:
-                print("❌ Search query is required")
-                continue
-            
-            limit = input("Enter result limit [10]: ").strip()
-            try:
-                limit = int(limit) if limit else 10
-            except ValueError:
-                limit = 10
-            
-            results = creator.search_pages_by_space_id(space_id, query, limit)
-            if results:
-                print(f"\n🔍 Search Results for '{query}' ({len(results)} found):")
-                for result in results:
-                    print(f"   • {result['title']} (ID: {result['id']})")
-                    print(f"     Status: {result['status']}")
-                    print(f"     URL: {result['url']}")
-                    print()
+            search_query = input("Enter search query: ").strip()
+            if search_query:
+                results = creator.search_pages_by_space_id(space_id, search_query)
+                if results:
+                    print(f"\n🔍 Search Results for '{search_query}' ({len(results)} found):")
+                    print("="*70)
+                    for i, result in enumerate(results, 1):
+                        print(f"{i}. {result.get('title', 'No title')}")
+                        print(f"   ID: {result.get('id', 'N/A')}")
+                        print(f"   URL: {confluence_url}/pages/{result.get('id', '')}")
+                        if result.get('excerpt'):
+                            print(f"   Excerpt: {result['excerpt'][:100]}...")
+                        print()
+                else:
+                    print("❌ No results found or search failed")
             else:
-                print(f"❌ No results found for query: '{query}'")
+                print("❌ Search query is required")
         
         elif choice == "10":
             # List child pages by parent ID
             parent_id = input("Enter parent page ID: ").strip()
-            if not parent_id:
-                print("❌ Parent page ID is required")
-                continue
-            
-            children = creator.get_child_pages_by_id(parent_id)
-            if children:
-                print(f"\n👶 Child Pages of Parent ID {parent_id} ({len(children)} found):")
-                for child in children:
-                    print(f"   • {child['title']} (ID: {child['id']})")
-                    print(f"     Status: {child['status']}")
-                    print(f"     URL: {child['url']}")
-                    print()
+            if parent_id:
+                children = creator.get_child_pages_by_id(parent_id)
+                if children:
+                    print(f"\n👶 Child Pages of {parent_id} ({len(children)} found):")
+                    print("="*70)
+                    for i, child in enumerate(children, 1):
+                        print(f"{i}. {child.get('title', 'No title')}")
+                        print(f"   ID: {child.get('id', 'N/A')}")
+                        print(f"   URL: {confluence_url}/pages/{child.get('id', '')}")
+                        print()
+                else:
+                    print("❌ No child pages found")
             else:
-                print(f"❌ No child pages found for parent ID: {parent_id}")
+                print("❌ Parent page ID is required")
         
         elif choice == "11":
             print("👋 Goodbye!")
