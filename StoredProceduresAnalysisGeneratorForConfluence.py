@@ -733,6 +733,11 @@ def create_content_properties_adf(schema_name, procedure_name, complexity):
                 "extensionType": "com.atlassian.confluence.macro.core",
                 "extensionKey": "details",
                 "parameters": {
+                    "macroParams": {
+                        "hidden": {
+                            "value": "true"
+                        }
+                    },
                     "macroMetadata":{
                         "schemaVersion":{
                             "value":"1"
@@ -757,10 +762,7 @@ def create_content_properties_adf(schema_name, procedure_name, complexity):
                                     "attrs":{
                                         "colspan":1,
                                         "background":"#f4f5f7",
-                                        "rowspan":1,
-                                        "colwidth":[
-                                            200
-                                        ]
+                                        "rowspan":1
                                     },
                                     "content": [
                                         {
@@ -807,10 +809,7 @@ def create_content_properties_adf(schema_name, procedure_name, complexity):
                                     "attrs":{
                                         "colspan":1,
                                         "background":"#f4f5f7",
-                                        "rowspan":1,
-                                        "colwidth":[
-                                            200
-                                        ]
+                                        "rowspan":1
                                     },
                                     "content":[
                                         {
@@ -857,10 +856,7 @@ def create_content_properties_adf(schema_name, procedure_name, complexity):
                                     "attrs":{
                                         "colspan":1,
                                         "background":"#f4f5f7",
-                                        "rowspan":1,
-                                        "colwidth":[
-                                            200
-                                        ]
+                                        "rowspan":1
                                     },
                                     "content":[
                                         {

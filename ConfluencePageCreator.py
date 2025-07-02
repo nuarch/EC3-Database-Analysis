@@ -983,8 +983,12 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
     print(f"🚀 Starting schema hierarchy creation from '{content_dir}'")
     print(f"   Parent Page ID: {parent_page_id}")
     print(f"   Space ID: {space_id}")
+    searchLabels = ""
     if labels:
         print(f"   Labels: {', '.join(labels)}")
+        temp = labels.copy()
+        temp = [f'\"{label}\"' for label in temp]
+        searchLabels = ', '.join(temp)
     
     available_files = creator.get_available_content_files(content_dir)
     
@@ -1023,32 +1027,26 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
             "version": 1,
             "content": [
                 {
-                    "type": "heading",
-                    "attrs": {"level": 1},
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"{schema_name}"
+                    "type":"extension",
+                    "attrs":{
+                        "layout":"full-width",
+                        "extensionType":"com.atlassian.confluence.macro.core",
+                        "extensionKey":"detailssummary",
+                        "parameters":{
+                            "macroParams":{
+                                "cql":{
+                                    "value":"label in ("+ searchLabels + ") and space = currentSpace ( ) and ancestor = "
+                                            "currentContent ( )"
+                                }
+                            },
+                            "macroMetadata":{
+                                "schemaVersion":{
+                                    "value":"3"
+                                },
+                                "title":"Page Properties Report"
+                            }
                         }
-                    ]
-                },
-                {
-                    "type": "paragraph",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"This page contains stored procedures from the {schema_name} schema."
-                        }
-                    ]
-                },
-                {
-                    "type": "paragraph",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": f"Total procedures: {len(files)}"
-                        }
-                    ]
+                    }
                 }
             ]
         }
