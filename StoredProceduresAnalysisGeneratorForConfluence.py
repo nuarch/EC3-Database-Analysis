@@ -728,17 +728,180 @@ def create_content_properties_adf(schema_name, procedure_name, complexity):
     """
     properties_content = [
         {
-            "type": "extension",
+            "type": "bodiedExtension",
             "attrs": {
                 "extensionType": "com.atlassian.confluence.macro.core",
-                "extensionKey": "content-properties",
+                "extensionKey": "details",
                 "parameters": {
-                    "Schema Name": schema_name,
-                    "Store Procedure Name": procedure_name,
-                    "Complexity Level": str(complexity) if complexity else "N/A"
-                },
-                "layout": {}
-            }
+                    "macroMetadata":{
+                        "schemaVersion":{
+                            "value":"1"
+                        },
+                        "title":"Page Properties"
+                    }
+                }
+            },
+            "content": [
+                {
+                    "type": "table",
+                    "attrs": {
+                        "isNumberColumnEnabled": False,
+                        "layout": "default"
+                    },
+                    "content": [
+                        {
+                            "type": "tableRow",
+                            "content": [
+                                {
+                                    "type": "tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1,
+                                        "colwidth":[
+                                            200
+                                        ]
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "paragraph",
+                                            "content": [
+                                                {
+                                                    "text": "Schema Name",
+                                                    "type": "text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": schema_name,
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type":"tableRow",
+                            "content":[
+                                {
+                                    "type":"tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1,
+                                        "colwidth":[
+                                            200
+                                        ]
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text":"Stored Procedure Name",
+                                                    "type":"text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": procedure_name,
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type":"tableRow",
+                            "content":[
+                                {
+                                    "type":"tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1,
+                                        "colwidth":[
+                                            200
+                                        ]
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text":"Complexity Level",
+                                                    "type":"text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": str(complexity) if complexity else "N/A",
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
     
