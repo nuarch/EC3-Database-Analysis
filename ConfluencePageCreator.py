@@ -1,4 +1,3 @@
-
 from xml.etree.ElementTree import indent
 
 import requests
@@ -10,6 +9,7 @@ from typing import Optional, Dict, Any, List
 from ConfluenceConfigManager import ConfluenceConfigManager
 
 class ConfluencePageCreator:
+    # ... existing methods ...
     def __init__(self, base_url: str, username: str, api_token: str):
         """
         Initialize the Confluence page creator.
@@ -841,7 +841,7 @@ class ConfluencePageCreator:
         # Create the child page with properties using IDs
         return self.create_child_page_with_properties_by_ids(space_id, parent_id, child_title, child_content, properties, labels)
 
-
+# Helper functions for bulk operations
 def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, space_id: str, parent_page_id: str, 
                                             content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
     """
@@ -922,7 +922,6 @@ def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, spa
         'failed_pages': failed_pages
     }
 
-
 def create_child_pages_from_directory(creator: ConfluencePageCreator, space_key: str, parent_title: str, 
                                     content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
     """
@@ -965,6 +964,212 @@ def create_child_pages_from_directory(creator: ConfluencePageCreator, space_key:
     # Use the ID-based function
     return create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, content_dir, labels)
 
+def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: ConfluencePageCreator, space_id: str, parent_page_id: str, 
+                                                                  content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+    """
+    Create child pages from all ADF files in a directory with schema hierarchy.
+    Creates schema pages as children of the parent, then procedures as children of schema pages.
+    
+    Args:
+        creator: ConfluencePageCreator instance
+        space_id: The space ID where pages will be created
+        parent_page_id: ID of the parent page under which schema pages will be created
+        content_dir: Directory containing ADF content files
+        labels: Optional list of labels to add to all created pages
+        
+    Returns:
+        Dictionary with operation results including schema pages and procedure pages
+    """
+    print(f"🚀 Starting schema hierarchy creation from '{content_dir}'")
+    print(f"   Parent Page ID: {parent_page_id}")
+    print(f"   Space ID: {space_id}")
+    if labels:
+        print(f"   Labels: {', '.join(labels)}")
+    
+    available_files = creator.get_available_content_files(content_dir)
+    
+    if not available_files:
+        return {
+            'success': False,
+            'message': f"No ADF content files found in {content_dir}",
+            'created_schema_pages': [],
+            'created_pages': [],
+            'failed_pages': []
+        }
+    
+    print(f"📁 Found {len(available_files)} ADF content files")
+    
+    # Group files by schema
+    schema_groups = {}
+    for file_info in available_files:
+        schema = file_info.get('schema', 'Unknown')
+        if schema not in schema_groups:
+            schema_groups[schema] = []
+        schema_groups[schema].append(file_info)
+    
+    print(f"📊 Found {len(schema_groups)} schemas: {', '.join(schema_groups.keys())}")
+    
+    created_schema_pages = []
+    created_pages = []
+    failed_pages = []
+    
+    # Create schema pages first
+    for schema_name, files in schema_groups.items():
+        print(f"\n📂 Creating schema page for: {schema_name}")
+        
+        # Create schema page content
+        schema_content = {
+            "type": "doc",
+            "version": 1,
+            "content": [
+                {
+                    "type": "heading",
+                    "attrs": {"level": 1},
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"{schema_name}"
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"This page contains stored procedures from the {schema_name} schema."
+                        }
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"Total procedures: {len(files)}"
+                        }
+                    ]
+                }
+            ]
+        }
+        
+        # Create schema page
+        schema_result = creator.create_child_page_by_ids(
+            space_id, parent_page_id, f"{schema_name}", schema_content, labels
+        )
+        
+        if schema_result:
+            schema_page_info = {
+                'id': schema_result['id'],
+                'title': f"{schema_name}",
+                'url': f"{creator.base_url}/pages/{schema_result['id']}"
+            }
+            created_schema_pages.append(schema_page_info)
+            print(f"   ✅ Created schema page: {schema_name} (ID: {schema_result['id']})")
+            
+            # Now create procedure pages under this schema page
+            schema_page_id = schema_result['id']
+            
+            for i, file_info in enumerate(files, 1):
+                print(f"\n   📄 Processing procedure {i}/{len(files)}: {file_info['title']}")
+                
+                # Load ADF content from JSON file
+                adf_content = creator.load_content_from_file(file_info['adf_file'])
+                if not adf_content:
+                    print(f"      ❌ Failed to load ADF content from {file_info['adf_file']}")
+                    failed_pages.append({
+                        'file': file_info['adf_file'],
+                        'title': file_info['title'],
+                        'schema': schema_name,
+                        'error': 'Failed to load ADF content'
+                    })
+                    continue
+                
+                # Create procedure page with properties and labels under schema page
+                properties = file_info.get('metadata', {})
+                result = creator.create_child_page_with_properties_by_ids(
+                    space_id, schema_page_id, file_info['title'], adf_content, properties, labels
+                )
+                
+                if result:
+                    created_pages.append({
+                        'id': result['id'],
+                        'title': file_info['title'],
+                        'schema': schema_name,
+                        'schema_page_id': schema_page_id,
+                        'file': file_info['adf_file'],
+                        'url': f"{creator.base_url}/pages/{result['id']}"
+                    })
+                    print(f"      ✅ Successfully created: {file_info['title']} (ID: {result['id']})")
+                else:
+                    failed_pages.append({
+                        'file': file_info['adf_file'],
+                        'title': file_info['title'],
+                        'schema': schema_name,
+                        'error': 'Failed to create page'
+                    })
+                    print(f"      ❌ Failed to create: {file_info['title']}")
+        else:
+            print(f"   ❌ Failed to create schema page for: {schema_name}")
+            # Mark all files in this schema as failed
+            for file_info in files:
+                failed_pages.append({
+                    'file': file_info['adf_file'],
+                    'title': file_info['title'],
+                    'schema': schema_name,
+                    'error': f'Failed to create parent schema page for {schema_name}'
+                })
+    
+    return {
+        'success': len(created_pages) > 0 or len(created_schema_pages) > 0,
+        'message': f"Created {len(created_schema_pages)} schema pages and {len(created_pages)} procedure pages, {len(failed_pages)} failed",
+        'created_schema_pages': created_schema_pages,
+        'created_pages': created_pages,
+        'failed_pages': failed_pages
+    }
+
+def create_child_pages_from_directory_with_schema_hierarchy(creator: ConfluencePageCreator, space_key: str, parent_title: str, 
+                                                           content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+    """
+    Create child pages from all ADF files in a directory with schema hierarchy.
+    Helper function for backward compatibility.
+    
+    Args:
+        creator: ConfluencePageCreator instance
+        space_key: The space key where pages will be created
+        parent_title: Title of the parent page under which schema pages will be created
+        content_dir: Directory containing ADF content files
+        labels: Optional list of labels to add to all created pages
+        
+    Returns:
+        Dictionary with operation results including schema pages and procedure pages
+    """
+    # Get space ID from space key
+    space_id = creator.get_space_id_from_key(space_key)
+    if not space_id:
+        return {
+            'success': False,
+            'message': f"Could not retrieve space ID for space key '{space_key}'",
+            'created_schema_pages': [],
+            'created_pages': [],
+            'failed_pages': []
+        }
+    
+    # Get parent page ID from title
+    parent_page = creator.get_page_by_title(space_key, parent_title)
+    if not parent_page:
+        return {
+            'success': False,
+            'message': f"Parent page '{parent_title}' not found in space '{space_key}'",
+            'created_schema_pages': [],
+            'created_pages': [],
+            'failed_pages': []
+        }
+    
+    parent_page_id = parent_page['id']
+    
+    # Use the ID-based function with schema hierarchy
+    return create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator, space_id, parent_page_id, content_dir, labels)
 
 def interactive_mode():
     """
@@ -1164,7 +1369,7 @@ def interactive_mode():
                 print("❌ Please enter a valid number")
         
         elif choice == "4":
-            # Create child page from confluence_docs ADF content
+            # Create child page from confluence_docs ADF content WITH SCHEMA HIERARCHY
             selected_dir = select_confluence_docs_subdirectory()
             if not selected_dir:
                 continue
@@ -1183,44 +1388,90 @@ def interactive_mode():
                 print("❌ Parent page ID is required")
                 continue
             
-            print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
-            for i, file_info in enumerate(available_files, 1):
-                schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
-                print(f"   {i}. {file_info['title']}{schema_info}")
-                if file_info.get('description'):
-                    print(f"      Description: {file_info['description'][:100]}...")
+            # Ask user if they want schema hierarchy or single page
+            print("\nChoose creation mode:")
+            print("1. Create single page directly under parent")
+            print("2. Create with schema hierarchy (parent -> schema -> procedure)")
             
-            try:
-                selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
-                if 1 <= selection <= len(available_files):
-                    selected_file = available_files[selection - 1]
+            mode_choice = input("Select mode (1-2): ").strip()
+            
+            if mode_choice == "2":
+                # Use schema hierarchy for all files
+                print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
+                for i, file_info in enumerate(available_files, 1):
+                    schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
+                    print(f"   {i}. {file_info['title']}{schema_info}")
+                    if file_info.get('description'):
+                        print(f"      Description: {file_info['description'][:100]}...")
+                
+                # Get labels from user
+                labels = get_labels_from_user(default_labels)
+                
+                # Create all pages with schema hierarchy
+                result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
+                    creator, space_id, parent_page_id, selected_dir, labels
+                )
+                
+                if result and result['success']:
+                    print(f"✅ Successfully created pages with schema hierarchy!")
+                    print(f"   Created {len(result['created_schema_pages'])} schema pages")
+                    print(f"   Created {len(result['created_pages'])} procedure pages")
+                    if result['failed_pages']:
+                        print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
                     
-                    # Load ADF content from JSON file
-                    adf_content = creator.load_content_from_file(selected_file['adf_file'])
-                    if adf_content:
-                        # Use the title from metadata or allow user to override
-                        default_title = selected_file['title']
-                        child_title = input(f"Enter child page title [{default_title}]: ").strip() or default_title
-                        
-                        # Get labels from user
-                        labels = get_labels_from_user(default_labels)
-                        
-                        # Create child page with properties from metadata
-                        properties = selected_file.get('metadata', {})
-                        result = creator.create_child_page_with_properties_by_ids(space_id, parent_page_id, child_title, adf_content, properties, labels)
-                        
-                        if result:
-                            print(f"✅ Child page '{child_title}' created successfully from {selected_file['name']}!")
-                            print(f"   ID: {result['id']}")
-                            print(f"   URL: {confluence_url}/pages/{result['id']}")
-                        else:
-                            print("❌ Failed to create child page")
-                    else:
-                        print("❌ Failed to load ADF content from selected file")
+                    # Show created schema pages
+                    if result['created_schema_pages']:
+                        print(f"\n📄 Created schema pages:")
+                        for schema_page in result['created_schema_pages']:
+                            print(f"   - {schema_page['title']} (ID: {schema_page['id']})")
+                            print(f"     URL: {schema_page['url']}")
                 else:
-                    print("❌ Invalid selection")
-            except ValueError:
-                print("❌ Please enter a valid number")
+                    print("❌ Failed to create pages with schema hierarchy")
+                    if result and result['failed_pages']:
+                        print("Failed pages:")
+                        for failed in result['failed_pages'][:5]:  # Show first 5
+                            print(f"   - {failed['title']}: {failed['error']}")
+                
+            else:
+                # Original single page creation mode
+                print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
+                for i, file_info in enumerate(available_files, 1):
+                    schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
+                    print(f"   {i}. {file_info['title']}{schema_info}")
+                    if file_info.get('description'):
+                        print(f"      Description: {file_info['description'][:100]}...")
+                
+                try:
+                    selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
+                    if 1 <= selection <= len(available_files):
+                        selected_file = available_files[selection - 1]
+                        
+                        # Load ADF content from JSON file
+                        adf_content = creator.load_content_from_file(selected_file['adf_file'])
+                        if adf_content:
+                            # Use the title from metadata or allow user to override
+                            default_title = selected_file['title']
+                            child_title = input(f"Enter child page title [{default_title}]: ").strip() or default_title
+                            
+                            # Get labels from user
+                            labels = get_labels_from_user(default_labels)
+                            
+                            # Create child page with properties from metadata
+                            properties = selected_file.get('metadata', {})
+                            result = creator.create_child_page_with_properties_by_ids(space_id, parent_page_id, child_title, adf_content, properties, labels)
+                            
+                            if result:
+                                print(f"✅ Child page '{child_title}' created successfully from {selected_file['name']}!")
+                                print(f"   ID: {result['id']}")
+                                print(f"   URL: {confluence_url}/pages/{result['id']}")
+                            else:
+                                print("❌ Failed to create child page")
+                        else:
+                            print("❌ Failed to load ADF content from selected file")
+                    else:
+                        print("❌ Invalid selection")
+                except ValueError:
+                    print("❌ Please enter a valid number")
         
         elif choice == "5":
             # Create child pages for ALL ADF files in directory
@@ -1237,19 +1488,47 @@ def interactive_mode():
                 print("❌ Parent page ID is required")
                 continue
             
+            # Ask user if they want schema hierarchy or flat structure
+            print("\nChoose creation mode:")
+            print("1. Flat structure (all pages directly under parent)")
+            print("2. Schema hierarchy (parent -> schema -> procedures)")
+            
+            mode_choice = input("Select mode (1-2): ").strip()
+            
             # Get labels from user
             labels = get_labels_from_user(default_labels)
             
-            # Process ALL ADF files in the directory
-            result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir,
-                                                              labels)
-            if result:
-                print(f"✅ Successfully created {result['successful']} child pages!")
-                if result['failed'] > 0:
-                    print(f"⚠️  {result['failed']} pages failed to create")
-                print(f"   Parent URL: {confluence_url}/pages/{parent_page_id}")
+            if mode_choice == "2":
+                # Use schema hierarchy
+                result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
+                    creator, space_id, parent_page_id, selected_dir, labels
+                )
+                
+                if result and result['success']:
+                    print(f"✅ Successfully created pages with schema hierarchy!")
+                    print(f"   Created {len(result['created_schema_pages'])} schema pages")
+                    print(f"   Created {len(result['created_pages'])} procedure pages")
+                    if result['failed_pages']:
+                        print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
+                    
+                    # Show created schema pages
+                    if result['created_schema_pages']:
+                        print(f"\n📄 Created schema pages:")
+                        for schema_page in result['created_schema_pages']:
+                            print(f"   - {schema_page['title']} (ID: {schema_page['id']})")
+                else:
+                    print("❌ Failed to create pages with schema hierarchy")
             else:
-                print("❌ Failed to create child pages")
+                # Use flat structure (original behavior)
+                result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir, labels)
+                
+                if result and result['success']:
+                    print(f"✅ Successfully created {len(result['created_pages'])} child pages!")
+                    if result['failed_pages']:
+                        print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
+                    print(f"   Parent URL: {confluence_url}/pages/{parent_page_id}")
+                else:
+                    print("❌ Failed to create child pages")
         
         elif choice == "6":
             # Browse available content files
@@ -1359,6 +1638,11 @@ def interactive_mode():
         else:
             print("❌ Invalid option. Please select 1-11.")
 
+def main():
+    """Main function to run the script"""
+    print("=== Confluence Page Creator ===")
+    print("Starting interactive mode...")
+    interactive_mode()
 
 if __name__ == "__main__":
-    interactive_mode()
+    main()
