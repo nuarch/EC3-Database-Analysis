@@ -841,6 +841,148 @@ class ConfluencePageCreator:
         # Create the child page with properties using IDs
         return self.create_child_page_with_properties_by_ids(space_id, parent_id, child_title, child_content, properties, labels)
 
+    def delete_archived_pages_in_space(self, space_key: str) -> Dict[str, Any]:
+        """
+        Delete all archived pages in a specified space.
+
+        Args:
+            space_key (str): The key of the space to delete archived pages from
+
+        Returns:
+            Dict[str, Any]: Summary of the deletion operation including counts and any errors
+        """
+        try:
+            # Get space ID from space key
+            space_id = self.get_space_id_from_key(space_key)
+            if not space_id:
+                return {
+                    'success': False,
+                    'error': f'Space with key "{space_key}" not found',
+                    'deleted_count': 0,
+                    'failed_count': 0
+                }
+
+            # Search for archived pages in the space
+            archived_pages = self.search_archived_pages_by_space_id(space_id)
+
+            if not archived_pages:
+                return {
+                    'success': True,
+                    'message': f'No archived pages found in space "{space_key}"',
+                    'deleted_count': 0,
+                    'failed_count': 0
+                }
+
+            # Delete each archived page
+            deleted_count = 0
+            failed_count = 0
+            errors = []
+
+            for page in archived_pages:
+                try:
+                    page_id = page.get('id')
+                    page_title = page.get('title', 'Unknown')
+
+                    # Delete the page
+                    delete_result = self.delete_page_by_id(page_id)
+
+                    if delete_result.get('success', False):
+                        deleted_count += 1
+                        print(f"✅ Deleted archived page: {page_title} (ID: {page_id})")
+                    else:
+                        failed_count += 1
+                        error_msg = f"Failed to delete page: {page_title} (ID: {page_id})"
+                        errors.append(error_msg)
+                        print(f"❌ {error_msg}")
+
+                except Exception as e:
+                    failed_count += 1
+                    error_msg = f"Error deleting page {page.get('title', 'Unknown')}: {str(e)}"
+                    errors.append(error_msg)
+                    print(f"❌ {error_msg}")
+
+            return {
+                'success': True,
+                'space_key': space_key,
+                'total_found': len(archived_pages),
+                'deleted_count': deleted_count,
+                'failed_count': failed_count,
+                'errors': errors
+            }
+
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Error deleting archived pages in space "{space_key}": {str(e)}',
+                'deleted_count': 0,
+                'failed_count': 0
+            }
+
+    def search_archived_pages_by_space_id(self, space_id: str) -> List[Dict[str, Any]]:
+        """
+        Search for archived pages in a specific space by space ID.
+
+        Args:
+            space_id (str): The ID of the space to search in
+
+        Returns:
+            List[Dict[str, Any]]: List of archived page information
+        """
+        try:
+            # Use Confluence REST API to search for archived pages
+            url = f"{self.base_url}/wiki/rest/api/content/search"
+
+            params = {
+                'cql': f'type = page',
+                'limit': 1000,  # Adjust as needed
+                'expand': 'space,version,ancestors',
+                'cqlcontext': '{"spaceKey":"C","contentStatuses":["archived"]}',
+            }
+
+            response = self.session.get(url, params=params)
+            response.raise_for_status()
+
+            data = response.json()
+            pages = data.get('results', [])
+
+            print(f"Found {len(pages)} archived pages in space ID: {space_id}")
+            return pages
+
+        except Exception as e:
+            print(f"Error searching for archived pages: {e}")
+            return []
+
+    def delete_page_by_id(self, page_id: str) -> Dict[str, Any]:
+        """
+        Delete a page by its ID.
+
+        Args:
+            page_id (str): The ID of the page to delete
+
+        Returns:
+            Dict[str, Any]: Result of the deletion operation
+        """
+        try:
+            # Use Confluence REST API to delete the page
+            url = f"{self.base_url}/wiki/rest/api/content/{page_id}"
+
+            response = self.session.delete(url)
+            response.raise_for_status()
+
+            return {
+                'success': True,
+                'page_id': page_id,
+                'message': f'Page {page_id} deleted successfully'
+            }
+
+        except Exception as e:
+            return {
+                'success': False,
+                'page_id': page_id,
+                'error': f'Error deleting page {page_id}: {str(e)}'
+            }
+
+
 # Helper functions for bulk operations
 def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, space_id: str, parent_page_id: str, 
                                             content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
@@ -1082,7 +1224,11 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
                         'error': 'Failed to load ADF content'
                     })
                     continue
-                
+
+                # Update labels with schema name and complexity
+                labels.append("schema-" + file_info['schema'])
+                labels.append("complexity-" + file_info.get('complexity', 'unknown'))
+
                 # Create procedure page with properties and labels under schema page
                 properties = file_info.get('metadata', {})
                 result = creator.create_child_page_with_properties_by_ids(
@@ -1169,6 +1315,12 @@ def create_child_pages_from_directory_with_schema_hierarchy(creator: ConfluenceP
     # Use the ID-based function with schema hierarchy
     return create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator, space_id, parent_page_id, content_dir, labels)
 
+def main():
+    """Main function to run the script"""
+    print("=== Confluence Page Creator ===")
+    print("Starting interactive mode...")
+    interactive_mode()
+
 def interactive_mode():
     """
     Interactive mode for creating and reading pages with user input.
@@ -1176,7 +1328,7 @@ def interactive_mode():
     Updated to support ADF JSON content files and labels.
     """
     print("=== Confluence Page Creator & Reader ===")
-    
+
     # Load configuration
     config = ConfluenceConfigManager()
 
@@ -1184,35 +1336,35 @@ def interactive_mode():
     confluence_url = config.get('confluence_url')
     if not confluence_url:
         confluence_url = input("Enter your Confluence URL (e.g., https://yourcompany.atlassian.net): ").strip()
-    
+
     username = config.get('username')
     if not username:
         username = input("Enter your username/email: ").strip()
-    
+
     api_token = config.get('api_token')
     if not api_token:
         api_token = input("Enter your API token: ").strip()
-    
+
     # Request space key and convert to space ID
     space_key = config.get('space_key')
     if not space_key:
         space_key = input("Enter the space key: ").strip()
-    
+
     creator = ConfluencePageCreator(confluence_url, username, api_token)
-    
+
     # Get space ID from space key
     space_id = creator.get_space_id_from_key(space_key)
     if not space_id:
         print(f"❌ Could not retrieve space ID for space key '{space_key}'")
         return
-    
+
     print(f"✅ Using space: {space_key} (ID: {space_id})")
-    
+
     # Get default labels from config
     default_labels = config.get_default_labels()
     if default_labels:
         print(f"🏷️  Default labels configured: {', '.join(default_labels)}")
-    
+
     def get_labels_from_user(default_labels: List[str]) -> List[str]:
         """Helper function to get labels from user input"""
         if default_labels:
@@ -1228,31 +1380,31 @@ def interactive_mode():
                 return [label.strip() for label in labels_input.split(',') if label.strip()]
             else:
                 return []
-    
+
     def select_confluence_docs_subdirectory():
         """Helper function to select a subdirectory from ./confluence_docs"""
         base_dir = "./confluence_docs"
-        
+
         if not os.path.exists(base_dir):
             print(f"❌ Base directory '{base_dir}' does not exist")
             return None
-        
+
         # Get all subdirectories
-        subdirs = [d for d in os.listdir(base_dir) 
-                  if os.path.isdir(os.path.join(base_dir, d)) and not d.startswith('.')]
-        
+        subdirs = [d for d in os.listdir(base_dir)
+                   if os.path.isdir(os.path.join(base_dir, d)) and not d.startswith('.')]
+
         if not subdirs:
             print(f"❌ No subdirectories found in '{base_dir}'")
             return None
-        
+
         print(f"\n📁 Available subdirectories in {base_dir}:")
         for i, subdir in enumerate(subdirs, 1):
             subdir_path = os.path.join(base_dir, subdir)
             # Count JSON files in subdirectory
-            json_count = len([f for f in os.listdir(subdir_path) 
-                            if f.endswith('.json') and not f.endswith('_metadata.json')])
+            json_count = len([f for f in os.listdir(subdir_path)
+                              if f.endswith('.json') and not f.endswith('_metadata.json')])
             print(f"   {i}. {subdir} ({json_count} content files)")
-        
+
         try:
             selection = int(input(f"\nSelect subdirectory (1-{len(subdirs)}): ").strip())
             if 1 <= selection <= len(subdirs):
@@ -1265,7 +1417,7 @@ def interactive_mode():
         except ValueError:
             print("❌ Please enter a valid number")
             return None
-    
+
     while True:
         print("\n" + "="*50)
         print("1. Create a standalone page")
@@ -1278,15 +1430,16 @@ def interactive_mode():
         print("8. Get page information by ID")
         print("9. Search pages")
         print("10. List child pages by parent ID")
-        print("11. Exit")
-        
-        choice = input("\nSelect an option (1-11): ").strip()
-        
+        print("11. Delete all archived pages in space")
+        print("12. Exit")
+
+        choice = input("\nSelect an option (1-12): ").strip()
+
         if choice == "1":
             title = input("Enter page title: ").strip()
             content = input("Enter page content (HTML): ").strip()
             labels = get_labels_from_user(default_labels)
-            
+
             result = creator.create_page_by_space_id(space_id, title, content, labels=labels)
             if result:
                 print(f"✅ Page '{title}' created successfully!")
@@ -1294,20 +1447,20 @@ def interactive_mode():
                 print(f"   URL: {confluence_url}/pages/{result['id']}")
             else:
                 print("❌ Failed to create page")
-                
+
         elif choice == "2":
             default_parent_id = config.get('default_parent_page_id', '')
             parent_prompt = f"Enter parent page ID{f' [{default_parent_id}]' if default_parent_id else ''}: "
             parent_page_id = input(parent_prompt).strip() or default_parent_id
-            
+
             if not parent_page_id:
                 print("❌ Parent page ID is required")
                 continue
-            
+
             child_title = input("Enter child page title: ").strip()
             child_content = input("Enter child page content (HTML): ").strip()
             labels = get_labels_from_user(default_labels)
-            
+
             result = creator.create_child_page_by_ids(space_id, parent_page_id, child_title, child_content, labels)
             if result:
                 print(f"✅ Child page '{child_title}' created successfully!")
@@ -1315,44 +1468,44 @@ def interactive_mode():
                 print(f"   URL: {confluence_url}/pages/{result['id']}")
             else:
                 print("❌ Failed to create child page")
-        
+
         elif choice == "3":
             # Create standalone page from confluence_docs ADF content
             selected_dir = select_confluence_docs_subdirectory()
             if not selected_dir:
                 continue
-                
+
             available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
                 print(f"❌ No ADF content files found in {selected_dir}")
                 continue
-            
+
             print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
             for i, file_info in enumerate(available_files, 1):
                 schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
                 print(f"   {i}. {file_info['title']}{schema_info}")
                 if file_info.get('description'):
                     print(f"      Description: {file_info['description'][:100]}...")
-            
+
             try:
                 selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
                 if 1 <= selection <= len(available_files):
                     selected_file = available_files[selection - 1]
-                    
+
                     # Load ADF content from JSON file
                     adf_content = creator.load_content_from_file(selected_file['adf_file'])
                     if adf_content:
                         # Use the title from metadata or allow user to override
                         default_title = selected_file['title']
                         title = input(f"Enter page title [{default_title}]: ").strip() or default_title
-                        
+
                         # Get labels from user
                         labels = get_labels_from_user(default_labels)
-                        
+
                         # Create page with properties from metadata
                         properties = selected_file.get('metadata', {})
                         result = creator.create_page_with_properties_by_space_id(space_id, title, adf_content, properties, labels=labels)
-                        
+
                         if result:
                             print(f"✅ Page '{title}' created successfully from {selected_file['name']}!")
                             print(f"   ID: {result['id']}")
@@ -1365,34 +1518,34 @@ def interactive_mode():
                     print("❌ Invalid selection")
             except ValueError:
                 print("❌ Please enter a valid number")
-        
+
         elif choice == "4":
             # Create child page from confluence_docs ADF content WITH SCHEMA HIERARCHY
             selected_dir = select_confluence_docs_subdirectory()
             if not selected_dir:
                 continue
-                
+
             available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
                 print(f"❌ No ADF content files found in {selected_dir}")
                 continue
-            
+
             # Get parent page ID
             default_parent_id = config.get('default_parent_page_id', '')
             parent_prompt = f"Enter parent page ID{f' [{default_parent_id}]' if default_parent_id else ''}: "
             parent_page_id = input(parent_prompt).strip() or default_parent_id
-            
+
             if not parent_page_id:
                 print("❌ Parent page ID is required")
                 continue
-            
+
             # Ask user if they want schema hierarchy or single page
             print("\nChoose creation mode:")
             print("1. Create single page directly under parent")
             print("2. Create with schema hierarchy (parent -> schema -> procedure)")
-            
+
             mode_choice = input("Select mode (1-2): ").strip()
-            
+
             if mode_choice == "2":
                 # Use schema hierarchy for all files
                 print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
@@ -1401,22 +1554,22 @@ def interactive_mode():
                     print(f"   {i}. {file_info['title']}{schema_info}")
                     if file_info.get('description'):
                         print(f"      Description: {file_info['description'][:100]}...")
-                
+
                 # Get labels from user
                 labels = get_labels_from_user(default_labels)
-                
+
                 # Create all pages with schema hierarchy
                 result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
                     creator, space_id, parent_page_id, selected_dir, labels
                 )
-                
+
                 if result and result['success']:
                     print(f"✅ Successfully created pages with schema hierarchy!")
                     print(f"   Created {len(result['created_schema_pages'])} schema pages")
                     print(f"   Created {len(result['created_pages'])} procedure pages")
                     if result['failed_pages']:
                         print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
-                    
+
                     # Show created schema pages
                     if result['created_schema_pages']:
                         print(f"\n📄 Created schema pages:")
@@ -1429,7 +1582,7 @@ def interactive_mode():
                         print("Failed pages:")
                         for failed in result['failed_pages'][:5]:  # Show first 5
                             print(f"   - {failed['title']}: {failed['error']}")
-                
+
             else:
                 # Original single page creation mode
                 print(f"\n📁 Available ADF Content Files ({len(available_files)}):")
@@ -1438,26 +1591,30 @@ def interactive_mode():
                     print(f"   {i}. {file_info['title']}{schema_info}")
                     if file_info.get('description'):
                         print(f"      Description: {file_info['description'][:100]}...")
-                
+
                 try:
                     selection = int(input(f"\nSelect content file (1-{len(available_files)}): ").strip())
                     if 1 <= selection <= len(available_files):
                         selected_file = available_files[selection - 1]
-                        
+
                         # Load ADF content from JSON file
                         adf_content = creator.load_content_from_file(selected_file['adf_file'])
                         if adf_content:
                             # Use the title from metadata or allow user to override
                             default_title = selected_file['title']
                             child_title = input(f"Enter child page title [{default_title}]: ").strip() or default_title
-                            
+
+                            properties = selected_file.get('metadata', {})
+
                             # Get labels from user
                             labels = get_labels_from_user(default_labels)
-                            
-                            # Create child page with properties from metadata
-                            properties = selected_file.get('metadata', {})
+                            labels.append(f"schema-{properties['schema']}")
+                            labels.append(f"complexity-{properties['complexity']}")
+
+
+                            # Create child page with properties from metadata and labels
                             result = creator.create_child_page_with_properties_by_ids(space_id, parent_page_id, child_title, adf_content, properties, labels)
-                            
+
                             if result:
                                 print(f"✅ Child page '{child_title}' created successfully from {selected_file['name']}!")
                                 print(f"   ID: {result['id']}")
@@ -1470,45 +1627,45 @@ def interactive_mode():
                         print("❌ Invalid selection")
                 except ValueError:
                     print("❌ Please enter a valid number")
-        
+
         elif choice == "5":
             # Create child pages for ALL ADF files in directory
             selected_dir = select_confluence_docs_subdirectory()
             if not selected_dir:
                 continue
-                
+
             # Get parent page ID
             default_parent_id = config.get('default_parent_page_id', '')
             parent_prompt = f"Enter parent page ID{f' [{default_parent_id}]' if default_parent_id else ''}: "
             parent_page_id = input(parent_prompt).strip() or default_parent_id
-            
+
             if not parent_page_id:
                 print("❌ Parent page ID is required")
                 continue
-            
+
             # Ask user if they want schema hierarchy or flat structure
             print("\nChoose creation mode:")
             print("1. Flat structure (all pages directly under parent)")
             print("2. Schema hierarchy (parent -> schema -> procedures)")
-            
+
             mode_choice = input("Select mode (1-2): ").strip()
-            
+
             # Get labels from user
             labels = get_labels_from_user(default_labels)
-            
+
             if mode_choice == "2":
                 # Use schema hierarchy
                 result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
                     creator, space_id, parent_page_id, selected_dir, labels
                 )
-                
+
                 if result and result['success']:
                     print(f"✅ Successfully created pages with schema hierarchy!")
                     print(f"   Created {len(result['created_schema_pages'])} schema pages")
                     print(f"   Created {len(result['created_pages'])} procedure pages")
                     if result['failed_pages']:
                         print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
-                    
+
                     # Show created schema pages
                     if result['created_schema_pages']:
                         print(f"\n📄 Created schema pages:")
@@ -1519,7 +1676,7 @@ def interactive_mode():
             else:
                 # Use flat structure (original behavior)
                 result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir, labels)
-                
+
                 if result and result['success']:
                     print(f"✅ Successfully created {len(result['created_pages'])} child pages!")
                     if result['failed_pages']:
@@ -1527,18 +1684,18 @@ def interactive_mode():
                     print(f"   Parent URL: {confluence_url}/pages/{parent_page_id}")
                 else:
                     print("❌ Failed to create child pages")
-        
+
         elif choice == "6":
             # Browse available content files
             selected_dir = select_confluence_docs_subdirectory()
             if not selected_dir:
                 continue
-                
+
             available_files = creator.get_available_content_files(selected_dir)
             if not available_files:
                 print(f"❌ No ADF content files found in {selected_dir}")
                 continue
-            
+
             print(f"\n📁 Available ADF Content Files in {selected_dir} ({len(available_files)}):")
             for i, file_info in enumerate(available_files, 1):
                 schema_info = f" [{file_info.get('schema', 'Unknown')}]" if file_info.get('schema') else ""
@@ -1548,7 +1705,7 @@ def interactive_mode():
                 if file_info.get('description'):
                     print(f"      Description: {file_info['description']}")
                 print()
-        
+
         elif choice == "7":
             # Read a page by ID
             page_id = input("Enter page ID to read: ").strip()
@@ -1564,7 +1721,7 @@ def interactive_mode():
                     print("❌ Failed to read page content")
             else:
                 print("❌ Page ID is required")
-        
+
         elif choice == "8":
             # Get page information by ID
             page_id = input("Enter page ID to get info: ").strip()
@@ -1579,18 +1736,18 @@ def interactive_mode():
                     print(f"Created: {page_info.get('createdAt', 'N/A')}")
                     print(f"Version: {page_info.get('version', {}).get('number', 'N/A')}")
                     print(f"URL: {confluence_url}/pages/{page_id}")
-                    
+
                     # Show labels if they exist
                     labels = creator.get_page_labels(page_id)
                     if labels:
                         print(f"Labels: {', '.join(labels)}")
-                    
+
                     print("="*50)
                 else:
                     print("❌ Failed to get page information")
             else:
                 print("❌ Page ID is required")
-        
+
         elif choice == "9":
             # Search pages
             search_query = input("Enter search query: ").strip()
@@ -1610,7 +1767,7 @@ def interactive_mode():
                     print("❌ No results found or search failed")
             else:
                 print("❌ Search query is required")
-        
+
         elif choice == "10":
             # List child pages by parent ID
             parent_id = input("Enter parent page ID: ").strip()
@@ -1628,19 +1785,50 @@ def interactive_mode():
                     print("❌ No child pages found")
             else:
                 print("❌ Parent page ID is required")
-        
+
         elif choice == "11":
+            # Delete all archived pages in space
+            print(f"\n🗑️  Delete Archived Pages in Space: {space_key}")
+            print("="*50)
+
+            # Show warning about destructive operation
+            print("⚠️  WARNING: This operation will permanently delete ALL archived pages in the space!")
+            print("   This action cannot be undone.")
+
+            # Ask for confirmation
+            confirmation = input(f"\nAre you sure you want to delete all archived pages in space '{space_key}'? (type 'YES' to confirm): ").strip()
+
+            if confirmation == 'YES':
+                print("\n🔍 Searching for archived pages...")
+                result = creator.delete_archived_pages_in_space(space_key)
+
+                if result['success']:
+                    print(f"\n✅ Archive deletion completed!")
+                    print(f"   Total archived pages found: {result.get('total_found', 0)}")
+                    print(f"   Successfully deleted: {result['deleted_count']}")
+
+                    if result['failed_count'] > 0:
+                        print(f"   Failed to delete: {result['failed_count']}")
+                        if result.get('errors'):
+                            print(f"\n❌ Errors encountered:")
+                            for error in result['errors'][:5]:  # Show first 5 errors
+                                print(f"   - {error}")
+                            if len(result['errors']) > 5:
+                                print(f"   ... and {len(result['errors']) - 5} more errors")
+
+                    if result['deleted_count'] == 0:
+                        print(f"   No archived pages found in space '{space_key}'")
+                else:
+                    print(f"❌ Failed to delete archived pages: {result.get('error', 'Unknown error')}")
+            else:
+                print("❌ Operation cancelled - no pages were deleted")
+
+        elif choice == "12":
             print("👋 Goodbye!")
             break
-        
-        else:
-            print("❌ Invalid option. Please select 1-11.")
 
-def main():
-    """Main function to run the script"""
-    print("=== Confluence Page Creator ===")
-    print("Starting interactive mode...")
-    interactive_mode()
+        else:
+            print("❌ Invalid option. Please select 1-12.")
 
 if __name__ == "__main__":
     main()
