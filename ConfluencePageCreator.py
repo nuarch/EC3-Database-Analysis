@@ -1226,13 +1226,14 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
                     continue
 
                 # Update labels with schema name and complexity
-                labels.append("schema-" + file_info['schema'])
-                labels.append("complexity-" + file_info.get('complexity', 'unknown'))
+                pageLabels = labels.copy()
+                pageLabels.append("schema-" + file_info['schema'])
+                pageLabels.append("complexity-" + file_info.get('complexity', 'unknown'))
 
                 # Create procedure page with properties and labels under schema page
                 properties = file_info.get('metadata', {})
                 result = creator.create_child_page_with_properties_by_ids(
-                    space_id, schema_page_id, file_info['title'], adf_content, properties, labels
+                    space_id, schema_page_id, file_info['title'], adf_content, properties, pageLabels
                 )
                 
                 if result:
