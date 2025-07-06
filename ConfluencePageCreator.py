@@ -1148,7 +1148,7 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
     # Group files by schema
     schema_groups = {}
     for file_info in available_files:
-        schema = file_info.get('schema', 'Unknown')
+        schema = file_info.get('schema', 'Unknown') + ' - (' + file_info.get('metadata').get('type', 'Unknown') + 's)'
         if schema not in schema_groups:
             schema_groups[schema] = []
         schema_groups[schema].append(file_info)
@@ -1229,6 +1229,7 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
                 pageLabels = labels.copy()
                 pageLabels.append("schema-" + file_info['schema'])
                 pageLabels.append("complexity-" + file_info.get('complexity', 'unknown'))
+                pageLabels.append("type-" + file_info.get('metadata').get('type', 'unknown'))
 
                 # Create procedure page with properties and labels under schema page
                 properties = file_info.get('metadata', {})
