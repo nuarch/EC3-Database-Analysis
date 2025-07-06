@@ -1229,7 +1229,8 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
                 pageLabels = labels.copy()
                 pageLabels.append("schema-" + file_info['schema'])
                 pageLabels.append("complexity-" + file_info.get('complexity', 'unknown'))
-                pageLabels.append("type-" + file_info.get('metadata').get('type', 'unknown'))
+                tempType = "type-" + file_info.get('metadata', {}).get('type', 'unknown')
+                pageLabels.append(tempType.replace(' ', '-').lower())
 
                 # Create procedure page with properties and labels under schema page
                 properties = file_info.get('metadata', {})
