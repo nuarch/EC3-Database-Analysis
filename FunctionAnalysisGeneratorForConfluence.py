@@ -718,6 +718,195 @@ def _extract_last_heading_number(text):
 
     return len(sections)
 
+def create_content_properties_adf(schema_name, function_name, complexity):
+    """
+    Create ADF content for page properties section using Confluence content-properties extension
+
+    Args:
+        schema_name (str): Name of the schema
+        function_name (str): Name of the stored procedure
+        complexity (str): Complexity level of the procedure
+
+    Returns:
+        list: ADF content blocks for the properties section
+    """
+    properties_content = [
+        {
+            "type": "bodiedExtension",
+            "attrs": {
+                "extensionType": "com.atlassian.confluence.macro.core",
+                "extensionKey": "details",
+                "parameters": {
+                    "macroParams": {
+                        "hidden": {
+                            "value": "true"
+                        }
+                    },
+                    "macroMetadata":{
+                        "schemaVersion":{
+                            "value":"1"
+                        },
+                        "title":"Page Properties"
+                    }
+                }
+            },
+            "content": [
+                {
+                    "type": "table",
+                    "attrs": {
+                        "isNumberColumnEnabled": False,
+                        "layout": "default"
+                    },
+                    "content": [
+                        {
+                            "type": "tableRow",
+                            "content": [
+                                {
+                                    "type": "tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1
+                                    },
+                                    "content": [
+                                        {
+                                            "type": "paragraph",
+                                            "content": [
+                                                {
+                                                    "text": "Schema Name",
+                                                    "type": "text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": schema_name,
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type":"tableRow",
+                            "content":[
+                                {
+                                    "type":"tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text":"Function Name",
+                                                    "type":"text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": function_name,
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type":"tableRow",
+                            "content":[
+                                {
+                                    "type":"tableHeader",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "background":"#f4f5f7",
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text":"Complexity Level",
+                                                    "type":"text",
+                                                    "marks":[
+                                                        {
+                                                            "type":"strong"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type":"tableCell",
+                                    "attrs":{
+                                        "colspan":1,
+                                        "rowspan":1
+                                    },
+                                    "content":[
+                                        {
+                                            "type":"paragraph",
+                                            "content":[
+                                                {
+                                                    "text": str(complexity) if complexity else "N/A",
+                                                    "type":"text"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+
+    return properties_content
+
 def generate_function_page(func):
     """Generate Confluence ADF content for a single function"""
     func_info = func['function_info']
@@ -725,6 +914,14 @@ def generate_function_page(func):
 
     schema_name = func_info['schema']
     function_name = func_info['name']
+
+    # Get complexity from analysis
+    complexity = 'N/A'
+    if isinstance(analysis, dict):
+        if 'complexity' in analysis and analysis['complexity']:
+            complexity = analysis['complexity']
+        elif 'complexity_score' in analysis and analysis['complexity_score']:
+            complexity = analysis['complexity_score']
 
     content = ''
 
@@ -756,6 +953,16 @@ def generate_function_page(func):
     # Convert to ADF format
     adf_content = format_confluence_content(content)
     
+    # Create properties section using proper Confluence extension
+    properties_adf = create_content_properties_adf(schema_name, function_name, complexity)
+
+    # Insert properties at the beginning of the content
+    # Combine properties + existing content
+    final_content = properties_adf + adf_content["content"]
+
+    # Update the ADF document with the new content
+    adf_content["content"] = final_content
+
     return adf_content
 
 def generate_function_confluence_files(json_file_path, output_dir="./confluence_docs/funcs", selected_schemas=None):
