@@ -79,39 +79,45 @@ class StoredProcedureAnalyzer:
             logger.warning(f"Schema '{schema_name}' is not in the list of non-empty schemas: {valid_schemas}")
             return []
         
-        # Build the query with IN clause for multiple schemas
+        # Build the query with sys.sql_modules for complete procedure definitions
         if schema_name:
             # Single schema query
             query = """
-            SELECT 
-                ROUTINE_SCHEMA,
-                ROUTINE_NAME,
-                ROUTINE_DEFINITION,
-                CREATED,
-                LAST_ALTERED,
-                ROUTINE_TYPE
-            FROM INFORMATION_SCHEMA.ROUTINES 
-            WHERE ROUTINE_TYPE = 'PROCEDURE'
-            AND ROUTINE_SCHEMA = ?
-            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
-            """
+        SELECT 
+            s.name AS ROUTINE_SCHEMA,
+            o.name AS ROUTINE_NAME,
+            m.definition AS ROUTINE_DEFINITION,
+            o.create_date AS CREATED,
+            o.modify_date AS LAST_ALTERED,
+            'PROCEDURE' AS ROUTINE_TYPE
+        FROM sys.sql_modules m
+        INNER JOIN sys.objects o ON m.object_id = o.object_id
+        INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+        WHERE o.type = 'P'
+        AND s.name = ?
+        AND o.is_ms_shipped = 0
+        ORDER BY s.name, o.name
+        """
             query_params = (schema_name,)
         else:
             # Multiple schemas query - get procedures from all non-empty schemas
             placeholders = ','.join(['?'] * len(valid_schemas))
             query = f"""
-            SELECT 
-                ROUTINE_SCHEMA,
-                ROUTINE_NAME,
-                ROUTINE_DEFINITION,
-                CREATED,
-                LAST_ALTERED,
-                ROUTINE_TYPE
-            FROM INFORMATION_SCHEMA.ROUTINES 
-            WHERE ROUTINE_TYPE = 'PROCEDURE'
-            AND ROUTINE_SCHEMA IN ({placeholders})
-            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
-            """
+        SELECT 
+            s.name AS ROUTINE_SCHEMA,
+            o.name AS ROUTINE_NAME,
+            m.definition AS ROUTINE_DEFINITION,
+            o.create_date AS CREATED,
+            o.modify_date AS LAST_ALTERED,
+            'PROCEDURE' AS ROUTINE_TYPE
+        FROM sys.sql_modules m
+        INNER JOIN sys.objects o ON m.object_id = o.object_id
+        INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+        WHERE o.type = 'P'
+        AND s.name IN ({placeholders})
+        AND o.is_ms_shipped = 0
+        ORDER BY s.name, o.name
+        """
             query_params = tuple(valid_schemas)
         
         try:
@@ -144,15 +150,25 @@ class StoredProcedureAnalyzer:
         """Get parameters for a specific stored procedure."""
         query = """
         SELECT 
-            PARAMETER_NAME,
-            DATA_TYPE,
-            PARAMETER_MODE,
-            CHARACTER_MAXIMUM_LENGTH,
-            NUMERIC_PRECISION,
-            NUMERIC_SCALE
-        FROM INFORMATION_SCHEMA.PARAMETERS 
-        WHERE SPECIFIC_SCHEMA = ? AND SPECIFIC_NAME = ?
-        ORDER BY ORDINAL_POSITION
+            p.name AS PARAMETER_NAME,
+            TYPE_NAME(p.user_type_id) AS DATA_TYPE,
+            CASE 
+                WHEN p.is_output = 1 THEN 'OUT'
+                ELSE 'IN'
+            END AS PARAMETER_MODE,
+            p.max_length AS CHARACTER_MAXIMUM_LENGTH,
+            p.precision AS NUMERIC_PRECISION,
+            p.scale AS NUMERIC_SCALE,
+            p.parameter_id AS ORDINAL_POSITION,
+            p.has_default_value,
+            p.default_value
+        FROM sys.parameters p
+        INNER JOIN sys.objects o ON p.object_id = o.object_id
+        INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+        WHERE s.name = ? 
+        AND o.name = ?
+        AND o.type = 'P'
+        ORDER BY p.parameter_id
         """
         
         try:
@@ -166,7 +182,10 @@ class StoredProcedureAnalyzer:
                     'mode': row[2],
                     'max_length': row[3],
                     'precision': row[4],
-                    'scale': row[5]
+                    'scale': row[5],
+                    'ordinal_position': row[6],
+                    'has_default_value': row[7],
+                    'default_value': row[8]
                 }
                 parameters.append(param)
             
@@ -197,10 +216,11 @@ Please provide:
 4. Business logic and workflow
 5. Performance considerations
 6. Potential issues or risks
+7. Do not include assumptions or phrases like "likely"
 
-Format your response as a structured analysis that is easy to read and understand.  Fomrat your response as follows:
+Format your response as a structured analysis that is easy to read and understand.  Format your response as follows:
 
-#### 1. Overview & Assumptions
+#### 1. Overview
 #### 2. Complexity Level: (Low/Medium/High)
 #### 3. Input Parameters
 #### 4. Business Logic and Workflow
@@ -238,7 +258,12 @@ Format your response as a structured analysis that is easy to read and understan
                     
                     # Extract the explanation from ChatGPT response
                     explanation_text = result['choices'][0]['message']['content']
-                    
+
+
+                    # Log message if explanation contains "Incomplete code"
+                    if "Incomplete Code" in explanation_text:
+                        logger.warning(f"ChatGPT response for procedure '{procedure_name}' contains 'Incomplete Code'")
+
                     # Parse the response to extract structured information
                     analysis_result = self._parse_chatgpt_response(
                         explanation_text, 
