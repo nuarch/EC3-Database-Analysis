@@ -83,38 +83,70 @@ class FunctionAnalyzer:
     if schema_name:
       # Single schema query
       query = """
-              SELECT
-                  ROUTINE_SCHEMA,
-                  ROUTINE_NAME,
-                  ROUTINE_DEFINITION,
-                  CREATED,
-                  LAST_ALTERED,
-                  ROUTINE_TYPE,
-                  DATA_TYPE,
-                  IS_DETERMINISTIC
-              FROM INFORMATION_SCHEMA.ROUTINES
-              WHERE ROUTINE_TYPE = 'FUNCTION'
-                AND ROUTINE_SCHEMA = ?
-              ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME \
+            SELECT
+                s.name AS ROUTINE_SCHEMA,
+                o.name AS ROUTINE_NAME,
+                m.definition AS ROUTINE_DEFINITION,
+                o.create_date AS CREATED,
+                o.modify_date AS LAST_ALTERED,
+                CASE 
+                    WHEN o.type = 'FN' THEN 'FUNCTION'
+                    WHEN o.type = 'IF' THEN 'FUNCTION'
+                    WHEN o.type = 'TF' THEN 'FUNCTION'
+                    ELSE 'FUNCTION'
+                END AS ROUTINE_TYPE,
+                CASE 
+                    WHEN o.type IN ('IF', 'TF') THEN 'TABLE'
+                    WHEN o.type = 'FN' THEN COALESCE(TYPE_NAME(ret.user_type_id), 'sql_variant')
+                    ELSE 'sql_variant'
+                END AS DATA_TYPE,
+                CASE 
+                    WHEN o.type = 'FN' THEN 'YES'  -- Scalar functions are deterministic by default
+                    ELSE 'NO'  -- Table-valued functions are typically not deterministic
+                END AS IS_DETERMINISTIC
+            FROM sys.sql_modules m
+            INNER JOIN sys.objects o ON m.object_id = o.object_id
+            INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+            LEFT JOIN sys.parameters ret ON o.object_id = ret.object_id AND ret.parameter_id = 0  -- Return parameter
+            WHERE o.type IN ('FN', 'IF', 'TF')  -- FN=Scalar function, IF=Inline table function, TF=Table function
+            AND s.name = ?
+            AND o.is_ms_shipped = 0
+            ORDER BY s.name, o.name
               """
       query_params = (schema_name,)
     else:
       # Multiple schemas query - get functions from all non-empty schemas
       placeholders = ','.join(['?'] * len(valid_schemas))
       query = f"""
-            SELECT 
-                ROUTINE_SCHEMA,
-                ROUTINE_NAME,
-                ROUTINE_DEFINITION,
-                CREATED,
-                LAST_ALTERED,
-                ROUTINE_TYPE,
-                DATA_TYPE,
-                IS_DETERMINISTIC
-            FROM INFORMATION_SCHEMA.ROUTINES 
-            WHERE ROUTINE_TYPE = 'FUNCTION'
-            AND ROUTINE_SCHEMA IN ({placeholders})
-            ORDER BY ROUTINE_SCHEMA, ROUTINE_NAME
+            SELECT
+                s.name AS ROUTINE_SCHEMA,
+                o.name AS ROUTINE_NAME,
+                m.definition AS ROUTINE_DEFINITION,
+                o.create_date AS CREATED,
+                o.modify_date AS LAST_ALTERED,
+                CASE 
+                    WHEN o.type = 'FN' THEN 'FUNCTION'
+                    WHEN o.type = 'IF' THEN 'FUNCTION'
+                    WHEN o.type = 'TF' THEN 'FUNCTION'
+                    ELSE 'FUNCTION'
+                END AS ROUTINE_TYPE,
+                CASE 
+                    WHEN o.type IN ('IF', 'TF') THEN 'TABLE'
+                    WHEN o.type = 'FN' THEN COALESCE(TYPE_NAME(ret.user_type_id), 'sql_variant')
+                    ELSE 'sql_variant'
+                END AS DATA_TYPE,
+                CASE 
+                    WHEN o.type = 'FN' THEN 'YES'
+                    ELSE 'NO'
+                END AS IS_DETERMINISTIC
+            FROM sys.sql_modules m
+            INNER JOIN sys.objects o ON m.object_id = o.object_id
+            INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+            LEFT JOIN sys.parameters ret ON o.object_id = ret.object_id AND ret.parameter_id = 0
+            WHERE o.type IN ('FN', 'IF', 'TF')
+            AND s.name IN ({placeholders})
+            AND o.is_ms_shipped = 0
+            ORDER BY s.name, o.name
             """
       query_params = tuple(valid_schemas)
 
@@ -167,17 +199,34 @@ class FunctionAnalyzer:
   def get_function_parameters(self, function_name: str, schema_name: str = 'dbo') -> List[Dict[str, Any]]:
     """Get parameters for a specific function."""
     query = """
-            SELECT
-                PARAMETER_NAME,
-                DATA_TYPE,
-                PARAMETER_MODE,
-                CHARACTER_MAXIMUM_LENGTH,
-                NUMERIC_PRECISION,
-                NUMERIC_SCALE
-            FROM INFORMATION_SCHEMA.PARAMETERS
-            WHERE SPECIFIC_SCHEMA = ? AND SPECIFIC_NAME = ?
-            ORDER BY ORDINAL_POSITION \
-            """
+SELECT 
+    CASE 
+        WHEN p.parameter_id = 0 AND p.name IS NULL THEN '@RETURN_VALUE'
+        ELSE p.name 
+    END AS PARAMETER_NAME,
+    CASE 
+        WHEN p.parameter_id = 0 AND o.type IN ('IF', 'TF') THEN 'TABLE'
+        WHEN p.parameter_id = 0 AND o.type = 'FN' THEN TYPE_NAME(p.user_type_id)
+        ELSE TYPE_NAME(p.user_type_id)
+    END AS DATA_TYPE,
+    CASE 
+        WHEN p.is_output = 1 THEN 'OUT'
+        WHEN p.parameter_id = 0 THEN 'RETURN'
+        ELSE 'IN'
+    END AS PARAMETER_MODE,
+    p.max_length AS CHARACTER_MAXIMUM_LENGTH,
+    p.precision AS NUMERIC_PRECISION,
+    p.scale AS NUMERIC_SCALE,
+    p.parameter_id AS ORDINAL_POSITION,
+    p.has_default_value,
+    p.default_value
+FROM sys.parameters p
+INNER JOIN sys.objects o ON p.object_id = o.object_id
+INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+WHERE s.name = ? 
+AND o.name = ?
+AND o.type IN ('FN', 'IF', 'TF')
+ORDER BY p.parameter_id"""
 
     try:
       rows = self.db_manager.execute_query(query, (schema_name, function_name))
@@ -213,21 +262,18 @@ Function Type: {function_subtype}
 SQL Code:
     
 Please provide:
-1. Assumptions made about the function
-2. A clear explanation of what this function does
-3. Analysis of its complexity level (Low/Medium/High)
-4. Input parameters and their purposes
-5. Return type and structure
-6. Business logic and workflow
-7. Performance considerations
-8. Potential issues or risks
+1. A clear explanation of what this function does
+2. Analysis of its complexity level (Low/Medium/High)
+3. Input parameters and their purposes
+4. Return type and structure
+5. Business logic and workflow
+6. Performance considerations
+7. Potential issues or risks
+8. Do not include assumptions or phrases like "likely"
 
+Format your response as a structured analysis that is easy to read and understand.  Format your response as follows.  Do not include any additional text outside of the structured analysis. Do not include 
 
-Answer 2 - 9 using assumptions made in 1.
-
-Format your response as a structured analysis that is easy to read and understand.  Format your response as follows.  Do not include any additional text outside of the structured analysis.
-
-#### 1. Overview & Assumptions
+#### 1. Overview
 #### 2. Complexity Level: (Low/Medium/High)
 #### 3. Input Parameters
 #### 4. Return Type
@@ -321,7 +367,7 @@ Format your response as a structured analysis that is easy to read and understan
       logger.warning(f"No functions found in schema '{schema_name}'")
       return results
 
-    logger.info(f"Starting analysis of {len(functions)} functions...")
+    logger.info(f"Starting analysis of {len(functions)}...")
 
     for i, function in enumerate(functions, 1):
       logger.info(f"Analyzing function {i}/{len(functions)}: {function['name']} ({function['function_subtype']})")
