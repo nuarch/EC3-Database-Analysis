@@ -35,6 +35,75 @@ def load_chatgpt_config() -> Dict[str, Any]:
             'temperature': float(os.getenv('OPENAI_TEMPERATURE', '0.1'))
         }
 
+def get_available_schemas(db_manager: DatabaseManager) -> List[str]:
+    """Get list of available non-empty schemas."""
+    return db_manager.get_non_empty_schemas()
+
+def select_schemas_interactive(available_schemas: List[str]) -> List[str]:
+    """Interactive schema selection."""
+    print("\n" + "="*80)
+    print("DATABASE TABLE ANALYSIS TOOL")
+    print("="*80)
+    
+    if not available_schemas:
+        print("No schemas found in the database.")
+        return []
+    
+    print(f"\nAvailable non-empty schemas ({len(available_schemas)}):")
+    for i, schema in enumerate(available_schemas, 1):
+        print(f"  {i}. {schema}")
+    
+    print("\nOptions:")
+    print("  A. All schemas")
+    print("  S. Select specific schemas")
+    print("  Q. Quit")
+    
+    while True:
+        choice = input("\nChoose an option (A/S/Q): ").strip().upper()
+        
+        if choice == 'Q':
+            print("Exiting...")
+            return []
+        
+        elif choice == 'A':
+            print(f"Selected all {len(available_schemas)} schemas")
+            return available_schemas
+        
+        elif choice == 'S':
+            selected_schemas = []
+            print("\nSelect schemas by number (comma-separated, e.g., 1,3,5):")
+            
+            while True:
+                try:
+                    selection = input("Schema numbers: ").strip()
+                    if not selection:
+                        break
+                    
+                    numbers = [int(x.strip()) for x in selection.split(',')]
+                    
+                    for num in numbers:
+                        if 1 <= num <= len(available_schemas):
+                            schema = available_schemas[num - 1]
+                            if schema not in selected_schemas:
+                                selected_schemas.append(schema)
+                        else:
+                            print(f"Invalid schema number: {num}")
+                            continue
+                    
+                    if selected_schemas:
+                        print(f"Selected schemas: {', '.join(selected_schemas)}")
+                        return selected_schemas
+                    else:
+                        print("No valid schemas selected.")
+                        continue
+                        
+                except ValueError:
+                    print("Invalid input. Please enter numbers separated by commas.")
+                    continue
+        
+        else:
+            print("Invalid choice. Please select A, S, or Q.")
+
 class TableAnalyzer:
     """Class to analyze database tables using ChatGPT API."""
     
@@ -155,6 +224,16 @@ class TableAnalyzer:
         except Exception as e:
             logger.error(f"Error retrieving tables: {e}")
             return []
+
+    def get_tables_from_multiple_schemas(self, schemas: List[str]) -> List[Dict[str, Any]]:
+        """Retrieve all tables from multiple schemas."""
+        all_tables = []
+        
+        for schema in schemas:
+            tables = self.get_all_tables(schema)
+            all_tables.extend(tables)
+        
+        return all_tables
     
     def get_table_columns(self, table_name: str, schema_name: str = 'dbo') -> List[Dict[str, Any]]:
         """Get detailed column information for a specific table."""
@@ -221,11 +300,11 @@ class TableAnalyzer:
         WHERE c.TABLE_SCHEMA = ? AND c.TABLE_NAME = ?
         ORDER BY c.ORDINAL_POSITION
         """
-
+        
         try:
             rows = self.db_manager.execute_query(query, (schema_name, table_name))
             columns = []
-
+            
             for row in rows:
                 column = {
                     'name': row[0],
@@ -244,13 +323,13 @@ class TableAnalyzer:
                     'comment': row[13]
                 }
                 columns.append(column)
-
+            
             return columns
-
+            
         except Exception as e:
             logger.error(f"Error retrieving columns for table {table_name}: {e}")
             return []
-
+    
     def get_table_indexes(self, table_name: str, schema_name: str = 'dbo') -> List[Dict[str, Any]]:
         """Get index information for a specific table."""
         query = """
@@ -270,11 +349,11 @@ class TableAnalyzer:
         GROUP BY i.name, i.type_desc, i.is_unique, i.is_primary_key
         ORDER BY i.is_primary_key DESC, i.is_unique DESC, i.name
         """
-
+        
         try:
             rows = self.db_manager.execute_query(query, (schema_name, table_name))
             indexes = []
-
+            
             for row in rows:
                 index = {
                     'name': row[0],
@@ -284,19 +363,19 @@ class TableAnalyzer:
                     'columns': row[4]
                 }
                 indexes.append(index)
-
+            
             return indexes
-
+            
         except Exception as e:
             logger.error(f"Error retrieving indexes for table {table_name}: {e}")
             return []
-
+    
     def send_to_chatgpt_api(self, table_info: Dict[str, Any], columns: List[Dict[str, Any]], indexes: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
         """Send table structure to ChatGPT API for analysis."""
-
+        
         table_name = table_info['name']
         schema_name = table_info['schema']
-
+        
         # Format table structure for analysis
         table_structure = f"Table: {schema_name}.{table_name}\n"
         table_structure += f"Type: {table_info['type']}\n"
@@ -304,7 +383,7 @@ class TableAnalyzer:
             table_structure += f"Description: {table_info['comment']}\n"
         table_structure += f"Created: {table_info['created']}\n"
         table_structure += f"Last Modified: {table_info['last_altered']}\n\n"
-
+        
         # Add columns information
         table_structure += "Columns:\n"
         for col in columns:
@@ -324,7 +403,7 @@ class TableAnalyzer:
             if col.get('comment'):
                 col_info += f" -- {col['comment']}"
             table_structure += col_info + "\n"
-
+        
         # Add indexes information
         if indexes:
             table_structure += "\nIndexes:\n"
@@ -336,7 +415,7 @@ class TableAnalyzer:
                     idx_info += ", UNIQUE"
                 idx_info += f") on [{idx['columns']}]"
                 table_structure += idx_info + "\n"
-
+        
         # Create a comprehensive prompt for ChatGPT
         prompt = f"""
 Please analyze the following Microsoft SQL Server database table and provide a detailed analysis:
@@ -364,7 +443,7 @@ Format your response as a structured analysis that is easy to read and understan
 #### 7. Potential Issues or Recommendations
 
 """
-
+        
         payload = {
             "model": self.model,
             "messages": [
@@ -380,7 +459,7 @@ Format your response as a structured analysis that is easy to read and understan
             "max_tokens": self.max_tokens,
             "temperature": self.temperature
         }
-
+        
         for attempt in range(self.max_retries):
             try:
                 response = self.session.post(
@@ -388,24 +467,24 @@ Format your response as a structured analysis that is easy to read and understan
                     json=payload,
                     timeout=self.timeout
                 )
-
+                
                 if response.status_code == 200:
                     result = response.json()
-
+                    
                     # Extract the explanation from ChatGPT response
                     explanation_text = result['choices'][0]['message']['content']
-
+                    
                     # Log message if explanation contains "Incomplete" or similar warnings
                     if "incomplete" in explanation_text.lower():
                         logger.warning(f"ChatGPT response for table '{table_name}' may contain incomplete analysis")
-
+                    
                     # Parse the response to extract structured information
                     analysis_result = self._parse_chatgpt_response(
-                        explanation_text,
+                        explanation_text, 
                         table_name,
                         result
                     )
-
+                    
                     logger.info(f"Successfully got analysis for table: {table_name}")
                     return analysis_result
                 else:
@@ -414,19 +493,19 @@ Format your response as a structured analysis that is easy to read and understan
                         time.sleep(2 ** attempt)  # Exponential backoff
                         continue
                     return None
-
+                    
             except requests.exceptions.RequestException as e:
                 logger.error(f"ChatGPT API request error for table {table_name} (attempt {attempt + 1}): {e}")
                 if attempt < self.max_retries - 1:
                     time.sleep(2 ** attempt)  # Exponential backoff
                     continue
                 return None
-
+        
         return None
-
+    
     def _parse_chatgpt_response(self, explanation_text: str, table_name: str, api_response: Dict) -> Dict[str, Any]:
         """Parse ChatGPT response to extract structured information."""
-
+        
         # Extract complexity if mentioned
         complexity = "Medium"  # Default
         explanation_upper = explanation_text.upper()
@@ -434,7 +513,7 @@ Format your response as a structured analysis that is easy to read and understan
             complexity = "Low"
         elif "COMPLEXITY LEVEL: HIGH" in explanation_upper:
             complexity = "High"
-
+        
         return {
             "table_name": table_name,
             "explanation": explanation_text,
@@ -448,25 +527,25 @@ Format your response as a structured analysis that is easy to read and understan
         """Analyze all tables in a schema."""
         tables = self.get_all_tables(schema_name)
         results = []
-
+        
         if not tables:
             logger.warning(f"No tables found in schema '{schema_name}'")
             return results
-
+        
         logger.info(f"Starting analysis of {len(tables)} tables...")
-
+        
         for i, table in enumerate(tables, 1):
             logger.info(f"Analyzing table {i}/{len(tables)}: {table['name']}")
-
+            
             # Get table columns
             columns = self.get_table_columns(table['name'], table['schema'])
-
+            
             # Get table indexes
             indexes = self.get_table_indexes(table['name'], table['schema'])
-
+            
             # Send to ChatGPT for analysis
             analysis = self.send_to_chatgpt_api(table, columns, indexes)
-
+            
             analysis_result = {
                 'table_info': table,
                 'columns': columns,
@@ -474,31 +553,82 @@ Format your response as a structured analysis that is easy to read and understan
                 'analysis': analysis,
                 'analysis_timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
             }
-
+            
             results.append(analysis_result)
-
+            
             # Small delay to avoid overwhelming the API
             time.sleep(1)
-
+        
         # Save results to the file if specified
         if output_file:
             self.save_results_to_file(results, output_file)
-
+        
         logger.info(f"Analysis completed for {len(results)} tables")
         return results
 
+    def analyze_tables_from_schemas(self, schemas: List[str], output_file: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Analyze all tables from multiple schemas."""
+        all_tables = self.get_tables_from_multiple_schemas(schemas)
+        results = []
+        
+        if not all_tables:
+            logger.warning("No tables found in the selected schemas")
+            return results
+        
+        # Group tables by schema for better logging
+        schema_counts = {}
+        for table in all_tables:
+            schema = table['schema']
+            schema_counts[schema] = schema_counts.get(schema, 0) + 1
+        
+        logger.info(f"Starting analysis of {len(all_tables)} tables from {len(schema_counts)} schemas:")
+        for schema, count in schema_counts.items():
+            logger.info(f"  {schema}: {count} tables")
+        
+        for i, table in enumerate(all_tables, 1):
+            logger.info(f"Analyzing table {i}/{len(all_tables)}: {table['schema']}.{table['name']}")
+            
+            # Get table columns
+            columns = self.get_table_columns(table['name'], table['schema'])
+            
+            # Get table indexes
+            indexes = self.get_table_indexes(table['name'], table['schema'])
+            
+            # Send to ChatGPT for analysis
+            analysis = self.send_to_chatgpt_api(table, columns, indexes)
+            
+            analysis_result = {
+                'table_info': table,
+                'columns': columns,
+                'indexes': indexes,
+                'analysis': analysis,
+                'analysis_timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            
+            results.append(analysis_result)
+            
+            # Small delay to avoid overwhelming the API
+            time.sleep(1)
+        
+        # Save results to the file if specified
+        if output_file:
+            self.save_results_to_file(results, output_file)
+        
+        logger.info(f"Analysis completed for {len(results)} tables from selected schemas")
+        return results
+    
     def save_results_to_file(self, results: List[Dict[str, Any]], filename: str):
         """Save analysis results to a JSON file."""
         try:
             # Ensure the export directory exists
             os.makedirs('export', exist_ok=True)
             filepath = os.path.join('export', filename)
-
+            
             with open(filepath, 'w', encoding='utf-8') as f:
                 json.dump(results, f, indent=2, ensure_ascii=False, default=str)
-
+            
             logger.info(f"Results saved to: {filepath}")
-
+            
         except Exception as e:
             logger.error(f"Error saving results to file: {e}")
 
@@ -507,33 +637,33 @@ Format your response as a structured analysis that is easy to read and understan
         # Get tables from all non-empty schemas
         tables = self.get_all_tables(schema_name=None)  # None means all schemas
         results = []
-
+        
         if not tables:
             logger.warning("No tables found in any non-empty schemas")
             return results
-
+        
         # Group tables by schema for better logging
         schema_counts = {}
         for table in tables:
             schema = table['schema']
             schema_counts[schema] = schema_counts.get(schema, 0) + 1
-
+        
         logger.info(f"Starting analysis of {len(tables)} tables from {len(schema_counts)} schemas:")
         for schema, count in schema_counts.items():
             logger.info(f"  {schema}: {count} tables")
-
+        
         for i, table in enumerate(tables, 1):
             logger.info(f"Analyzing table {i}/{len(tables)}: {table['schema']}.{table['name']}")
-
+            
             # Get table columns
             columns = self.get_table_columns(table['name'], table['schema'])
-
+            
             # Get table indexes
             indexes = self.get_table_indexes(table['name'], table['schema'])
-
+            
             # Send to ChatGPT for analysis
             analysis = self.send_to_chatgpt_api(table, columns, indexes)
-
+            
             analysis_result = {
                 'table_info': table,
                 'columns': columns,
@@ -541,62 +671,114 @@ Format your response as a structured analysis that is easy to read and understan
                 'analysis': analysis,
                 'analysis_timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
             }
-
+            
             results.append(analysis_result)
-
+            
             # Small delay to avoid overwhelming the API
             time.sleep(1)
-
+        
         # Save results to the file if specified
         if output_file:
             self.save_results_to_file(results, output_file)
-
+        
         logger.info(f"Analysis completed for {len(results)} tables from all schemas")
         return results
 
 def parse_command_line_args():
     """Parse command line arguments"""
     import argparse
-
+    
     parser = argparse.ArgumentParser(description='Analyze database tables using ChatGPT')
-    parser.add_argument('--schema', '-s', default='dbo',
-                        help='Database schema to analyze (default: dbo)')
-    parser.add_argument('--output', '-o', default='tables_analysis.json',
-                        help='Output JSON file name (default: tables_analysis.json)')
+    parser.add_argument('--schema', '-s', default=None,
+                        help='Database schema to analyze (if not specified, interactive mode will be used)')
+    parser.add_argument('--output', '-o', default=None,
+                        help='Output JSON file name (if not specified, will be generated based on selection)')
     parser.add_argument('--all-schemas', '-a', action='store_true',
-                        help='Analyze tables from all non-empty schemas')
-
+                        help='Analyze tables from all non-empty schemas (bypasses interactive mode)')
+    parser.add_argument('--interactive', '-i', action='store_true',
+                        help='Force interactive mode even if schema is specified')
+    
     return parser.parse_args()
 
 def main():
-    """Main function"""
+    """Main function with interactive mode."""
     args = parse_command_line_args()
-
+    
     # Initialize the analyzer
     analyzer = TableAnalyzer()
-
-    if args.all_schemas:
-        # Analyze all tables from all schemas
-        output_filename = f'tables_analysis_all_schemas.json'
+    
+    # Handle different execution modes
+    if args.all_schemas and not args.interactive:
+        # Non-interactive: Analyze all schemas
+        output_filename = args.output or 'tables_analysis_all_schemas.json'
         results = analyzer.analyze_all_tables_from_all_schemas(output_filename)
-
+        
         if results:
             print(f"\nAnalysis completed successfully!")
             print(f"Analyzed {len(results)} tables from all non-empty schemas")
             print(f"Results saved to: export/{output_filename}")
         else:
             print("No tables found to analyze")
-    else:
-        # Analyze tables from a specific schema
-        output_filename = f'tables_analysis_{args.schema}.json'
+            
+    elif args.schema and not args.interactive:
+        # Non-interactive: Analyze specific schema
+        output_filename = args.output or f'tables_analysis_{args.schema}.json'
         results = analyzer.analyze_all_tables(args.schema, output_filename)
-
+        
         if results:
             print(f"\nAnalysis completed successfully!")
             print(f"Analyzed {len(results)} tables from schema '{args.schema}'")
             print(f"Results saved to: export/{output_filename}")
         else:
             print(f"No tables found in schema '{args.schema}'")
+            
+    else:
+        # Interactive mode
+        available_schemas = get_available_schemas(analyzer.db_manager)
+        
+        if not available_schemas:
+            print("No non-empty schemas found in the database.")
+            return
+        
+        selected_schemas = select_schemas_interactive(available_schemas)
+        
+        if not selected_schemas:
+            print("No schemas selected. Exiting...")
+            return
+        
+        # Generate output filename based on selection
+        if len(selected_schemas) == 1:
+            output_filename = args.output or f'tables_analysis_{selected_schemas[0]}.json'
+        elif len(selected_schemas) == len(available_schemas):
+            output_filename = args.output or 'tables_analysis_all_schemas.json'
+        else:
+            schema_names = '_'.join(selected_schemas[:3])  # Limit filename length
+            if len(selected_schemas) > 3:
+                schema_names += f'_and_{len(selected_schemas)-3}_more'
+            output_filename = args.output or f'tables_analysis_{schema_names}.json'
+        
+        print(f"\nStarting analysis of tables from selected schemas...")
+        print(f"Output will be saved to: export/{output_filename}")
+        
+        # Analyze selected schemas
+        results = analyzer.analyze_tables_from_schemas(selected_schemas, output_filename)
+        
+        if results:
+            print(f"\nAnalysis completed successfully!")
+            print(f"Analyzed {len(results)} tables from {len(selected_schemas)} schemas")
+            print(f"Results saved to: export/{output_filename}")
+            
+            # Show summary by schema
+            schema_counts = {}
+            for result in results:
+                schema = result['table_info']['schema']
+                schema_counts[schema] = schema_counts.get(schema, 0) + 1
+            
+            print(f"\nSummary by schema:")
+            for schema, count in schema_counts.items():
+                print(f"  {schema}: {count} tables")
+        else:
+            print("No tables found to analyze in the selected schemas")
 
 if __name__ == "__main__":
     main()
