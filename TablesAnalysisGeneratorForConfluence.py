@@ -113,6 +113,21 @@ def convert_markdown_to_adf(markdown_text):
             
             adf_doc["content"].append(_create_heading(header_text, level))
         
+        # Handle markdown tables
+        elif _is_table_row(line):
+            # First, add any pending paragraph content
+            if current_content:
+                para_content = _create_paragraph_content(' '.join(current_content))
+                if para_content:
+                    adf_doc["content"].append(_create_paragraph(para_content))
+                current_content = []
+            
+            # Parse the entire table
+            table_data, rows_processed = _parse_markdown_table(lines, i)
+            if table_data:
+                adf_doc["content"].append(_create_adf_table(table_data))
+                i += rows_processed - 1  # Adjust for rows processed
+        
         # Handle code blocks
         elif line.startswith('```'):
             # First, add any pending paragraph content
@@ -197,6 +212,206 @@ def convert_markdown_to_adf(markdown_text):
             adf_doc["content"].append(_create_paragraph(para_content))
     
     return adf_doc
+
+def _is_table_row(line):
+    """
+    Check if a line is a markdown table row.
+    
+    Args:
+        line (str): The line to check
+        
+    Returns:
+        bool: True if the line is a table row
+    """
+    # A table row contains pipe characters and isn't just a separator
+    if '|' not in line:
+        return False
+    
+    # Skip table separator lines (like |---|---|)
+    stripped = line.strip()
+    if stripped and all(c in '|-: ' for c in stripped):
+        return False
+    
+    return True
+
+def _parse_markdown_table(lines, start_index):
+    """
+    Parse a markdown table starting from the given index.
+    
+    Args:
+        lines (list): List of lines
+        start_index (int): Starting index
+        
+    Returns:
+        tuple: (table_data, rows_processed) where table_data is a dict with headers and rows
+    """
+    table_data = {
+        'headers': [],
+        'rows': []
+    }
+    
+    current_index = start_index
+    is_first_row = True
+    separator_found = False
+    
+    while current_index < len(lines):
+        line = lines[current_index].strip()
+        
+        # Stop if we hit an empty line or non-table content
+        if not line:
+            break
+        
+        if not _is_table_row(line):
+            # Check if this is a table separator line
+            if '|' in line and all(c in '|-: ' for c in line.strip()):
+                separator_found = True
+                current_index += 1
+                continue
+            else:
+                break
+        
+        # Parse the row
+        cells = _parse_table_row(line)
+        
+        if is_first_row and not separator_found:
+            # This is the header row
+            table_data['headers'] = cells
+            is_first_row = False
+        elif is_first_row and separator_found:
+            # Previous row was header, this is first data row
+            table_data['rows'].append(cells)
+            is_first_row = False
+        else:
+            # This is a data row
+            table_data['rows'].append(cells)
+        
+        current_index += 1
+    
+    rows_processed = current_index - start_index
+    return table_data, rows_processed
+
+def _parse_table_row(line):
+    """
+    Parse a single table row and return the cell contents.
+    
+    Args:
+        line (str): The table row line
+        
+    Returns:
+        list: List of cell contents
+    """
+    # Remove leading/trailing whitespace and split by |
+    line = line.strip()
+    
+    # Remove leading and trailing | if present
+    if line.startswith('|'):
+        line = line[1:]
+    if line.endswith('|'):
+        line = line[:-1]
+    
+    # Split by | and clean up each cell
+    cells = [cell.strip() for cell in line.split('|')]
+    
+    return cells
+
+def _create_adf_table(table_data):
+    """
+    Create an ADF table structure from parsed table data.
+    
+    Args:
+        table_data (dict): Dictionary with 'headers' and 'rows' keys
+        
+    Returns:
+        dict: ADF table structure
+    """
+    # Calculate number of columns
+    num_cols = len(table_data['headers']) if table_data['headers'] else (
+        len(table_data['rows'][0]) if table_data['rows'] else 0
+    )
+    
+    if num_cols == 0:
+        return None
+    
+    # Create table structure
+    table = {
+        "type": "table",
+        "attrs": {
+            "isNumberColumnEnabled": False,
+            "layout": "default"
+        },
+        "content": []
+    }
+    
+    # Add header row if present
+    if table_data['headers']:
+        header_row = {
+            "type": "tableRow",
+            "content": []
+        }
+        
+        for header_cell in table_data['headers']:
+            cell = {
+                "type": "tableHeader",
+                "attrs": {},
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": _create_table_cell_content(header_cell)
+                    }
+                ]
+            }
+            header_row["content"].append(cell)
+        
+        table["content"].append(header_row)
+    
+    # Add data rows
+    for row_data in table_data['rows']:
+        row = {
+            "type": "tableRow",
+            "content": []
+        }
+        
+        # Ensure we have the right number of columns
+        padded_row = row_data + [''] * (num_cols - len(row_data))
+        
+        for i, cell_data in enumerate(padded_row[:num_cols]):
+            cell = {
+                "type": "tableCell",
+                "attrs": {},
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": _create_table_cell_content(cell_data)
+                    }
+                ]
+            }
+            row["content"].append(cell)
+        
+        table["content"].append(row)
+    
+    return table
+
+def _create_table_cell_content(cell_text):
+    """
+    Create ADF content for a table cell, handling basic formatting.
+    
+    Args:
+        cell_text (str): The cell text content
+        
+    Returns:
+        list: List of ADF content nodes
+    """
+    if not cell_text or not cell_text.strip():
+        return []
+    
+    # For now, handle basic text. Could be extended to handle inline formatting
+    # like bold, italic, code, etc.
+    return [
+        {
+            "type": "text",
+            "text": cell_text.strip()
+        }
+    ]
 
 def _is_bullet_list_item(line):
     """Check if line is a bullet list item at any indentation level"""
@@ -887,7 +1102,7 @@ def create_content_properties_adf(schema_name, table_name, complexity, column_co
             ]
         }
     ]
-    
+
     # Add column count if available
     if column_count is not None:
         properties_rows.append({
@@ -937,7 +1152,7 @@ def create_content_properties_adf(schema_name, table_name, complexity, column_co
                 }
             ]
         })
-    
+
     # Add row count if available
     if row_count is not None:
         properties_rows.append({
@@ -987,7 +1202,7 @@ def create_content_properties_adf(schema_name, table_name, complexity, column_co
                 }
             ]
         })
-    
+
     properties_content = [
         {
             "type": "bodiedExtension",
@@ -1020,7 +1235,7 @@ def create_content_properties_adf(schema_name, table_name, complexity, column_co
             ]
         }
     ]
-    
+
     return properties_content
 
 def generate_table_page(table):
@@ -1032,7 +1247,7 @@ def generate_table_page(table):
 
     schema_name = table_info['schema']
     table_name = table_info['name']
-    
+
     # Get complexity from analysis
     complexity = 'N/A'
     if isinstance(analysis, dict):
@@ -1067,7 +1282,7 @@ def generate_table_page(table):
         content += f"\n\n# {last_heading_number + 1}. Table Columns\n\n"
         content += "| Column Name | Data Type | Nullable | Default | Primary Key | Foreign Key | Referenced Table |\n"
         content += "|-------------|-----------|----------|---------|-------------|-------------|------------------|\n"
-        
+
         for col in columns:
             column_name = col.get('name', '')
             data_type = col.get('data_type', '')
@@ -1075,7 +1290,7 @@ def generate_table_page(table):
             column_default = col.get('column_default', '') or ''
             is_primary = col.get('is_primary_key', 'NO')
             is_foreign = col.get('is_foreign_key', 'NO')
-            
+
             # Build referenced table info
             referenced_info = ''
             if is_foreign == 'YES':
@@ -1086,9 +1301,9 @@ def generate_table_page(table):
                     referenced_info = f"{ref_schema}.{ref_table}"
                     if ref_column:
                         referenced_info += f".{ref_column}"
-            
+
             content += f"| {column_name} | {data_type} | {is_nullable} | {column_default} | {is_primary} | {is_foreign} | {referenced_info} |\n"
-        
+
         last_heading_number += 1
 
     # Table Indexes Information
@@ -1096,47 +1311,47 @@ def generate_table_page(table):
         content += f"\n\n# {last_heading_number + 1}. Table Indexes\n\n"
         content += "| Index Name | Type | Unique | Columns |\n"
         content += "|------------|------|--------|---------|\n"
-        
+
         for idx in indexes:
             index_name = idx.get('name', '')
             index_type = idx.get('type', '')
             is_unique = 'YES' if idx.get('is_unique') else 'NO'
             columns_list = idx.get('columns', [])
             columns_str = ', '.join(columns_list) if isinstance(columns_list, list) else str(columns_list)
-            
+
             content += f"| {index_name} | {index_type} | {is_unique} | {columns_str} |\n"
 
     # Convert markdown content to ADF format
     adf_content = format_confluence_content(content)
-    
+
     # Create properties section using proper Confluence extension
     column_count = len(columns) if columns else None
     row_count = table_info.get('row_count')
     properties_adf = create_content_properties_adf(schema_name, table_name, complexity, column_count, row_count)
-    
+
     # Insert properties at the beginning of the content
     # Combine properties + existing content
     final_content = properties_adf + adf_content["content"]
-    
+
     # Update the ADF document with the new content
     adf_content["content"] = final_content
-    
+
     return adf_content
 
 def generate_table_confluence_files(json_file_path, output_dir="./confluence_docs/tables", selected_schemas=None):
     """Generate separate Confluence ADF files and metadata for each table"""
-    
+
     # Load JSON data
     tables = load_json_data(json_file_path)
     if not tables:
         print("Failed to load JSON data")
         return False
-    
+
     # Create output directory if it doesn't exist
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         print(f"Created output directory: {output_dir}")
-    
+
     # Filter tables by selected schemas if specified
     if selected_schemas:
         filtered_tables = []
@@ -1145,37 +1360,37 @@ def generate_table_confluence_files(json_file_path, output_dir="./confluence_doc
             if schema in selected_schemas:
                 filtered_tables.append(table)
         tables = filtered_tables
-    
+
     if not tables:
         print("No tables to process")
         return False
-    
+
     generated_files = []
     schema_counts = defaultdict(int)
-    
+
     # Generate Confluence file and metadata for each table
     for table in tables:
         table_info = table['table_info']
         schema_name = table_info['schema']
         table_name = table_info['name']
-        
+
         # Generate Confluence ADF content
         adf_content = generate_table_page(table)
-        
+
         # Create metadata
         metadata = create_table_metadata(table)
-        
+
         # Create filename base - keeping original capitalization
         filename_base = create_safe_filename(schema_name, table_name)
         adf_filename = f"{filename_base}.json"  # ADF content in JSON format
         metadata_filename = f"{filename_base}_metadata.json"  # Separate metadata file
-        
+
         adf_output_file = os.path.join(output_dir, adf_filename)
         metadata_output_file = os.path.join(output_dir, metadata_filename)
-        
+
         # Count tables per schema for summary
         schema_counts[schema_name] += 1
-        
+
         # Write ADF file
         try:
             with open(adf_output_file, 'w', encoding='utf-8') as file:
@@ -1185,7 +1400,7 @@ def generate_table_confluence_files(json_file_path, output_dir="./confluence_doc
         except Exception as e:
             print(f"Error writing ADF file {adf_output_file}: {e}")
             return False
-        
+
         # Write metadata file
         try:
             with open(metadata_output_file, 'w', encoding='utf-8') as file:
@@ -1195,19 +1410,19 @@ def generate_table_confluence_files(json_file_path, output_dir="./confluence_doc
         except Exception as e:
             print(f"Error writing metadata file {metadata_output_file}: {e}")
             return False
-    
+
     # Print summary
     print(f"\nSuccessfully generated {len(generated_files)} files ({len(generated_files)//2} tables):")
     print("\nTables by schema:")
     for schema, count in sorted(schema_counts.items()):
         print(f"  {schema}: {count} tables")
-    
+
     return True
 
 def parse_command_line_args():
     """Parse command line arguments"""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description='Generate individual Confluence pages and metadata for tables')
     parser.add_argument('--input', '-i', default='./export/tables_analysis_all_schemas.json',
                         help='Input JSON file path (default: ./export/tables_analysis_all_schemas.json)')
@@ -1217,35 +1432,35 @@ def parse_command_line_args():
                         help='Specific schemas to process (space-separated). If not provided, interactive selection will be used.')
     parser.add_argument('--all', '-a', action='store_true',
                         help='Process all schemas without interactive selection')
-    
+
     return parser.parse_args()
 
 def main():
     """Main function"""
     args = parse_command_line_args()
-    
+
     json_file = args.input
     output_dir = args.output
-    
+
     # Check if a JSON file exists
     if not os.path.exists(json_file):
         print(f"JSON file not found: {json_file}")
         return
-    
+
     # Load JSON data to get available schemas
     tables = load_json_data(json_file)
     if not tables:
         print("Failed to load JSON data")
         return
-    
+
     available_schemas = get_available_schemas(tables)
-    
+
     if not available_schemas:
         print("No schemas found in the data")
         return
-    
+
     selected_schemas = None
-    
+
     # Determine which schemas to process
     if args.all:
         # Process all schemas
@@ -1259,11 +1474,11 @@ def main():
                 selected_schemas.append(schema)
             else:
                 print(f"Warning: Schema '{schema}' not found. Available schemas: {', '.join(available_schemas)}")
-        
+
         if not selected_schemas:
             print("No valid schemas specified")
             return
-            
+
         print(f"Processing {len(selected_schemas)} specified schemas: {', '.join(selected_schemas)}")
     else:
         # Interactive selection
@@ -1271,15 +1486,15 @@ def main():
         if selected_schemas is None:
             print("Operation cancelled")
             return
-        
+
         if len(selected_schemas) == len(available_schemas):
             print(f"Processing all {len(selected_schemas)} schemas")
         else:
             print(f"Processing {len(selected_schemas)} selected schemas: {', '.join(selected_schemas)}")
-    
+
     # Generate the table Confluence files
     success = generate_table_confluence_files(json_file, output_dir, selected_schemas)
-    
+
     if success:
         print("\nConfluence generation completed successfully!")
         print(f"Files generated in: {output_dir}")
