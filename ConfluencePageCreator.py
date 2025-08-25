@@ -985,7 +985,7 @@ class ConfluencePageCreator:
 
 # Helper functions for bulk operations
 def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, space_id: str, parent_page_id: str, 
-                                            content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+                                            content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None, filename_suffix: Optional[str] = None) -> Dict[str, Any]:
     """
     Create child pages from all ADF files in a directory using space ID and parent page ID.
     Updated to support labels and use REST API v2.
@@ -1037,18 +1037,21 @@ def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, spa
         
         # Create child page with properties and labels
         properties = file_info.get('metadata', {})
+        child_title = file_info['title']
+        if filename_suffix:
+            child_title = f"{child_title} - [{filename_suffix}]"
         result = creator.create_child_page_with_properties_by_ids(
-            space_id, parent_page_id, file_info['title'], adf_content, properties, labels
+            space_id, parent_page_id, child_title, adf_content, properties, labels
         )
         
         if result:
             created_pages.append({
                 'id': result['id'],
-                'title': file_info['title'],
+                'title': child_title,
                 'file': file_info['adf_file'],
                 'url': f"{creator.base_url}/pages/{result['id']}"
             })
-            print(f"   ✅ Successfully created: {file_info['title']} (ID: {result['id']})")
+            print(f"   ✅ Successfully created: {child_title} (ID: {result['id']})")
         else:
             failed_pages.append({
                 'file': file_info['adf_file'],
@@ -1065,7 +1068,7 @@ def create_child_pages_from_directory_by_ids(creator: ConfluencePageCreator, spa
     }
 
 def create_child_pages_from_directory(creator: ConfluencePageCreator, space_key: str, parent_title: str, 
-                                    content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+                                    content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None, filename_suffix: Optional[str] = None) -> Dict[str, Any]:
     """
     Create child pages from all ADF files in a directory.
     Helper function for backward compatibility.
@@ -1104,10 +1107,10 @@ def create_child_pages_from_directory(creator: ConfluencePageCreator, space_key:
     parent_page_id = parent_page['id']
     
     # Use the ID-based function
-    return create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, content_dir, labels)
+    return create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, content_dir, labels, filename_suffix)
 
 def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: ConfluencePageCreator, space_id: str, parent_page_id: str, 
-                                                                  content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+                                                                  content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None, filename_suffix: Optional[str] = None) -> Dict[str, Any]:
     """
     Create child pages from all ADF files in a directory with schema hierarchy.
     Creates schema pages as children of the parent, then procedures as children of schema pages.
@@ -1148,7 +1151,14 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
     # Group files by schema
     schema_groups = {}
     for file_info in available_files:
-        schema = file_info.get('schema', 'Unknown') + ' - (' + file_info.get('metadata').get('type', 'Unknown') + 's)'
+        metadata = file_info.get('metadata', {}) or {}
+        obj_type = metadata.get('type', 'Unknown')
+        base = file_info.get('schema', 'Unknown')
+        # Build schema title with optional user suffix inside the parentheses
+        if filename_suffix:
+            schema = f"{base} - ({obj_type}s - [{filename_suffix}])"
+        else:
+            schema = f"{base} - ({obj_type}s)"
         if schema not in schema_groups:
             schema_groups[schema] = []
         schema_groups[schema].append(file_info)
@@ -1234,20 +1244,23 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
 
                 # Create procedure page with properties and labels under schema page
                 properties = file_info.get('metadata', {})
+                proc_title = file_info['title']
+                if filename_suffix:
+                    proc_title = f"{proc_title} - [{filename_suffix}]"
                 result = creator.create_child_page_with_properties_by_ids(
-                    space_id, schema_page_id, file_info['title'], adf_content, properties, pageLabels
+                    space_id, schema_page_id, proc_title, adf_content, properties, pageLabels
                 )
                 
                 if result:
                     created_pages.append({
                         'id': result['id'],
-                        'title': file_info['title'],
+                        'title': proc_title,
                         'schema': schema_name,
                         'schema_page_id': schema_page_id,
                         'file': file_info['adf_file'],
                         'url': f"{creator.base_url}/pages/{result['id']}"
                     })
-                    print(f"      ✅ Successfully created: {file_info['title']} (ID: {result['id']})")
+                    print(f"      ✅ Successfully created: {proc_title} (ID: {result['id']})")
                 else:
                     failed_pages.append({
                         'file': file_info['adf_file'],
@@ -1276,7 +1289,7 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
     }
 
 def create_child_pages_from_directory_with_schema_hierarchy(creator: ConfluencePageCreator, space_key: str, parent_title: str, 
-                                                           content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None) -> Dict[str, Any]:
+                                                           content_dir: str = "./confluence_docs", labels: Optional[List[str]] = None, filename_suffix: Optional[str] = None) -> Dict[str, Any]:
     """
     Create child pages from all ADF files in a directory with schema hierarchy.
     Helper function for backward compatibility.
@@ -1316,7 +1329,7 @@ def create_child_pages_from_directory_with_schema_hierarchy(creator: ConfluenceP
     parent_page_id = parent_page['id']
     
     # Use the ID-based function with schema hierarchy
-    return create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator, space_id, parent_page_id, content_dir, labels)
+    return create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator, space_id, parent_page_id, content_dir, labels, filename_suffix)
 
 def main():
     """Main function to run the script"""
@@ -1443,6 +1456,10 @@ def interactive_mode():
             content = input("Enter page content (HTML): ").strip()
             labels = get_labels_from_user(default_labels)
 
+            filename_suffix = input("Enter filename suffix to append to page title (optional): ").strip()
+            if filename_suffix:
+                title = f"{title} - [{filename_suffix}]"
+
             result = creator.create_page_by_space_id(space_id, title, content, labels=labels)
             if result:
                 print(f"✅ Page '{title}' created successfully!")
@@ -1463,6 +1480,10 @@ def interactive_mode():
             child_title = input("Enter child page title: ").strip()
             child_content = input("Enter child page content (HTML): ").strip()
             labels = get_labels_from_user(default_labels)
+
+            filename_suffix = input("Enter filename suffix to append to child page title (optional): ").strip()
+            if filename_suffix:
+                child_title = f"{child_title} - [{filename_suffix}]"
 
             result = creator.create_child_page_by_ids(space_id, parent_page_id, child_title, child_content, labels)
             if result:
@@ -1504,6 +1525,10 @@ def interactive_mode():
 
                         # Get labels from user
                         labels = get_labels_from_user(default_labels)
+
+                        filename_suffix = input("Enter filename suffix to append to page title (optional): ").strip()
+                        if filename_suffix:
+                            title = f"{title} - [{filename_suffix}]"
 
                         # Create page with properties from metadata
                         properties = selected_file.get('metadata', {})
@@ -1561,9 +1586,13 @@ def interactive_mode():
                 # Get labels from user
                 labels = get_labels_from_user(default_labels)
 
+                # Ask for optional filename suffix for schema page titles
+                filename_suffix = input("Enter filename suffix to append to schema page titles (optional): ").strip()
+                if not filename_suffix:
+                    filename_suffix = None
                 # Create all pages with schema hierarchy
                 result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
-                    creator, space_id, parent_page_id, selected_dir, labels
+                    creator, space_id, parent_page_id, selected_dir, labels, filename_suffix
                 )
 
                 if result and result['success']:
@@ -1614,6 +1643,9 @@ def interactive_mode():
                             labels.append(f"schema-{properties['schema']}")
                             labels.append(f"complexity-{properties['complexity']}")
 
+                            filename_suffix = input("Enter filename suffix to append to child page title (optional): ").strip()
+                            if filename_suffix:
+                                child_title = f"{child_title} - [{filename_suffix}]"
 
                             # Create child page with properties from metadata and labels
                             result = creator.create_child_page_with_properties_by_ids(space_id, parent_page_id, child_title, adf_content, properties, labels)
@@ -1657,9 +1689,13 @@ def interactive_mode():
             labels = get_labels_from_user(default_labels)
 
             if mode_choice == "2":
+                # Ask for optional filename suffix for schema page titles
+                filename_suffix = input("Enter filename suffix to append to schema page titles (optional): ").strip()
+                if not filename_suffix:
+                    filename_suffix = None
                 # Use schema hierarchy
                 result = create_child_pages_from_directory_by_ids_with_schema_hierarchy(
-                    creator, space_id, parent_page_id, selected_dir, labels
+                    creator, space_id, parent_page_id, selected_dir, labels, filename_suffix
                 )
 
                 if result and result['success']:
@@ -1678,7 +1714,10 @@ def interactive_mode():
                     print("❌ Failed to create pages with schema hierarchy")
             else:
                 # Use flat structure (original behavior)
-                result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir, labels)
+                filename_suffix = input("Enter filename suffix to append to each page title (optional): ").strip()
+                if not filename_suffix:
+                    filename_suffix = None
+                result = create_child_pages_from_directory_by_ids(creator, space_id, parent_page_id, selected_dir, labels, filename_suffix)
 
                 if result and result['success']:
                     print(f"✅ Successfully created {len(result['created_pages'])} child pages!")
