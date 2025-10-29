@@ -1156,7 +1156,7 @@ def create_child_pages_from_directory_by_ids_with_schema_hierarchy(creator: Conf
         base = file_info.get('schema', 'Unknown')
         # Build schema title with optional user suffix inside the parentheses
         if filename_suffix:
-            schema = f"{base} - ({obj_type}s - [{filename_suffix}])"
+            schema = f"{base} - ({obj_type}s) - [{filename_suffix}]"
         else:
             schema = f"{base} - ({obj_type}s)"
         if schema not in schema_groups:
