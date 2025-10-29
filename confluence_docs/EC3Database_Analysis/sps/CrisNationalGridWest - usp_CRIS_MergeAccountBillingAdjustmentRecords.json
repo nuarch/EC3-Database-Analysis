@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_MergeAccountBillingAdjustmentRecords",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_MergeAccountBillingAdjustmentRecords",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to merge account billing adjustment records for accounts with the same account number and billing period revision. It processes records from a temporary table, "
+        },
+        {
+          "type": "text",
+          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTemp",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", and consolidates them into another table, "
+        },
+        {
+          "type": "text",
+          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure ensures that only the latest records are retained and updates various fields based on the merged data. It also updates account sequence IDs and other related fields by joining with the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.Account",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is high due to the following reasons:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple steps of data validation, insertion, and updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses complex SQL operations, including aggregation, conditional logic, and multiple joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It handles a significant amount of business logic related to billing adjustments and account management."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves intricate calculations and updates across several related tables."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates on predefined tables within the database schema."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization and Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by truncating the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table to ensure it starts with a clean slate."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It inserts merged billing adjustment records into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table. This involves aggregating data from the temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTemp",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " based on "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriodRevision",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountNumber",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The insertion includes complex calculations for fields like "
+                        },
+                        {
+                          "type": "text",
+                          "text": "PaidAdjustmentAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalNetPaidAdjustmentCalc",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and others, depending on whether the billing is spanned or not."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account Sequence ID Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UniqueAccountSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " fields by joining with the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table to ensure the latest account records are used."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Additional updates are made to the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table to set various fields like "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NetChangeDollars",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CancelBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and others by joining with "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.AccountBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.AccountBillingCrisGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure includes conditional logic to handle different scenarios based on whether the billing is spanned and whether the billing period matches the revision."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Truncation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "TRUNCATE TABLE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is efficient for clearing data but should be used cautiously in a production environment due to its irreversible nature."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Joins and Aggregations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins and aggregations, which can be resource-intensive, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Proper indexing on the tables involved, especially on join and group-by columns, can significantly improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the dataset is large, consider processing in batches to avoid locking and performance degradation."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in the temporary table is accurate and complete. Any discrepancies can lead to incorrect adjustments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not handle concurrent executions, which could lead to race conditions or data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is minimal error handling in the procedure. Adding error handling mechanisms would help in diagnosing issues during execution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded values (e.g., "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentInvoiceAccountBillingGroup = 3",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UtilityCompanySeqid = 2",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "), which can limit flexibility and require updates if business rules change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of this procedure may degrade without optimization or hardware scaling."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Create date: 06/09/2010 (DHO)\r\n-- Update History:\r\n-- Description:\tMerge Account Billing Ajustment records with the same account number and same billing period revision\r\n--\t\t\t\tThis procedure should be called after spanned records are processed and moved to adjustment gas table.\r\n-- UPDATE\tzd\t2018-11-21\tI added a filter to target only latest current account when stting the AccountSeqID\r\n--\t\t\t\t\t\t\tThis modification will help process to choose the rigt accountSeqID\r\n-- UPDATE   vy  2018-12-12  Modified for UniqueAccountSeqID\r\n-- =============================================\r\nCREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_MergeAccountBillingAdjustmentRecords]\r\nAS\r\nBEGIN\r\n\t/*\r\n\tPseudo:\r\n\tif there are two transaction records with the same activity date time and transaction code\r\n\t\treturn error \r\n\tInsert merged BI record into temp table\r\n\tIn adjustment record, overwrite latest record (biggest activity date) with information from merge data temp table; remove all other records.\r\n\t\r\n    If there is BC record with no BI record forthe same period\r\n\t\treturn error\r\n\tInsert merged BC record into temp table\r\n\tUpdate \"Cancel\" columns with data from temp table\r\n\tRemove BC records\r\n\t*/\r\n\tDECLARE @errMessage AS VARCHAR(500);\r\n\t/*********************************************************************\r\n\t 1. Merge BI records group by account number and billing perio revision\r\n\t***********************************************************************/\r\n\t/* \r\n\t\t1.1 validate CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas \r\n\t*/\r\n\tTRUNCATE TABLE CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas;\r\n\r\n\tINSERT INTO CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n\t\t(IsProcessed,\r\n\t\tNumberOfTransactions, \r\n\t\tBillingPeriod, \r\n\t\tBillingPeriodRevision, \r\n\t\tCancelLastRebillPeriod, \r\n\t\tFirstBillingPeriodCanceled, \r\n\t\tIsSpannedBilling, \r\n\t\tNumberOfBillingPeriod, \r\n\t\tUtilityCompanySeqid, \r\n\t\tAccountSeqid, \r\n\t\tAccountBillingSeqid, \r\n\t\tAccountBillingCrisGasSeqid, \r\n\t\tAccountInvoiceBillingGroup, \r\n\t\tAccountNumber, \r\n\t\tOriginalAccountNumber,\r\n\t\tMeterReadWorkDay, \r\n\t\tAccountBillingStatus, \r\n\t\tPreviousAccountBillingStatus, \r\n\t\tAccountBillingStatusCodePeriod, \r\n\t\tSpecialLedgerAccountNUmber, \r\n\t\tGasRateCode, \r\n\t\tBillFrequency, \r\n\t\tEstimatedOrActualBillingCode, \r\n\t\tPaidAdjustmentAmount, \r\n\t\tTotalNetPaidAdjustmentCalc, \r\n\t\tOriginalBilledAmount, \r\n\t\tRevisedBilledAmount, \r\n\t\tCancelBilledAmount,\r\n\t\tNetChangeDollars, \r\n\t\tOriginalTherms, \r\n\t\tRevisedTherms, \r\n\t\tCancelTherms, \r\n\t\tNetChangeTherms, \r\n\t\tThermFactor, \r\n\t\tOriginalCCF, \r\n\t\tRevisedCCF, \r\n\t\tCancelCCF, \r\n\t\tNetChangeCCF, \r\n\t\tFromDate, \r\n\t\tToDate, \r\n\t\tBillingDays, \r\n\t\tNumberOfMeters, \r\n\t\tCommodityChargeAmount, \r\n\t\tDeliveryChargeAmount, \r\n\t\tMTACommodityTax, \r\n\t\tMTADeliveryTax, \r\n\t\tSalesTax, \r\n\t\tSystemBenefitsCharge, \r\n\t\tRetailDecouplingMechanismCharge, \r\n\t\tDeliveryRateSurcharge, \r\n\t\tRealTimeNormalizationCharge, \r\n\t\tLatePaymentCharge, \r\n\t\tPaperBillCharge, \r\n\t\tPriorPeriodAccountBalance, \r\n\t\tAccountArrears, \r\n\t\tTerminationBalance, \r\n\t\tTotalPaymentsPosted, \r\n\t\tCurrentAccountBalance, \r\n\t\tDateLastPayment, \r\n\t\tMiscellaneousChargeAmount, \r\n\t\tMiscellaneousChargeType, \r\n\t\tMiscellaneousCreditAmount, \r\n\t\tMiscellaneousCreditType, \r\n\t\tMiscellaneousCreditPaymentBillingPeriod, \r\n\t\tSpannedGasChargeAmount, \r\n\t\tSpannedBilledCCF, \r\n\t\tSpannedBilledTherms, \r\n\t\tSpannedBillingPeriodRevision, \r\n\t\tSpannedFirstBillingPeriodCanceled, \r\n\t\tSpannedFromDate, \r\n\t\tSpannedToDate, \r\n\t\tBillRenderDate, \r\n\t\tPostMarkDate, \r\n\t\tDatePaymentDue, \r\n\t\tDateAcceptanceIntoOEC, \r\n\t\tNotes,\r\n\t\tAuthenticatedUserID)\r\n\tSELECT \r\n\t\t'N' as IsProcessed, \r\n\t\ttrans.NumberOfTransactions,\r\n\t\ttrans.BillingPeriod,\r\n\t\ttrans.BillingPeriodRevision,\r\n\t\ttrans.BillingPeriod as CancelLastRebillPeriod, \r\n\t\ttrans.FirstBillingPeriodCanceled, \r\n\t\ttrans.IsSpannedBilling, \r\n\t\ttrans.NumberOfBillingPeriod, \r\n\t\ttrans.UtilityCompanySeqid, \r\n\t\tNULL AS AccountSeqid, \r\n\t\tNULL AS AccountBillingSeqid, \r\n\t\tNULL AS AccountBillingCrisGasSeqid, \r\n\t\ttrans.AccountInvoiceBillingGroup, \r\n\t\ttrans.AccountNumber, \r\n\t\ttrans.AccountNumber as OriginalAccountNumber, \r\n\t\ttrans.MeterReadWorkDay, \r\n\t\t'AC' as AccountBillingStatus, \r\n\t\t'46' as PreviousAccountBillingStatus, \r\n\t\ttrans.BillingPeriod as AccountBillingStatusCodePeriod, \r\n\t\ttrans.SpecialLedgerAccountNumber, \r\n\t\ttrans.GasRateCode, \r\n\t\ttrans.BillFrequency, \r\n\t\ttrans.EstimatedOrActualBillingCode, \r\n\t\tcase \r\n\t\t\twhen trans.IsSpannedBilling ='Y' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.CurrentAccountBalance - trans.SpannedGasChargeAmount\r\n\t\t\twhen trans.IsSpannedBilling ='N' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.CurrentAccountBalance - trans.GasChargeAmount \r\n\t\t\telse 0\r\n\t\tend as PaidAdjustmentAmount, \r\n\t\tcase \r\n\t\t\twhen trans.IsSpannedBilling ='Y' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.CurrentAccountBalance - trans.SpannedGasChargeAmount-trans.AccountArrears-trans.MiscellaneousChargeAmount\r\n\t\t\twhen trans.IsSpannedBilling ='N' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.CurrentAccountBalance - trans.GasChargeAmount-trans.AccountArrears-trans.MiscellaneousChargeAmount\r\n\t\t\telse 0\r\n\t\tend as TotalNetPaidAdjustmentCalc, \r\n\t\tcase \r\n\t\t\twhen trans.IsSpannedBilling ='Y' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.SpannedGasChargeAmount\r\n\t\t\twhen trans.IsSpannedBilling ='N' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.GasChargeAmount \r\n\t\t\telse 0\r\n\t\tend as OriginalBilledAmount, \r\n\t\ttrans.GasChargeAmount as RevisedBilledAmount, \r\n\t\t0 as CancelBilledAmount,\r\n\t\t0 as NetChangeDollars, \r\n\t\tcase \r\n\t\t\twhen trans.IsSpannedBilling ='Y' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.SpannedBilledTherms\r\n\t\t\twhen trans.IsSpannedBilling ='N'  and trans.BillingPeriod = trans.BillingPeriodRevision then trans.BilledTherms  \r\n\t\t\telse 0\r\n\t\tend as OriginalTherms, \r\n\t\ttrans.BilledTherms as RevisedTherms, \r\n\t\t0 as CancelTherms, \r\n\t\t0 as NetChangeTherms, \r\n\t\ttrans.ThermFactor, \r\n\t\tcase \r\n\t\t\twhen trans.IsSpannedBilling ='Y' and trans.BillingPeriod = trans.BillingPeriodRevision then trans.SpannedBilledCCF\r\n\t\t\twhen trans.IsSpannedBilling ='N'  and trans.BillingPeriod = trans.BillingPeriodRevision then trans.BilledCCF  \r\n\t\t\telse 0\r\n\t\tend as OriginalCCF, \r\n\t\ttrans.BilledCCF as RevisedCCF, \r\n\t\t0 as CancelCCF, \r\n\t\t0 as NetChangeCCF, \r\n\t\ttrans.FromDate, \r\n\t\ttrans.ToDate, \r\n\t\ttrans.BillingDays, \r\n\t\ttrans.NumberOfMeters, \r\n\t\ttrans.CommodityChargeAmount, \r\n\t\ttrans.DeliveryChargeAmount, \r\n\t\ttrans.MTACommodityTax, \r\n\t\ttrans.MTADeliveryTax, \r\n\t\ttrans.SalesTax, \r\n\t\ttrans.SystemBenefitsCharge, \r\n\t\ttrans.RetailDecouplingMechanismCharge, \r\n\t\ttrans.DeliveryRateSurcharge, \r\n\t\ttrans.RealTimeNormalizationCharge, \r\n\t\ttrans.LatePaymentCharge, \r\n\t\ttrans.PaperBillCharge, \r\n\t\t0 as PriorPeriodAccountBalance, \r\n\t\ttrans.AccountArrears, \r\n\t\ttrans.TerminationBalance, \r\n\t\ttrans.TotalPaymentsPosted, \r\n\t\ttrans.CurrentAccountBalance, \r\n\t\ttrans.DateLastPayment, \r\n\t\ttrans.MiscellaneousChargeAmount, \r\n\t\ttrans.MiscellaneousChargeType, \r\n\t\tNULL AS MiscellaneousCreditAmount, \r\n\t\tNULL AS MiscellaneousCreditType, \r\n\t\tNULL AS MiscellaneousCreditPaymentBillingPeriod, \r\n\t\ttrans.SpannedGasChargeAmount, \r\n\t\ttrans.SpannedBilledCCF, \r\n\t\ttrans.SpannedBilledTherms, \r\n\t\ttrans.SpannedBillingPeriodRevision, \r\n\t\ttrans.SpannedFirstBillingPeriodCanceled, \r\n\t\ttrans.SpannedFromDate, \r\n\t\ttrans.SpannedToDate, \r\n\t\ttrans.BillRenderDate, \r\n\t\ttrans.BillRenderDate as PostMarkDate, \r\n\t\tdbo.CalculateRelativeDatePlusDays(trans.BillRenderDate,10) as DatePaymentDue, \r\n\t\ttrans.BillRenderDate as DateAcceptanceIntoOEC, \r\n\t\ttrans.Notes,\r\n\t\t1 as AuthenticatedUserID\r\n\t\tFROM (SELECT   \r\n\t\t\tMIN(UtilityCompanySeqid) AS UtilityCompanySeqid, MIN(AccountInvoiceBillingGroup) AS AccountInvoiceBillingGroup, AccountNumber, \r\n\t\t\tMIN(MeterReadWorkDay) AS MeterReadWorkDay, BillingPeriodRevision, MIN(FirstBillingPeriodCanceled) AS FirstBillingPeriodCanceled, \r\n\t\t\tMIN(NumberOfBillingPeriod) AS NumberOfBillingPeriod, MIN(FromDate) AS FromDate, MAX(ToDate) AS ToDate, MIN(BillingDays) AS BillingDays, \r\n\t\t\tMIN(EstimatedOrActualBillingCode) AS EstimatedOrActualBillingCode, \r\n\t\t\tSUM(CurrentAccountBalance) AS CurrentAccountBalance, \r\n\t\t\tSUM(GasChargeAmount) AS GasChargeAmount, \r\n\t\t\tSUM(AccountArrears) AS AccountArrears, \r\n\t\t\tSUM(MiscellaneousChargeAmount) \r\n\t\t\tAS MiscellaneousChargeAmount, \r\n\t\t\tCOUNT(*) AS NumberOfTransactions,\r\n\t\t\tSUM(BilledCCF) AS BilledCCF, \r\n\t\t\tSUM(BilledTherms) AS BilledTherms, \r\n\t\t\tSUM(CommodityChargeAmount) AS CommodityChargeAmount, \r\n\t\t\tSUM(DeliveryChargeAmount) AS DeliveryChargeAmount, \r\n\t\t\tSUM(MTACommodityTax) AS MTACommodityTax, \r\n\t\t\tSUM(MTADeliveryTax) AS MTADeliveryTax, \r\n\t\t\tSUM(SalesTax) AS SalesTax, \r\n\t\t\tSUM(SystemBenefitsCharge) AS SystemBenefitsCharge, \r\n\t\t\tSUM(RetailDecouplingMechanismCharge) \r\n\t\t\tAS RetailDecouplingMechanismCharge, \r\n\t\t\tSUM(DeliveryRateSurcharge) AS DeliveryRateSurcharge, \r\n\t\t\tSUM(RealTimeNormalizationCharge) AS RealTimeNormalizationCharge,\r\n\t\t\tSUM(LatePaymentCharge) AS LatePaymentCharge, \r\n\t\t\tSUM(PaperBillCharge) AS PaperBillCharge, \r\n\t\t\tMAX(IsSpannedBilling) AS IsSpannedBilling, \r\n\t\t\tMIN(UtilityServiceAccountName) AS UtilityServiceAccountName,\r\n\t\t\tMIN(UtilityServiceAddress) AS UtilityServiceAddress, \r\n\t\t\tMIN(Borough) AS Borough, MIN(Zipcode) AS Zipcode, MIN(State) AS State, \r\n\t\t\tMIN(SpecialLedgerAccountNUmber) AS SpecialLedgerAccountNumber, MIN(GasRateCode) AS GasRateCode, MIN(BillFrequency) AS BillFrequency, \r\n\t\t\tMIN(ISNULL(PaidAdjustmentAmount, 0)) AS PaidAdjustmentAmount, \r\n\t\t\tMIN(ISNULL(TotalNetPaidAdjustmentCalc, 0)) AS TotalNetPaidAdjustmentCalc, \r\n\t\t\tMIN(TerminationBalance) AS TerminationBalance, \r\n\t\t\tMAX(TotalPaymentsPosted) AS TotalPaymentsPosted, \r\n\t\t\tMAX(DateLastPayment) AS DateLastPayment, \r\n\t\t\tMIN(DISTINCT MiscellaneousChargeType) AS MiscellaneousChargeType, \r\n\t\t\tMIN(DISTINCT SpannedGasChargeAmount) AS SpannedGasChargeAmount, \r\n\t\t\tMIN(DISTINCT SpannedBilledCCF) AS SpannedBilledCCF, \r\n\t\t\tMIN(DISTINCT SpannedBilledTherms) AS SpannedBilledTherms, \r\n\t\t\tMIN(DISTINCT SpannedBillingPeriodRevision) AS SpannedBillingPeriodRevision, \r\n\t\t\tMAX(DISTINCT SpannedFirstBillingPeriodCanceled) AS SpannedFirstBillingPeriodCanceled, \r\n\t\t\tMIN(DISTINCT SpannedFromDate) AS SpannedFromDate, \r\n\t\t\tMAX(DISTINCT SpannedToDate) AS SpannedToDate, \r\n\t\t\tMIN(DISTINCT Notes) AS Notes,\r\n\t\t\tMAX(ThermFactor) AS ThermFactor,\r\n\t\t\tMIN(BillRenderDate) AS BillRenderDate,\r\n\t\t\tMIN(NumberOfMeters) AS NumberOfMeters,\r\n\t\t\tMIN(BillingPeriod) AS BillingPeriod\r\n\t\t\tFROM CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTemp\r\n\t\t\tGROUP BY BillingPeriodRevision, AccountNumber\r\n\t\t) as trans order by trans.BillingPeriodRevision desc,trans.AccountNumber\r\n\r\n\t--where condition is added to target latest current accounts\r\n\tUPDATE CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n\tSET AccountSeqid =Billing.Account.AccountSeqid,\r\n\tUniqueAccountSeqid = Billing.Account.UniqueAccountSeqid /* added 12/12/2018 */\r\n\tFROM CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n\t\tINNER JOIN Billing.Account ON CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.AccountNumber = Billing.Account.OriginalAccountNumber\r\n\tWHERE Account.AccountSeqid IN \r\n\t(SELECT MAX(aa.AccountSeqid) AccountSeqid\r\n\tFROM Billing.Account AS aa \r\n\tWHERE aa.IsCurrentRecord = 'Y'\r\n\tGROUP BY aa.CurrentAccountNumber)\r\n\r\n\tUPDATE CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n\tSET             \r\n\t\tOriginalAccountNumber = ab.OriginalAccountNumber,\r\n\t\tAccountSeqid =ab.AccountSeqid, \r\n\t\tUniqueAccountSeqid = ab.UniqueAccountSeqid, /* added 12/12/2018 */\r\n\t\tAccountBillingSeqid =ab.AccountBillingSeqid,\r\n\t\tAccountBillingCrisGasSeqid =abcg.AccountBillingCrisGasSeqid, \r\n\t\tNetChangeDollars = CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.RevisedBilledAmount - ab.RevisedBilledAmount,\r\n\t\tCancelBilledAmount= -1 * ab.RevisedBilledAmount,\r\n\t\tCancelTherms =-1 * ab.AccountEnergyUsage,\r\n\t\tNetChangeTherms =RevisedTherms - ab.AccountEnergyUsage, \r\n\t\tOriginalBilledAmount =ab.OriginalBilledAmount, \r\n\t\tCancelCCF =-1 * abcg.BilledCCF,\r\n\t\tNetChangeCCF =RevisedCCF - abcg.BilledCCF, \r\n\t\tPriorPeriodAccountBalance = isnull(ab.TotalAmountDue,0),\r\n\t\tAccountBillingStatus=Billing.Account.AccountStatus, \r\n\t\tPreviousAccountBillingStatus = Billing.Account.AccountPreviousStatus,\r\n\t\tAccountBillingStatusCodePeriod = CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.BillingPeriod,\r\n\t\tNotes = 'Adjustment   - '+ CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.Notes\r\n\tFROM \r\n\t\tBilling.AccountBilling as ab INNER JOIN\r\n\t\tBilling.Account /* ON ab.AccountSeqid = Billing.Account.AccountSeqid AND \r\n\t\tab.AccountSeqid = Billing.Account.AccountSeqid Comment out on 12/12/2018 */\r\n\t\ton ab.UniqueAccountSeqId = Billing.Account.UniqueAccountSeqid and Billing.Account.IsCurrentRecord = 'Y' INNER JOIN /* added 12/12/2018 */\r\n\t\tCrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas ON \r\n\t\tab.BillingPeriodRevision = CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.BillingPeriodRevision AND \r\n\t\tBilling.Account.OriginalAccountNumber = CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.AccountNumber INNER JOIN\r\n\t\tBilling.AccountBillingCrisGas as abcg ON ab.BillingPeriodRevision = abcg.BillingPeriodRevision AND \r\n\t\tab.AccountBillingSeqid = abcg.AccountBillingSeqid\r\n\tWHERE \r\n\t\tab.CurrentInvoiceAccountBillingGroup = 3 AND \r\n\t\tab.UtilityCompanySeqid = 2 AND \r\n\t\t(CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.BillingPeriodRevision <> CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas.BillingPeriod);\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

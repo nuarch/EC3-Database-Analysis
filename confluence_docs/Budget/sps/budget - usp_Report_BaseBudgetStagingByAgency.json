@@ -1,0 +1,1064 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "budget",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Report_BaseBudgetStagingByAgency",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Report_BaseBudgetStagingByAgency",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report of base budget data grouped by agency. It processes budget data for a specified fiscal year and organizes it by agency hierarchy, allowing for both detailed and aggregated views. The procedure supports filtering by agency and can produce either annual or monthly reports. The results are grouped and aggregated at different levels of the agency hierarchy, and the final output is ordered by agency and energy delivery type."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data preparation, hierarchical data processing, and aggregation. It uses temporary tables, common table expressions (CTEs), and complex joins, which contribute to its medium complexity. The logic for handling hierarchical data and grouping at different levels adds to the complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used to identify the user requesting the report, potentially for filtering or logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the agency code to filter the report. A wildcard ("
+                },
+                {
+                  "type": "text",
+                  "text": "*",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") can be used to include all agencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AnnualOrMonthly AS CHAR(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Determines the report type, where 'A' indicates an annual report and 'M' indicates a monthly report."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Disables the count of affected rows to improve performance."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Declares temporary tables to store agency division data and base budget data."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scenario and Period Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves the current scenario ID and fiscal year from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "budget.Scenario",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calculates the published billing period based on the fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agency Division Preparation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Uses CTEs to construct agency hierarchy data, identifying parent and grandparent agencies."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Filters agencies based on the provided "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AgencyCodeOEC",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using a user-defined function."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts the hierarchical agency data into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AgencyDivision",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Base Budget Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts detailed budget data into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@BaseBudgetDataGroupByAgency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", joining with the agency division data."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates data based on the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AnnualOrMonthly",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " parameter."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parent Agency Grouping",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates data for parent agencies at different hierarchy levels (Level 1 and Level 2)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts aggregated data back into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@BaseBudgetDataGroupByAgency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Total Cost Grouping",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates total cost data for each agency and inserts it into the temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Selects and groups the final report data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@BaseBudgetDataGroupByAgency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Orders the results by agency hierarchy and energy delivery type."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Temporary tables are used extensively, which can impact performance if the data volume is large. Indexing these tables could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Joins and Aggregations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins and aggregations, which can be resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "NOCOUNT Setting",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SET NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " helps reduce network traffic by preventing the sending of DONE_IN_PROC messages."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face performance issues with large datasets due to the use of temporary tables and complex joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple users execute this procedure simultaneously, it could lead to contention on system resources."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and unclear error messages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include any security checks or validation for the input parameters, which could be a risk if the inputs are not properly sanitized or validated elsewhere in the application."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [budget].[usp_Report_BaseBudgetStagingByAgency]\n(\r\n\t@EmailAddress AS VARCHAR(75),\r\n\t@AgencyCodeOEC AS VARCHAR(MAX), -- * for all\r\n\t@AnnualOrMonthly AS CHAR(1) -- A - annual || M - monthly\r\n)\r\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n\r\n    DECLARE @BaseBudgetDataGroupByAgency TABLE(BudgetStage VARCHAR(100) NULL,\r\n\t    PublishedBillingPeriod VARCHAR(6) NULL,\r\n\t    BillingPeriod VARCHAR(6) NULL,\r\n\t    AgencyCodeOEC VARCHAR(6) NULL,\r\n\t    AgencyName VARCHAR(75) NULL,\r\n\t    EnergyDeliveryType VARCHAR(3) NULL,\r\n\t    BudgetGroupDEM INT NULL,\r\n\t    BudgetGroupDEMName VARCHAR(75) NULL,\r\n\t    GenericEnergyDeliveryType VARCHAR(24) NULL,\r\n\t    GenericEnergyDeliveryTypeUnit VARCHAR(24) NULL,\r\n\t    EnergyUsage FLOAT NULL,\r\n\t    StreetLightingFacilityPoints INT NULL,\r\n\t    FacilityPointDollars MONEY NULL,\r\n\t    EnergyDollars MONEY NULL,\r\n\t    DemandDollars MONEY NULL,\r\n\t    AgencyDivisionSeqId INT NULL,\r\n\t    AgencyOECL1 VARCHAR(6) NULL,\r\n\t    AgencyOECL2 VARCHAR(6) NULL,\r\n\t    AgencyOECL3 VARCHAR(6) NULL,\r\n\t    AgencyLevel INT NULL);\r\n\r\n    DECLARE @AgencyDivision TABLE(AgencyCodeOEC VARCHAR(6) NOT NULL PRIMARY KEY,\r\n\t    parentAgencyCode VARCHAR(6) NULL,\r\n\t    grandParantAgencyCode VARCHAR(6) NULL,\r\n\t    agencyLevel INT NULL,\r\n\t    AgencyOECL1 VARCHAR(6) NULL,\r\n\t    AgencyOECL2 VARCHAR(6) NULL,\r\n\t    AgencyOECL3 VARCHAR(6) NULL,\r\n\t    AgencyDivisionHierarchy HIERARCHYID NULL,\r\n\t    AgencyShortDesc VARCHAR(75) NULL,\r\n\t    AgencyDivisionSeqId INT NULL,\r\n\t    IsHidden CHAR(1) NULL); -- data is hidden in report \r\n\r\n    DECLARE @fy AS INT, @publishedBillingPeriod AS VARCHAR(7), @currentScenarioId AS INT;\r\n\t\r\n\tSELECT @currentScenarioId = ISNULL(MAX(ID),0), @fy = MAX(FY)\r\n\tFROM budget.Scenario WHERE IsCurrentBudget = 1;\r\n\r\n\tSELECT @publishedBillingPeriod = CAST(@fy-2 AS VARCHAR(4)) + '01';\r\n\r\n    -- ========================================================\r\n    -- 1 parepare agency division \r\n    -- ========================================================\r\n    WITH agencyRaw AS\r\n    (SELECT a.AgencyId\r\n        ,b.ParentAgencyId\r\n\t    ,CAST(b.AgencyDivisionHierarchy AS VARCHAR) AS hierarchy\r\n\t    ,LEN(CAST(b.AgencyDivisionHierarchy AS VARCHAR))-LEN(REPLACE(CAST(b.AgencyDivisionHierarchy AS VARCHAR), '/','')) AS times\r\n\t    ,b.AgencyDivisionHierarchy.GetLevel() AS agencyLevel\r\n\tFROM Preload.Agency AS a\r\n        INNER JOIN Preload.AgencyByFY AS b ON a.AgencyId = b.AgencyId\r\n\tWHERE b.FY = @fy)\r\n    ,agencyHierarchy AS\r\n    (SELECT agencyid, agencyLevel, ParentAgencyId, NULL AS GrandParentAgencyId FROM agencyRaw WHERE times IN (2,3)\r\n\tUNION\r\n\tSELECT agencyid, agencyLevel, ParentAgencyId, SUBSTRING(hierarchy,2, CHARINDEX('/',hierarchy, 2)-2) AS GrandParentAgencyId FROM agencyRaw WHERE times = 4)\r\n    ,filteredAgencies AS\r\n    (SELECT AgencyCodeOEC \r\n\tFROM billing.uftn_TableGetAllAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress))\r\n\r\n    INSERT INTO @AgencyDivision\r\n        (AgencyCodeOEC\r\n        ,parentAgencyCode\r\n        ,grandParantAgencyCode\r\n        ,agencyLevel\r\n        ,AgencyOECL1\r\n        ,AgencyOECL2\r\n        ,AgencyOECL3\r\n        ,AgencyDivisionHierarchy\r\n\t\t,AgencyShortDesc\r\n\t\t,AgencyDivisionSeqId\r\n\t\t,IsHidden)\r\n    SELECT child.AgencyCodeOEC\r\n\t\t,parent.AgencyCodeOEC AS parentAgencyCode\r\n\t\t,grandParent.AgencyCodeOEC AS grandParantAgencyCode\r\n\t\t,child.AgencyDivisionHierarchy.GetLevel() AS agencyLevel\r\n\t\t,IIF(a.agencyLevel=3, grandParent.AgencyCodeOEC, IIF(a.agencyLevel=2, parent.AgencyCodeOEC, child.AgencyCodeOEC)) AS AgencyOECL1\r\n\t\t,IIF(a.agencyLevel=3, parent.AgencyCodeOEC, IIF(a.agencyLevel=2, child.AgencyCodeOEC, '000000')) AS AgencyOECL2\r\n\t\t,IIF(a.agencyLevel=3, child.AgencyCodeOEC, '000000') AS AgencyOECL3\r\n\t\t,child.AgencyDivisionHierarchy\r\n\t\t,child.AgencyName\r\n\t\t,a.agencyId AS AgencyDivisionSeqId\r\n\t\t,'N' AS IsHidden\r\n    FROM agencyHierarchy AS a\r\n        INNER JOIN Preload.vwAgencies AS child ON child.FY = @fy AND a.AgencyId = child.AgencyId\r\n        INNER JOIN filteredAgencies AS f ON child.AgencyCodeOEC = f.AgencyCodeOEC\r\n        LEFT JOIN Preload.Agency AS parent ON a.ParentAgencyId = parent.AgencyId\r\n        LEFT JOIN Preload.Agency AS grandParent ON a.GrandParentAgencyId = grandParent.AgencyId;\r\n\r\n    -- ========================================================\r\n    -- 2 Add base budget data\r\n    -- ========================================================\r\n    INSERT INTO @BaseBudgetDataGroupByAgency\r\n        (BudgetStage,\r\n        PublishedBillingPeriod,\r\n        BillingPeriod,\r\n        AgencyCodeOEC,\r\n        AgencyName,\r\n        EnergyDeliveryType,\r\n        BudgetGroupDEM,\r\n        BudgetGroupDEMName,\r\n        GenericEnergyDeliveryType,\r\n        GenericEnergyDeliveryTypeUnit,\r\n        EnergyUsage,\r\n        StreetLightingFacilityPoints,\r\n        FacilityPointDollars,\r\n        EnergyDollars,\r\n        DemandDollars,\r\n        AgencyDivisionSeqId,\r\n        AgencyOECL1,\r\n\t\tAgencyOECL2,\r\n\t\tAgencyOECL3,\r\n\t\tAgencyLevel)\r\n    SELECT B.BudgetStage,\r\n        @publishedBillingPeriod AS PublishedBillingPeriod,\r\n        CASE WHEN @AnnualOrMonthly = 'M' THEN MAX(B.BillingPeriod) ELSE '' END,\r\n        B.AgencyCodeOEC,\r\n        B.AgencyName,\r\n        B.EnergyDeliveryType ,\r\n        B.BudgetGroupDEM ,\r\n        B.BudgetGroupDEMName ,\r\n        B.GenericEnergyDeliveryType ,\r\n        B.GenericEnergyDeliveryTypeUnit ,\r\n        SUM(B.EnergyUsage) ,\r\n        SUM(B.StreetLightingFacilityPoints) ,\r\n        SUM(B.FacilityPointDollars) ,\r\n        SUM(B.EnergyDollars) ,\r\n        SUM(B.DemandDollars) ,\r\n        A.AgencyDivisionSeqId,\r\n        A.AgencyOECL1,\r\n\t\tA.AgencyOECL2,\r\n\t\tA.AgencyOECL3,\r\n\t\tA.agencyLevel\r\n    FROM budget.vwBaseBudgetByAgencySummaryByAgencyEnergyType AS B\r\n        INNER JOIN @AgencyDivision AS A ON B.AgencyCodeOEC = A.AgencyCodeOEC\r\n    WHERE B.scenarioid=@currentScenarioId \r\n    GROUP BY B.BudgetStage ,\r\n        CASE WHEN @AnnualOrMonthly = 'M' THEN B.BillingPeriod END,\r\n        B.AgencyCodeOEC ,\r\n        B.AgencyName ,\r\n        B.EnergyDeliveryType ,\r\n        B.BudgetGroupDEM ,\r\n        B.BudgetGroupDEMName ,\r\n        B.GenericEnergyDeliveryType ,\r\n        B.GenericEnergyDeliveryTypeUnit ,\r\n        A.AgencyDivisionSeqId,\r\n        A.AgencyOECL1,\r\n\t\tA.AgencyOECL2,\r\n\t\tA.AgencyOECL3,\r\n\t\tA.agencyLevel;\r\n\r\n    -- ========================================================\r\n    -- 3 group data for parent agencies\r\n    -- ========================================================\r\n\r\n    -- level 1 data\r\n    INSERT INTO @BaseBudgetDataGroupByAgency\r\n        (BudgetStage,\r\n        PublishedBillingPeriod,\r\n        BillingPeriod,\r\n        AgencyCodeOEC,\r\n        AgencyName,\r\n        EnergyDeliveryType,\r\n        BudgetGroupDEM,\r\n        BudgetGroupDEMName,\r\n        GenericEnergyDeliveryType,\r\n        GenericEnergyDeliveryTypeUnit,\r\n        EnergyUsage,\r\n        StreetLightingFacilityPoints,\r\n        FacilityPointDollars,\r\n        EnergyDollars,\r\n        DemandDollars,\r\n        AgencyDivisionSeqId,\r\n        AgencyOECL1,\r\n\t\tAgencyOECL2,\r\n\t\tAgencyOECL3,\r\n\t\tAgencyLevel) \r\n    SELECT B.BudgetStage,\r\n        B.PublishedBillingPeriod,\r\n        B.BillingPeriod,\r\n        B.AgencyOECL1,\r\n        MAX(A.AgencyShortDesc),\r\n        B.EnergyDeliveryType,\r\n        B.BudgetGroupDEM,\r\n        B.BudgetGroupDEMName,\r\n        B.GenericEnergyDeliveryType,\r\n        B.GenericEnergyDeliveryTypeUnit,\r\n        SUM(B.EnergyUsage),\r\n        SUM(B.StreetLightingFacilityPoints),\r\n        SUM(B.FacilityPointDollars),\r\n        SUM(B.EnergyDollars),\r\n        SUM(B.DemandDollars),\r\n        MAX(A.AgencyDivisionSeqId),\r\n        B.AgencyOECL1,\r\n\t\t'000000' AS AgencyOECL2,\r\n\t\t'000000' AS AgencyOECL3,\r\n\t\tMAX(A.agencyLevel)\r\n    FROM @BaseBudgetDataGroupByAgency AS B\r\n\t    INNER JOIN @AgencyDivision AS A ON B.AgencyOECL1 = A.AgencyCodeOEC -- join for Level 1 data\r\n    WHERE B.AgencyCodeOEC <> B.AgencyOECL1\r\n\t      AND B.AgencyOECL1 <> '000000'\r\n    GROUP BY B.BudgetStage, \r\n\t\tB.AgencyOECL1, \r\n\t\tB.PublishedBillingPeriod,\r\n\t\tB.BillingPeriod,\r\n\t\tB.EnergyDeliveryType,\r\n        B.BudgetGroupDEM,\r\n        B.BudgetGroupDEMName,\r\n        B.GenericEnergyDeliveryType,\r\n        B.GenericEnergyDeliveryTypeUnit;\r\n\r\n    -- level 2 data\r\n    INSERT INTO @BaseBudgetDataGroupByAgency\r\n        (BudgetStage,\r\n        PublishedBillingPeriod,\r\n        BillingPeriod,\r\n        AgencyCodeOEC,\r\n        AgencyName,\r\n        EnergyDeliveryType,\r\n        BudgetGroupDEM,\r\n        BudgetGroupDEMName,\r\n        GenericEnergyDeliveryType,\r\n        GenericEnergyDeliveryTypeUnit,\r\n        EnergyUsage,\r\n        StreetLightingFacilityPoints,\r\n        FacilityPointDollars,\r\n        EnergyDollars,\r\n        DemandDollars,\r\n        AgencyDivisionSeqId,\r\n        AgencyOECL1,\r\n\t\tAgencyOECL2,\r\n\t\tAgencyOECL3,\r\n\t\tAgencyLevel) \r\n    SELECT B.BudgetStage,\r\n        B.PublishedBillingPeriod,\r\n        B.BillingPeriod,\r\n        B.AgencyOECL2,\r\n        MAX(A.AgencyShortDesc),\r\n        B.EnergyDeliveryType,\r\n        B.BudgetGroupDEM,\r\n        B.BudgetGroupDEMName,\r\n        B.GenericEnergyDeliveryType,\r\n        B.GenericEnergyDeliveryTypeUnit,\r\n        SUM(B.EnergyUsage),\r\n        SUM(B.StreetLightingFacilityPoints),\r\n        SUM(B.FacilityPointDollars),\r\n        SUM(B.EnergyDollars),\r\n        SUM(B.DemandDollars),\r\n        MAX(A.AgencyDivisionSeqId),\r\n        B.AgencyOECL1,\r\n\t\tB.AgencyOECL2,\r\n\t\t'000000' AS AgencyOECL3,\r\n\t\tMAX(A.agencyLevel)\r\n    FROM @BaseBudgetDataGroupByAgency AS B\r\n\t    INNER JOIN @AgencyDivision AS A ON B.AgencyOECL2 = A.AgencyCodeOEC -- join for Level 1 data\r\n    WHERE B.AgencyCodeOEC <> B.AgencyOECL2 and\r\n\t      B.AgencyOECL2 <> '000000'\r\n    GROUP BY B.BudgetStage, \r\n\t\tB.AgencyOECL1, \r\n\t\tB.AgencyOECL2,\r\n\t\tB.PublishedBillingPeriod,\r\n\t\tB.BillingPeriod,\r\n\t\tB.EnergyDeliveryType ,\r\n        B.BudgetGroupDEM ,\r\n        B.BudgetGroupDEMName ,\r\n        B.GenericEnergyDeliveryType,\r\n        B.GenericEnergyDeliveryTypeUnit;\r\n\r\n    -- ========================================================\r\n    -- 4 Group total cost\r\n    -- ========================================================\r\n    INSERT INTO @BaseBudgetDataGroupByAgency\r\n        (BudgetStage,\r\n        PublishedBillingPeriod,\r\n        BillingPeriod,\r\n        AgencyCodeOEC,\r\n        AgencyName,\r\n        EnergyDeliveryType,\r\n        BudgetGroupDEM,\r\n        BudgetGroupDEMName,\r\n        GenericEnergyDeliveryType,\r\n        GenericEnergyDeliveryTypeUnit,\r\n        EnergyUsage,\r\n        StreetLightingFacilityPoints,\r\n        FacilityPointDollars,\r\n        EnergyDollars,\r\n        DemandDollars,\r\n        AgencyDivisionSeqId,\r\n        AgencyOECL1,\r\n\t\tAgencyOECL2,\r\n\t\tAgencyOECL3,\r\n\t\tAgencyLevel) \r\n    SELECT B.BudgetStage,\r\n        B.PublishedBillingPeriod,\r\n        B.BillingPeriod,\r\n        B.AgencyCodeOEC,\r\n        MAX(B.AgencyName),\r\n        NULL,\r\n        NULL,\r\n        NULL,\r\n        NULL,\r\n        'Total Cost',\r\n        SUM(B.EnergyUsage) ,\r\n        SUM(B.StreetLightingFacilityPoints),\r\n        SUM(B.FacilityPointDollars),\r\n        SUM(B.EnergyDollars),\r\n        SUM(B.DemandDollars),\r\n        MAX(B.AgencyDivisionSeqId),\r\n        MAX(B.AgencyOECL1),\r\n\t\tMAX(B.AgencyOECL2),\r\n\t\tMAX(B.AgencyOECL3),\r\n\t\tMAX(B.agencyLevel)\r\n    FROM @BaseBudgetDataGroupByAgency AS B\r\n    WHERE B.GenericEnergyDeliveryTypeUnit = 'Cost'\r\n    GROUP BY B.BudgetStage,\r\n\t\tB.AgencyCodeOEC,\r\n\t\tB.PublishedBillingPeriod,\r\n\t\tB.BillingPeriod;\r\n\r\n    SELECT BudgetStage,\r\n        PublishedBillingPeriod,\r\n        BillingPeriod,\r\n        B.AgencyCodeOEC,\r\n        AgencyName,\r\n        EnergyDeliveryType,\r\n        BudgetGroupDEM,\r\n        BudgetGroupDEMName,\r\n        GenericEnergyDeliveryType,\r\n        GenericEnergyDeliveryTypeUnit,\r\n        SUM(EnergyUsage) AS EnergyUsage,\r\n        SUM(StreetLightingFacilityPoints) AS StreetLightingFacilityPoints,\r\n        SUM(FacilityPointDollars) AS FacilityPointDollars,\r\n        SUM(EnergyDollars) AS EnergyDollars,\r\n        SUM(DemandDollars) AS DemandDollars,\r\n        B.AgencyDivisionSeqId,\r\n        AgencyOECL1,\r\n\t    AgencyOECL2,\r\n\t    AgencyOECL3,\r\n\t    AgencyLevel \r\n    FROM @BaseBudgetDataGroupByAgency AS B\r\n    GROUP BY BudgetStage, PublishedBillingPeriod, BillingPeriod, B.AgencyCodeOEC, AgencyName\r\n        ,EnergyDeliveryType, BudgetGroupDEM, BudgetGroupDEMName, GenericEnergyDeliveryType, GenericEnergyDeliveryTypeUnit\r\n        ,B.AgencyDivisionSeqId, AgencyOECL1,  AgencyOECL2,  AgencyOECL3, AgencyLevel \r\n    ORDER BY AgencyOECL1, AgencyOECL2, AgencyOECL3, EnergyDeliveryType, B.BudgetGroupDEM,\r\n    CASE WHEN GenericEnergyDeliveryTypeUnit = 'Cost' THEN 'sss' ELSE GenericEnergyDeliveryTypeUnit END;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

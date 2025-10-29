@@ -1,0 +1,1030 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ManualBilling_CollectCredits",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ManualBilling_CollectCredits",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and manage credit transactions for accounts with negative charges in a manual billing system. It operates on the "
+        },
+        {
+          "type": "text",
+          "text": "AccountManualBillingHeader",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to identify records with a "
+        },
+        {
+          "type": "text",
+          "text": "CurrentChargeAmount",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " less than zero for the current billing period. The procedure performs two main tasks: collecting new transactions and updating existing credit balances. It records these transactions in the "
+        },
+        {
+          "type": "text",
+          "text": "AccountCreditTransaction",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and updates the "
+        },
+        {
+          "type": "text",
+          "text": "AccountCreditBalance",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to reflect the latest credit status. The procedure also updates the "
+        },
+        {
+          "type": "text",
+          "text": "CreditHasBeenCollected",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " flag in the "
+        },
+        {
+          "type": "text",
+          "text": "AccountManualBillingHeader",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to indicate that credits have been processed."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple database operations, including SELECT, INSERT, and UPDATE statements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over records, which can be complex to manage and may impact performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure includes conditional logic to handle different scenarios for credit balance updates."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the ID of the authenticated user executing the procedure. It is used to log the user who performs the credit transactions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This output parameter is used to indicate the status of the procedure execution. It is set to 9 at the beginning and 0 upon successful completion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to 9 and retrieving the current billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "ApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor is declared to select records from the "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountManualBillingHeader",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table where "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentChargeAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is negative, the billing period matches the current period, "
+                },
+                {
+                  "type": "text",
+                  "text": "CreditHasBeenCollected",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is 'N', and "
+                },
+                {
+                  "type": "text",
+                  "text": "InvoiceTrackingSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not null."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor iterates over each selected record:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if a credit balance record exists for the current period in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountCreditBalance",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If a record exists, it retrieves the existing credit balance and updates it with the new transaction."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If no record exists, it checks for previous period balances, initializes a new balance if necessary, and inserts a new record."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A new transaction is recorded in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountCreditTransaction",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountCreditBalance",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated with the new credit balance."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CreditHasBeenCollected",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " flag in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountManualBillingHeader",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is set to 'Y'."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Finalization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is set to 0 to indicate successful execution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes records one at a time. Consider using set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved have appropriate indexes on columns used in WHERE clauses and joins to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not explicitly manage transactions, which could lead to partial updates if an error occurs. Consider wrapping operations in a transaction to ensure atomicity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not handle concurrent executions, which could lead to race conditions or data inconsistencies if multiple instances run simultaneously."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no error handling mechanism in place. If an error occurs, it could leave the database in an inconsistent state."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the cursor-based approach may degrade. Consider optimizing the logic for better scalability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "InvoiceTrackingSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not null for valid records, but there is no validation to ensure data integrity beyond this check."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ManualBill].[usp_ManualBilling_CollectCredits]\n\t-- @BillingPeriod varchar(6),\r\n\t@AuthenticatedID int,\r\n    --@UtilityCompany dbo.seqid,\r\n\t--@InvoiceBillingGroup dbo.seqid,\r\n\t@Status int  OUTPUT      \r\n   \r\n AS \r\n begin\r\n \r\n\t --****************************************************************************************************************************************************************************\r\n\t --\tAuthor: MOHAMMED BELARREM\r\n\t -- Description: usp_ManualBilling_CollectCredits runs thru the AccountManualBillingHeader and collects all the records with CurrentChargeAmount < 0 \r\n\t --\t\t\t\t The stored procedure performs 2 major tasks\r\n\t --\t\t\t\t\tCollect new transcations \r\n\t --\t\t\t\t\tCollect old transactions (no update needed)\r\n\t --\t\t\t\t \r\n\t --\tNotes:\t\tThe latest state of the credit is saved in the ManualBilling.AccountCreditBalance table\r\n\t --\t\t\t\tAll the transactions are recorded in the ManualBilling.AccountCreditTransaction table\r\n\t --\t\t\t\t\r\n\t --\t\t\t\t\r\n\t --\t\t\t\t\r\n\t --\tLog: \r\n\t --\t\tCreation 06/25/2009\r\n\t --\t\tUpdate\t 06/26/2009\t: Logic has changed we go thru the transaction table\r\n\t --\t\tUpdate   07/24/2009 : I added the case when the remaining credit from last period is 0.0. in this case ther is no need to create a current record \r\n\t --\t\tUpdate   07/27/2009 : I removed the case when the remaining credit from last period is 0.0. in this case ther is no need to create a current record \r\n\t --\t\t\t\t\t\t\t: this case seamed redandent \r\n\t --\t \tUpdate   08/10/2009 : Peter and I added a CreditHasBeenCollected YesNo field to the header table, it reduces the complexity of the credits so we can check that \r\n\t --\t\t\t\t\t\t\t  instead of joining against transaction table (which might give false results if we ever create REVERSE transactions)\r\n\t --\t \tUpdate   08/24/2009 : Added the following condition InvoiceTrackingSeqid is not null ( to the cursor) so we can make sure we voucher bills first before collecting credits\r\n\t --**************************************************************************************************************************************************************************** \r\n \r\n \r\n\tdeclare @BillingPeriod dbo.BillingPeriod\r\n\r\n\tset @Status = 9\r\n\t\r\n\tset @BillingPeriod = (select BillingPeriod from Billing.ApplicationTimeFrame where CurrentProcessingPeriod = 'Y')\r\n\t\r\n\t\t\r\n\t\t\r\n\t-- Collect new transcations \r\n\t\r\n\t-- old transactions (no update needed)\r\n\t\r\n\t-- updates\r\n\r\n\r\n\t-- Collect new transactions\t\r\n\tDECLARE @AccountManualBillingHeaderSeqid dbo.Seqid\r\n\tDECLARE @CurrentChargeAmount dbo.BillingAmt\r\n\tDECLARE @OriginalAccountNumber dbo.acctnum\r\n\tDECLARE @AccountCreditBalanceSeqid dbo.seqid\r\n\tDECLARE @RemainingCreditBalance dbo.BillingAmt\r\n\r\n\r\n\tDECLARE db_cursor CURSOR FOR \r\n\tselect\tAccountManualBillingHeaderSeqid, BillingPeriod, CurrentChargeAmount, OriginalAccountNumber\r\n\tFROM ManualBill.AccountManualBillingHeader\r\n\tWHERE   (CurrentChargeAmount < 0) AND (BillingPeriod = @BillingPeriod) AND \r\n\t\t\t--(AccountUtilityCompanySeqid = @UtilityCompany) AND \r\n            --(CurrentInvoiceAccountGroup = @InvoiceBillingGroup) AND \r\n            (CreditHasBeenCollected = 'N')\t\r\n            and ( InvoiceTrackingSeqid is not null )\t\t\r\n\t\t\t\r\n--\tSELECT  ManualBill.AccountManualBillingHeader.AccountManualBillingHeaderSeqid, ManualBill.AccountManualBillingHeader.BillingPeriod, \r\n--\t\t\tManualBill.AccountManualBillingHeader.CurrentChargeAmount, ManualBill.AccountManualBillingHeader.OriginalAccountNumber\r\n--\tFROM ManualBill.AccountCreditTransaction RIGHT JOIN\r\n--\t\t\tManualBill.AccountManualBillingHeader ON \r\n--\t\t\tManualBill.AccountCreditTransaction.BillingPeriod = ManualBill.AccountManualBillingHeader.BillingPeriod AND \r\n--\t\t\tManualBill.AccountCreditTransaction.AccountManualBillingHeaderSeqid = ManualBill.AccountManualBillingHeader.AccountManualBillingHeaderSeqid\r\n--\tWHERE  (ManualBill.AccountCreditTransaction.AccountManualBillingHeaderSeqid IS NULL) AND \r\n--\t\t\t(ManualBill.AccountManualBillingHeader.CurrentChargeAmount < 0) AND (ManualBill.AccountManualBillingHeader.BillingPeriod = @BillingPeriod ) and\r\n--\t\t\t(ManualBill.AccountManualBillingHeader.AccountUtilityCompanySeqid = @UtilityCompany ) and (ManualBill.AccountManualBillingHeader.CurrentInvoiceAccountGroup = @InvoiceBillingGroup )\r\n\r\n\r\n\tOPEN db_cursor  \r\n\tFETCH NEXT FROM db_cursor INTO @AccountManualBillingHeaderSeqid, @BillingPeriod, @CurrentChargeAmount, @OriginalAccountNumber \r\n\r\n\tWHILE @@FETCH_STATUS = 0  \r\n\tBEGIN  \r\n\t\t\t-- insert a new transaction into the credit transaction table\r\n\t\t\t-- cases if there is a record for the current period in the credit table\r\n\t\t\t-- no record whatsoever\r\n\t\t\t-- record from previous period\r\n\t\t\t\r\n\t\t\t-- initialize variables before intiration\r\n\t\t\tset @RemainingCreditBalance = null\r\n\t\t\tset @AccountCreditBalanceSeqid = null\t\r\n\t\t\t\t\t\t\r\n\t\t\t\r\n\t\t\tif exists\t(\tSELECT AccountCreditBalanceSeqid, OriginalAccountNumberWithCredit, OecRemainingCreditBalance, BillingPeriod\r\n\t\t\t\t\t\t\tFROM ManualBill.AccountCreditBalance\r\n\t\t\t\t\t\t\tWHERE (BillingPeriod = @BillingPeriod ) AND (OriginalAccountNumberWithCredit = @OriginalAccountNumber)\r\n\t\t\t\t\t\t)\r\n\t\t\tbegin\r\n\t\t\t\t\t\t-- AccountCreditBalance record exists, lets collect its data and insert a new transaction linked to it then update the AccountCreditBalance\r\n\t\t\t\t\t\t-- collect AccountCreditBalance information\r\n\t\t\t\t\t\tSELECT  @AccountCreditBalanceSeqid = AccountCreditBalanceSeqid\r\n\t\t\t\t\t\t\t\t, @RemainingCreditBalance = OecRemainingCreditBalance\r\n\t\t\t\t\t\tFROM ManualBill.AccountCreditBalance\r\n\t\t\t\t\t\tWHERE (BillingPeriod = @BillingPeriod ) AND (OriginalAccountNumberWithCredit = @OriginalAccountNumber)\r\n\t\t\tend\t\r\n\t\t\t\r\n\t\t\telse\t-- no AccountCreditBalance record exists for the current period\r\n\t\t\tbegin\r\n\t\t\t\t\t\t-- collect AccountCreditBalance information\r\n\t\t\t\t\t\tSELECT top 1 @RemainingCreditBalance = OecRemainingCreditBalance\r\n\t\t\t\t\t\tFROM ManualBill.AccountCreditBalance\r\n\t\t\t\t\t\tWHERE (BillingPeriod < @BillingPeriod ) AND (OriginalAccountNumberWithCredit = @OriginalAccountNumber ) \r\n\t\t\t\t\t\torder by BillingPeriod desc \r\n\r\n\r\n\t\t\t\t\t\t-- in case the query returns nothing which would indicate that the account never had credits before\r\n\t\t\t\t\t\tset @RemainingCreditBalance = isnull( @RemainingCreditBalance ,0)\r\n\r\n\t\t\t\t\r\n\t\t\t\t\t\t-- insert a new AccountCreditBalance \r\n\t\t\t\t\t\tINSERT INTO [ManualBill].[AccountCreditBalance]\r\n\t\t\t\t\t\t\t\t   ([OriginalAccountNumberWithCredit]\r\n\t\t\t\t\t\t\t\t   ,[OecRemainingCreditBalance]\r\n\t\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t\t\t\t   ,[LastUpdate])\r\n\r\n\t\t\t\t\t\tvalues\t\t(@OriginalAccountNumber\r\n\t\t\t\t\t\t\t\t\t,@RemainingCreditBalance \r\n\t\t\t\t\t\t\t\t\t,@BillingPeriod\r\n\t\t\t\t\t\t\t\t\t,@authenticatedID\r\n\t\t\t\t\t\t\t\t\t,getdate()\r\n\t\t\t\t\t\t\t\t\t,getdate() )\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tset @AccountCreditBalanceSeqid = ( SELECT @@identity)\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\tend\t -- end of -- no current period AccountCreditBalance record exists for the current period\t\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t-- create the transaction\r\n\t\t\tINSERT INTO [ManualBill].[AccountCreditTransaction]\r\n\t\t\t\t   ([AccountManualBillingHeaderSeqid]\r\n\t\t\t\t   ,[AccountCreditBalanceSeqid]\r\n\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t   ,[InitialCredit]\r\n\t\t\t\t   ,[CurrentCredit]\r\n\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t   ,[LastUpdate])\r\n\t\t\tVALUES\r\n\t\t\t\t   (@AccountManualBillingHeaderSeqid\r\n\t\t\t\t   ,@AccountCreditBalanceSeqid\r\n\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t   ,@RemainingCreditBalance \t\t-- value from the credit before it is updated\r\n\t\t\t\t   ,@RemainingCreditBalance + @CurrentChargeAmount\r\n\t\t\t\t   ,@AuthenticatedID\r\n\t\t\t\t   ,getdate()\r\n\t\t\t\t   ,getdate())\r\n\r\n\t\t\t-- update the AccountCreditBalance with the new credit\r\n\t\t\tupdate ManualBill.AccountCreditBalance\r\n\t\t\t\tset OecRemainingCreditBalance = @RemainingCreditBalance  + @CurrentChargeAmount\r\n\t\t\t\t, LastUpdate = getdate()\r\n\t\t\twhere AccountCreditBalanceSeqid = @AccountCreditBalanceSeqid\r\n\t\t\t\r\n\t\t\t-- update the header table to reflect Y on the CreditHasBeenCollected \r\n\t\t\tupdate ManualBill.AccountManualBillingHeader\r\n\t\t\t\tset CreditHasBeenCollected = 'Y'\r\n\t\t\twhere ( AccountManualBillingHeaderSeqid = @AccountManualBillingHeaderSeqid )\r\n\t\t\t\r\n\r\n\t\t    FETCH NEXT FROM db_cursor INTO @AccountManualBillingHeaderSeqid, @BillingPeriod, @CurrentChargeAmount, @OriginalAccountNumber  \r\n\tEND  \r\n\r\n\tCLOSE db_cursor  \r\n\tDEALLOCATE db_cursor\r\n\r\n\r\n\r\n\r\n\t-- updates\r\n\t-- collect all the headers that have changed since last time\r\n\r\n\t-- since the processing is done at the end of the billing period this case shouldnt  happen, the query is here just in case\r\n\r\n\t--select * \r\n\t--from (\tselect *, CurrentCredit - InitialCredit as NetDifference\r\n\t--\t\tfrom ManualBill.AccountCreditTransaction\r\n\t--\t ) as credits\r\n\t--inner join \r\n\t--ManualBill.AccountManualBillingHeader\r\n\t--on \r\n\t--\tcredits.BillingPeriod = ManualBill.AccountManualBillingHeader.BillingPeriod AND \r\n\t--\tcredits.NetDifference <> ManualBill.AccountManualBillingHeader.CurrentChargeAmount and\r\n\t--\tcredits.AccountManualBillingHeaderSeqid = ManualBill.AccountManualBillingHeader.AccountManualBillingHeaderSeqid \r\n\t--WHERE  (ManualBill.AccountManualBillingHeader.CurrentChargeAmount < 0) AND (ManualBill.AccountManualBillingHeader.BillingPeriod = '200901')\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n-- the condition that we didnt need\r\n\r\n--\t\t\t\t\t\t-- if the remaining credit balance is 0 no need to create a record and a transaction just fetch next record and continue the loop\r\n--\t\t\t\t\t\tif ( ( @RemainingCreditBalance is not null ) and ( @RemainingCreditBalance = 0.0 ) )\r\n--\t\t\t\t\t\tbegin\r\n--\t\t\t\t\t\t\t\tFETCH NEXT FROM db_cursor INTO @AccountManualBillingHeaderSeqid, @BillingPeriod, @CurrentChargeAmount, @OriginalAccountNumber  \r\n--\t\t\t\t\t\t\t\tcontinue\r\n--\t\t\t\t\t\tEND\t\t\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t -- old code that is not needed (stored procedure as it was before modifying it \r\n\t -- Description: This stored Procedure collects all the credits from all the invoice billing groups\r\n\t --\t\t\t\t all updates or inserts those records into the [ManualBill].[AccountCreditBalance] table\r\n\t --\t\t\t\t based on the following criteria:\r\n\t --\t\t\t\t\t*\tfirst time credits\r\n\t --\t\t\t\t\t*\tupdate to current credits in previous periods\r\n\t --\t\t\t\t\t*\tupdate to current credits in the period\r\n\r\n\t\t\r\n\t\t\r\n\t\t-- first time credits\r\n\t\t\r\n\t\t-- update to current credits in previous periods\r\n\t\t\r\n\t\t-- update to current credits in the period\r\n\r\n--\t\tUPDATE    ManualBill.AccountCreditBalance\r\n--\t\tSET       OecRemainingCreditBalance = NewCredits.CurrentChargeAmount\r\n--\t\t\t\t  ,AuthenticatedUserID = @authenticatedID\r\n--\t\t\t\t  ,LastUpdate = getdate()\r\n--\t\tFROM (\r\n--\t\t\t\t\t\tSELECT BillingPeriod, OriginalAccountNumberWithCredit, OecRemainingCreditBalance\r\n--\t\t\t\t\t\tFROM ManualBill.AccountCreditBalance AS AccountCreditBalance_2\r\n--\t\t\t\t\t\tWHERE  (BillingPeriod =\r\n--                                                  (SELECT MAX(BillingPeriod) AS Expr1\r\n--                                                    FROM ManualBill.AccountCreditBalance AS AccountCreditBalance_1\r\n--                                                    WHERE  (OriginalAccountNumberWithCredit = OriginalAccountNumberWithCredit)))\r\n--\t\t\t\t\t) AS StatusOfCredits \r\n--\t\t\t\t\tINNER JOIN\r\n--                    (\r\n--\t\t\t\t\t\tSELECT OriginalAccountNumber, SUM(CurrentChargeAmount) AS CurrentChargeAmount, MAX(BillingPeriod) AS BillingPeriod\r\n--                        FROM ManualBill.AccountManualBillingHeader\r\n--                        WHERE  (InitialPostingDate IS NOT NULL) AND (BillingPeriod = @BillingPeriod )\r\n--                        GROUP BY OriginalAccountNumber, CurrentChargeAmount\r\n--                        HAVING (CurrentChargeAmount < 0.0)\r\n--                     ) AS NewCredits \r\n--                     ON \r\n--                      StatusOfCredits.OriginalAccountNumberWithCredit = NewCredits.OriginalAccountNumber AND \r\n--                      StatusOfCredits.BillingPeriod = NewCredits.BillingPeriod \r\n--                     INNER JOIN\r\n--                     ManualBill.AccountCreditBalance \r\n--                     ON NewCredits.OriginalAccountNumber = ManualBill.AccountCreditBalance.OriginalAccountNumberWithCredit AND \r\n--                      NewCredits.BillingPeriod = ManualBill.AccountCreditBalance.BillingPeriod\r\n--\r\n--\r\n--\r\n--\t\t\r\n--\t\t\r\n--\t\t\r\n--\t\t\t-- inser a new record updating the current credits in previous periods\r\n--\t\t\t\r\n--\t\t\tINSERT INTO [ManualBill].[AccountCreditBalance]\r\n--\t\t\t\t\t   ([OriginalAccountNumberWithCredit]\r\n--\t\t\t\t\t   ,[OecRemainingCreditBalance]\r\n--\t\t\t\t\t   ,[BillingPeriod]\r\n--\t\t\t\t\t   ,[AuthenticatedUserID]\r\n--\t\t\t\t\t   ,[DateAdded]\r\n--\t\t\t\t\t   ,[LastUpdate])\r\n--\r\n--\t\t\tselect\t\tNewCredits.OriginalAccountNumber\r\n--\t\t\t\t\t\t,NewCredits.CurrentChargeAmount + StatusOfCreditsExcludingTheAccountsCreditedThisPeriod.OecRemainingCreditBalance\r\n--\t\t\t\t\t\t,@BillingPeriod\r\n--\t\t\t\t\t\t,@authenticatedID\r\n--\t\t\t\t\t\t,getdate()\r\n--\t\t\t\t\t\t,getdate()\r\n--\t\t\tFROM    ( \r\n--\t\t\t\r\n--\t\t\t\t\t\t\tSELECT allCredits.*\r\n--\t\t\t\t\t\t\tFROM (SELECT   *\r\n--\t\t\t\t\t\t\t\t\t\t\t\t   FROM ManualBill.AccountCreditBalance\r\n--\t\t\t\t\t\t\t\t\t\t\t\t   WHERE  (BillingPeriod = (SELECT MAX(BillingPeriod) AS Expr1 FROM ManualBill.AccountCreditBalance AS AccountCreditBalance_2  WHERE  (OriginalAccountNumberWithCredit = OriginalAccountNumberWithCredit)))\r\n--\t\t\t\t\t\t\t\t\t\t  ) AS allCredits \r\n--\t\t\t\t\t\t\t\t\t\t  LEFT JOIN\r\n--\t\t\t\t\t\t\t\t\t\t  (\t\tSELECT BillingPeriod, OriginalAccountNumberWithCredit\r\n--\t\t\t\t\t\t\t\t\t\t\t\tFROM ManualBill.AccountCreditBalance AS AccountCreditBalance_1\r\n--\t\t\t\t\t\t\t\t\t\t\t\tWHERE  (BillingPeriod = @BillingPeriod)\r\n--\t\t\t\t\t\t\t\t\t\t   ) AS NotIncludedAccounts \r\n--\t\t\t\t\t\t\t\t\t\t   ON NotIncludedAccounts.OriginalAccountNumberWithCredit = allCredits.OriginalAccountNumberWithCredit\r\n--\t\t\t\t\t\t\tWHERE (NotIncludedAccounts.OriginalAccountNumberWithCredit IS NULL)\t\t\t\t\t\t  \r\n--\r\n--\t\t\t\r\n--\t\t\t\t\t   ) as StatusOfCreditsExcludingTheAccountsCreditedThisPeriod\r\n--\t\t\t\t\t   inner join \r\n--\t\t\t\t\t   (\tSELECT OriginalAccountNumber, sum(CurrentChargeAmount) as CurrentChargeAmount , MAX(BillingPeriod) AS BillingPeriod\r\n--\t\t\t\t\t\t\tFROM ManualBill.AccountManualBillingHeader\r\n--\t\t\t\t\t\t\twhere (InitialPostingDate IS NOT NULL)and (BillingPeriod = @BillingPeriod)\r\n--\t\t\t\t\t\t\tGROUP BY OriginalAccountNumber, CurrentChargeAmount\r\n--\t\t\t\t\t\t\thaving    (CurrentChargeAmount < 0.0) \r\n--\t\t\t\t\t\t\t\t\r\n--\t\t\t\t\t   ) as NewCredits\r\n--\t\t\t\t\t   on ( StatusOfCreditsExcludingTheAccountsCreditedThisPeriod.OriginalAccountNumberWithCredit = NewCredits.OriginalAccountNumber ) and ( StatusOfCreditsExcludingTheAccountsCreditedThisPeriod.BillingPeriod < NewCredits.BillingPeriod)\r\n--\t\r\n--\t\t\t\t\r\n--\t\t\t\r\n--\r\n--\t\r\n--\t\t\r\n--\t\t\r\n--\t\t\r\n--\t\t\r\n--\t\t-- first time credits\r\n--\t\tINSERT INTO [ManualBill].[AccountCreditBalance]\r\n--\t\t\t\t   ([OriginalAccountNumberWithCredit]\r\n--\t\t\t\t   ,[OecRemainingCreditBalance]\r\n--\t\t\t\t   ,[BillingPeriod]\r\n--\t\t\t\t   ,[AuthenticatedUserID]\r\n--\t\t\t\t   ,[DateAdded]\r\n--\t\t\t\t   ,[LastUpdate])\r\n--\t\t\t\r\n--\t\tSELECT\t\t ManualBill.AccountManualBillingHeader.OriginalAccountNumber\r\n--\t\t\t\t\t,ManualBill.AccountManualBillingHeader.CurrentChargeAmount\r\n--\t\t\t\t\t,MAX(ManualBill.AccountManualBillingHeader.BillingPeriod) \r\n--\t\t\t\t\t,@authenticatedID\r\n--\t\t\t\t\t,GETDATE() \r\n--\t\t\t\t\t,GETDATE()\r\n--\t\t\t\t\t\r\n--\t\tFROM ManualBill.AccountManualBillingHeader LEFT JOIN\r\n--\t\t\t\t\t\t\t  ManualBill.AccountCreditBalance ON \r\n--\t\t\t\t\t\t\t  ManualBill.AccountManualBillingHeader.OriginalAccountNumber = ManualBill.AccountCreditBalance.OriginalAccountNumberWithCredit\r\n--\t\tWHERE (ManualBill.AccountManualBillingHeader.InitialPostingDate IS NOT NULL) AND (ManualBill.AccountManualBillingHeader.CurrentChargeAmount < 0.0)\r\n--\t\tGROUP BY ManualBill.AccountManualBillingHeader.OriginalAccountNumber, ManualBill.AccountManualBillingHeader.CurrentChargeAmount, \r\n--\t\t\t\t\t\t\t  ManualBill.AccountCreditBalance.AccountCreditBalanceSeqid\r\n--\t\tHAVING (ManualBill.AccountCreditBalance.AccountCreditBalanceSeqid IS NULL)\r\n--\r\n--\r\n--\r\n--\t\t\r\n\t\t\t\r\n\r\n\t\t \r\n\t\t\tset @Status = 0\r\n \r\n end"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,817 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Temporal",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNewPeriodFromPublishedToTemporalForAccountLevelRawDataForCurrentPeriod",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNewPeriodFromPublishedToTemporalForAccountLevelRawDataForCurrentPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage the insertion and update of billing period data from a published source table to a temporal destination table. It ensures that only the next billing period after the current maximum period is inserted, and it updates the effective end periods for existing records in the temporal table based on the new data from the published table. The procedure includes checks for data integrity, specifically ensuring that hash codes are populated before proceeding with data manipulation."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure is complex due to its multiple conditional checks, extensive data manipulation, and the use of temporal logic to manage effective periods. It involves several subqueries, joins, and updates that require careful handling to maintain data integrity and consistency."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the billing period that is intended to be inserted into the temporal table. It is a string of six characters, typically formatted as YYYYMM."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by determining the maximum effective start period from the temporal table and calculates the next period using a helper function "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if the provided "
+                },
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " matches the calculated next period. If not, it raises an error and exits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hash Code Integrity Check",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It verifies that all records in both the source and destination tables have non-null hash values. If any are missing, it raises an error and exits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts new records from the source table ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.AccountLevelRawDataForCurrentPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") into the destination table ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") for the specified billing period, ensuring no duplicate hash values exist in the destination."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EffectiveEndPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for records in the temporal table that match the current billing period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records in the temporal table that exist in the destination but not in the source for the current billing period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records in the temporal table that exist in the source but not in the destination for the current billing period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although commented out, the procedure is designed to be executed within a transaction to ensure atomicity. This includes a try-catch block for error handling and rollback in case of failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in joins and where clauses, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue2",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveStartPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The commented-out transaction management should be enabled to ensure data consistency, but it may increase lock contention and should be tested for performance impact."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the data volume is large, consider processing in batches to reduce transaction size and potential locking issues."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies heavily on hash values for data integrity checks. Any discrepancies in hash value calculations could lead to incorrect data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without proper transaction management, concurrent executions could lead to race conditions or data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current error handling is minimal and could be expanded to provide more detailed logging and recovery options."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the complexity and number of operations in this procedure could lead to performance degradation. Regular monitoring and optimization may be necessary."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Temporal].[usp_InsertNewPeriodFromPublishedToTemporalForAccountLevelRawDataForCurrentPeriod]\n\t@PublishedBillingPeriod VARCHAR(6)\r\nAS\r\n    BEGIN\t\r\n\tDECLARE @MaxPeriod VARCHAR(6) = (SELECT MAX(EffectiveStartPeriod) FROM Published.TemporalAccountLevelRawDataForCurrentPeriod )\r\n\tDECLARE @NextPeriod VARCHAR(6) =  [dbo].[CreateNextPeriod](@MaxPeriod, 'M')\r\n        \r\n\t\t\r\n\t\t-- Make sure only next period after the max is being inserted\r\n\t\tIF ( @NextPeriod <> @PublishedBillingPeriod  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: You can only insert this period: %s', 12, 1, @NextPeriod) \r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- make sure the hashcode is populated before starting\r\n\t\tDECLARE @CountNullHashCodeSource int = ( SELECT COUNT(*) FROM [Published].[AccountLevelRawDataForCurrentPeriod] WHERE HashValue IS null OR HashValue2 IS NULL)\r\n\t\tDECLARE @CountNullHashCodeDestination INT =  ( SELECT COUNT(*) FROM [Published].[TemporalAccountLevelRawDataForCurrentPeriod] WHERE HashValue IS null OR HashValue2 IS NULL)\t\t\r\n\t\tIF ( @CountNullHashCodeSource > 0 OR @CountNullHashCodeDestination > 0  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: HashCode is missing from either [Published].[TemporalAccountLevelRawDataForCurrentPeriod] or [Published].[AccountLevelRawDataForCurrentPeriod].', 12, 1) \t\t\r\n\t\t\tRETURN\r\n\t\tEND\t\r\n\r\n\t\t--BEGIN TRANSACTION\r\n\t\t--\tBEGIN TRY \r\n\t\t\t\t\t---Process start---------------------------------------\r\n\t\t\t\t\t   INSERT INTO  Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\t\t\t\t\t( \r\n\t\t\t\t\t\t  BillingPeriod\r\n\t\t\t\t\t\t, LastPeriodModified\r\n\t\t\t\t\t\t, BillingMonth\r\n\t\t\t\t\t\t, BillingMonthActualOrEstimated\r\n\t\t\t\t\t\t, BillingMonthOriginalBilledDollars\r\n\t\t\t\t\t\t, BillingMonthOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t\t, BillingMonthOriginalTotalDueDollars\r\n\t\t\t\t\t\t, BillingMonthOriginalEnergyUsage\r\n\t\t\t\t\t\t, BillingMonthOriginalDemandUsage\r\n\t\t\t\t\t\t, BillingMonthRevisedBilledDollars\r\n\t\t\t\t\t\t, BillingMonthRevisedEnergyUsage\r\n\t\t\t\t\t\t, BillingMonthRevisedDemandUsage\r\n\t\t\t\t\t\t, BillingMonthNetDollarChange\r\n\t\t\t\t\t\t, BillingMonthNetEnergyUsageChange\r\n\t\t\t\t\t\t, BillingMonthNetDemandUsageChange\r\n\t\t\t\t\t\t, FiscalYear\r\n\t\t\t\t\t\t, ActualOrEstimated\r\n\t\t\t\t\t\t, TotalAmountDue\r\n\t\t\t\t\t\t, NetDollarChange\r\n\t\t\t\t\t\t, OriginalBilledAmount\r\n\t\t\t\t\t\t, RevisedBilledAmount\r\n\t\t\t\t\t\t, OriginalBilledAmountPaid\r\n\t\t\t\t\t\t, PaidAdjustmentAmount\r\n\t\t\t\t\t\t, OriginalEnergyUsage\r\n\t\t\t\t\t\t, OriginalDemandUsage\r\n\t\t\t\t\t\t, AccountEnergyUsage\r\n\t\t\t\t\t\t, AccountDemandUsage\r\n\t\t\t\t\t\t, NetEnergyUsageChange\r\n\t\t\t\t\t\t, NetDemandUsageChange\r\n\t\t\t\t\t\t, UtilityCompany\r\n\t\t\t\t\t\t, EnergySource\r\n\t\t\t\t\t\t, EnergyType\r\n\t\t\t\t\t\t, CurrentInvoiceAccountBillingGroup\r\n\t\t\t\t\t\t, InvoiceAccountBillingGroupDesc\r\n\t\t\t\t\t\t, AgencyCodeOEC\r\n\t\t\t\t\t\t, AgencyName\r\n\t\t\t\t\t\t, OecFacilityNumber\r\n\t\t\t\t\t\t, FacilityName\r\n\t\t\t\t\t\t, Address1\r\n\t\t\t\t\t\t, CurrentAccountNumber\r\n\t\t\t\t\t\t, OriginalAccountNumber\r\n\t\t\t\t\t\t, BillToAgencyCode\r\n\t\t\t\t\t\t, Borough\r\n\t\t\t\t\t\t, Block\r\n\t\t\t\t\t\t, LotNumber\r\n\t\t\t\t\t\t, CityPlanningBIN\r\n\t\t\t\t\t\t, EnergyUnit\r\n\t\t\t\t\t\t, AccountStatus\r\n\t\t\t\t\t\t, AccountPreviousStatus\r\n\t\t\t\t\t\t, AccountStatusCodePeriod\r\n\t\t\t\t\t\t, IsTimeOfDayAccount\r\n\t\t\t\t\t\t, SalesType\r\n\t\t\t\t\t\t, DeliveryTariffRate\r\n\t\t\t\t\t\t, CommodityTariffRate\r\n\t\t\t\t\t\t, BudgetGroupDEM\r\n\t\t\t\t\t\t, BudgetGroupDEMName\r\n\t\t\t\t\t\t, BudgetRateClassDescription\r\n\t\t\t\t\t\t, BillingCycle\r\n\t\t\t\t\t\t, UtilityServiceAddress\r\n\t\t\t\t\t\t, AccountBillingStatus\r\n\t\t\t\t\t\t, PreviousAccountBillingStatus\r\n\t\t\t\t\t\t, AccountBillingStatusCodePeriod\r\n\t\t\t\t\t\t, BillingPeriodDays\r\n\t\t\t\t\t\t, UtilityCompanySeqid\r\n\t\t\t\t\t\t, EnergyDeliveryType\r\n\t\t\t\t\t\t,EnergyDeliverySubTypeID\r\n\t\t\t\t\t\t,EnergyDeliverySubType\r\n\t\t\t\t\t\t, AccountSeqid\r\n\t\t\t\t\t\t, AccountBillingSeqid\r\n\t\t\t\t\t\t, IsRentalSpace\r\n\t\t\t\t\t\t, FromDate\r\n\t\t\t\t\t\t, ToDate\r\n\t\t\t\t\t\t, AccountEffectiveTurnOn\r\n\t\t\t\t\t\t, AccountEffectiveTurnOff\r\n\t\t\t\t\t\t, AccountEnergyType\r\n\t\t\t\t\t\t, UtilityTariffRateInformationSeqid\r\n\t\t\t\t\t\t, BTUfactor\r\n\t\t\t\t\t\t, BTU\r\n\t\t\t\t\t\t, CO2factor\r\n\t\t\t\t\t\t, CO2\r\n\t\t\t\t\t\t, OnPeakEnergyUsage\r\n\t\t\t\t\t\t, OffPeakEnergyUsage\r\n\t\t\t\t\t\t, RevisedEnergyDollar\r\n\t\t\t\t\t\t, RevisedDemandDollar\r\n\t\t\t\t\t\t, RevisedFacilityPointDollar\r\n\t\t\t\t\t\t, RevisedReactivePowerDollars\r\n\t\t\t\t\t\t, StreetLightingFacilityPoints\r\n\t\t\t\t\t\t, OriginalReactivePowerDollars\r\n\t\t\t\t\t\t, CommodityAllocationCharge\r\n\t\t\t\t\t\t, NetchangeReactivePowerDollars\r\n\t\t\t\t\t\t, CustomerLevelAdjustmentAmount\r\n\t\t\t\t\t\t, OriginalAccountReactivePowerEnergy\r\n\t\t\t\t\t\t, AccountReactivePowerEnergy\r\n\t\t\t\t\t\t, NetChangeAccountReactivePowerEnergy\r\n\t\t\t\t\t\t, IsMinimumBilledCharged\r\n\t\t\t\t\t\t, DeliveryAllocationCharge\r\n\t\t\t\t\t\t, MinimumBilledEnergyDollars\r\n\t\t\t\t\t\t, GrossDemandUsageChange\r\n\t\t\t\t\t\t, MinimumBilledDemandDollars\r\n\t\t\t\t\t\t, AccountBillingStatusDescription\r\n\t\t\t\t\t\t, MaxBilledDemandUsage\r\n\t\t\t\t\t\t, GrossEnergyUsageChange\r\n\t\t\t\t\t\t, InvoiceAccountGroupSeqid\r\n\t\t\t\t\t\t, GrossDollarChange\r\n\t\t\t\t\t\t, AgencyDivisionSeqid\r\n\t\t\t\t\t\t, FacilitySeqid\r\n\t\t\t\t\t\t, MaxBilledDemandPeriod\r\n\t\t\t\t\t\t, MinimumBilledDemandUsage\r\n\t\t\t\t\t\t, IsDeliveryMinimumBilledFlag\r\n\t\t\t\t\t\t, DeliveryMinimumBilledAmount\r\n\t\t\t\t\t\t, DeliveryMinimumBilledDemand\r\n\t\t\t\t\t\t, DeliveryMaximumBilledDemand\r\n\t\t\t\t\t\t, DeliveryMaximumBilledDemandPeriod\r\n\t\t\t\t\t\t, MinimumBilledEnergyUsage\r\n\t\t\t\t\t\t, ManualPaymentOverride\r\n\t\t\t\t\t\t, ManualPaymentOverrideAmount\r\n\t\t\t\t\t\t, hashValue\r\n\r\n\t\t\t\t\t\t, EffectiveStartPeriod\r\n\t\t\t\t\t\t, EffectiveEndPeriod\r\n\r\n\t\t\t\t\t\t, UniqueAccountSeqid\r\n\t\t\t\t\t\t, RevisedDeliveryDollars\r\n\t\t\t\t\t\t, RevisedTotalReactivePowerDollars\r\n\t\t\t\t\t\t, RevisedCommodityDollars\r\n\t\t\t\t\t\t, HashValue2\r\n\r\n\t\t\t\t\t\t,ZECsCharge\r\n\t\t\t\t\t\t)\r\n\t\t\t\tSELECT \r\n\t\t\t\t\t\t  alrdfcp.BillingPeriod\r\n\t\t\t\t\t\t, alrdfcp.LastPeriodModified\r\n\t\t\t\t\t\t, alrdfcp.BillingMonth\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthActualOrEstimated\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthOriginalBilledDollars\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthOriginalTotalDueDollars\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthOriginalEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthOriginalDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthRevisedBilledDollars\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthRevisedEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthRevisedDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthNetDollarChange\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthNetEnergyUsageChange\r\n\t\t\t\t\t\t, alrdfcp.BillingMonthNetDemandUsageChange\r\n\t\t\t\t\t\t, alrdfcp.FiscalYear\r\n\t\t\t\t\t\t, alrdfcp.ActualOrEstimated\r\n\t\t\t\t\t\t, alrdfcp.TotalAmountDue\r\n\t\t\t\t\t\t, alrdfcp.NetDollarChange\r\n\t\t\t\t\t\t, alrdfcp.OriginalBilledAmount\r\n\t\t\t\t\t\t, alrdfcp.RevisedBilledAmount\r\n\t\t\t\t\t\t, alrdfcp.OriginalBilledAmountPaid\r\n\t\t\t\t\t\t, alrdfcp.PaidAdjustmentAmount\r\n\t\t\t\t\t\t, alrdfcp.OriginalEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.OriginalDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.AccountEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.AccountDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.NetEnergyUsageChange\r\n\t\t\t\t\t\t, alrdfcp.NetDemandUsageChange\r\n\t\t\t\t\t\t, alrdfcp.UtilityCompany\r\n\t\t\t\t\t\t, alrdfcp.EnergySource\r\n\t\t\t\t\t\t, alrdfcp.EnergyType\r\n\t\t\t\t\t\t, alrdfcp.CurrentInvoiceAccountBillingGroup\r\n\t\t\t\t\t\t, alrdfcp.InvoiceAccountBillingGroupDesc\r\n\t\t\t\t\t\t, alrdfcp.AgencyCodeOEC\r\n\t\t\t\t\t\t, alrdfcp.AgencyName\r\n\t\t\t\t\t\t, alrdfcp.OecFacilityNumber\r\n\t\t\t\t\t\t, alrdfcp.FacilityName\r\n\t\t\t\t\t\t, alrdfcp.Address1\r\n\t\t\t\t\t\t, alrdfcp.CurrentAccountNumber\r\n\t\t\t\t\t\t, alrdfcp.OriginalAccountNumber\r\n\t\t\t\t\t\t, alrdfcp.BillToAgencyCode\r\n\t\t\t\t\t\t, alrdfcp.Borough\r\n\t\t\t\t\t\t, alrdfcp.Block\r\n\t\t\t\t\t\t, alrdfcp.LotNumber\r\n\t\t\t\t\t\t, alrdfcp.CityPlanningBIN\r\n\t\t\t\t\t\t, alrdfcp.EnergyUnit\r\n\t\t\t\t\t\t, alrdfcp.AccountStatus\r\n\t\t\t\t\t\t, alrdfcp.AccountPreviousStatus\r\n\t\t\t\t\t\t, alrdfcp.AccountStatusCodePeriod\r\n\t\t\t\t\t\t, alrdfcp.IsTimeOfDayAccount\r\n\t\t\t\t\t\t, alrdfcp.SalesType\r\n\t\t\t\t\t\t, alrdfcp.DeliveryTariffRate\r\n\t\t\t\t\t\t, alrdfcp.CommodityTariffRate\r\n\t\t\t\t\t\t, alrdfcp.BudgetGroupDEM\r\n\t\t\t\t\t\t, alrdfcp.BudgetGroupDEMName\r\n\t\t\t\t\t\t, alrdfcp.BudgetRateClassDescription\r\n\t\t\t\t\t\t, alrdfcp.BillingCycle\r\n\t\t\t\t\t\t, alrdfcp.UtilityServiceAddress\r\n\t\t\t\t\t\t, alrdfcp.AccountBillingStatus\r\n\t\t\t\t\t\t, alrdfcp.PreviousAccountBillingStatus\r\n\t\t\t\t\t\t, alrdfcp.AccountBillingStatusCodePeriod\r\n\t\t\t\t\t\t, alrdfcp.BillingPeriodDays\r\n\t\t\t\t\t\t, alrdfcp.UtilityCompanySeqid\r\n\t\t\t\t\t\t, alrdfcp.EnergyDeliveryType\r\n\t\t\t\t\t\t, alrdfcp.EnergyDeliverySubTypeID\r\n\t\t\t\t\t\t, alrdfcp.EnergyDeliverySubType\r\n\t\t\t\t\t\t, alrdfcp.AccountSeqid\r\n\t\t\t\t\t\t, alrdfcp.AccountBillingSeqid\r\n\t\t\t\t\t\t, alrdfcp.IsRentalSpace\r\n\t\t\t\t\t\t, alrdfcp.FromDate\r\n\t\t\t\t\t\t, alrdfcp.ToDate\r\n\t\t\t\t\t\t, alrdfcp.AccountEffectiveTurnOn\r\n\t\t\t\t\t\t, alrdfcp.AccountEffectiveTurnOff\r\n\t\t\t\t\t\t, alrdfcp.AccountEnergyType\r\n\t\t\t\t\t\t, alrdfcp.UtilityTariffRateInformationSeqid\r\n\t\t\t\t\t\t, alrdfcp.BTUfactor\r\n\t\t\t\t\t\t, alrdfcp.BTU\r\n\t\t\t\t\t\t, alrdfcp.CO2factor\r\n\t\t\t\t\t\t, alrdfcp.CO2\r\n\t\t\t\t\t\t, alrdfcp.OnPeakEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.OffPeakEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.RevisedEnergyDollar\r\n\t\t\t\t\t\t, alrdfcp.RevisedDemandDollar\r\n\t\t\t\t\t\t, alrdfcp.RevisedFacilityPointDollar\r\n\t\t\t\t\t\t, alrdfcp.RevisedReactivePowerDollars\r\n\t\t\t\t\t\t, alrdfcp.StreetLightingFacilityPoints\r\n\t\t\t\t\t\t, alrdfcp.OriginalReactivePowerDollars\r\n\t\t\t\t\t\t, alrdfcp.CommodityAllocationCharge\r\n\t\t\t\t\t\t, alrdfcp.NetchangeReactivePowerDollars\r\n\t\t\t\t\t\t, alrdfcp.CustomerLevelAdjustmentAmount\r\n\t\t\t\t\t\t, alrdfcp.OriginalAccountReactivePowerEnergy\r\n\t\t\t\t\t\t, alrdfcp.AccountReactivePowerEnergy\r\n\t\t\t\t\t\t, alrdfcp.NetChangeAccountReactivePowerEnergy\r\n\t\t\t\t\t\t, alrdfcp.IsMinimumBilledCharged\r\n\t\t\t\t\t\t, alrdfcp.DeliveryAllocationCharge\r\n\t\t\t\t\t\t, alrdfcp.MinimumBilledEnergyDollars\r\n\t\t\t\t\t\t, alrdfcp.GrossDemandUsageChange\r\n\t\t\t\t\t\t, alrdfcp.MinimumBilledDemandDollars\r\n\t\t\t\t\t\t, alrdfcp.AccountBillingStatusDescription\r\n\t\t\t\t\t\t, alrdfcp.MaxBilledDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.GrossEnergyUsageChange\r\n\t\t\t\t\t\t, alrdfcp.InvoiceAccountGroupSeqid\r\n\t\t\t\t\t\t, alrdfcp.GrossDollarChange\r\n\t\t\t\t\t\t, alrdfcp.AgencyDivisionSeqid\r\n\t\t\t\t\t\t, alrdfcp.FacilitySeqid\r\n\t\t\t\t\t\t, alrdfcp.MaxBilledDemandPeriod\r\n\t\t\t\t\t\t, alrdfcp.MinimumBilledDemandUsage\r\n\t\t\t\t\t\t, alrdfcp.IsDeliveryMinimumBilledFlag\r\n\t\t\t\t\t\t, alrdfcp.DeliveryMinimumBilledAmount\r\n\t\t\t\t\t\t, alrdfcp.DeliveryMinimumBilledDemand\r\n\t\t\t\t\t\t, alrdfcp.DeliveryMaximumBilledDemand\r\n\t\t\t\t\t\t, alrdfcp.DeliveryMaximumBilledDemandPeriod\r\n\t\t\t\t\t\t, alrdfcp.MinimumBilledEnergyUsage\r\n\t\t\t\t\t\t, alrdfcp.ManualPaymentOverride\r\n\t\t\t\t\t\t, alrdfcp.ManualPaymentOverrideAmount\r\n\t\t\t\t\t\t, alrdfcp.hashValue\r\n\r\n\t\t\t\t\t\t, alrdfcp.PublishedBillingPeriod\r\n\t\t\t\t\t\t, '999912'\r\n\r\n\t\t\t\t\t\t, UniqueAccountSeqid\r\n\t\t\t\t\t\t, RevisedDeliveryDollars\r\n\t\t\t\t\t\t, RevisedTotalReactivePowerDollars\r\n\t\t\t\t\t\t, RevisedCommodityDollars\r\n\t\t\t\t\t\t, alrdfcp.HashValue2\r\n\r\n\t\t\t\t\t\t, alrdfcp.ZECsCharge\r\n\t\t\r\n\t\t\t\t\t\tFROM Published.AccountLevelRawDataForCurrentPeriod AS alrdfcp\r\n\t\t\t\t\t\tleft JOIN \r\n\t\t\t\t\t\t--test.tempAccountLevelRawDataForCurrentPeriod AS talrdfcp \r\n\t\t\t\t\t\t(SELECT t.HashValue,t.HashValue2,t.EffectiveStartPeriod FROM Published.TemporalAccountLevelRawDataForCurrentPeriod t WHERE EffectiveEndPeriod='999912') AS talrdfcp \r\n\t\t\t\t\t\tON talrdfcp.hashValue = alrdfcp.hashValue AND talrdfcp.HashValue2 = talrdfcp.HashValue2\r\n\t\t\t\t\t\tWHERE alrdfcp.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\tAND talrdfcp.EffectiveStartPeriod IS NULL\r\n\t\t\t\t\t\t--AND talrdfcp.InsertedPeriod IS NULL\r\n\t\t\t\t\t\t-- we are joining with active data only\r\n\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is data change, just set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT previousPeriods.Seqid \r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(SELECT * FROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod=@PublishedBillingPeriod) AS processingPeriod\r\n\t\t\t\t\t\t\tINNER JOIN \r\n\t\t\t\t\t\t\t(SELECT * FROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod<@PublishedBillingPeriod) AS previousPeriods\r\n\t\t\t\t\t\t\tON previousPeriods.AccountBillingSeqid = processingPeriod.AccountBillingSeqid\r\n\t\t\t\t\t\t\tWHERE previousPeriods.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t)\r\n\r\n\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT talrdfcp.Seqid FROM \r\n\t\t\t\t\t\t\tPublished.TemporalAccountLevelRawDataForCurrentPeriod AS talrdfcp\r\n\t\t\t\t\t\t\tLEFT JOIN \r\n\t\t\t\t\t\t\tPublished.AccountLevelRawDataForCurrentPeriod AS alrdfcp\r\n\t\t\t\t\t\t\tON alrdfcp.hashValue = talrdfcp.hashValue AND alrdfcp.hashValue2 = talrdfcp.hashValue2 \r\n\t\t\t\t\t\t\tWHERE alrdfcp.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\t\tAND  talrdfcp.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t\tAND alrdfcp.AccountBillingSeqid IS null\r\n\t\t\t\t\t\t)\r\n\r\n\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source\r\n\t\t\t\t\t\tUPDATE Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT t.Seqid\r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT Seqid,HashValue,HashValue2 FROM Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\t\t\t\t\t\t\tWHERE EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) t\r\n\t\t\t\t\t\t\tLEFT JOIN\r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT alrdfcp.HashValue,alrdfcp.HashValue2,alrdfcp.PublishedBillingPeriod FROM Published.AccountLevelRawDataForCurrentPeriod AS alrdfcp\r\n\t\t\t\t\t\t\t\tWHERE alrdfcp.PublishedBillingPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) p \r\n\t\t\t\t\t\t\tON p.hashValue = t.hashValue AND p.hashValue2 = t.hashValue2\r\n\t\t\t\t\t\t\tWHERE p.PublishedBillingPeriod IS null\r\n\t\t\t\t\t\t)\r\n\t\t\t\t\t\t--PROCESS ENDS-------------------------\r\n\t\t\t--\tCOMMIT TRANSACTION\r\n\t\t\t--END TRY\r\n\t\t\t\r\n\t\t\t--BEGIN CATCH \r\n\t\t\t--  RAISERROR('The Process Failed', 16, 1)\r\n\t\t\t--  ROLLBACK TRANSACTION\r\n\t\t\t--END CATCH \t\t\t          \r\n         \r\n    END"
+        }
+      ]
+    }
+  ]
+}

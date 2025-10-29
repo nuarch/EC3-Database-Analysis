@@ -1,0 +1,995 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "NationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LegacyData_ProcessMeterUnspanned",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LegacyData_ProcessMeterUnspanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process legacy meter data for a utility company. It handles the calculation and correction of CCF (hundred cubic feet) values for meter readings, particularly in cases involving multi-meter accounts, meter resets, and account cancellations. The procedure performs several operations, including data insertion into temporary tables, CCF calculations, data validation, and final insertion into permanent tables. It also calls other stored procedures to handle specific tasks like prorating usage and parsing meter resets."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is medium. It involves multiple steps, including data transformation, conditional logic, and interaction with other stored procedures. The use of temporary tables and various calculations adds to its complexity, but it is still manageable for someone with a good understanding of SQL and the business context."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in a "
+                },
+                {
+                  "type": "text",
+                  "text": "YYYYMM",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " format. It is used to filter and update records based on the billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the user executing the procedure, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingCycle varchar(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing cycle, which may influence how data is processed or grouped."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A utility ID is set to '2', which might represent a specific utility company or region."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion into Temporary Table",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Data is selected from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadLegacyNationalGridWestDataPreload",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and inserted into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "#preloadData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Various transformations are applied, such as converting dates and readings, and calculating initial CCF values."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CCF Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates are made to calculate the correct CCF values, considering meter resets and reading discrepancies."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Records with invalid CCF or billing amounts are removed."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion into Permanent Table",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Validated and processed data is inserted into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadLegacyKeyspanWestMeter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Prorating Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calls another stored procedure "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProrateAccountBillingUsageToMeterBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to handle prorating of usage for multi-meter accounts."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Summary Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts processed data into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadLegacyKeyspanWestMeterSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", summarizing the billing information."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Meter Reset Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calls "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ParseSplitBillingAndMeterResets",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to handle any meter resets or split billing scenarios."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables can be efficient for intermediate data processing but may impact performance if the data volume is large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the underlying tables have appropriate indexes to optimize joins and updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the data volume is significant, consider processing in batches to reduce transaction size and lock contention."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on several user-defined functions, which should be optimized for performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Incorrect CCF calculations or data transformations could lead to inaccurate billing information."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, there could be contention on shared resources or temporary tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or incomplete transactions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade, necessitating optimization or refactoring."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External Procedures",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on other stored procedures and functions, which must be maintained and synchronized to ensure consistent behavior."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t\r\n/*\r\n Problem: ccf is 0 for records in multi meter account. Procedures for processing meter reset and split depends on correct ccf for each record. Simply subtract fromReading from toReading will not work for two reasons:\r\n 1) sum(toReading - fromReading) might not equal to ccf reported for multimeter account\r\n 2) meter reset\r\n*/\r\n\r\n\r\n-- =============================================\r\nCREATE PROCEDURE [NationalGridWest].[usp_LegacyData_ProcessMeterUnspanned]\r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@BillingCycle varchar(1)\r\nAS\r\nBEGIN\r\n\t\r\ndeclare @UtilityID varchar(1)\r\nset @UtilityID = '2'\r\n\r\n/******************************\r\n1. Insert meter data into temp table\r\n*******************************/\r\n\r\n-- store data into temp table. If record's ccf is 0, it is possible that the record is part of account cancellation\r\nselect \r\n\t[BillingPeriod] AS [BillingPeriod]\r\n\t,'            ' as [BillingPeriodRevision]\r\n\t,'            ' as [FirstPeriodCanceled]\r\n\t,null as [DeltaNumberOfPeriods]\r\n\t,dbo.KeyspanConvertLegacyAccountToEC3Number(dbo.KeyspanConvertCancellationAccountNumber([KeyspanOldAccountNumber],BilledAmount)) as EC3AccountNumber \r\n\t,MeterNumber AS [MeterNumber]\r\n\t,dbo.MMDDYKeyspanToYYYYMMDD(FromDateMMDDY) as FromDate\r\n\t,dbo.MMDDYKeyspanToYYYYMMDD(ToDateMMDDY) as ToDate\r\n\t,null as [RecordType]\r\n\t,cast(dbo.ConvertOverpunch(FromMeterReading) as int) as FromMeterReading\r\n\t,cast(dbo.ConvertOverpunch(ToMeterReading) as int) as ToMeterReading\r\n\t,'1' as 'MeterConstant' \r\n\t,cast(NumberOfDials as int) as [Dials]\r\n\t,[UtilityServiceAccountName] as FacilityName\r\n\t,null ReadingCode \r\n\t,cast(dbo.ConvertOverpunch(CCF) as int) as CCF\r\n\t,null as CycleBillingDays\r\n\t,cast(dbo.ConvertOverpunch5ToDecimal(ThermsFactor) as numeric(6,4)) as ThermFactor\r\n\t,[UtilityServiceAddress] as ServiceAddress\r\n\t,null as FiscalYear\r\n\t,null as BillCreationDate\r\n\t,(case when EstimatedOrActualBillingCode = 'ES' then 'EST' else 'ACT' end) AS EstimatedOrActual\r\n\t,cast(dbo.ConvertOverpunch(Therms) as int) AS Therms\r\n\t,dbo.ConvertOverpunch9ToMoney(BilledAmount) AS BilledAmount\r\n\t,@authenticatedID AS [AuthenticatedUserID]\r\n\t,getdate() AS DateAdded\r\n\t,getdate() AS lastUpdate\r\nINTO #preloadData\r\nFROM [NationalGridWest].[UploadLegacyNationalGridWestDataPreload]\r\nwhere FromMeterReading IS NOT NULL AND ToMeterReading IS NOT NULL AND cast(dbo.ConvertOverpunch(CCF) as int) >= 0\r\n\r\n\r\n/******************************\r\n2. Calculate CCF \r\n*******************************/\r\n\r\nupdate #preloadData\r\nset \r\n\tBillingPeriodRevision = NationalGridWest.DetermineBillingPeriod('b', ToDate, 'T', substring(EC3AccountNumber , 12, 2)),\r\n\tFirstPeriodCanceled = NationalGridWest.DetermineBillingPeriod('b', FromDate, 'F', substring(EC3AccountNumber , 12, 2))\r\n\r\nUPDATE #preloadData\r\n\tSET\r\n\t\tBillingPeriodRevision = CASE WHEN BillingPeriodRevision>@BillingPeriod THEN @BillingPeriod ELSE  BillingPeriodRevision end,\r\n\t\tFirstPeriodCanceled = CASE WHEN FirstPeriodCanceled>@BillingPeriod THEN @BillingPeriod\tELSE FirstPeriodCanceled\tEND\r\n\r\n\r\n-- update number of period. ignore account with invalid billing period\r\nupdate #preloadData\r\nset DeltaNumberOfPeriods = [dbo].[CalculateDeltaBillingPeriods](FirstPeriodCanceled, BillingPeriodRevision, 'b')\r\nwhere not(BillingPeriodRevision like 'X%' or FirstPeriodCanceled like 'X%')\r\n\r\n\r\n-- remove record with CCF = 0 and amount <= 0 and not in multimeter account. We don't want multimeter cancel (ccf = 0, amount = 0) in the preloadData\r\nDELETE t1\r\nFROM #preloadData AS t1\r\nINNER join \r\n(\r\n\tSELECT SUM(ccf) AS sumCCf, SUM(BilledAmount) AS BilledAmount, EC3AccountNumber AS EC3AccountNumber, BillingPeriodRevision AS BillingPeriodRevision\r\n\tFROM #preloadData\r\n\tGROUP BY EC3AccountNumber, BillingPeriodRevision\r\n) AS a\r\nON t1.EC3AccountNumber = a.EC3AccountNumber \r\nAND t1.BillingPeriodRevision = a.BillingPeriodRevision\r\nWHERE a.sumCCf = 0 AND a.BilledAmount <= 0\r\n\r\n\r\n\r\n-- update UploadLegacyKeyspanWestMeter CCF where fromReading >= toReading (ignore reset)\r\nupdate #preloadData\r\nSET CCF = (ToMeterReading - FromMeterReading)\r\nWHERE (ToMeterReading-FromMeterReading)>=0\r\n\r\n-- using dial number provided\r\nupdate #preloadData\r\nSET CCF = (POWER(10, dials) - fromMeterReading + toMeterReading) \r\nWHERE ToMeterReading < FromMeterReading\r\nAND dials > LEN(FromMeterReading)\r\n\r\n-- dial information is not correct\r\nupdate #preloadData\r\nSET CCF = (POWER(10, LEN(fromMeterReading)) - fromMeterReading + toMeterReading) \r\nWHERE ToMeterReading < FromMeterReading\r\nAND dials <= LEN(FromMeterReading)\r\n\r\n-- remove record with ccf equal to 0 and bill amount is 0\r\nDELETE FROM #preloadData\r\nWHERE ccf = 0 AND billedAmount = 0\r\n\r\n\r\n/******************************\r\n3. insert data into preload data \r\n*******************************/\r\nINSERT INTO NationalGridWest.UploadLegacyKeyspanWestMeter\r\n   ([BillingPeriod]\r\n   ,[BillingPeriodRevision]\r\n   ,[FirstPeriodCanceled]\r\n   ,[DeltaNumberOfPeriods]\r\n   ,[AccountNumber]\r\n   ,[MeterNumber]\r\n   ,[FromDate]\r\n   ,[ToDate]\r\n   ,[RecordType]\r\n   ,[FromReading]\r\n   ,[ToReading]\r\n   ,[MeterConstant]\r\n   ,[Dials]\r\n   ,[FacilityName]\r\n   ,[ReadingCode]\r\n   ,[CCF]\r\n   ,[CycleBillingDays]\r\n   ,[ThermFactor]\r\n   ,[ServiceAddress]\r\n   ,[FiscalYear]\r\n   ,[PostingDate]\r\n   ,[EstimatedOrActual]\r\n   ,[Therms]\t\r\n   ,[AuthenticatedUserID]\r\n   ,[DateAdded]\r\n   ,[LastUpdate])\r\n(\t\r\n\tSELECT\r\n\t[BillingPeriod]\r\n   ,[BillingPeriodRevision]\r\n   ,[FirstPeriodCanceled]\r\n   ,[DeltaNumberOfPeriods]\r\n   ,EC3AccountNumber\r\n   ,[MeterNumber]\r\n   ,[FromDate]\r\n   ,[ToDate]\r\n   ,[RecordType]\r\n   ,[FromMeterReading]\r\n   ,[ToMeterReading]\r\n   ,[MeterConstant]\r\n   ,[Dials]\r\n   ,[FacilityName]\r\n   ,[ReadingCode]\r\n   ,[CCF]\r\n   ,[CycleBillingDays]\r\n   ,[ThermFactor]\r\n   ,[ServiceAddress]\r\n   ,[FiscalYear]\r\n   ,[BillCreationDate]\r\n   ,[EstimatedOrActual]\r\n   ,[Therms]\t\r\n   ,[AuthenticatedUserID]\r\n   ,[DateAdded]\r\n   ,[LastUpdate]\r\n\tFROM #preloadData\r\n)\r\n\r\nDROP TABLE #preloadData\r\n\r\n\r\n\r\n/******************************\r\n5. prorate usage for multi meter account\r\n*******************************/\r\nEXEC NationalGridWest.usp_LegacyData_ProrateAccountBillingUsageToMeterBilling @isCancelRecord ='0'\r\n\r\n/******************************\r\n6. Insert unspanned data into summary\r\n*******************************/\r\nINSERT INTO NationalGridWest.UploadLegacyKeyspanWestMeterSummary\r\n\t(AccountUtilityCompanySeqid,\r\n\tOriginalAccountNumber,\r\n\tOriginalMeterNumber,\r\n\tBillingPeriod,\r\n\tBillingPeriodRevision,\r\n\tFirstCancelPeriod,\r\n\tNumberOfTransactions,\r\n\tNumberOfRebillTransactions,\r\n\tNumberOfCancelTransactions,\r\n\tBillingAction,\r\n\tGasRateCode,\r\n\tInitialCancelFromDate,\r\n\tCurrentBillingToDate,\r\n\tFromDate,\r\n\tToDate,\r\n\tMeterFromReading,\r\n\tMeterToReading,\r\n\tCcf,\r\n\tTherms,\r\n\tThermsFactor,\r\n\tMeterConstant,\r\n\tTotalBillingDaysRebilled,\r\n\tNumberOfBillingPeriods,\r\n\tBillingDays,\r\n\tBillingDate,\r\n\tReadingCode,\r\n\tNumberOfDials,\r\n\tMeterType,\r\n\tProcessEffectiveDate,\r\n\tSpannedBillingPeriodRevision,\r\n\tSpannedFirstCanceledBillingPeriod,\r\n\tSpannedCCF,\r\n\tSpannedThermFactor,\r\n\tSpannedTherm,\r\n\tSpannedMonthlyPercentage,\r\n\tSpannedTotalPercentage,\r\n\tAuthenticatedUserID,\r\n\tNotes,\r\n\tDateAdded,\r\n\tLastUpdate,\r\n\tInitialPostingDate,\r\n\tEstimatedOrActualBilling,\r\n\tAverageRebillThermsFactor,\r\n\tPriorRevisedBilledCCF,\r\n\tRevisedBilledCCF,\r\n\tCanceledBilledCCF,\r\n\tPriorRevisedBilledTherms,\r\n\tRevisedBilledTherms,\r\n\tCanceledBilledTherms,\r\n\tFacilityName,\r\n\tServiceAddress\r\n)\r\nSELECT    \r\n\t@UtilityID as AccountUtilityCompanySeqid,\r\n\tAccountNumber,\r\n\tMeterNumber, \r\n\tBillingPeriod, \r\n\tcase when BillingPeriod < BillingPeriodRevision then BillingPeriod else BillingPeriodRevision end as BillingPeriodRevision, \r\n\tcase when BillingPeriod < BillingPeriodRevision then BillingPeriod else BillingPeriodRevision end as FirstPeriodCanceled, \r\n\t1 as NumberOfTransactions, \r\n\t1 as NumberOfRebillTransactions,\r\n\t0 as NumberOfCancelTransactions,\r\n\tcase when BillingPeriod = BillingPeriodRevision then 'O' else 'A' end as BillingAction,\r\n\tnull as GasRateCode,\r\n\tFromDate, \r\n\tToDate,\r\n\tFromDate, \r\n\tToDate, \r\n\tFromReading as FromMeterReading, \r\n\tToReading AS ToMeterReading,\r\n\tCCF,\r\n\ttherms,\r\n\tThermFactor as ThermFactor, \r\n\tMeterConstant,\r\n\t[dbo].[CalculateNumberOfBillingDays]  (FromDate, ToDate) as TotalBillingDaysRebilled,\r\n\tDeltaNumberOfPeriods as NumberOfBillingPeriods,\r\n\t[dbo].[CalculateNumberOfBillingDays]  (FromDate, ToDate) as BillingDays, \r\n\t[dbo].[ConvertDatetimeToYYYYMMDD] (PostingDate) as BillingDate, \r\n\tReadingCode,\r\n\tDials as NumberOfDials, \r\n\t'G' as MeterType, \r\n\tnull as ProcessEffectiveDate,\r\n\tcase when BillingPeriod < BillingPeriodRevision then BillingPeriod else BillingPeriodRevision end as SpannedBillingPeriodRevision,\r\n\tcase when BillingPeriod < BillingPeriodRevision then BillingPeriod else BillingPeriodRevision end as SpannedFirstCanceledBillingPeriod,\r\n\tCCF as SpannedCCF,\r\n\tThermFactor as SpannedThermFactor,\r\n\tcast(ccf*ThermFactor+.501 as int) as SpannedTherm,\r\n\t1.0 as SpannedMonthlyPercentage,\r\n\t1.0 as SpannedTotalPercentage,\r\n\t@authenticatedID as AuthenticatedUserID,\r\n\tnull as Notes,\r\n\tgetDate() as DateAdded,\r\n\tgetDate() as LastUpdate,\r\n\tgetDate() as InitialPostingDate,\r\n\tEstimatedOrActual as EstimatedOrActualBilling,\r\n\t1.00 as AverageRebillThermsFactor,\r\n\t0 AS PriorRevisedBilledCCF,\r\n\t0 AS RevisedBilledCCF,\r\n\t0 AS CanceledBilledCCF,\r\n\t0 AS PriorRevisedBilledTherms,\r\n\t0 AS RevisedBilledTherms,\r\n\t0 AS CanceledBilledTherms,\r\n\tFacilityName,\r\n\tServiceAddress\r\nFROM NationalGridWest.UploadLegacyKeyspanWestMeter\r\nwhere   DeltaNumberOfPeriods<=1 \r\n\r\n\r\n/******************************\r\n7. parse meter reset\r\n*******************************/\r\nEXEC NationalGridWest.usp_LegacyData_ParseSplitBillingAndMeterResets @BillingPeriod, @authenticatedID, @BillingCycle\r\n\r\n\r\n\r\nend\r\n\r\n\r\n\r\n\r\n--SELECT EstimatedOrActual FROM NationalGridWest.UploadLegacyKeyspanWestMeter"
+        }
+      ]
+    }
+  ]
+}

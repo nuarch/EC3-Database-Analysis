@@ -1,0 +1,1055 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Gas",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ArchiveConEdisonRawDataFile",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ArchiveConEdisonRawDataFile",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to archive data related to Con Edison billing and meter readings. It moves data from several staging tables ("
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonAccount",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonMeter",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonCancellation",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", and "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonNetZeroTransactions",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ") into corresponding historical tables within the "
+        },
+        {
+          "type": "text",
+          "text": "ActualBill",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema. The procedure is part of a larger data processing workflow, likely involving the handling of utility billing data."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is medium. It involves multiple data insertions from different source tables into corresponding destination tables, which requires a good understanding of the data schema and relationships. The procedure also includes some commented-out code and references to other procedures, indicating potential areas for further development or testing."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is an output parameter intended to communicate the success or failure of the procedure. A value of "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates success, while "
+                },
+                {
+                  "type": "text",
+                  "text": "9",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates failure. However, the procedure does not currently set this parameter, which might be an oversight."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration and Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Declares "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@UnicodeEndOfFileMarker",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Initializes "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@UnicodeEndOfFileMarker",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "27",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", which might be used to filter out invalid or end-of-file records."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves the current billing period from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "billing.ApplicationTimeFrame",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table where "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CurrentProcessingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is 'Y'."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Archiving",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonAccount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualBill.HistoryUploadConEdisonAccount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonMeter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualBill.HistoryUploadConEdisonMeter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualBill.HistoryUploadConEdisonCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonNetZeroTransactions",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualBill.HistoryUploadConEdisonNetZeroTransactions",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Commented Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "There is commented-out code for inserting data into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualBill.HistoryUploadLegacyConEdisonRawData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", which suggests that this part of the logic is either deprecated or under testing."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Bulk Inserts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs bulk inserts, which can be resource-intensive. Ensuring that the destination tables have appropriate indexes can help maintain performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not explicitly manage transactions. If any insert fails, it could lead to partial data archiving. Implementing transaction control could improve data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run concurrently, it could lead to data consistency issues. Consider implementing locking mechanisms if necessary."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output Parameter Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " output parameter is not set within the procedure, which means the calling process will not receive success or failure feedback."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Commented Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The presence of commented-out code suggests incomplete or untested logic, which could lead to maintenance challenges."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no error handling mechanism in place. Implementing TRY...CATCH blocks could help manage exceptions and improve reliability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without transaction management, partial data inserts could occur if an error happens mid-execution, leading to potential data integrity issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of bulk inserts could degrade. Regular monitoring and optimization of indexes and query plans will be necessary."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE  PROCEDURE [Gas].[usp_ArchiveConEdisonRawDataFile] (@Status int output)\nAS\r\n--**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Not Used\r\n---*               \r\n--* Exec:       \t\tusp_ProcessConEdisonRawData\r\n--*\r\n--* Parameter(s):         @Status int output\r\n--*\r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*                   9 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   5/05/2006\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 10/26/2005 PAH  First Version \r\n--**************************************************************************************\r\n\r\n--**************************************************************************************\r\n--Declare Variables\r\n--**************************************************************************************\r\n--\r\n--**************************************************************************************\r\n--Set defaults\r\n--**************************************************************************************\r\n\r\n--**************************************************************************************\r\n--Main Process  E:\\UploadDataFiles\\ConEdisonMainframeData\\ConEdison\\CurrentBillingCycle\r\n--**************************************************************************************\r\n--**************************************************************************************\r\n--Declare Variables\r\n--**************************************************************************************\r\ndeclare @UnicodeEndOfFileMarker int\r\ndeclare @BillingPeriod varchar(6)\r\n--**************************************************************************************\r\n--Set defaults\r\n--**************************************************************************************\r\nset @UnicodeEndOfFileMarker = 27\r\n--**************************************************************************************\r\n--\r\nselect top 1 @BillingPeriod=BillingPeriod FROM billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y'\r\n\r\n--\r\n--\r\n-- Remove after testing \r\n--Select top 1 @BillingPeriod= dbo.DetermineConEdisonBillingPeriodProjected([dbo].[JulianDateToYYYYMMDD] (ToDateJul),[TariffCode],9)\r\n--from ConEdAccount...coned#txt where ([RecordType] = 38 --and UNICODE([AccountNumber ]) <> @UnicodeEndOfFileMarker)\r\n--order by ToDateJul desc\r\n--order by [dbo].DetermineConEdisonBillingPeriodProjected([dbo].[JulianDateToYYYYMMDD] (ToDateJul),[TariffCode],9) desc\r\n--\r\n--\r\n--\tAdd the reported data from Con Edison exactly as it was received into ActualBill.HistoryUploadLegacyConEdisonData\r\n--\r\n--\r\n/*\r\nINSERT INTO ActualBill.HistoryUploadLegacyConEdisonRawData\r\n\t\t(BillingPeriod, AccountNumber, Fill1, FromDate, ToDate, RecordType, Service, Filler1, FromReading, MeterNumber, Fill2, ToReading, MeterConstant, \r\n\t\tDials, Filler2, FacilityName, Filler3, ReadingCode, NextReadingDate, Therms, CycleBillingDays, ThermZone, ThermFactor, Gallons, Filler4, \r\n\t\tBillCreationDate, ServiceAddress, FiscalYear, Filler)\r\nSELECT   \r\n\t\t@BillingPeriod, AccountNumber, Fill1, FromDate, ToDate, RecordType, Service, Filler1, FromReading, MeterNumber, \r\n\t\tFill2, ToReading, MeterConstant, Dials, Filler2, FacilityName, Filler3, ReadingCode, NextReadingDate, Therms, CycleBillingDays, ThermZone, \r\n\t\tThermFactor, Gallons, Filler4, BillCreationDate, ServiceAddress, FiscalYear, Filler\r\nFROM ConEd.UploadConEdisonMeterPreload\r\nWHERE (UNICODE(AccountNumber) <> @UnicodeEndOfFileMarker) */\r\n--\r\nINSERT INTO ActualBill.HistoryUploadConEdisonAccount\r\n\t\t(UploadConEdisonAccountSeqid, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\n\t\tFacilityName, ServiceAddress, FromDate, ToDate, BillingPeriodDays, CCF, BilledAmount, PreviousBalance, Therms, ThermFactor, TariffCode, Dials, \r\n\t\tFiscalYear, PostingDate, AuthenticatedUserID, DateAdded, LastUpdate)\r\nSELECT \r\n\t\tUploadConEdisonAccountSeqid,BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, FacilityName, ServiceAddress, \r\n\t\tFromDate, ToDate, BillingPeriodDays, CCF, BilledAmount, PreviousBalance, Therms, ThermFactor, TariffCode, Dials, FiscalYear, PostingDate, \r\n\t\tAuthenticatedUserID, DateAdded, LastUpdate\r\nFROM \r\n\t\tConEd.UploadConEdisonAccount\r\n--\r\nINSERT INTO ActualBill.HistoryUploadConEdisonMeter\r\n\t\t(UploadConEdisonMeterSeqid, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\n\t\tMeterNumber, FromDate, ToDate, FromReading, ToReading, CCF, FacilityName, ServiceAddress, ReadingCode, MeterConstant, ThermFactor, \r\n\t\tCycleBillingDays, Dials, FiscalYear, PostingDate, AuthenticatedUserID, DateAdded, LastUpdate,IsEC3Corrected)\r\nSELECT \r\n\t\tUploadConEdisonMeterSeqid, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\n\t\tMeterNumber, FromDate, ToDate, FromReading, ToReading, CCF, FacilityName, ServiceAddress, ReadingCode, MeterConstant, ThermFactor, \r\n\t\tCycleBillingDays, Dials, FiscalYear, PostingDate, AuthenticatedUserID, DateAdded, LastUpdate,IsEC3Corrected\r\nFROM \r\n\t\tConEd.UploadConEdisonMeter\r\n--\r\nINSERT INTO ActualBill.HistoryUploadConEdisonCancellation\r\n\t\t(UploadConEdisonCancellationSeqid, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\n\t\tMeterNumber, FacilityName, ServiceAddress, FromDate, ToDate, BillingPeriodDays, CCF, BilledAmount, Therms, ThermFactor, TariffCode, Dials, \r\n\t\tFiscalYear, PostingDate, AuthenticatedUserID, DateAdded, LastUpdate)\r\nSELECT    \r\n\t\tUploadConEdisonCancellationSeqid, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\n\t\tMeterNumber, FacilityName, ServiceAddress, FromDate, ToDate, BillingPeriodDays, CCF, BilledAmount, Therms, ThermFactor, TariffCode, Dials, \r\n\t\tFiscalYear, PostingDate, AuthenticatedUserID, DateAdded, LastUpdate\r\nFROM \r\n\t\tConEd.UploadConEdisonCancellation\r\n--\r\nINSERT INTO ActualBill.HistoryUploadConEdisonNetZeroTransactions\r\n\t\t(UploadConEdisonNetZeroTransactionsSeqid, BillingPeriod, BillingPeriodRevision, AccountNumber, UploadConEdisonAccountSeqid, \r\n\t\tUploadConEdisonCancellationSeqid, Therms, CancellationTherms, CCF, CancellationCCF, BilledAmount, CancellationBilledAmount)\r\nSELECT \r\n\t\tUploadConEdisonNetZeroTransactionsSeqid, BillingPeriod, BillingPeriodRevision, AccountNumber, UploadConEdisonAccountSeqid, \r\n\t\tUploadConEdisonCancellationSeqid, Therms, CancellationTherms, CCF, CancellationCCF, BilledAmount, CancellationBilledAmount\r\nFROM     \r\n\t\tConEd.UploadConEdisonNetZeroTransactions"
+        }
+      ]
+    }
+  ]
+}

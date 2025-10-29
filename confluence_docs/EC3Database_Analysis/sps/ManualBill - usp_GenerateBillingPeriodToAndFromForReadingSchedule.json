@@ -1,0 +1,1123 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GenerateBillingPeriodToAndFromForReadingSchedule",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GenerateBillingPeriodToAndFromForReadingSchedule",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate billing periods and corresponding meter reading dates for a specified utility company and invoice billing group. It inserts these details into the "
+        },
+        {
+          "type": "text",
+          "text": "ReadingScheduleManualBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table within the "
+        },
+        {
+          "type": "text",
+          "text": "ManualBill",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema of the "
+        },
+        {
+          "type": "text",
+          "text": "EC3database",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure iterates over a range of billing periods, defined by the start and end billing periods, and calculates the \"from\" and \"to\" dates for each billing period, inserting these into the database."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is considered medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves date manipulation and conversion functions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a loop to iterate over a range of dates, which requires understanding of date arithmetic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It performs database insert operations within the loop, which can have performance implications."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UtilityCompany",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " (int): Represents the unique identifier for the utility company for which the billing schedule is being generated."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@InvoiceBillingGroup",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " (int): Represents the unique identifier for the invoice billing group associated with the utility company."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@startBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " (varchar(6)): Specifies the start of the billing period range in the format 'YYYYMM'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@endBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " (varchar(6)): Specifies the end of the billing period range in the format 'YYYYMM'."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure initializes several local variables, including "
+                },
+                {
+                  "type": "text",
+                  "text": "@FullDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "@billingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "@fromDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "@toDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Conversion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@startBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is converted to a full date ("
+                },
+                {
+                  "type": "text",
+                  "text": "@FullDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") by appending '01' to represent the first day of the month and using a custom function "
+                },
+                {
+                  "type": "text",
+                  "text": "ConvertYYYYMMDDToDatetime",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Loop Through Billing Periods",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure enters a "
+                },
+                {
+                  "type": "text",
+                  "text": "WHILE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " loop that continues until "
+                },
+                {
+                  "type": "text",
+                  "text": "@FullDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " exceeds the date represented by "
+                },
+                {
+                  "type": "text",
+                  "text": "@endBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Billing Period Calculation",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Within the loop, "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@billingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is set by extracting the 'YYYYMM' portion from the full date."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "From and To Dates Calculation",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@fromDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@toDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " are calculated using date arithmetic to determine the first and last days of the billing period, respectively."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Data Insertion",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The calculated values, along with other fixed values, are inserted into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ReadingScheduleManualBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Increment Date",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@FullDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is incremented by one month to process the next billing period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "End of Procedure",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The loop continues until all billing periods within the specified range are processed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Loop Efficiency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses a loop to process each month within the specified range. This can be inefficient for large ranges, as each iteration involves multiple date calculations and an insert operation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of custom functions for date conversion can introduce overhead, especially if these functions are not optimized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Database Inserts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Each iteration results in an insert operation, which can be costly in terms of I/O if the range is large. Consider batching inserts or using a more efficient method if performance becomes an issue."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Conversion Functions",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on custom functions ("
+                },
+                {
+                  "type": "text",
+                  "text": "ConvertYYYYMMDDToDatetime",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "ConvertDatetimeToYYYYMMDD",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "ConvertDateToYYYYMMDD",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "). If these functions are not implemented correctly or are inefficient, they could lead to incorrect data or performance bottlenecks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the input parameters are valid and that the "
+                },
+                {
+                  "type": "text",
+                  "text": "ReadingScheduleManualBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table can accommodate the inserted data without constraints violations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the procedure processes each month individually, it may not scale well for large date ranges or high-frequency execution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms, which could lead to unhandled exceptions or partial data inserts in case of failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure are run simultaneously for the same utility company and billing group, it could lead to data consistency issues unless proper locking or transaction management is implemented."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ManualBill].[usp_GenerateBillingPeriodToAndFromForReadingSchedule]\n\t@UtilityCompany int , \r\n\t@InvoiceBillingGroup int , \r\n\t@startBillingPeriod varchar(6) , \r\n\t@endBillingPeriod varchar(6)   \r\n   \r\n AS \r\n BEGIN\r\n\r\n\r\n\t--DECLARE @startBillingPeriod VARCHAR(6)\r\n\t--SET @startBillingPeriod = '200601'\r\n\t--DECLARE @endBillingPeriod VARCHAR(6)\r\n\t--SET @endBillingPeriod = '200712'\r\n\tDECLARE @FullDate DATETIME\r\n\tDECLARE @billingPeriod VARCHAR(6)\r\n\tDECLARE @fromDate VARCHAR(8)\r\n\tDECLARE @toDate VARCHAR(8)\r\n\r\n\tSET  @FullDate = dbo.ConvertYYYYMMDDToDatetime((SELECT(@startBillingPeriod + '01')))\r\n\r\n\tWHILE(@FullDate <= dbo.ConvertYYYYMMDDToDatetime((SELECT(@endBillingPeriod + '01'))))\r\n\t\tBEGIN\r\n\t\t\t\tSET @billingPeriod = (SELECT SUBSTRING(dbo.ConvertDatetimeToYYYYMMDD(@FullDate),1, 6))\r\n\t\t\t\tSET @fromDate = (select dbo.ConvertDateToYYYYMMDD(DateAdd(Day, 1, @FullDate - Day(@FullDate) + 1) -1))\r\n\t\t\t\tSET @toDate = (select dbo.ConvertDateToYYYYMMDD(DateAdd(Month, 1, @FullDate - Day(@FullDate) + 1) -1 ))\r\n\t\t\r\n\t\t\t\tINSERT INTO [EC3database].[ManualBill].[ReadingScheduleManualBilling]\r\n\t\t\t\t\t   ([UtilityCompanySeqid]\r\n\t\t\t\t\t   ,[InvoiceAccountGroupSeqid]\r\n\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t   ,[TripNumber]\r\n\t\t\t\t\t   ,[BillingCycle]\r\n\t\t\t\t\t   ,[MeterReadingFromDate]\r\n\t\t\t\t\t   ,[MeterReadingToDate]\r\n\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t   ,[LastUpdate])\r\n\t\t\t\t\t   \r\n\t\t\t\tSELECT \r\n\t\t\t\t\t\t@UtilityCompany,  \r\n\t\t\t\t\t\t@InvoiceBillingGroup,\r\n\t\t\t\t\t\t@billingPeriod ,\r\n\t\t\t\t\t\t'00',\r\n\t\t\t\t\t\t'M',\r\n\t\t\t\t\t\t@fromDate , \r\n\t\t\t\t\t\t@toDate , \r\n\t\t\t\t\t\t1,\r\n\t\t\t\t\t\tGETDATE(),\r\n\t\t\t\t\t\tGETDATE()\t\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t-- move the date by a month\r\n\t\t\t\tSET @FullDate = DATEADD(MONTH,1, @FullDate)\r\n\t\t\t\t\r\n\t\tEND\r\n\t\t-- SELECT 'endof'\r\n\t\t\r\n\t\t\r\nEND"
+        }
+      ]
+    }
+  ]
+}

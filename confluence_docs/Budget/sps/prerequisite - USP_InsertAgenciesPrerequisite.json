@@ -1,0 +1,1253 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "prerequisite",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_InsertAgenciesPrerequisite",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_InsertAgenciesPrerequisite",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage agency data within a SQL Server database. It performs operations to insert new agency records into the "
+        },
+        {
+          "type": "text",
+          "text": "Preload.Agency",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and manage fiscal year-specific agency data in the "
+        },
+        {
+          "type": "text",
+          "text": "Preload.AgencyByFY",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. The procedure uses a user-defined table type "
+        },
+        {
+          "type": "text",
+          "text": "UDT_IDList",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " to handle a list of agency IDs and includes logic to optionally delete existing records for a specified fiscal year."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@idList AS input.UDT_IDList READONLY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A table-valued parameter containing a list of agency IDs to be processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@fy AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An integer representing the fiscal year for which the operations are being performed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy AS VARCHAR(25) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A string indicating the user or system performing the action. Defaults to 'SYSTEM' if not provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@deleteExisting AS BIT = false",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A boolean flag indicating whether to delete existing records for the specified fiscal year. Defaults to "
+                },
+                {
+                  "type": "text",
+                  "text": "false",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by setting "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NOCOUNT ON",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to prevent the sending of row count messages."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@actionBy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " parameter is set to 'SYSTEM' if it is "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NULL",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Part 1 - Insert into `Preload.Agency`",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@idList2",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is declared to store agency IDs that are not already present in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.Agency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure inserts these IDs into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@idList2",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " by checking against existing "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AgencyId",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " values in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.Agency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It then inserts new agency records into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.Agency",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " by joining with "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.BudgetApp_vwAgencies",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.Billing_AgencyFundingAssignments",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.Billing_AgencyFunding",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to gather necessary details."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Part 2 - Manage `Preload.AgencyByFY`",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@deleteExisting",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is true, the procedure deletes records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.AgencyByFY",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for the specified fiscal year that are not in the provided "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@idList",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " or not used by the input fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure clears "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@idList2",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and repopulates it with IDs not present in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.AgencyByFY",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for the specified fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Finally, it inserts new records into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.AgencyByFY",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for active agencies from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.BudgetApp_vwAgencies",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " that are in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@idList2",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table-Valued Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using a table-valued parameter ("
+                },
+                {
+                  "type": "text",
+                  "text": "UDT_IDList",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") is efficient for handling multiple IDs, reducing the need for multiple calls or complex string parsing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that "
+                },
+                {
+                  "type": "text",
+                  "text": "AgencyId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns in "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.Agency",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.AgencyByFY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are indexed to optimize the "
+                },
+                {
+                  "type": "text",
+                  "text": "NOT IN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "JOIN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs batch inserts, which are generally more efficient than individual inserts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The conditional deletion logic could be resource-intensive if the dataset is large, especially if "
+                },
+                {
+                  "type": "text",
+                  "text": "@deleteExisting",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is true."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction handling, which could lead to data inconsistency if multiple instances run concurrently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no error handling mechanism, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "TRY...CATCH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which could lead to unhandled exceptions and partial data updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "NOT IN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with subqueries can lead to performance issues and potential data integrity problems if the subquery returns a large dataset."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Default Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The default value for "
+                },
+                {
+                  "type": "text",
+                  "text": "@actionBy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " as 'SYSTEM' might not always be appropriate, depending on the business context."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logical Errors",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The logic assumes that agency IDs are unique across fiscal years, which might not hold true if there are changes in agency structures or IDs over time."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [prerequisite].[USP_InsertAgenciesPrerequisite]\n(\r\n    @idList AS input.UDT_IDList READONLY\r\n    ,@fy AS INT\r\n    ,@actionBy AS VARCHAR(25) = NULL\r\n    ,@deleteExisting AS BIT = false\r\n)\r\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n\r\n    SET @actionBy = ISNULL(@actionBy, 'SYSTEM');\r\n\r\n    ------------- Part 1 ------------\r\n    DECLARE @idList2 AS input.UDT_IDList;\r\n\r\n    INSERT INTO @idList2\r\n    SELECT ID\r\n    FROM @idList\r\n    WHERE ID NOT IN (SELECT AgencyId FROM [Preload].[Agency]);\r\n\r\n    INSERT INTO Preload.Agency(AgencyId\r\n        ,AgencyCodeOEC\r\n        ,AgencyName\r\n        ,AgencyDescription\r\n        ,CreatedDate\r\n        ,CreatedBy\r\n        ,ModifiedDate\r\n        ,ModifiedBy\r\n        ,AgencyFundingSeqId\r\n        ,FundingSourceDescription)\r\n    SELECT vw.AgencyId\r\n        ,vw.AgencyCodeOEC\r\n        ,vw.AgencyName\r\n        ,vw.AgencyDescription\r\n        ,GETDATE() AS CreatedDate\r\n        ,@actionBy AS CreatedBy\r\n        ,GETDATE() AS [ModifiedDate]\r\n        ,@actionBy AS [ModifiedBy]\r\n        ,afa.AgencyFundingSeqId\r\n        ,fund.FundingSourceDescription\r\n    FROM EC3DB.BudgetApp_vwAgencies AS vw\r\n        LEFT JOIN EC3DB.Billing_AgencyFundingAssignments AS afa ON vw.AgencyId = afa.AgencyDivisionSeqId\r\n        LEFT JOIN EC3DB.Billing_AgencyFunding AS fund ON afa.AgencyFundingSeqId = fund.AgencyFundingSeqId\r\n    WHERE vw.AgencyId IN (SELECT ID FROM @idList2);\r\n\r\n    ------------- Part 2 ------------\r\n    IF (@deleteExisting <> 0 ) -- for new fiscal year, users should be able to remove, not for current FY and last FY\r\n    BEGIN\r\n        DELETE Preload.AgencyByFY\r\n        WHERE FY = @fy AND AgencyId NOT IN (SELECT ID FROM @idList\r\n            UNION\r\n            SELECT a.AgencyId AS ID\r\n            FROM Preload.Agency AS a\r\n                INNER JOIN prerequisite.vwAgencyCodesUsedByInputByFY AS v ON a.AgencyCodeOEC = v.AgencyCode\r\n            WHERE v.FY = @fy);\r\n    END;\r\n\r\n    DELETE @idList2;\r\n    INSERT INTO @idList2\r\n    SELECT ID\r\n    FROM @idList\r\n    WHERE ID NOT IN (SELECT AgencyId FROM Preload.AgencyByFY WHERE FY = @fy);\r\n\r\n    INSERT INTO Preload.AgencyByFY(FY\r\n        ,AgencyId\r\n        ,ParentAgencyId\r\n        ,AgencyDivisionHierarchy\r\n        ,CreatedDate\r\n        ,CreatedBy)\r\n    SELECT @fy\r\n        ,AgencyId\r\n        ,ParentAgencyId\r\n        ,AgencyDivisionHierarchy\r\n        ,GETDATE() AS CreatedDate\r\n        ,@actionBy AS CreatedBy\r\n    FROM EC3DB.BudgetApp_vwAgencies\r\n    WHERE Active = 1 AND AgencyId IN (SELECT ID FROM @idList2);\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

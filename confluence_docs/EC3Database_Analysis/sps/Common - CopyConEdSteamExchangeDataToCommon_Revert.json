@@ -1,0 +1,1166 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CopyConEdSteamExchangeDataToCommon_Revert",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "CopyConEdSteamExchangeDataToCommon_Revert",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to revert exchange data for a specific billing period and optionally a specific exchange data ID within a SQL Server database. It processes records from the "
+        },
+        {
+          "type": "text",
+          "text": "Common.ExchangeData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table based on certain criteria and executes different stored procedures depending on the "
+        },
+        {
+          "type": "text",
+          "text": "ExchangeCode",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " associated with each record. After processing, it updates and deletes records from specific tables. The procedure includes error handling to manage exceptions and ensure transaction integrity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is considered medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple conditional logic branches based on "
+                },
+                {
+                  "type": "text",
+                  "text": "ExchangeCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over records, which can be complex to manage and optimize."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes transaction management and error handling, which adds to the complexity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It interacts with multiple stored procedures, each potentially having its own logic and complexity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@billingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the billing period for which the exchange data should be reverted. This is a required parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@exchangeDataId AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Optionally specifies a particular exchange data ID to revert. If not provided, all records for the given billing period are considered."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode AS INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that returns the status of the procedure execution. A value of 1 indicates success, while 0 indicates failure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Message VARCHAR(1000) OUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that provides a message about the execution status, including error messages if any."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure starts by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent extra result sets from interfering with SELECT statements. It declares an authenticated user ID for internal use."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A transaction named "
+                },
+                {
+                  "type": "text",
+                  "text": "ExchangeRow",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is initiated to ensure atomicity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration and Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A cursor is declared to select records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " based on the provided "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@billingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and optionally "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@exchangeDataId",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The cursor iterates over each record, fetching "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeDataSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Depending on the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", different stored procedures are executed to handle the reversion logic for each code type."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedures are executed with the current "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeDataSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AuthenticatedUserID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and output parameters for status and message."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update and Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "After processing, the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEdSteam.UploadExchangePreload",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to nullify "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeDataSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for the relevant records."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " are deleted based on the criteria."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Commit",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If all operations succeed, the transaction is committed, and a success status is returned."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If an error occurs, the procedure captures detailed error information and raises a custom error message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The transaction is rolled back to maintain data integrity."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes rows one at a time. Consider set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope covers multiple operations, which can lead to locking and blocking issues if the dataset is large or if the operations take a long time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling Overhead",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error handling mechanism, while robust, can add overhead due to the detailed error capturing and logging."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face concurrency issues due to the transaction scope and cursor usage, potentially leading to deadlocks or blocking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the cursor-based approach may not scale well, leading to performance degradation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While comprehensive, the error handling could potentially mask underlying issues if not logged or monitored properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded values for "
+                },
+                {
+                  "type": "text",
+                  "text": "UtilityCompanySeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountBillingGroupSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which reduces flexibility and may require changes if business rules change."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Common].[CopyConEdSteamExchangeDataToCommon_Revert]\n(\r\n\t@billingPeriod AS VARCHAR(6),\r\n\t@exchangeDataId AS INT = NULL,\r\n\t@StatusCode AS INT OUTPUT,\r\n\t@Message VARCHAR(1000) OUT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\t\r\n\tDECLARE @AuthenticatedUserID INT = 1;\r\n\r\n\tBEGIN TRANSACTION ExchangeRow;\r\n\tBEGIN TRY\r\n\t\tDECLARE exchange_cursor CURSOR LOCAL FOR \r\n\t\t\tSELECT ExchangeDataSeqid, ExchangeCode\r\n\t\t\tFROM Common.ExchangeData \r\n\t\t\tWHERE ExchangeDataSeqid = ISNULL(@exchangeDataId, ExchangeDataSeqid) \r\n\t\t\t\tAND BillingPeriod = @billingPeriod \r\n\t\t\t\tAND UtilityCompanySeqid = 9 AND AccountBillingGroupSeqid = 10;\r\n\r\n\t\tDECLARE @ExchangeDataSeqid AS INT, @ExchangeCode AS VARCHAR(2);\r\n\r\n\t\tOPEN exchange_cursor FETCH NEXT FROM exchange_cursor\r\n\t\t\tINTO @ExchangeDataSeqid, @ExchangeCode\r\n\t\tWHILE @@FETCH_STATUS = 0\r\n\t\tBEGIN\r\n\t\t\tIF (@ExchangeCode = '47')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_Code47_Revert] @ExchangeDataSeqid, @AuthenticatedUserID, @StatusCode OUTPUT, @Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE IF (@ExchangeCode = '46')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_Code46_Revert] @ExchangeDataSeqid,@AuthenticatedUserID,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE IF (@ExchangeCode = 'AX')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_CodeAX_Revert] @ExchangeDataSeqid,@AuthenticatedUserID,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE IF (@ExchangeCode = '45')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_Code45_Revert] @ExchangeDataSeqid,@AuthenticatedUserID,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE IF (@ExchangeCode = '27')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_Code27_Revert] @AuthenticatedUserID,@ExchangeDataSeqid,@ExchangeCode,@billingPeriod,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE IF (@ExchangeCode = '28')\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_Code28_Revert] @AuthenticatedUserID,@ExchangeDataSeqid,@ExchangeCode,@billingPeriod,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\t\t\tELSE\r\n\t\t\tBEGIN\r\n\t\t\t\tEXECUTE [Common].[usp_ProcessExchange_CodeMISC_Revert] @AuthenticatedUserID,@ExchangeDataSeqid,@ExchangeCode,@billingPeriod,@StatusCode OUTPUT,@Message OUTPUT\r\n\t\t\tEND;\r\n\r\n\t\t\tFETCH NEXT FROM exchange_cursor INTO @ExchangeDataSeqid, @ExchangeCode;\t\r\n\t\tEND;\r\n\t\tCLOSE exchange_cursor\r\n\t\tDEALLOCATE exchange_cursor;\r\n\t\r\n\t\tUPDATE ConEdSteam.UploadExchangePreload\r\n\t\tSET\tExchangeDataSeqid = NULL\r\n\t\tWHERE BillingPeriod = @billingPeriod AND ExchangeDataSeqid = ISNULL(@exchangeDataId, ExchangeDataSeqid);\r\n\r\n\t\tDELETE FROM Common.ExchangeData \r\n\t\tWHERE ExchangeDataSeqid = ISNULL(@exchangeDataId, ExchangeDataSeqid) \r\n\t\t\tAND BillingPeriod=@billingPeriod \r\n\t\t\tAND UtilityCompanySeqid = 9 AND AccountBillingGroupSeqid = 10;\r\n\t\t\r\n\t\tCOMMIT TRANSACTION ExchangeRow;\r\n\t\t\r\n\t\tSELECT @Message = '', @StatusCode = 1;\r\n\tEND TRY\r\n\tBEGIN CATCH\r\n\t\tDECLARE @ErrorMessage AS NVARCHAR(4000), @ErrorSeverity AS INT, @ErrorState AS INT,\r\n\t\t\t@ErrorNumber AS INT, @ErrorLine AS INT, @ErrorProcedure AS NVARCHAR(126);\r\n\r\n\t\tSELECT\r\n\t\t\t@ErrorMessage ='Please contact IT with a screenshot of this error message! ' + ERROR_MESSAGE(),\r\n\t\t\t@ErrorSeverity = ERROR_SEVERITY(),\r\n\t\t\t@ErrorState = ERROR_STATE(),\r\n\t\t\t@ErrorNumber = ERROR_NUMBER(),\r\n\t\t\t@ErrorProcedure = ERROR_PROCEDURE(),\r\n\t\t\t@ErrorLine = ERROR_LINE();\r\n\t\t\r\n\t\tRAISERROR (@ErrorMessage, -- Message text.\r\n\t\t\t@ErrorSeverity, -- Severity.\r\n\t\t\t@ErrorState, -- State.\r\n\t\t\t@ErrorProcedure,\r\n\t\t\t@ErrorLine\r\n\t\t\t) WITH LOG\r\n\t\t\r\n\t\tSELECT @Message = @ErrorMessage, @StatusCode = 0;\r\n\r\n\t\tIF @@TRANCOUNT > 0\r\n\t\tBEGIN\r\n            ROLLBACK TRANSACTION ExchangeRow;\r\n\t\tEND;\r\n\tEND CATCH;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

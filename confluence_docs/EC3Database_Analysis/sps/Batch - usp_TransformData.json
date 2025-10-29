@@ -1,0 +1,1096 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Batch",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_TransformData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[Batch].[usp_TransformData]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and transform billing data for a specific billing period. It retrieves the latest billing period from the "
+        },
+        {
+          "type": "text",
+          "text": "Batch.FileStep",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table, processes the data using another stored procedure, and updates the status of the operation in the "
+        },
+        {
+          "type": "text",
+          "text": "Batch.FileStep",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. The procedure includes error handling to manage exceptions and logs errors in the "
+        },
+        {
+          "type": "text",
+          "text": "Batch.FileStep",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data retrieval, execution of another stored procedure, conditional logic for validation, and error handling. The complexity arises from the integration of these components and the need for robust error management."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates based on internal logic and data retrieved from the database."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure starts by declaring a variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@billperiod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and assigns it the latest billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Batch.FileStep",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, which matches the maximum billing period in the "
+                },
+                {
+                  "type": "text",
+                  "text": "NYPA.UploadNYPAAccountBillingPreload",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It declares and initializes several variables, including "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@RC",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for return code, "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AuthenticatedUserID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for user identification, and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for status tracking."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure calls "
+                        },
+                        {
+                          "type": "text",
+                          "text": "[NYPA].[usp_ProcessNYPATransformUploadedData]",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", passing "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AuthenticatedUserID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and capturing the output in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is 0, indicating success, it executes "
+                        },
+                        {
+                          "type": "text",
+                          "text": "[Common].[CopyNYPAExchangeDataToCommon]",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It then checks if there are any records in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NYPA.UploadNYPAMeterBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " where the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is less than "
+                        },
+                        {
+                          "type": "text",
+                          "text": "RevisedBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". If none exist, it updates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Batch.FileStep",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to indicate success; otherwise, it logs a validation failure."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is not 0, it logs a validation failure related to the status code."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure includes a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TRY...CATCH",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " block to handle exceptions."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "In case of an error, it constructs an error message with details such as error number, procedure, line number, and message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It updates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Batch.FileStep",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with a generic error message and the detailed error information."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT TOP 1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and subqueries can be efficient for retrieving a single record, but performance may degrade if the underlying tables are large and not indexed appropriately."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Procedure Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The execution of other stored procedures ("
+                },
+                {
+                  "type": "text",
+                  "text": "[NYPA].[usp_ProcessNYPATransformUploadedData]",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "[Common].[CopyNYPAExchangeDataToCommon]",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") can impact performance depending on their complexity and the volume of data they process."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "TRY...CATCH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " block is efficient for managing exceptions, but frequent errors can lead to performance bottlenecks due to repeated updates to the "
+                },
+                {
+                  "type": "text",
+                  "text": "Batch.FileStep",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction management, which could lead to issues if multiple instances run concurrently, potentially causing race conditions or data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error message length is limited to 5000 characters, which might not be sufficient for very detailed error information."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded User ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is hardcoded to 1, which may not be suitable for environments requiring dynamic user identification or auditing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The validation logic assumes that a non-zero "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " or the existence of certain records indicates failure, which may not cover all edge cases or business rules."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the data volume grows, the performance of subqueries and updates may degrade if not optimized with appropriate indexing and query tuning."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Batch].[usp_TransformData]\nAS\r\nBEGIN  \r\n\r\n\tDECLARE @billperiod varchar(20)\r\n\tSELECT TOP 1 @billperiod = A.BillingPeriod FROM Batch.FileStep A \r\n\tWHERE A.BillingPeriod IN (SELECT MAX(BillingPeriod) FROM NYPA.UploadNYPAAccountBillingPreload)\r\n\r\n\tBEGIN TRY\r\n    \r\n\t\tDECLARE @RC int\r\n\t\tDECLARE @AuthenticatedUserID int = 1 -- get system user from Zafar\r\n\t\tDECLARE @StatusCode int\r\n\t\tSET @AuthenticatedUserID = 1\r\n\r\n\t\tEXECUTE @RC = [NYPA].[usp_ProcessNYPATransformUploadedData] @AuthenticatedUserID, @StatusCode output\t\t\r\n\t\t-- Update Step\r\n\t\tIF (@StatusCode = 0)\r\n\t\t\tBEGIN\r\n\t\t\t\tEXEC [Common].[CopyNYPAExchangeDataToCommon]  -- zafar is going to => now - this proc will be part of Step 1\r\n\t\t\t\tprint @billperiod\r\n\t\t\t\tIF NOT EXISTS (SELECT 1 FROM NYPA.UploadNYPAMeterBilling where BillingPeriod < RevisedBillingPeriod) -- Validation\r\n\t\t\t\t\tBEGIN\r\n\t\t\t\t\t\tUPDATE Batch.FileStep SET IsSuccess = 1, UpdatedOn = getdate(), Message = '', Error = '' WHERE BillingPeriod = @billperiod AND StepId = 1\r\n\t\t\t\t\tEND\r\n\t\t\t\tELSE\r\n\t\t\t\t\tBEGIN\r\n\t\t\t\t\t\tUPDATE Batch.FileStep SET IsSuccess = 0, UpdatedOn = getdate(), \r\n\t\t\t\t\t\tMessage = 'Validation failed : NYPA.UploadNYPAMeterBilling - Billing Period is greater than Revised Billing Period.'  WHERE \r\n\t\t\t\t\t\tBillingPeriod = @billperiod AND StepId = 1\r\n\t\t\t\t\tEND\r\n\t\t\tEND\r\n\t\tELSE\r\n\t\t\tBEGIN\r\n\t\t\t\tUPDATE Batch.FileStep SET IsSuccess = 0, UpdatedOn = getdate(), \r\n\t\t\t\t\t\tMessage = 'Validation failed : [NYPA].[usp_ProcessNYPATransformUploadedData] - Status Code is not valid.'  WHERE \r\n\t\t\t\t\t\tBillingPeriod = @billperiod AND StepId = 1\r\n\t\t\tEND\r\n    \r\n\tEND TRY\r\n    \r\n\tBEGIN CATCH\r\n\t\tprint 'hereexcep'\r\n\t\tDECLARE @Err varchar(5000)\t\t\r\n\t\tSELECT @Err = 'Error #: ' + CAST(ERROR_NUMBER() AS varchar(100)) + '. Procedure: ' + ERROR_PROCEDURE() + '. Error Line #: ' + CAST(ERROR_LINE() AS VARCHAR(100)) + '. Error Message: ' + ERROR_MESSAGE() \r\n\t\tprint @Err\r\n\r\n\t\tUPDATE Batch.FileStep SET IsSuccess = 0, UpdatedOn = getdate(), Message = 'Error: Please contact administrator.', Error = @Err WHERE \r\n\t\tBillingPeriod = @billperiod AND StepId = 1\r\n\r\n    END CATCH\r\n\t\r\nEND"
+        }
+      ]
+    }
+  ]
+}

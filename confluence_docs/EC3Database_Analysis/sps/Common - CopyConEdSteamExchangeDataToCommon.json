@@ -1,0 +1,1140 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CopyConEdSteamExchangeDataToCommon",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "CopyConEdSteamExchangeDataToCommon",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to transfer data from the "
+        },
+        {
+          "type": "text",
+          "text": "ConEdSteam",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema to the "
+        },
+        {
+          "type": "text",
+          "text": "Common",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema within a SQL Server database. It processes exchange data related to utility accounts and meters, specifically for Con Edison (ConEd) steam services. The procedure inserts records into the "
+        },
+        {
+          "type": "text",
+          "text": "Common.ExchangeData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table based on specific conditions and updates the "
+        },
+        {
+          "type": "text",
+          "text": "ConEdSteam.UploadExchangePreload",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table with the newly inserted data's sequence IDs."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple complex SQL operations, including conditional inserts, joins, and updates. It processes data from multiple tables and uses temporary tables to manage intermediate results. The complexity arises from the need to handle various conditions and ensure data integrity across different tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@billingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period for which the data is being processed. It is used to filter records in the source tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@uploadExchangePreloadSeqid AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional parameter that specifies a particular sequence ID for filtering records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "ConEdSteam.UploadExchangePreload",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. If not provided, all records are considered."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of row count messages, which can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@insertedExchangeData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to store the sequence IDs and other relevant data of the newly inserted records for later use."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "First Insert Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEdSteam.UploadExchangePreload",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and related tables."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Filters records based on "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@billingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@uploadExchangePreloadSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and specific "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeType",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " values."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ensures that no existing meter records are duplicated by checking for null "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Second Insert Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Similar to the first, but focuses on different "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExchangeType",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " values and checks for null "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to avoid duplicating account records."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Third Insert Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Specifically targets missing new meter exchange codes ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "46",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ")."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Joins with "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to ensure the account exists and checks for null "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEdSteam.UploadExchangePreload",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table with the sequence IDs of the newly inserted records from the temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Matches records based on billing period, exchange type, account number, and meter number."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in joins and where clauses, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadExchangePreloadSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the data volume is large, consider processing in batches to avoid locking and reduce transaction log size."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "NOCOUNT",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SET NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is beneficial for reducing unnecessary network traffic."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in the source tables is accurate and complete. Any discrepancies could lead to incorrect data being inserted into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Common.ExchangeData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, there could be issues with data consistency or locking, especially during the update phase."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and partial data processing in case of failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the data volume grows, the performance of the procedure may degrade if not optimized properly, particularly due to the use of "
+                },
+                {
+                  "type": "text",
+                  "text": "MIN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "GROUP BY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Common].[CopyConEdSteamExchangeDataToCommon]\n(\r\n\t@billingPeriod AS VARCHAR(6),\r\n\t@uploadExchangePreloadSeqid AS INT = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @insertedExchangeData TABLE\r\n\t\t(ExchangeDataSeqId INT NOT NULL,\r\n\t\tBillingPeriod yyyymm NOT NULL,\r\n\t\tExchangeCode CHAR(2) NULL,\r\n\t\tOriginalAccountNum acctnum NULL,\r\n\t\tOriginalMeterNum MeterNumber NULL);\r\n\r\n\tINSERT INTO Common.ExchangeData\r\n\t\t(UtilityCompanySeqid,\r\n\t\tAccountBillingGroupSeqid,\r\n\t\tBillingPeriod,\r\n\t\tApprovedForCreation,\r\n\t\tCurrentAccountNumber,\r\n\t\tOriginalAccountNumber,\r\n\t\tCurrentMeterNumber,\r\n\t\tOriginalMeterNumber,\r\n\t\tAssociatedDemandMeter,\r\n\t\tExchangeCode,\r\n\t\tAccountEffectiveTurnOn,\r\n\t\tAccountEffectiveTurnOff,\r\n\t\tSalesType,\r\n\t\tDeliveryServiceClass,\r\n\t\tDeliveryServiceClassEffectiveDate,\r\n\t\tBillingCycle,\r\n\t\tExcessDistributionAccount,\r\n\t\tTODAccount,\r\n\t\tMunicipalCode,\r\n\t\tTensionCode,\r\n\t\tTripNumber,\r\n\t\tAccountName,\r\n\t\tAccountAddress,\r\n\t\tBorough,\r\n\t\tMeterStatus,\r\n\t\tMeterEffectiveTurnOnDate,\r\n\t\tMeterEffectiveTurnOffDate,\r\n\t\tMeterType,\r\n\t\tMeterNumberofDials,\r\n\t\tMeterConstant,\r\n\t\tMeterTension,\r\n\t\tManualDataEntry,\r\n\t\tEnergyDeliveryType,\r\n\t\tEnergyDeliverySubTypeId,\r\n\t\tAccountServiceCode,\r\n\t\tTransactionEffectiveDate,\r\n\t\tContractNumber,\r\n\t\tAMRIndicator,\r\n\t\tauthenticatedUserID,\r\n\t\tDateAdded,\r\n\t\tLastUpdate,\r\n\t\tActivityTime,\r\n\t\tPreviousServiceCassification)\r\n\tOUTPUT INSERTED.ExchangeDataSeqid, Inserted.BillingPeriod, Inserted.ExchangeCode, Inserted.OriginalAccountNumber, Inserted.OriginalMeterNumber INTO @insertedExchangeData\r\n\tSELECT DISTINCT\r\n\t\tMIN(9) AS UtilityCompanyId,\r\n\t\tMIN(10) AS AccountBillingGroup,\r\n\t\tMIN(um.BillingPeriod) AS BillingPeriod,\r\n\t\tMIN('Y') AS ApprovedForCreation,\r\n\t\tRTRIM(um.AccountNumber) + '00000' AS CurrentAccountNumber,\r\n\t\tRTRIM(um.AccountNumber) + '00000' AS OriginalAccountNumber,\r\n\t\tRTRIM(um.NewMeterNumber) AS CurrentMeterNumber,\r\n\t\tRTRIM(um.OldMeterNumber) AS OriginalMeterNumber,\r\n\t\tNULL AS AssociatedDemandMeter, -- not used in CONED process\r\n\t\tum.ExchangeType AS ExchangeCode, -- this is the insert for meter\r\n\t\tMIN(um.ExchangeDate) AS AccountEffectiveTurnOn,\r\n\t\tMIN('99991231') AS AccountEffectiveTurnOff,\r\n\t\tMIN('BT') AS SalesType,\r\n\t\tMIN(ua.DeliveryTariffRate) AS DeliveryServiceClass,\r\n\t\tMIN(ua.DeliveryTariffEffectiveDate) AS DeliveryServiceClassEffectiveDate,\r\n\t\tMIN('M') AS BillingCycle,\r\n\t\tNULL AS ExcessDistributionAccount, --confirm\r\n\t\tMIN('N') AS TODAccount,\r\n\t\tNULL AS MunicipalCode, -- not used in CONED process\r\n\t\tNULL AS TensionCode, -- not used in CONED process\r\n\t\tMIN(ua.TripNumber) AS TripNumber,\r\n\t\tMIN(case when um.UtilityServiceName is NULL then 'Missing Facility Name' else um.UtilityServiceName end ) AS AccountName,\r\n\t\tMIN(case when um.UtilityServiceAddress is NULL then 'Missing Service Address' else um.UtilityServiceAddress end ) AS AccountAddress,\r\n\t\tMIN(1) AS Borough,\r\n\t\t'AC' AS MeterStatus,\r\n\t\tMIN(um.ExchangeDate) AS MeterEffectiveTurnOnDate,\r\n\t\tMIN('99991231') AS MeterEffectiveTurnOffDate,\r\n\t\tNULL AS MeterType,\r\n\t\tMIN(0) AS MeterNumberofDials,\r\n\t\tMIN(0) AS MeterConstant,\r\n\t\tNULL AS MeterTension,\r\n\t\tMIN('N') AS ManualDataEntry,\r\n\t\tMIN(6) AS EnergyDeliveryType,\r\n\t\tCommon.GetDefaultEnergySubType(6) As EnergyDeliverySubTypeId,\r\n\t\tNULL AccountServiceCode,\r\n\t\tNULL TransactionEffectiveDate,\r\n\t\tNULL ContractNumber,\r\n\t\tNULL AMRIndicator,\r\n\t\t1 AS authenticatedUserID,\r\n\t\tGETDATE() AS DateAdded,\r\n\t\tGETDATE() LastUpdate,\r\n\t\tNULL ActivityTime,\r\n\t\tNULL PreviousServiceCassification\r\n\tFROM ConEdSteam.UploadExchangePreload um\r\n\t\tLEFT JOIN billing.account ua ON RTRIM(um.AccountNumber) = LEFT(ua.OriginalAccountNumber, 10)\r\n\t\tLEFT JOIN Billing.Meter met ON met.CurrentMeterNumber = RTRIM(um.NewMeterNumber) AND LEFT(met.OriginalAccountNumber,10) = RTRIM(um.AccountNumber)\r\n\tWHERE um.UploadExchangePreloadSeqid = ISNULL(@uploadExchangePreloadSeqid, um.UploadExchangePreloadSeqid)\r\n\t\tAND EXISTS (SELECT 1 FROM conEdSteam.UploadFile WHERE PublishedBillingPeriod=@billingPeriod AND UploadFileSeqid = um.UploadFileSeqid)\r\n\t\tAND um.ExchangeType IN ('46','45','27')\r\n\t\tAND met.MeterSeqid IS NULL\r\n\tGROUP BY um.AccountNumber,um.NewMeterNumber, um.OldMeterNumber, um.ExchangeType;\r\n\r\n\tINSERT INTO Common.ExchangeData\r\n\t\t(UtilityCompanySeqid,\r\n\t\tAccountBillingGroupSeqid,\r\n\t\tBillingPeriod,\r\n\t\tApprovedForCreation,\r\n\t\tCurrentAccountNumber,\r\n\t\tOriginalAccountNumber,\r\n\t\tCurrentMeterNumber,\r\n\t\tOriginalMeterNumber,\r\n\t\tAssociatedDemandMeter,\r\n\t\tExchangeCode,\r\n\t\tAccountEffectiveTurnOn,\r\n\t\tAccountEffectiveTurnOff,\r\n\t\tSalesType,\r\n\t\tDeliveryServiceClass,\r\n\t\tDeliveryServiceClassEffectiveDate,\r\n\t\tBillingCycle,\r\n\t\tExcessDistributionAccount,\r\n\t\tTODAccount,\r\n\t\tMunicipalCode,\r\n\t\tTensionCode,\r\n\t\tTripNumber,\r\n\t\tAccountName,\r\n\t\tAccountAddress,\r\n\t\tBorough,\r\n\t\tMeterStatus,\r\n\t\tMeterEffectiveTurnOnDate,\r\n\t\tMeterEffectiveTurnOffDate,\r\n\t\tMeterType,\r\n\t\tMeterNumberofDials,\r\n\t\tMeterConstant,\r\n\t\tMeterTension,\r\n\t\tManualDataEntry,\r\n\t\tEnergyDeliveryType,\r\n\t\tEnergyDeliverySubTypeId,\r\n\t\tAccountServiceCode,\r\n\t\tTransactionEffectiveDate,\r\n\t\tContractNumber,\r\n\t\tAMRIndicator,\r\n\t\tauthenticatedUserID,\r\n\t\tDateAdded,\r\n\t\tLastUpdate,\r\n\t\tActivityTime,\r\n\t\tPreviousServiceCassification)\r\n\tOUTPUT INSERTED.ExchangeDataSeqid, Inserted.BillingPeriod, Inserted.ExchangeCode, Inserted.OriginalAccountNumber, Inserted.OriginalMeterNumber INTO @insertedExchangeData\r\n\tSELECT DISTINCT\r\n\t\tMIN(9) AS UtilityCompanyId,\r\n\t\tMIN(10) AS AccountBillingGroup,\r\n\t\tMIN(ua.BillingPeriod) AS BillingPeriod,\r\n\t\tMIN('Y') AS ApprovedForCreation,\r\n\t\tRTRIM(ua.AccountNumber) + '00000' AS CurrentAccountNumber,\r\n\t\tRTRIM(ua.AccountNumber) + '00000' AS OriginalAccountNumber, \r\n\t\tRTRIM(ua.NewMeterNumber) AS CurrentMeterNumber,\r\n\t\tRTRIM(ua.OldMeterNumber) AS OriginalMeterNumber,\r\n\t\tNULL AssociatedDemandMeter, -- not used in CONED process\r\n\t\tua.ExchangeType AS ExchangeCode, -- this is to insert for account\r\n\t\tMIN(ua.ExchangeDate) AS AccountEffectiveTurnOn,\r\n\t\tMIN('99991231') AS AccountEffectiveTurnOff,\r\n\t\tMIN('BT') AS SalesType,\r\n\t\tNULL AS DeliveryServiceClass,\r\n\t\tMIN(ua.ExchangeDate) AS DeliveryServiceClassEffectiveDate,\r\n\t\tMIN('M') AS BillingCycle,\r\n\t\tNULL AS ExcessDistributionAccount, --confirm\r\n\t\tMIN('N') AS TODAccount,\r\n\t\tNULL AS MunicipalCode, -- not used in CONED process\r\n\t\tNULL AS TensionCode, -- not used in CONED process\r\n\t\tMIN('18') AS TripNumber,\r\n\t\tMIN(CASE WHEN ua.UtilityServiceName IS NULL THEN 'Missing Facility Name' ELSE ua.UtilityServiceName END ) AS AccountName,\r\n\t\tMIN(CASE WHEN ua.UtilityServiceAddress IS NULL THEN 'Missing Service Address' ELSE ua.UtilityServiceAddress END ) AS AccountAddress,\r\n\t\tMIN(1) AS Borough,\r\n\t\t'AC' AS MeterStatus,\r\n\t\tNULL AS MeterEffectiveTurnOnDate,\r\n\t\tNULL AS MeterEffectiveTurnOffDate,\r\n\t\tNULL AS MeterType,\r\n\t\tNULL AS MeterNumberofDials,\r\n\t\tNULL AS MeterConstant,\r\n\t\tNULL AS MeterTension,\r\n\t\tMIN('N') AS ManualDataEntry,\r\n\t\tMIN(6) AS EnergyDeliveryType,\r\n\t\tCommon.GetDefaultEnergySubType(6) As EnergyDeliverySubTypeId,\r\n\t\tNULL AccountServiceCode,\r\n\t\tNULL TransactionEffectiveDate,\r\n\t\tNULL ContractNumber,\r\n\t\tNULL AMRIndicator,\r\n\t\t1 AS authenticatedUserID,\r\n\t\tGETDATE() AS DateAdded,\r\n\t\tGETDATE() LastUpdate,\r\n\t\tNULL ActivityTime,\r\n\t\tNULL PreviousServiceCassification\r\n\tFROM ConEdSteam.UploadExchangePreload ua\r\n\t\tLEFT JOIN Billing.Account AS a ON LEFT(a.CurrentAccountNumber, 10) = RTRIM(ua.AccountNumber)\r\n\tWHERE ua.UploadExchangePreloadSeqid=ISNULL(@uploadExchangePreloadSeqid, ua.UploadExchangePreloadSeqid)\r\n\t\tAND\tEXISTS (SELECT 1 FROM conEdSteam.UploadFile WHERE PublishedBillingPeriod=@billingPeriod AND UploadFileSeqid = ua.UploadFileSeqid) \r\n\t\tAND a.AccountSeqid IS NULL\r\n\t\tAND ua.ExchangeType IN ('47','AX','28')\r\n\tGROUP BY ua.AccountNumber, ua.ExchangeType, ua.NewMeterNumber, ua.OldMeterNumber;\r\n\r\n\r\n\t\r\n\r\n\t-- Adding missing new meter exchange code 46\r\n\t\tINSERT INTO Common.ExchangeData\r\n\t\t(UtilityCompanySeqid,\r\n\t\tAccountBillingGroupSeqid,\r\n\t\tBillingPeriod,\r\n\t\tApprovedForCreation,\r\n\t\tCurrentAccountNumber,\r\n\t\tOriginalAccountNumber,\r\n\t\tCurrentMeterNumber,\r\n\t\tOriginalMeterNumber,\r\n\t\tAssociatedDemandMeter,\r\n\t\tExchangeCode,\r\n\t\tAccountEffectiveTurnOn,\r\n\t\tAccountEffectiveTurnOff,\r\n\t\tSalesType,\r\n\t\tDeliveryServiceClass,\r\n\t\tDeliveryServiceClassEffectiveDate,\r\n\t\tBillingCycle,\r\n\t\tExcessDistributionAccount,\r\n\t\tTODAccount,\r\n\t\tMunicipalCode,\r\n\t\tTensionCode,\r\n\t\tTripNumber,\r\n\t\tAccountName,\r\n\t\tAccountAddress,\r\n\t\tBorough,\r\n\t\tMeterStatus,\r\n\t\tMeterEffectiveTurnOnDate,\r\n\t\tMeterEffectiveTurnOffDate,\r\n\t\tMeterType,\r\n\t\tMeterNumberofDials,\r\n\t\tMeterConstant,\r\n\t\tMeterTension,\r\n\t\tManualDataEntry,\r\n\t\tEnergyDeliveryType,\r\n\t\tEnergyDeliverySubTypeId,\r\n\t\tAccountServiceCode,\r\n\t\tTransactionEffectiveDate,\r\n\t\tContractNumber,\r\n\t\tAMRIndicator,\r\n\t\tauthenticatedUserID,\r\n\t\tDateAdded,\r\n\t\tLastUpdate,\r\n\t\tActivityTime,\r\n\t\tPreviousServiceCassification)\r\n\tOUTPUT INSERTED.ExchangeDataSeqid, Inserted.BillingPeriod, Inserted.ExchangeCode, Inserted.OriginalAccountNumber, Inserted.OriginalMeterNumber INTO @insertedExchangeData\r\n\tSELECT DISTINCT\r\n\t\tMIN(9) AS UtilityCompanyId,\r\n\t\tMIN(10) AS AccountBillingGroup,\r\n\t\tmax(um.BillingPeriod) AS BillingPeriod,\r\n\t\tMIN('Y') AS ApprovedForCreation,\r\n\t\tMIN(left(ISNULL(um.AccountNumber,'')+'000000000000000',15)) AS CurrentAccountNumber,\r\n\t\tMIN(left(ISNULL(um.AccountNumber,'')+'000000000000000',15)) AS OriginalAccountNumber, \r\n\t\tRTRIM(um.MeterNumber) AS CurrentMeterNumber,\r\n\t\tRTRIM(um.MeterNumber) AS OriginalMeterNumber,\r\n\t\tNULL AssociatedDemandMeter, -- not used in CONED process\r\n\t\t46 AS ExchangeCode, -- this is to insert for account\r\n\t\tMIN(a.AccountEffectiveTurnOn) AS AccountEffectiveTurnOn,\r\n\t\tMIN('99991231') AS AccountEffectiveTurnOff,\r\n\t\tMIN('BT') AS SalesType,\r\n\t\tNULL AS DeliveryServiceClass,\r\n\t\tMIN(a.DeliveryTariffEffectiveDate) AS DeliveryServiceClassEffectiveDate,\r\n\t\tMIN('M') AS BillingCycle,\r\n\t\tNULL AS ExcessDistributionAccount, --confirm\r\n\t\tMIN('N') AS TODAccount,\r\n\t\tNULL AS MunicipalCode, -- not used in CONED process\r\n\t\tNULL AS TensionCode, -- not used in CONED process\r\n\t\tMIN(a.TripNumber) AS TripNumber,\r\n\t\tMIN(a.UtilityServiceAccountName),\r\n\t\tMIN(a.UtilityServiceAddress),\r\n\t\tMIN(a.Borough),\r\n\t\t'AC' AS MeterStatus,\r\n\t\tNULL AS MeterEffectiveTurnOnDate,\r\n\t\tNULL AS MeterEffectiveTurnOffDate,\r\n\t\tNULL AS MeterType,\r\n\t\tNULL AS MeterNumberofDials,\r\n\t\tNULL AS MeterConstant,\r\n\t\tNULL AS MeterTension,\r\n\t\tMIN('N') AS ManualDataEntry,\r\n\t\tMIN(6) AS EnergyDeliveryType,\r\n\t\tCommon.GetDefaultEnergySubType(6) As EnergyDeliverySubTypeId,\r\n\t\tNULL AccountServiceCode,\r\n\t\tNULL TransactionEffectiveDate,\r\n\t\tNULL ContractNumber,\r\n\t\tNULL AMRIndicator,\r\n\t\t1 AS authenticatedUserID,\r\n\t\tGETDATE() AS DateAdded,\r\n\t\tGETDATE() LastUpdate,\r\n\t\tNULL ActivityTime,\r\n\t\tNULL PreviousServiceCassification\r\n\tFROM ConEdSteam.UploadMeterBillingPreload um\r\n\tINNER JOIN Billing.Account AS a ON a.CurrentAccountNumber = left(ISNULL(um.AccountNumber,'')+'000000000000000',15)\r\n\t\tLEFT JOIN Billing.Meter AS m ON m.CurrentMeterNumber = um.MeterNumber\r\n\t\twhere m.MeterSeqid IS NULL\r\n\t\tGROUP BY RTRIM(um.MeterNumber)\r\n\r\n\r\n\r\n\r\n\r\n\tUPDATE UP\r\n\tSET\tUP.ExchangeDataSeqid = a.ExchangeDataSeqId\r\n\tFROM\r\n\t\tConEdSteam.UploadExchangePreload AS UP INNER JOIN @insertedExchangeData AS a \r\n\t\tON UP.BillingPeriod = a.BillingPeriod\r\n\t\tAND UP.ExchangeType = a.ExchangeCode\r\n\t\tAND UP.AccountNumber = a.OriginalAccountNum\r\n\t\tAND\tUP.OldMeterNumber = a.OriginalMeterNum\r\n\tWHERE\r\n\t\tUP.BillingPeriod = @billingPeriod;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1012 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Archive_usp_GetProcessSummary",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[ConEd].[Archive_usp_GetProcessSummary]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a summary of billing and adjustment data for Con Edison accounts. It aggregates data from two tables: "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonAccountBillingAdjustmentGas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonRate036Refunds",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure creates a temporary table to store intermediate results and then inserts summarized data into this table. Finally, it selects the summarized data for output and drops the temporary table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps of data aggregation and transformation, including conditional logic, grouping, and arithmetic operations. While the logic is straightforward, the use of temporary tables and multiple insert operations adds a moderate level of complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates on the entire dataset available in the specified tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Step 1: Original and Adjustment Billing Summary",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure starts by selecting data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It groups the data by "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and a derived "
+                        },
+                        {
+                          "type": "text",
+                          "text": "description",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " that distinguishes between original and adjustment account billing."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It calculates various aggregates such as "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalRebilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ThermsFactor",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalCanceledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NetBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalRebilledTherms",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DerivedRebilledTherms",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CancelTotalTherms",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NetTherms",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalRebilledCCF",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DerivedRebilledCCF",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CancelTotalCCF",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NetCCF",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The results are inserted into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "#ConEdAccountLevelSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Step 2: Refund Summary",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure inserts a summary of refunds from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonRate036Refunds",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into the temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It calculates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NetBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " as the negative sum of "
+                        },
+                        {
+                          "type": "text",
+                          "text": "RefundBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and assigns a description of '3 - GasRate 36/40 Refund'."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Step 3: Final Summary",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure aggregates all data in the temporary table to produce a final summary with the description '4 - Total Account Billing'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It calculates the total values for each of the previously aggregated columns and inserts this final summary back into the temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Step 4: Output and Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure selects all data from the temporary table, ordered by "
+                        },
+                        {
+                          "type": "text",
+                          "text": "description",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Finally, it drops the temporary table to clean up resources."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table can be efficient for intermediate data storage but may lead to increased I/O operations, especially if the dataset is large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs several aggregation operations, which can be resource-intensive. Indexing on the source tables may help improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "No Input Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Since there are no input parameters, the procedure processes all available data, which might not be efficient if only a subset of data is needed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the source tables contain a large volume of data, the procedure may experience performance degradation due to the extensive use of aggregation and temporary tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table may lead to contention if the procedure is executed concurrently by multiple sessions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions if any issues arise during execution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The logic for determining descriptions and calculations is hardcoded, which may require updates if business rules change."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ConEd].[Archive_usp_GetProcessSummary]\n   \r\n AS BEGIN\r\n\t-- original and adjustment\r\nSELECT  BillingPeriod,\r\n        CASE WHEN BillingPeriod = BillingPeriodRevision\r\n             THEN '1 - Original Account Billing'\r\n             ELSE '2 - Adjustment Account Billing'\r\n        END AS description,\r\n        SUM(TotalRebilledAmount) AS TotalRebilledAmount,\r\n        MIN(ThermsFactor) AS ThermsFactor,\r\n        SUM(TotalCanceledAmount) AS TotalCanceledAmount,\r\n        SUM(TotalRebilledAmount + TotalCanceledAmount) AS NetBilledAmount,\r\n        SUM(TotalTherms) AS TotalRebilledTherms,\r\n        SUM(CAST(ROUND(ThermsFactor * TotalCCF, 0) AS INT)) AS DerivedRebilledTherms,\r\n        SUM(ISNULL(CancelTotalTherms, 0)) AS CancelTotalTherms,\r\n        SUM(TotalTherms + ISNULL(CancelTotalTherms, 0)) AS NetTherms,\r\n        SUM(TotalCCF) AS TotalRebilledCCF,\r\n        SUM(CAST(ROUND(CASE WHEN ISNULL(ThermsFactor, 0) = 0 THEN 0\r\n                            ELSE TotalTherms / ThermsFactor\r\n                       END, 0) AS INT)) AS DerivedRebilledCCF,\r\n        SUM(ISNULL(CancelTotalCCF, 0)) AS CancelTotalCCF,\r\n        SUM(TotalCCF + ISNULL(CancelTotalCCF, 0)) AS NetCCF\r\nINTO #ConEdAccountLevelSummary\r\nFROM ConEd.UploadConEdisonAccountBillingAdjustmentGas\r\nGROUP BY BillingPeriod,\r\n        CASE WHEN BillingPeriod = BillingPeriodRevision\r\n             THEN '1 - Original Account Billing'\r\n             ELSE '2 - Adjustment Account Billing'\r\n        END\r\n\r\n-- refund summary\r\nINSERT INTO #ConEdAccountLevelSummary\r\n(BillingPeriod, description, NetBilledAmount)\r\nSELECT MAX(BillingPeriodRevision), '3 - GasRate 36/40 Refund', SUM(RefundBilledAmount)* -1  FROM ConEd.UploadConEdisonRate036Refunds\r\n \r\n  \r\n-- final summary\r\nINSERT #ConEdAccountLevelSummary  \r\n(\r\n\tBillingPeriod,\r\n    description,\r\n    TotalRebilledAmount,\r\n    ThermsFactor,\r\n    TotalCanceledAmount,\r\n    NetBilledAmount,\r\n    TotalRebilledTherms,\r\n    DerivedRebilledTherms,\r\n    CancelTotalTherms,\r\n    NetTherms,\r\n    TotalRebilledCCF,\r\n    DerivedRebilledCCF,\r\n    CancelTotalCCF,\r\n    NetCCF\r\n)\r\nSELECT  MAX(BillingPeriod),\r\n\t\t'4 - Total Account Billing' AS description,\r\n        SUM(TotalRebilledAmount) AS TotalRebilledAmount,\r\n        MIN(ThermsFactor) AS ThermsFactor,\r\n        SUM(TotalCanceledAmount) AS TotalCanceledAmount,\r\n        SUM(NetBilledAmount) AS NetBilledAmount,\r\n        SUM(TotalRebilledTherms) AS TotalRebilledTherms,\r\n        SUM(DerivedRebilledTherms) AS DerivedRebilledTherms,\r\n        SUM(CancelTotalTherms) AS CancelTotalTherms,\r\n        SUM(NetTherms) AS NetTherms,\r\n        SUM(TotalRebilledCCF) AS TotalRebilledCCF,\r\n        SUM(DerivedRebilledCCF) AS DerivedRebilledCCF,\r\n        SUM(ISNULL(CancelTotalCCF, 0)) AS CancelTotalCCF,\r\n        SUM(NetCCF) AS NetCCF\r\nFROM #ConEdAccountLevelSummary\r\n\r\n--SELECT data\r\nSELECT * FROM #ConEdAccountLevelSummary ORDER BY description\r\n\r\nDROP TABLE #ConEdAccountLevelSummary\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

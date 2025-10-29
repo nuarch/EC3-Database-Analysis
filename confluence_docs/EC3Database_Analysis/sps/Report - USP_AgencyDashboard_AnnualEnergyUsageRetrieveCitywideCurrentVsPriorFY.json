@@ -1,0 +1,893 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_AgencyDashboard_AnnualEnergyUsageRetrieveCitywideCurrentVsPriorFY",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_AgencyDashboard_AnnualEnergyUsageRetrieveCitywideCurrentVsPriorFY",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve and compare energy usage data for a city across the current and prior fiscal years. It calculates energy usage, demand usage, billed amounts, and BTU (British Thermal Units) for specified billing periods. The procedure uses a rolling 12-month period by default if no specific period is provided. It aggregates data from a published summary table and outputs it in a structured format for reporting purposes."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@period AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This optional parameter specifies the number of months to consider for the rolling period. If not provided, it defaults to 12 months."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@debugMode AS BIT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This optional parameter is intended for debugging purposes, although it is not utilized within the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and ensure that it can read uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If "
+                },
+                {
+                  "type": "text",
+                  "text": "@period",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not specified, it defaults to 12 months."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Latest Published Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure fetches the latest published billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Calculate Fiscal Year",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the current fiscal year using a user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo.CalculateFiscalYear",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the start and current billing period dates based on the latest published billing period and the specified rolling period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Table",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@billingPeriodTable",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is created to store billing periods and a flag indicating whether they belong to the current period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Loop Through Billing Periods",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A loop populates the temporary table with billing periods for the current and prior fiscal years."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation and Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure joins the temporary table with "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.TemporalAccountLevelSummaryByAgency",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to aggregate energy usage data. It calculates totals for energy usage, demand usage, billed amounts, and BTU, converting them to millions for readability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results are grouped and ordered by fiscal year and billing period, providing a clear comparison of energy usage metrics."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This level allows reading uncommitted data, which can improve performance by reducing locking but may result in reading dirty data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "NOLOCK Hint",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used in joins to prevent locking, which can enhance performance but also risks reading uncommitted or inconsistent data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Loop for Billing Periods",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The loop constructs billing periods dynamically, which could be optimized by using a set-based approach to reduce procedural overhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Type Conversions",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Frequent conversions, especially within aggregation functions, can impact performance. Ensuring data types are consistent with the underlying table definitions can mitigate this."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "NOLOCK",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted or inconsistent data, which may not be suitable for all reporting requirements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The logic for incrementing billing periods assumes a specific format and may not handle edge cases or invalid data gracefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Debug Mode Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@debugMode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is defined but not used, which could lead to confusion or missed opportunities for debugging."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the loop and data conversions may become bottlenecks. Consideration should be given to optimizing these areas for larger datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or silent failures in production environments."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[USP_AgencyDashboard_AnnualEnergyUsageRetrieveCitywideCurrentVsPriorFY]\n(\r\n\t@period AS INT = NULL\r\n\t,@debugMode AS BIT = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\t\r\n\t-- Set rolling 12 months if period is not specified\r\n\tSET @period = ISNULL(@period, 12);\r\n\r\n\tDECLARE @publishedBillingPeriod VARCHAR(6), @currentFY INT, @startBillingPeriod VARCHAR(6);\r\n\tSELECT @publishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData WITH (NOLOCK);\r\n\tSELECT @currentFY = dbo.CalculateFiscalYear(@publishedBillingPeriod);\r\n\r\n\tDECLARE @currentBPDate DATETIME, @startBPDate DATETIME;\r\n\tSET @currentBPDate = CONVERT(DATETIME, LEFT(@publishedBillingPeriod, 4) + '-' + RIGHT(@publishedBillingPeriod, 2) + '-01');\r\n\tSET @startBPDate = DATEADD(MM, 0 - (@period - 1), @currentBPDate);\r\n\tSET @startBillingPeriod = CONVERT(VARCHAR(12), @startBPDate, 112);\r\n\r\n\tDECLARE @billingPeriodTable TABLE (BillingPeriod VARCHAR(6), CurrentPeriod BIT NOT NULL DEFAULT(0));\r\n\r\n\tWHILE @startBillingPeriod <= @publishedBillingPeriod\r\n\tBEGIN\r\n\t\tINSERT INTO @billingPeriodTable (BillingPeriod, CurrentPeriod) VALUES (@startBillingPeriod, 1), (@startBillingPeriod - 100, 0);\r\n\r\n\t\tIF RIGHT(@startBillingPeriod, 2) = 12\r\n\t\t\tSET @startBillingPeriod = CONVERT(VARCHAR(4), (CONVERT(INT, LEFT(@startBillingPeriod, 4)) + 1)) + '01';\r\n\t\tELSE\r\n\t\t\tSET @startBillingPeriod = CONVERT(VARCHAR(6), CONVERT(INT, @startBillingPeriod) + 1);\r\n\tEND;\r\n\t\r\n\t-- Agency usage current and prior FY\r\n\tSELECT 'CITY' AS AgencyCodeOEC\r\n\t\t,A.FiscalYear\r\n\t\t,A.BillingPeriod\r\n\t\t,A.CalendarYear\r\n\t\t,A.[MonthName]\r\n\t\t,(LEFT(A.[MonthName], 3) + ' ' + CONVERT(VARCHAR(10), A.CalendarYear)) AS [MonthYear]\r\n\t\t,(SUM(CONVERT(DECIMAL(36, 2), EnergyUsage)) / 1000000.00) AS EnergyUsage\r\n\t\t,(SUM(CONVERT(DECIMAL(36, 2), DemandUsage)) / 1000000.00) AS DemandUsage\r\n\t\t,SUM(CONVERT(DECIMAL(36, 2), BilledAmount)) AS BilledAmount\r\n\t\t,(SUM(CONVERT(DECIMAL(36, 2), BTU)) / 1000000.00) AS BTU\r\n\t\t,T.CurrentPeriod\r\n\tFROM @billingPeriodTable AS T\r\n\t\tLEFT JOIN Published.TemporalAccountLevelSummaryByAgency AS A WITH (NOLOCK) ON A.BillingPeriod = T.BillingPeriod\r\n\tWHERE A.EffectiveStartPeriod <= @PublishedBillingPeriod AND A.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\tGROUP BY A.FiscalYear, A.BillingPeriod, A.CalendarYear, A.[MonthName], T.CurrentPeriod\r\n\tORDER BY A.FiscalYear ASC, A.BillingPeriod ASC;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

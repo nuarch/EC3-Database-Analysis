@@ -1,0 +1,883 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_PreProcessParsingSpannedCancellationAccountInfo",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_PreProcessParsingSpannedCancellationAccountInfo",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process billing data for accounts with gas bills that span multiple billing periods. It parses these spanned bills into individual monthly records, distributing charges and usage based on calculated percentages. The procedure uses a cursor to iterate over records in the "
+        },
+        {
+          "type": "text",
+          "text": "UploadCrisTempAccountBillingSpannedSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table where the number of billing periods is greater than one. It calculates and distributes various charges and taxes across the spanned periods and inserts the parsed data into the "
+        },
+        {
+          "type": "text",
+          "text": "UploadAccountBillingAdjustmentCrisGasTemp",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is high due to the following reasons:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves a significant number of variables and calculations to distribute charges across multiple periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over potentially large datasets, which can be complex and resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure includes multiple nested operations and function calls to calculate percentages and dates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It handles a wide range of financial and billing data, requiring precise calculations to avoid rounding errors."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in "
+                },
+                {
+                  "type": "text",
+                  "text": "yyyymm",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " format. It is used to set the billing period for the parsed records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the ID of the authenticated user executing the procedure. It is used for logging purposes in the inserted records."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by declaring numerous variables to hold intermediate values for calculations and results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor "
+                },
+                {
+                  "type": "text",
+                  "text": "SpannedGasBillCursor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to select records from "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadCrisTempAccountBillingSpannedSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where the number of billing periods is greater than one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The cursor is opened, and records are fetched one by one."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each record, the procedure initializes variables and calculates the total gas spanned billed percentage using a user-defined function."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It then enters a loop to distribute charges across the billing periods, calculating monthly percentages and applying them to various charges and taxes."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The calculated values are inserted into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGasTemp",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Period Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After processing all but the last period, the procedure calculates the remaining charges for the last period to account for rounding errors and inserts these into the table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Closure",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure prints the number of spanned rows processed and the number of parsed transactions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance bottlenecks, especially with large datasets. Cursors are generally slower than set-based operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs numerous calculations and function calls, which can be resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Inserts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Frequent inserts into the "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadAccountBillingAdjustmentCrisGasTemp",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table can lead to I/O overhead, especially if the table is large or heavily indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Rounding Errors",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple rounding operations, which can lead to discrepancies if not handled carefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, there could be contention issues, especially with the cursor and table inserts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor and the complexity of calculations may not scale well with increasing data volumes, potentially leading to performance degradation."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_PreProcessParsingSpannedCancellationAccountInfo] \r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int\r\nAS\r\nBEGIN\r\n\t/*\r\n2. Parse Spanned Billed uploaded\r\n*/\r\n\r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--\r\ndeclare @UploadCrisTempAccountBillingSpannedSummarySeqid dbo.seqid\r\n--declare @AccountNumber dbo.acctnum\r\ndeclare @Notes dbo.notes\r\n--declare @PostingDate varchar(8)\r\n--\r\n--\r\n--declare @CalculatedBillingPeriodRevision varchar(6)\r\ndeclare @GasChargeSummedPieces money\r\n\r\ndeclare @MeterReadWorkDay varchar(2)\r\ndeclare @FirstBillingPeriodCanceled varchar(6)\r\ndeclare @NumberOfBillingPeriod int\r\ndeclare @GasChargeAmount money\r\ndeclare @BillingFromDate varchar(8)\r\ndeclare @BillingToDate varchar(8)\r\ndeclare @BilledCCF int\r\ndeclare @BilledTherms int\r\ndeclare @CommodityChargeAmount money\r\ndeclare @DeliveryChargeAmount money\r\ndeclare @MTACommodityTax money\r\ndeclare @MTADeliveryTax money\r\ndeclare @SalesTax money\r\ndeclare @SystemBenefitsCharge money\r\ndeclare @RetailDecouplingMechanismCharge money\r\ndeclare @DeliveryRateSurcharge money\r\ndeclare @RealTimeNormalizationCharge money\r\ndeclare @LatePaymentCharge money\r\ndeclare @PaperBillCharge money\r\ndeclare @PaperDefaultBillCharge money\r\n--\r\ndeclare @NumberOfPeriodsMinusOne dbo.Accumulator\r\ndeclare @NumberOfSpannedRows dbo.Accumulator\r\n\r\n--declare @FirstPeriodCanceled dbo.yyyymm \r\ndeclare @ThermFactor dbo.ThermsFactor \r\n--declare @FudgedThermFactor dbo.ThermsFactor \r\ndeclare @BillingPeriodRevision dbo.yyyymm \r\n--declare @FromDate dbo.yyyymmdd \r\n--declare @ToDate dbo.yyyymmdd \r\ndeclare @CalculatedBillingPeriodRevision dbo.yyyymm \r\ndeclare @CalculatedFromDate dbo.yyyymmdd \r\ndeclare @CalculatedToDate dbo.yyyymmdd \r\n--declare @BilledAmount dbo.BillingAmt \r\ndeclare @BilledAmountMonthly dbo.BillingAmt \r\ndeclare @BilledAmountMonthlySum dbo.BillingAmt \r\n--declare @BilledAmountAverage dbo.BillingAmt \r\n--declare @BilledAmountRemainder dbo.BillingAmt \r\n--declare @BillingPeriodDays dbo.Accumulator \r\n--declare @BillingPeriodDaysAverage dbo.Accumulator \r\n--declare @BillingPeriodDaysRemainder dbo.Accumulator \r\n--declare @Therms dbo.EnergyUnit \r\n--declare @LastPeriodTherms dbo.EnergyUnit \r\n--declare @ThermsAverage dbo.EnergyUnit \r\n--declare @ThermsRemainder dbo.EnergyUnit \r\n--declare @CCF dbo.EnergyUnit \r\n--declare @CCFAverage dbo.EnergyUnit \r\n--declare @CCFRemainder dbo.EnergyUnit \r\n--declare @SumAverageCCF dbo.EnergyUnit \r\ndeclare @idx int\r\n--declare @StartingBillingPeriodDaysIncrement int\r\n--declare @StartingBillingPeriodCCFIncrement int\r\n--declare @StartingBillingPeriodThermsIncrement int\r\n--declare @IncrementBillingPeriodDays int\r\n--declare @IncrementBillingPeriodCCF int\r\n--declare @IncrementBillingPeriodTherms int\r\n-- \r\ndeclare @BilledAmountMonthlyLastPeriod dbo.BillingAmt\r\ndeclare @ThermsMonthlyLastPeriod dbo.EnergyUnit \r\ndeclare @CCFMonthlyLastPeriod dbo.EnergyUnit \r\n\r\n--declare @UtilityCode dbo.seqid\r\ndeclare @ApplyMonthlyPercentage  dbo.DiscountPercentage\r\ndeclare @ThermsMonthlySum  dbo.EnergyUnit \r\ndeclare @ThermsMonthly  dbo.EnergyUnit \r\ndeclare @CCFMonthly  dbo.EnergyUnit \r\ndeclare @CCFMonthlySum  dbo.EnergyUnit \r\ndeclare @TotalGasSpannedBilledPercentage dbo.DiscountPercentage\r\n--\r\ndeclare @SystemBenefitsChargeMonthly money \r\ndeclare @SystemBenefitsChargeMonthlySum money \r\ndeclare @SalesTaxMonthlySum money \r\ndeclare @RetailDecouplingMechanismChargeMonthly money \r\ndeclare @SalesTaxMonthly money \r\ndeclare @RetailDecouplingMechanismChargeMonthlySum money \r\ndeclare @MTADeliveryTaxMonthlySum money \r\ndeclare @DeliveryRateSurchargeMonthly money \r\ndeclare @MTADeliveryTaxMonthly money \r\ndeclare @DeliveryRateSurchargeMonthlySum money \r\ndeclare @MTACommodityTaxMonthlySum money \r\ndeclare @RealTimeNormalizationChargeMonthly money \r\ndeclare @MTACommodityTaxMonthly money \r\ndeclare @RealTimeNormalizationChargeMonthlySum money \r\ndeclare @DeliveryChargeAmountMonthlySum money \r\ndeclare @LatePaymentChargeMonthly money \r\ndeclare @DeliveryChargeAmountMonthly money \r\ndeclare @LatePaymentChargeMonthlySum money \r\ndeclare @CommodityChargeAmountMonthlySum money \r\ndeclare @PaperBillChargeMonthly money \r\ndeclare @CommodityChargeAmountMonthly money \r\ndeclare @PaperBillChargeMonthlySum money \r\n--\r\ndeclare @PaperBillChargeMonthlyLastPeriod money\r\ndeclare @LatePaymentChargeMonthlyLastPeriod money\r\ndeclare @RealTimeNormalizationChargeMonthlyLastPeriod money\r\ndeclare @DeliveryRateSurchargeMonthlyLastPeriod money\r\ndeclare @RetailDecouplingMechanismChargeMonthlyLastPeriod money\r\ndeclare @SystemBenefitsChargeMonthlyLastPeriod money\r\ndeclare @SalesTaxMonthlyLastPeriod money\r\ndeclare @MTADeliveryTaxMonthlyLastPeriod money\r\ndeclare @MTACommodityTaxMonthlyLastPeriod money\r\n--declare @MTACommodityTaxMonthlyLastPeriodmoney money\r\ndeclare @DeliveryChargeAmountMonthlyLastPeriod money\r\ndeclare @CommodityChargeAmountMonthlyLastPeriod money\r\n--declare @SystemBenefitsChargeLastPeriod money \r\n--declare @SalesTaxLastPeriod money \r\n--declare @RetailDecouplingMechanismChargeLastPeriod money \r\n--declare @MTADeliveryTaxLastPeriod money \r\n--declare @DeliveryRateSurchargeLastPeriod money \r\n--declare @MTACommodityTaxLastPeriod money \r\n--declare @RealTimeNormalizationChargeLastPeriod money \r\n--declare @DeliveryChargeAmountLastPeriod money \r\n--declare @LatePaymentChargeLastPeriod money \r\n--declare @CommodityChargeAmountLastPeriod money \r\n--declare @PaperBillChargeLastPeriod money \r\n--\r\ndeclare @NumberOfParsedSpannedTranscations int\r\n\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\nset @PaperDefaultBillCharge = .78\r\nset @NumberOfParsedSpannedTranscations = 0\r\nset @NumberOfSpannedRows = 0\r\n--**************************************************************************************  \r\n--Main Process                                      \r\n--**************************************************************************************\r\n\r\n--\tDECLARE a cursor to find all account bills that span more than one period.\r\n--truncate table CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n--\r\nDECLARE SpannedGasBillCursor CURSOR FOR\r\nSELECT  UploadCrisTempAccountBillingSpannedSummarySeqid, NumberOfBillingPeriod,BillingPeriodRevision\r\nFROM CrisNationalGridWest.UploadCrisTempAccountBillingSpannedSummary\r\nWHERE (NumberOfBillingPeriod > 1)\r\n\r\nOPEN SpannedGasBillCursor; -- open curser\r\n\r\nFETCH NEXT FROM SpannedGasBillCursor INTO @UploadCrisTempAccountBillingSpannedSummarySeqid,@NumberOfBillingPeriod,@BillingPeriodRevision\r\n--\r\n-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n--\r\nWHILE @@FETCH_STATUS = 0\r\nBEGIN -- begin processing for fetched record\r\n\t--\r\n\tset @NumberOfParsedSpannedTranscations =@NumberOfParsedSpannedTranscations + @NumberOfBillingPeriod\r\n\tset @NumberOfSpannedRows =@NumberOfSpannedRows + 1\r\n\t\r\n\t/*\r\n\t\t1. set value for variables for parsing purposes\r\n\t*/\t\r\n\tSELECT  @BillingPeriod=BillingPeriod,\r\n\t\t\t@MeterReadWorkDay = MeterReadWorkDay,\r\n\t\t\t@CalculatedBillingPeriodRevision=CalculatedBillingPeriodRevision, \r\n\t\t\t@FirstBillingPeriodCanceled=FirstBillingPeriodCanceled, \r\n\t\t\t@NumberOfBillingPeriod=NumberOfBillingPeriod,\r\n\t\t\t@GasChargeAmount=GasChargeAmount,\r\n\t\t\t@BillingFromDate=FromDate,\r\n\t\t\t@BillingToDate=ToDate, \r\n\t\t\t@BilledCCF=BilledCCF, \r\n\t\t\t@BilledTherms=BilledTherms,\r\n\t\t\t@CommodityChargeAmount=CommodityChargeAmount,\r\n\t\t\t@DeliveryChargeAmount=DeliveryChargeAmount,\r\n\t\t\t@MTACommodityTax=MTACommodityTax, \r\n\t\t\t@MTADeliveryTax=MTADeliveryTax,\r\n\t\t\t@SalesTax=SalesTax,\r\n\t\t\t@SystemBenefitsCharge=SystemBenefitsCharge, \r\n\t\t\t@RetailDecouplingMechanismCharge=RetailDecouplingMechanismCharge,\r\n\t\t\t@DeliveryRateSurcharge=DeliveryRateSurcharge, \r\n\t\t\t@RealTimeNormalizationCharge=RealTimeNormalizationCharge,\r\n\t\t\t@LatePaymentCharge=LatePaymentCharge, \r\n\t\t\t@PaperBillCharge=PaperBillCharge,\r\n\t\t\t@ThermFactor = ThermFactor\r\n\r\n\tFROM \r\n\t\t\tCrisNationalGridWest.UploadCrisTempAccountBillingSpannedSummary\r\n\tWHERE   \r\n\t\t\t(UploadCrisTempAccountBillingSpannedSummarySeqid = @UploadCrisTempAccountBillingSpannedSummarySeqid) \r\n\r\n\t/*\r\n\t\t2. Distribute over spanned based on given percentage\r\n\t*/\r\n\r\n\t-- 2.1 period Aggregate the average City wide monthly gas usage percentage for the spanned row billing periods \r\n\tselect @TotalGasSpannedBilledPercentage= dbo.[CalculateTotalGasSpannedBilledPercentage] ('M',@NumberOfBillingPeriod,@FirstBillingPeriodCanceled,@CalculatedBillingPeriodRevision)\r\n\t\t\r\n\t-- 2.2 Determine the number of periods minus 1 to pro-rate the money and usage.  The last period will derive the money and usage\r\n\t--\tby row totals - (the n-1 aggregates of money and usage)\r\n\t--set @NumberOfPeriodsMinusOne = @NumberOfBillingPeriod - 1\r\n\r\n\r\n\t--\r\n\t--\t2.3 Initialize the counters for the n-1 parses\r\n\t--\r\n\tset @CalculatedBillingPeriodRevision = @FirstBillingPeriodCanceled\r\n\tset @CalculatedFromDate = @BillingFromDate\r\n\tset @CalculatedToDate = @BillingToDate\r\n\tset @idx = 1\r\n\tset @BilledAmountMonthlySum = 0.00\r\n\tset @ThermsMonthlySum = 0\r\n\tset @CCFMonthlySum = 0\r\n\t--\r\n\tset @CommodityChargeAmountMonthlySum = 0\r\n\tset @DeliveryChargeAmountMonthlySum = 0\r\n\tset @MTACommodityTaxMonthlySum = 0\r\n\tset @MTADeliveryTaxMonthlySum = 0\r\n\tset @SalesTaxMonthlySum = 0\r\n\tset @SystemBenefitsChargeMonthlySum = 0\r\n\tset @RetailDecouplingMechanismChargeMonthlySum = 0\r\n\tset @DeliveryRateSurchargeMonthlySum = 0\r\n\tset @RealTimeNormalizationChargeMonthlySum = 0\r\n\tset @LatePaymentChargeMonthlySum = 0\r\n\tset @PaperBillChargeMonthlySum = 0\t\r\n\t--\r\n\tset @CommodityChargeAmountMonthlyLastPeriod = 0\r\n\tset @DeliveryChargeAmountMonthlyLastPeriod = 0\r\n\tset @MTACommodityTaxMonthlyLastPeriod = 0\r\n\tset @MTADeliveryTaxMonthlyLastPeriod = 0\r\n\tset @SalesTaxMonthlyLastPeriod = 0\r\n\tset @SystemBenefitsChargeMonthlyLastPeriod = 0\r\n\tset @RetailDecouplingMechanismChargeMonthlyLastPeriod = 0\r\n\tset @DeliveryRateSurchargeMonthlyLastPeriod = 0\r\n\tset @RealTimeNormalizationChargeMonthlyLastPeriod = 0\r\n\tset @LatePaymentChargeMonthlyLastPeriod = 0\r\n\tset @PaperBillChargeMonthlyLastPeriod = 0\t\r\n\t--\r\n\t\r\n\t--- 2.4 distribute / parse\r\n\twhile (@NumberOfBillingPeriod > @idx)\r\n\tBegin \r\n\r\n\t\t-- 2.4.1 set value for required variables\r\n\r\n\t\t-- The @ApplyMonthlyPercentage holds the weigthed average for the particular month\r\n\t\tselect @ApplyMonthlyPercentage = [dbo].[CalculateApplyMonthlyPercentageGasSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalGasSpannedBilledPercentage)\r\n\r\n\t\t--\r\n\t\t-- Apply the Monthly Percentage to the CCF,Therms and Billed Amount and accumulate the weigthed average units.\r\n\t\t--\r\n\t\tset @BilledAmountMonthly = ROUND(@GasChargeAmount * @ApplyMonthlyPercentage,2)\r\n\t\tset @BilledAmountMonthlySum = @BilledAmountMonthlySum + @BilledAmountMonthly\r\n\t\t--\r\n\t\tset @DeliveryChargeAmountMonthly = ROUND(@DeliveryChargeAmount * @ApplyMonthlyPercentage,2)\r\n\t\tset @DeliveryChargeAmountMonthlySum =@DeliveryChargeAmountMonthlySum + @DeliveryChargeAmountMonthly\r\n\t\tset @MTACommodityTaxMonthly = ROUND(@MTACommodityTax * @ApplyMonthlyPercentage,2)\r\n\t\tset @MTACommodityTaxMonthlySum =@MTACommodityTaxMonthlySum + @MTACommodityTaxMonthly\r\n\t\tset @MTADeliveryTaxMonthly = ROUND(@MTADeliveryTax * @ApplyMonthlyPercentage,2)\r\n\t\tset @MTADeliveryTaxMonthlySum =@MTADeliveryTaxMonthlySum + @MTADeliveryTaxMonthly\r\n\t\tset @SalesTaxMonthly = ROUND(@SalesTax * @ApplyMonthlyPercentage,2)\r\n\t\tset @SalesTaxMonthlySum =@SalesTaxMonthlySum + @SalesTaxMonthly\r\n\t\tset @SystemBenefitsChargeMonthly = ROUND(@SystemBenefitsCharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @SystemBenefitsChargeMonthlySum =@SystemBenefitsChargeMonthlySum + @SystemBenefitsChargeMonthly\r\n\t\tset @RetailDecouplingMechanismChargeMonthly = ROUND(@RetailDecouplingMechanismCharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @RetailDecouplingMechanismChargeMonthlySum =@RetailDecouplingMechanismChargeMonthlySum + @RetailDecouplingMechanismChargeMonthly\r\n\t\tset @DeliveryRateSurchargeMonthly = ROUND(@DeliveryRateSurcharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @DeliveryRateSurchargeMonthlySum =@DeliveryRateSurchargeMonthlySum + @DeliveryRateSurchargeMonthly\r\n\t\tset @RealTimeNormalizationChargeMonthly = ROUND(@RealTimeNormalizationCharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @RealTimeNormalizationChargeMonthlySum =@RealTimeNormalizationChargeMonthlySum + @RealTimeNormalizationChargeMonthly\r\n\t\tset @LatePaymentChargeMonthly = ROUND(@LatePaymentCharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @LatePaymentChargeMonthlySum =@LatePaymentChargeMonthlySum + @LatePaymentChargeMonthly\r\n\t\tset @PaperBillChargeMonthly = @PaperDefaultBillCharge -- ROUND(@PaperBillCharge * @ApplyMonthlyPercentage,2)\r\n\t\tset @PaperBillChargeMonthlySum =@PaperBillChargeMonthlySum + @PaperBillChargeMonthly\r\n\t\t--\r\n\t\t--\tDerive the @CommodityChargeAmountMonthly by \r\n\t\tset @CommodityChargeAmountMonthly\t =\t@BilledAmountMonthly - round((@DeliveryChargeAmountMonthlySum + @MTACommodityTaxMonthlySum + @MTADeliveryTaxMonthlySum + @SalesTaxMonthlySum + @SystemBenefitsChargeMonthlySum +\r\n\t\t\t\t\t\t\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthlySum + @DeliveryRateSurchargeMonthlySum + @RealTimeNormalizationChargeMonthlySum + @LatePaymentChargeMonthlySum +\r\n\t\t\t\t\t\t\t\t\t\t\t\t@PaperBillChargeMonthlySum),2)\t\t\r\n\t\tset @CommodityChargeAmountMonthlySum =\t@CommodityChargeAmountMonthlySum + @CommodityChargeAmountMonthly\r\n\t\t--\r\n\t\t--\tCheck @GasChargeSummedPieces by aggregating the pieces\r\n\t\tset @GasChargeSummedPieces\t =\t@CommodityChargeAmountMonthly + round((@DeliveryChargeAmountMonthlySum + @MTACommodityTaxMonthlySum + @MTADeliveryTaxMonthlySum + @SalesTaxMonthlySum + @SystemBenefitsChargeMonthlySum +\r\n\t\t\t\t\t\t\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthlySum + @DeliveryRateSurchargeMonthlySum + @RealTimeNormalizationChargeMonthlySum + @LatePaymentChargeMonthlySum +\r\n\t\t\t\t\t\t\t\t\t\t\t\t@PaperBillChargeMonthlySum),2)\t\t\r\n\t\t\t\t\r\n\t\t--\r\n\t\tset @ThermsMonthly = ROUND(@BilledTherms * @ApplyMonthlyPercentage,0)\r\n\t\tset @ThermsMonthlySum = @ThermsMonthlySum + @ThermsMonthly\r\n\t\tset @CCFMonthly = ROUND(@BilledCCF * @ApplyMonthlyPercentage,0)\r\n\t\tset @CCFMonthlySum = @CCFMonthlySum + @CCFMonthly\r\n\t\t--\r\n\t\t--\tThe Billing Period Projected \"ToDate\" is derived from the table \"dbo.BillingPeriodProjected\" using the utility company seqid and the\r\n\t\t--\tRevisedBillingPeriod and using the \"EndofPeriodTodate\" as the derived \"Todate\" for the account.\r\n\t\t--\r\n\t\tselect @CalculatedToDate=CrisNationalGridWest.DetermineToDateFromBillingPeriodAndWDNumber(@MeterReadWorkDay,@CalculatedBillingPeriodRevision)\r\n\r\n\t\t-- 2.4.2\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t\t--\tIt will note in EC3 that the transaction was derived.\r\n\t\tselect @Notes = SUBSTRING('Therm factor '+cast(@ThermFactor as varchar(6))+\r\n\t\t' for '+cast(@NumberOfBillingPeriod as varchar(6))+' periods  First: '+@FirstBillingPeriodCanceled +' ( '+@BillingFromDate+') Last: '+ \r\n\t\t@BillingPeriodRevision +' ( '+@BillingToDate+'). '+' period: '+@CalculatedBillingPeriodRevision+ ' Month %: '+cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t\t' - Total %: '+cast(@TotalGasSpannedBilledPercentage as varchar(10)), 1, 300)\r\n\r\n\t--\r\n\t--\t2.4.3  INSERT the data into the table \"CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\"\r\n\t--\r\n\t\tINSERT INTO CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTemp\r\n\t\t\t\t\t(UtilityCompanySeqid, AccountInvoiceBillingGroup, BillingPeriod, BillingPeriodRevision, FirstBillingPeriodCanceled, IsSpannedBilling, \r\n\t\t\t\t\tNumberOfBillingPeriod, IsCurrentPeriodExchange, AccountNumber, MeterReadWorkDay, AccountBillingStatus, PreviousAccountBillingStatus, \r\n\t\t\t\t\tAccountBillingStatusCodePeriod, UtilityServiceAccountName, UtilityServiceAddress, Borough, Zipcode, State, ActivityCode, ActivityDateTime, \r\n\t\t\t\t\tSpecialLedgerAccountNUmber, GasRateCode, BillFrequency, EstimatedOrActualBillingCode, GasChargeAmount, FromDate, ToDate, BillRenderDate, \r\n\t\t\t\t\tBillingDays, BilledCCF, ThermFactor, BilledTherms, NumberOfMeters, BillType, CommodityChargeAmount, DeliveryChargeAmount, MTACommodityTax,\r\n\t\t\t\t\tMTADeliveryTax, SalesTax, SystemBenefitsCharge, RetailDecouplingMechanismCharge, DeliveryRateSurcharge, RealTimeNormalizationCharge, \r\n\t\t\t\t\tLatePaymentCharge, PaperBillCharge, CommodityCostFactor, MTACommodityFactor, MTADeliveryFactor, SalesTaxFactor, SystemBenefitChargeFactor, \r\n\t\t\t\t\tRetailDecouplingMechanismFactor, DeliveryRateSurchargeFactor, RealTimeNormalizationFactor, LatePaymentFactor, PriorPeriodAccountBalance, \r\n\t\t\t\t\tAccountArrears, TerminationBalance, TotalPaymentsPosted, CurrentAccountBalance, DateLastPayment, MiscellaneousChargeAmount, \r\n\t\t\t\t\tMiscellaneousChargeType, SpannedGasChargeAmount, SpannedBilledCCF, SpannedBilledTherms, SpannedBillingPeriodRevision,SpannedFirstBillingPeriodCanceled,SpannedFromDate,SpannedToDate,\r\n\t\t\t\t\tLastUpdate, Notes, AuthenticatedUserID, \r\n\t\t\t\t\tDateAdded,TransactionCode,FirstNewCRISBillingPeriodRevision,GasChargeSummedPieces)\r\n\t\tSELECT    \r\n\t\t\t\t\t\tUtilityCompanySeqid,\r\n\t\t\t\t\t\tAccountInvoiceBillingGroup,\r\n\t\t\t\t\t\t@BillingPeriod, --BillingPeriod,\r\n\t\t\t\t\t\t@CalculatedBillingPeriodRevision, --BillingPeriodRevision,\r\n\t\t\t\t\t\tFirstBillingPeriodCanceled,\r\n\t\t\t\t\t\tIsSpannedBilling,\r\n\t\t\t\t\t\t1, -- Always change NumberOfBillingPeriod to 1\r\n\t\t\t\t\t\tIsCurrentPeriodExchange,\r\n\t\t\t\t\t\tAccountNumber,\r\n\t\t\t\t\t\tMeterReadWorkDay,\r\n\t\t\t\t\t\t'AC', --AccountBillingStatus,\r\n\t\t\t\t\t\t'46', --PreviousAccountBillingStatus,\r\n\t\t\t\t\t\t@BillingPeriod, --AccountBillingStatusCodePeriod,\r\n\t\t\t\t\t\tUtilityServiceAccountName,\r\n\t\t\t\t\t\tUtilityServiceAddress,\r\n\t\t\t\t\t\tBorough,\r\n\t\t\t\t\t\tZipcode,\r\n\t\t\t\t\t\tState,\r\n\t\t\t\t\t\tActivityCode,\r\n\t\t\t\t\t\tActivityDateTime,\r\n\t\t\t\t\t\tSpecialLedgerAccountNUmber,\r\n\t\t\t\t\t\tGasRateCode,\r\n\t\t\t\t\t\tBillFrequency,\r\n\t\t\t\t\t\tEstimatedOrActualBillingCode,\r\n\t\t\t\t\t\t@BilledAmountMonthly, --GasChargeAmount,\r\n\t\t\t\t\t\t@CalculatedFromDate, --FromDate,\r\n\t\t\t\t\t\t@CalculatedToDate, --ToDate,\r\n\t\t\t\t\t\tBillRenderDate,\r\n\t\t\t\t\t\tdbo.CalculateNumberOfBillingDays(@CalculatedFromDate,@CalculatedToDate), --BillingDays,\r\n\t\t\t\t\t\t@CCFMonthly, --BilledCCF,\r\n\t\t\t\t\t\tThermFactor,\r\n\t\t\t\t\t\t@ThermsMonthly, --BilledTherms,\r\n\t\t\t\t\t\tNumberOfMeters,\r\n\t\t\t\t\t\tBillType,\r\n\t\t\t\t\t\t@CommodityChargeAmountMonthly, --CommodityChargeAmount,\r\n\t\t\t\t\t\t@DeliveryChargeAmountMonthly, --DeliveryChargeAmount,\r\n\t\t\t\t\t\t@MTACommodityTaxMonthly, --MTACommodityTax,\r\n\t\t\t\t\t\t@MTADeliveryTaxMonthly, --MTADeliveryTax,\r\n\t\t\t\t\t\t@SalesTaxMonthly, --SalesTax,\r\n\t\t\t\t\t\t@SystemBenefitsChargeMonthly, -- SystemBenefitsCharge,\r\n\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthly, --RetailDecouplingMechanismCharge,\r\n\t\t\t\t\t\t@DeliveryRateSurchargeMonthly, --DeliveryRateSurcharge,\r\n\t\t\t\t\t\t@RealTimeNormalizationChargeMonthly, -- RealTimeNormalizationCharge,\r\n\t\t\t\t\t\t@LatePaymentChargeMonthly, --LatePaymentCharge,\r\n\t\t\t\t\t\t@PaperBillChargeMonthly, --PaperBillCharge,\r\n\t\t\t\t\t\tCommodityCostFactor,\r\n\t\t\t\t\t\tMTACommodityFactor,\r\n\t\t\t\t\t\tMTADeliveryFactor,\r\n\t\t\t\t\t\tSalesTaxFactor,SystemBenefitChargeFactor,\r\n\t\t\t\t\t\tRetailDecouplingMechanismFactor,\r\n\t\t\t\t\t\tDeliveryRateSurchargeFactor,\r\n\t\t\t\t\t\tRealTimeNormalizationFactor,\r\n\t\t\t\t\t\tLatePaymentFactor,\r\n\t\t\t\t\t\tPriorPeriodAccountBalance,\r\n\t\t\t\t\t\t0, -- AcountArrears will be applied to the current period\r\n\t\t\t\t\t\t0, -- TerminationBalance will be applied to the current period\r\n\t\t\t\t\t\t0, -- TotalPaymentsPosted,\r\n\t\t\t\t\t\t0, -- CurrentAccountBalance,\r\n\t\t\t\t\t\tnull, --DateLastPayment,\r\n\t\t\t\t\t\t0, -- MiscellaneousChargeAmount,\r\n\t\t\t\t\t\t0, -- MiscellaneousChargeType,\r\n\t\t\t\t\t\t@GasChargeAmount, --SpannedGasChargeAmount,\r\n\t\t\t\t\t\t@BilledCCF, --SpannedBilledCCF,\r\n\t\t\t\t\t\t@BilledTherms, --SpannedBilledTherms,\r\n\t\t\t\t\t\t@CalculatedBillingPeriodRevision, --[SpannedBillingPeriodRevision]\r\n\t\t\t\t\t\t@FirstBillingPeriodCanceled, --[SpannedFirstBillingPeriodCanceled]\r\n\t\t\t\t\t\t@BillingFromDate, --[SpannedFromDate]\r\n\t\t\t\t\t\t@BillingToDate, --[SpannedToDate]\r\n\t\t\t\t\t\tgetdate(), --LastUpdate,\r\n\t\t\t\t\t\t@Notes, -- Notes,\r\n\t\t\t\t\t\tAuthenticatedUserID,\r\n\t\t\t\t\t\tgetdate(), --DateAdded\r\n\t\t\t\t\t\tTransactionCode,FirstNewCRISBillingPeriodRevision,@GasChargeSummedPieces\r\n\t\tFROM CrisNationalGridWest.UploadCrisTempAccountBillingSpannedSummary\t\r\n\t\tWHERE   (UploadCrisTempAccountBillingSpannedSummarySeqid = @UploadCrisTempAccountBillingSpannedSummarySeqid) \r\n\t\t--\r\n\t\t--print @Notes+'=========>Summed:  '+ cast(@@rowcount as varchar(10))+'>>>>>>>>>>>>>'+@CalculatedFromDate+'----'+@CalculatedToDate\r\n\t\t\t--\r\n\t\t\t--\tSet up for the next the Revised Billing Period row.\r\n\t\t\t--\r\n\t\t\t--\tCalculate the next the Revised Billing Period row.\r\n\t\t\tselect @CalculatedBillingPeriodRevision = [dbo].[CalculateNextBillingPeriod]  (@CalculatedBillingPeriodRevision,'M')\r\n\t\t\t\r\n\t\t\t--\tThis will derive the new Revised Billing Period row's \"FromDate\"\r\n\t\t\t--select @CalculatedFromDate = CrisNationalGridWest.DetermineFromDateFromBillingPeriodAndWDNumber(@MeterReadWorkDay,@CalculatedBillingPeriodRevision)\r\n\t\t\tselect @CalculatedFromDate = @CalculatedToDate -- CrisNationalGridWest.DetermineFromDateFromBillingPeriodAndWDNumber(@MeterReadWorkDay,@CalculatedBillingPeriodRevision)\r\n\t\t\t\r\n\t\tset @idx = @idx + 1\r\n\tend -- end distribute/parse\r\n\r\n\r\n\t--\r\n\t--\t2.4.4 Finish up the last period's processing\r\n\t--\r\n\t--\tUse the (Nth -1) periods @CalculatedToDate as the \"FromDate\" and the acutal \"ToDate\" from the spanned record as the \"ToDate\"\r\n\t--\r\n\tselect @CalculatedFromDate = @CalculatedToDate\r\n\tselect @CalculatedToDate = @BillingToDate\r\n\t--\r\n\t--\t@ApplyMonthlyPercentage is used for the notes purposes only\r\n\t--\r\n\tselect @ApplyMonthlyPercentage = [dbo].[CalculateApplyMonthlyPercentageGasSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalGasSpannedBilledPercentage)\r\n\t--\r\n\t--\tDerive the net changes to avoid rounding errors\r\n\t--\r\n\tset @BilledAmountMonthlyLastPeriod = @GasChargeAmount - @BilledAmountMonthlySum\r\n\tset @ThermsMonthlyLastPeriod = @BilledTherms - @ThermsMonthlySum\r\n\tset @CCFMonthlyLastPeriod = @BilledCCF  - @CCFMonthlySum\r\n\t--\r\n\tset @DeliveryChargeAmountMonthlyLastPeriod = @DeliveryChargeAmount - @DeliveryChargeAmountMonthlySum\r\n\tset @MTACommodityTaxMonthlyLastPeriod = @MTACommodityTax - @MTACommodityTaxMonthlySum\r\n\tset @MTADeliveryTaxMonthlyLastPeriod = @MTADeliveryTax - @MTADeliveryTaxMonthlySum\r\n\tset @SalesTaxMonthlyLastPeriod = @SalesTax - @SalesTaxMonthlySum\r\n\tset @SystemBenefitsChargeMonthlyLastPeriod = @SystemBenefitsCharge - @SystemBenefitsChargeMonthlySum\r\n\tset @RetailDecouplingMechanismChargeMonthlyLastPeriod = @RetailDecouplingMechanismCharge - @RetailDecouplingMechanismChargeMonthlySum\r\n\tset @DeliveryRateSurchargeMonthlyLastPeriod = @DeliveryRateSurcharge - @DeliveryRateSurchargeMonthlySum\r\n\tset @RealTimeNormalizationChargeMonthlyLastPeriod = @RealTimeNormalizationCharge - @RealTimeNormalizationChargeMonthlySum\r\n\tset @LatePaymentChargeMonthlyLastPeriod = @LatePaymentCharge - @LatePaymentChargeMonthlySum\r\n\tset @PaperBillChargeMonthlyLastPeriod = @PaperBillCharge - @PaperBillChargeMonthlySum\r\n--\r\n\t--set @CommodityChargeAmountMonthlyLastPeriod = @CommodityChargeAmount - @CommodityChargeAmountMonthlySum\r\n\tset @CommodityChargeAmountMonthlyLastPeriod =\t@BilledAmountMonthlyLastPeriod - round((@DeliveryChargeAmountMonthlyLastPeriod + @MTACommodityTaxMonthlyLastPeriod + @MTADeliveryTaxMonthlyLastPeriod + @SalesTaxMonthlyLastPeriod + @SystemBenefitsChargeMonthlyLastPeriod +\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthlyLastPeriod + @DeliveryRateSurchargeMonthlyLastPeriod + @RealTimeNormalizationChargeMonthlyLastPeriod + @LatePaymentChargeMonthlyLastPeriod +\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t@PaperBillChargeMonthlyLastPeriod),2)\t\t\r\n\t--\r\n\t--\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t--\tIt will note in EC3 that the transaction was derived.\r\n\t--\r\n\t\tselect @Notes = SUBSTRING('Therm factor '+cast(@ThermFactor as varchar(6))+\r\n\t\t' for '+cast(@NumberOfBillingPeriod as varchar(6))+' periods  First: '+@FirstBillingPeriodCanceled +' ( '+@BillingFromDate+') Last: '+ \r\n\t\t@BillingPeriodRevision +' ( '+@BillingToDate+'). '+' period: '+@CalculatedBillingPeriodRevision+ ' Month %: '+cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t\t' - Total %: '+cast(@TotalGasSpannedBilledPercentage as varchar(10)), 1, 300)\r\n\t--PAH\r\n\t--\r\n\t--\tCheck @GasChargeLastPeriodmedPieces by aggregating the pieces\r\n\tset @GasChargeSummedPieces\t = round((@CommodityChargeAmountMonthlyLastPeriod + @DeliveryChargeAmountMonthlyLastPeriod + @MTACommodityTaxMonthlyLastPeriod + @MTADeliveryTaxMonthlyLastPeriod + @SalesTaxMonthlyLastPeriod + @SystemBenefitsChargeMonthlyLastPeriod +\r\n\t\t\t\t\t\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthlyLastPeriod + @DeliveryRateSurchargeMonthlyLastPeriod + @RealTimeNormalizationChargeMonthlyLastPeriod + @LatePaymentChargeMonthlyLastPeriod +\r\n\t\t\t\t\t\t\t\t\t\t\t@PaperBillChargeMonthlyLastPeriod),2)\t\t\r\n\t--\r\n\t--\r\n\t--\tINSERT the data into the table \"CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\"\r\n\t--\r\n\t\tINSERT INTO CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTemp\r\n\t\t\t\t\t(UtilityCompanySeqid, AccountInvoiceBillingGroup, BillingPeriod, BillingPeriodRevision, FirstBillingPeriodCanceled, IsSpannedBilling, \r\n\t\t\t\t\tNumberOfBillingPeriod, IsCurrentPeriodExchange, AccountNumber, MeterReadWorkDay, AccountBillingStatus, PreviousAccountBillingStatus, \r\n\t\t\t\t\tAccountBillingStatusCodePeriod, UtilityServiceAccountName, UtilityServiceAddress, Borough, Zipcode, State, ActivityCode, ActivityDateTime, \r\n\t\t\t\t\tSpecialLedgerAccountNUmber, GasRateCode, BillFrequency, EstimatedOrActualBillingCode, GasChargeAmount, FromDate, ToDate, BillRenderDate, \r\n\t\t\t\t\tBillingDays, BilledCCF, ThermFactor, BilledTherms, NumberOfMeters, BillType, CommodityChargeAmount, DeliveryChargeAmount, MTACommodityTax,\r\n\t\t\t\t\tMTADeliveryTax, SalesTax, SystemBenefitsCharge, RetailDecouplingMechanismCharge, DeliveryRateSurcharge, RealTimeNormalizationCharge, \r\n\t\t\t\t\tLatePaymentCharge, PaperBillCharge, CommodityCostFactor, MTACommodityFactor, MTADeliveryFactor, SalesTaxFactor, SystemBenefitChargeFactor, \r\n\t\t\t\t\tRetailDecouplingMechanismFactor, DeliveryRateSurchargeFactor, RealTimeNormalizationFactor, LatePaymentFactor, PriorPeriodAccountBalance, \r\n\t\t\t\t\tAccountArrears, TerminationBalance, TotalPaymentsPosted, CurrentAccountBalance, DateLastPayment, MiscellaneousChargeAmount, \r\n\t\t\t\t\tMiscellaneousChargeType, SpannedGasChargeAmount, SpannedBilledCCF, SpannedBilledTherms, SpannedBillingPeriodRevision,SpannedFirstBillingPeriodCanceled,SpannedFromDate,SpannedToDate,\r\n\t\t\t\t\tLastUpdate, Notes, AuthenticatedUserID, \r\n\t\t\t\t\tDateAdded,TransactionCode,FirstNewCRISBillingPeriodRevision,GasChargeSummedPieces)\r\n\t\tSELECT    \r\n\t\t\t\t\t\tUtilityCompanySeqid,\r\n\t\t\t\t\t\tAccountInvoiceBillingGroup,\r\n\t\t\t\t\t\t@BillingPeriod, --BillingPeriod,\r\n\t\t\t\t\t\t@CalculatedBillingPeriodRevision, --BillingPeriodRevision,\r\n\t\t\t\t\t\tFirstBillingPeriodCanceled,\r\n\t\t\t\t\t\tIsSpannedBilling,\r\n\t\t\t\t\t\t1, -- Always change NumberOfBillingPeriod to 1\r\n\t\t\t\t\t\tIsCurrentPeriodExchange,\r\n\t\t\t\t\t\tAccountNumber,\r\n\t\t\t\t\t\tMeterReadWorkDay,\r\n\t\t\t\t\t\t'AC', --AccountBillingStatus,\r\n\t\t\t\t\t\t'46', --PreviousAccountBillingStatus,\r\n\t\t\t\t\t\t@BillingPeriod, --AccountBillingStatusCodePeriod,\r\n\t\t\t\t\t\tUtilityServiceAccountName,\r\n\t\t\t\t\t\tUtilityServiceAddress,\r\n\t\t\t\t\t\tBorough,\r\n\t\t\t\t\t\tZipcode,\r\n\t\t\t\t\t\tState,\r\n\t\t\t\t\t\tActivityCode,\r\n\t\t\t\t\t\tActivityDateTime,\r\n\t\t\t\t\t\tSpecialLedgerAccountNUmber,\r\n\t\t\t\t\t\tGasRateCode,\r\n\t\t\t\t\t\tBillFrequency,\r\n\t\t\t\t\t\tEstimatedOrActualBillingCode,\r\n\t\t\t\t\t\t@BilledAmountMonthlyLastPeriod, --GasChargeAmount,\r\n\t\t\t\t\t\t@CalculatedFromDate, --FromDate,\r\n\t\t\t\t\t\t@CalculatedToDate, --ToDate,\r\n\t\t\t\t\t\tBillRenderDate,\r\n\t\t\t\t\t\tdbo.CalculateNumberOfBillingDays(@CalculatedFromDate,@CalculatedToDate), --BillingDays,\r\n\t\t\t\t\t\t@CCFMonthlyLastPeriod, --BilledCCF,\r\n\t\t\t\t\t\tThermFactor,\r\n\t\t\t\t\t\t@ThermsMonthlyLastPeriod, --BilledTherms,\r\n\t\t\t\t\t\tNumberOfMeters,\r\n\t\t\t\t\t\tBillType,\r\n\t\t\t\t\t\t@CommodityChargeAmountMonthlyLastPeriod, --CommodityChargeAmount,\r\n\t\t\t\t\t\t@DeliveryChargeAmountMonthlyLastPeriod, --DeliveryChargeAmount,\r\n\t\t\t\t\t\t@MTACommodityTaxMonthlyLastPeriod, --MTACommodityTax,\r\n\t\t\t\t\t\t@MTADeliveryTaxMonthlyLastPeriod, --MTADeliveryTax,\r\n\t\t\t\t\t\t@SalesTaxMonthlyLastPeriod, --SalesTax,\r\n\t\t\t\t\t\t@SystemBenefitsChargeMonthlyLastPeriod, -- SystemBenefitsCharge,\r\n\t\t\t\t\t\t@RetailDecouplingMechanismChargeMonthlyLastPeriod, --RetailDecouplingMechanismCharge,\r\n\t\t\t\t\t\t@DeliveryRateSurchargeMonthlyLastPeriod, --DeliveryRateSurcharge,\r\n\t\t\t\t\t\t@RealTimeNormalizationChargeMonthlyLastPeriod, -- RealTimeNormalizationCharge,\r\n\t\t\t\t\t\t@LatePaymentChargeMonthlyLastPeriod, --LatePaymentCharge,\r\n\t\t\t\t\t\t@PaperBillChargeMonthlyLastPeriod, --PaperBillCharge,\r\n\t\t\t\t\t\tCommodityCostFactor,\r\n\t\t\t\t\t\tMTACommodityFactor,\r\n\t\t\t\t\t\tMTADeliveryFactor,\r\n\t\t\t\t\t\tSalesTaxFactor,SystemBenefitChargeFactor,\r\n\t\t\t\t\t\tRetailDecouplingMechanismFactor,\r\n\t\t\t\t\t\tDeliveryRateSurchargeFactor,\r\n\t\t\t\t\t\tRealTimeNormalizationFactor,\r\n\t\t\t\t\t\tLatePaymentFactor,\r\n\t\t\t\t\t\tPriorPeriodAccountBalance,\r\n\t\t\t\t\t\tAccountArrears,\r\n\t\t\t\t\t\tTerminationBalance,\r\n\t\t\t\t\t\tTotalPaymentsPosted,\r\n\t\t\t\t\t\tCurrentAccountBalance,\r\n\t\t\t\t\t\tDateLastPayment,\r\n\t\t\t\t\t\tMiscellaneousChargeAmount,\r\n\t\t\t\t\t\tMiscellaneousChargeType,\r\n\t\t\t\t\t\t@GasChargeAmount, --SpannedGasChargeAmount,\r\n\t\t\t\t\t\t@BilledCCF, --SpannedBilledCCF,\r\n\t\t\t\t\t\t@BilledTherms, --SpannedBilledTherms,\r\n\t\t\t\t\t\t@CalculatedBillingPeriodRevision, --[SpannedBillingPeriodRevision]\r\n\t\t\t\t\t\t@FirstBillingPeriodCanceled, --[SpannedFirstBillingPeriodCanceled]\r\n\t\t\t\t\t\t@BillingFromDate, --[SpannedFromDate]\r\n\t\t\t\t\t\t@BillingToDate, --[SpannedToDate]\r\n\t\t\t\t\t\tgetdate(), --LastUpdate,\r\n\t\t\t\t\t\t@Notes, -- Notes,\r\n\t\t\t\t\t\tAuthenticatedUserID,\r\n\t\t\t\t\t\tgetdate(), --DateAdded\r\n\t\t\t\t\t\tTransactionCode,FirstNewCRISBillingPeriodRevision,@GasChargeSummedPieces\r\n\t\tFROM CrisNationalGridWest.UploadCrisTempAccountBillingSpannedSummary\t\r\n\t\tWHERE   (UploadCrisTempAccountBillingSpannedSummarySeqid = @UploadCrisTempAccountBillingSpannedSummarySeqid) \r\n\t\t--\r\n\t\t--print @Notes+'=========>Lsst:  '+ cast(@@rowcount as varchar(10))+'>>>>>>>>>>>>>'+@CalculatedFromDate+'----'+@CalculatedToDate\r\n\t--\r\n\t--\tProcess the next row\r\n\t--\r\n\t\tFETCH NEXT FROM SpannedGasBillCursor INTO @UploadCrisTempAccountBillingSpannedSummarySeqid,@NumberOfBillingPeriod,@BillingPeriodRevision\r\n\r\nEnd -- end processing for fetched record\r\n\r\nCLOSE SpannedGasBillCursor; -- close cursor\r\nDEALLOCATE SpannedGasBillCursor;\r\n--\r\nprint 'Number of spanned rows: '+ cast(@NumberOfSpannedRows as varchar(10))\r\nprint 'Number of Parsed transactions: '+ cast(@NumberOfParsedSpannedTranscations as varchar(10))\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

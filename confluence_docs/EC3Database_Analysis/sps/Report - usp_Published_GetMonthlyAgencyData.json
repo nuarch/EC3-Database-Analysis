@@ -1,0 +1,979 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Published_GetMonthlyAgencyData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Published_GetMonthlyAgencyData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve and summarize monthly energy usage and cost data for a specified agency or set of agencies. It processes data related to electricity, gas, and steam usage, converting these into costs and energy units (e.g., mmBTUs) for a given billing period. The procedure also logs the usage of the report for auditing purposes and supports hierarchical summarization of data for parent and grandparent agency divisions."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data retrieval, transformation, and summarization, as well as handling hierarchical data structures. It uses temporary tables and dynamic SQL execution, which adds to its complexity. However, it does not involve highly complex logic or recursive operations, keeping it at a medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report, used for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which data is requested, formatted as YYYYMM."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A string representing one or more agency codes for which data is to be retrieved."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsAgencyUser AS BIT = 0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A flag indicating whether the user is an agency user. If set to 1, the current processing period is used as the billing period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initial Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and sets "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent extra result sets from interfering with SELECT statements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Adjustment",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the user is an agency user ("
+                },
+                {
+                  "type": "text",
+                  "text": "@IsAgencyUser = 1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "), the procedure retrieves the current processing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.ApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Audit Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure logs the report usage by calling another stored procedure, "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", with relevant parameters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conversion Factor Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves conversion factors for electricity, gas, and steam from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Factors.ConversionEquivalentsForBtuAndCO2eByBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval and Transformation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Agency Hierarchy",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": It populates a temporary table with agency hierarchy data using a user-defined function "
+                        },
+                        {
+                          "type": "text",
+                          "text": "uftn_TableGetAgencyChildrenByAgencyCodeOEC",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Data Summarization",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The procedure inserts summarized data into another temporary table, "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@TableReturn",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", for different cost types (dollar amounts, electricity demand, energy usage, and mmBTUs)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Total Calculation",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": It calculates total costs for each agency and inserts these into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@TableReturn",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Hierarchical Summarization",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The procedure iteratively summarizes data for parent and grandparent agency divisions."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure selects and returns the summarized data ordered by agency code, fiscal year, billing period, and cost type."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking but may lead to dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables can impact performance, especially if the data volume is large. Indexing these tables could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Group By",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins and group by operations, which can be resource-intensive. Ensuring that the joined columns are indexed can help optimize performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Iterative Summarization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The while loop for hierarchical summarization could be a performance bottleneck if the hierarchy is deep or the data volume is large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may lead to reading uncommitted data, which could result in inaccurate reporting."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Large data volumes could lead to performance degradation, especially with the use of temporary tables and multiple group by operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not handle concurrency explicitly, which could lead to issues if multiple users execute it simultaneously with overlapping data sets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete transactions in case of failures."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_Published_GetMonthlyAgencyData]\n(\r\n\t@EmailAddress AS VARCHAR(75)\r\n\t,@PublishedBillingPeriod AS VARCHAR(6)\r\n\t,@AgencyCodeOEC AS VARCHAR(MAX)\r\n\t,@IsAgencyUser AS BIT = 0\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tIF (@IsAgencyUser = 1)\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = PublishedBillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y';\r\n\tEND;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,    \r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = @AgencyCodeOEC,\r\n\t\t@prmFacilityNumber_s = NULL,\r\n\t\t@prmStartingBillingPeriod = NULL,\r\n\t\t@prmEndingBillingPeriod = NULL;\r\n\r\n\tDECLARE @calendarYear AS VARCHAR(4), @levelIndex AS INT = 3, @mmBTUEleMultiplier AS FLOAT\r\n\t\t,@mmBTUGasMultiplier AS FLOAT, @mmBTUSTMMultiplier AS FLOAT;\r\n\r\n\tSET @calendarYear = SUBSTRING(@PublishedBillingPeriod, 1, 4);\r\n\r\n\tDECLARE @BillingPeriod VARCHAR(6)= @PublishedBillingPeriod\r\n\r\n    SELECT @mmBTUEleMultiplier = MAX(MMBtusFactor) FROM Factors.ConversionEquivalentsForBtuAndCO2eByBillingPeriod WHERE EnergyDeliveryType = 1 AND BillingPeriod = @BillingPeriod;\r\n    SELECT @mmBTUGasMultiplier = MAX(MMBtusFactor) FROM Factors.ConversionEquivalentsForBtuAndCO2eByBillingPeriod WHERE EnergyDeliveryType = 5 AND BillingPeriod = @BillingPeriod;\r\n    SELECT @mmBTUSTMMultiplier = MAX(MMBtusFactor) FROM Factors.ConversionEquivalentsForBtuAndCO2eByBillingPeriod WHERE EnergyDeliveryType = 6 AND BillingPeriod = @BillingPeriod;\r\n               \r\n\tDECLARE @TableReturn TABLE\r\n\t\t(publishedBillingPeriod BillingPeriod,\r\n\t\tBillingPeriod BillingPeriod,\r\n\t\tFiscalYear VARCHAR(4),\r\n\t\tBillingMonth VARCHAR(20),\r\n\t\tAgencyCodeOEC AgencyCodeOEC,\r\n\t\tAgencyName ldesc,\r\n\t\tCost VARCHAR(30),\r\n\t\tRevisedBilledAmount MONEY, -- general column for both billed amount and usage\r\n\t\tLevelID INT,\r\n\t\tParentAgencyDivisionID INT,\r\n\t\tCostTypeID INT, -- 1=$, 2=KW, 3=KWH, 4=mmBTU\r\n\t\tIsCostTotal VARCHAR(1)); -- 'N'- not calculated total. Use 'N' to avoid summarize cost twice\r\n\r\n\tDECLARE @SelectedAgency TABLE\r\n\t\t(agencyLevel INT,\r\n\t\tagencyDivisionSeqId INT,\r\n\t\tParentAgencyDivisionSeqId INT,\r\n\t\tAgencyDivisionHierarchy HIERARCHYID,\r\n\t\tAgencyCodeOEC AgencyCodeOEC);\r\n\r\n\tINSERT INTO @SelectedAgency\r\n        (agencyLevel ,\r\n        agencyDivisionSeqId ,\r\n        ParentAgencyDivisionSeqId,\r\n\t\tAgencyDivisionHierarchy,\r\n\t\tAgencyCodeOEC)\r\n\tSELECT AgencyDivisionHierarchy.GetLevel()\r\n\t\t,agencyDivisionSeqId\r\n\t\t,ParentAgencyDivisionSeqId\r\n\t\t,AgencyDivisionHierarchy\r\n\t\t,AgencyCodeOEC\r\n\tFROM Billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress);\r\n\r\n\t/* dollar amount summary Calculation*/\r\n\tINSERT INTO @TableReturn\r\n        (publishedBillingPeriod,\r\n        BillingPeriod,\r\n        FiscalYear,\r\n        BillingMonth,\r\n        AgencyCodeOEC,\r\n        AgencyName,\r\n        Cost,\r\n        RevisedBilledAmount,\r\n        LevelID,\r\n        ParentAgencyDivisionID,\r\n        CostTypeID,\r\n        IsCostTotal)\r\n\tSELECT @PublishedBillingPeriod,\r\n        pData.BillingPeriod,\r\n        MAX(pData.FiscalYear),\r\n        MAX(pData.[MonthName]),\r\n        pData.AgencyCodeOEC,\r\n        MAX(pData.AgencyName),\r\n        CASE WHEN pData.Energytype = 'ELE' THEN 'Electricity Cost ($)'\r\n            WHEN pData.Energytype = 'GAS' THEN 'Gas Cost ($)'\r\n            WHEN pData.Energytype = 'STM' THEN 'Steam Cost ($)'\r\n        END Cost,\r\n        SUM(pData.BilledAmount) AS RevisedBilledAmount,\r\n        MAX(A.AgencyLevel),\r\n        MAX(A.ParentAgencyDivisionSeqid),\r\n        1,\r\n        'N'\r\n\tFROM Published.TemporalAccountLevelSummaryByAgency AS pData\r\n        INNER JOIN @SelectedAgency AS A ON pData.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE pData.EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\tAND pData.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\tGROUP BY pData.BillingPeriod, pData.AgencyCodeOEC,\r\n        CASE WHEN pData.Energytype = 'ELE' THEN 'Electricity Cost ($)'\r\n            WHEN pData.Energytype = 'GAS' THEN 'Gas Cost ($)'\r\n            WHEN pData.Energytype = 'STM' THEN 'Steam Cost ($)'\r\n        END;\r\n\r\n\t/*KW (electricity deman) summary calculation*/\r\n\tINSERT INTO @TableReturn (publishedBillingPeriod\r\n        ,BillingPeriod\r\n        ,FiscalYear\r\n        ,BillingMonth\r\n        ,AgencyCodeOEC\r\n        ,AgencyName\r\n        ,Cost\r\n        ,RevisedBilledAmount\r\n        ,LevelID\r\n        ,ParentAgencyDivisionID\r\n        ,CostTypeID\r\n        ,IsCostTotal)\r\n\tSELECT @PublishedBillingPeriod,\r\n        pData.BillingPeriod,\r\n        MAX(pData.FiscalYear),\r\n        MAX(pData.[MonthName]),\r\n        pData.AgencyCodeOEC,\r\n        MAX(pData.AgencyName),\r\n        CASE WHEN Energytype = 'ELE'\r\n            THEN 'Electricity Demand (kW)'\r\n            ELSE '' END AS Demand,\r\n        SUM(pData.DemandUsage) AS AccountDemandUsage,\r\n        MAX(A.AgencyLevel),\r\n        MAX(A.ParentAgencyDivisionSeqid),\r\n        2,\r\n        'N'\r\n\tFROM Published.TemporalAccountLevelSummaryByAgency AS pData\r\n        INNER JOIN @SelectedAgency AS A ON pData.AgencyCodeOEC = A.AgencyCodeOEC\r\n  WHERE pData.EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\tAND pData.EffectiveEndPeriod > @PublishedBillingPeriod AND pData.EnergyType = 'ELE'\r\n  GROUP BY pData.BillingPeriod, pData.AgencyCodeOEC,\r\n        CASE WHEN pData.Energytype = 'ELE' THEN 'Electricity Demand (kW)'\r\n            ELSE ''\r\n        END;\r\n\r\n\t/*Electricity Usage (kWh) summary calculation*/\r\n\tINSERT INTO @TableReturn\r\n\t\t(publishedBillingPeriod,\r\n\t\tBillingPeriod,\r\n\t\tFiscalYear,\r\n\t\tBillingMonth,\r\n\t\tAgencyCodeOEC,\r\n\t\tAgencyName,\r\n\t\tCost,\r\n\t\tRevisedBilledAmount,\r\n\t\tLevelID,\r\n\t\tParentAgencyDivisionID,\r\n\t\tCostTypeID,\r\n\t\tIsCostTotal)\r\n\tSELECT @PublishedBillingPeriod,\r\n        pData.BillingPeriod,\r\n        MAX(pData.FiscalYear),\r\n        MAX(pData.[MonthName]),\r\n        pData.AgencyCodeOEC,\r\n        MAX(pData.AgencyName),\r\n        CASE WHEN Energytype = 'ELE' THEN 'Electricity Usage (kWh)'\r\n            WHEN pData.Energytype = 'GAS' THEN 'Gas (Therms)'\r\n            WHEN pData.Energytype = 'STM' THEN 'Steam (MLbs)'\r\n        END AS Usage,\r\n        SUM(pData.EnergyUsage) AS AccountEnergyUsage,\r\n        MAX(A.AgencyLevel),\r\n        MAX(A.ParentAgencyDivisionSeqid),\r\n        3,\r\n        'N'\r\n\tFROM Published.TemporalAccountLevelSummaryByAgency AS pData\r\n        INNER JOIN @SelectedAgency AS A ON pData.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE pData.EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\tAND pData.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\tGROUP BY pData.BillingPeriod, pData.AgencyCodeOEC,\r\n        CASE WHEN pData.Energytype = 'ELE' THEN 'Electricity Usage (kWh)'\r\n            WHEN pData.Energytype = 'GAS' THEN 'Gas (Therms)'\r\n            WHEN pData.Energytype = 'STM' THEN 'Steam (MLbs)'\r\n        END;\r\n\r\n\t/* mmBTU summary calculation*/\r\n\tINSERT INTO @TableReturn\r\n\t\t(publishedBillingPeriod,\r\n\t\tBillingPeriod,\r\n\t\tFiscalYear,\r\n\t\tBillingMonth,\r\n\t\tAgencyCodeOEC,\r\n\t\tAgencyName,\r\n\t\tCost,\r\n\t\tRevisedBilledAmount,\r\n\t\tLevelID,\r\n\t\tParentAgencyDivisionID,\r\n\t\tCostTypeID,\r\n\t\tIsCostTotal)\r\n\tSELECT @PublishedBillingPeriod,\r\n\t\tpData.BillingPeriod,\r\n\t\tMAX(pData.FiscalYear),\r\n\t\tMAX(pData.[MonthName]),\r\n\t\tpData.AgencyCodeOEC,\r\n\t\tMAX(pData.AgencyName),\r\n\t\t'Total Usage (mmBTUs)',\r\n\t\tSUM(CASE WHEN pData.Energytype = 'ELE' THEN pData.EnergyUsage * @mmBTUEleMultiplier\r\n\t\t\tWHEN pData.Energytype = 'GAS' THEN pData.EnergyUsage * @mmBTUGasMultiplier\r\n\t\t\tWHEN pData.Energytype = 'STM' THEN pData.EnergyUsage * @mmBTUSTMMultiplier\r\n\t\t\tEND) AS AccountEnergyUsage,\r\n\t\tMAX(A.AgencyLevel),\r\n\t\tMAX(A.ParentAgencyDivisionSeqid),\r\n\t\t4,\r\n\t\t'N'\r\n\tFROM Published.TemporalAccountLevelSummaryByAgency AS pData\r\n        INNER JOIN @SelectedAgency AS A ON pData.AgencyCodeOEC = A.AgencyCodeOEC\r\n    WHERE pData.EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\tAND pData.EffectiveEndPeriod > @PublishedBillingPeriod\r\n    GROUP BY pData.BillingPeriod, pData.AgencyCodeOEC;\r\n\t\t\t\t\t\r\n\t/* Calculate Total*/\r\n\tINSERT INTO @TableReturn\r\n\t\t(publishedBillingPeriod,\r\n\t\tBillingPeriod,\r\n\t\tFiscalYear,\r\n\t\tBillingMonth,\r\n\t\tAgencyCodeOEC,\r\n\t\tAgencyName,\r\n\t\tCost,\r\n\t\tRevisedBilledAmount,\r\n\t\tLevelID,\r\n\t\tParentAgencyDivisionID,\r\n\t\tCostTypeID,\r\n\t\tIsCostTotal)\r\n\tSELECT MAX(publishedBillingPeriod),\r\n\t\tBillingPeriod,\r\n\t\tMAX(FiscalYear),\r\n\t\tMAX(BillingMonth),\r\n\t\tAgencyCodeOEC,\r\n\t\tMAX(AgencyName),\r\n\t\tCASE WHEN CostTypeID = '1' THEN 'Total Cost ($)' END AS Cost,\r\n\t\tSUM(RevisedBilledAmount),\r\n\t\tMAX(LevelID),\r\n\t\tMAX(ParentAgencyDivisionID),\r\n\t\tCostTypeID,\r\n\t\t'Y'\r\n\tFROM @TableReturn\r\n\tWHERE IsCostTotal = 'N' AND CostTypeID  = '1'\r\n\tGROUP BY BillingPeriod, AgencyCodeOEC, CostTypeID;\r\n\t\t\r\n\t/* Summarize for parent/grandparent */\r\n\tWHILE(@levelIndex > 1)\r\n\tBEGIN\r\n\t\tINSERT INTO @TableReturn\r\n\t\t\t(publishedBillingPeriod,\r\n\t\t\tBillingPeriod,\r\n\t\t\tFiscalYear,\r\n\t\t\tBillingMonth,\r\n\t\t\tAgencyCodeOEC,\r\n\t\t\tAgencyName,\r\n\t\t\tCost,\r\n\t\t\tRevisedBilledAmount,\r\n\t\t\tLevelID,\r\n\t\t\tParentAgencyDivisionID,\r\n\t\t\tCostTypeID,\r\n\t\t\tIsCostTotal)\r\n\t\tSELECT MAX(R.publishedBillingPeriod),\r\n\t\t\tR.BillingPeriod,\r\n\t\t\tMAX(R.FiscalYear),\r\n\t\t\tMAX(R.BillingMonth),\r\n\t\t\tMAX(ad.AgencyCodeOEC),\r\n\t\t\tMAX(ad.AgencyName),\r\n\t\t\tR.Cost,\r\n\t\t\tSUM(R.RevisedBilledAmount),\r\n\t\t\t@levelIndex-1,\r\n\t\t\tMAX(ad.ParentAgencyDivisionSeqid),\r\n\t\t\tMAX(R.CostTypeID),\r\n\t\t\tR.IsCostTotal\r\n\t\tFROM @TableReturn AS R\r\n\t\t\tINNER JOIN Billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress) AS ad\r\n\t\t\t\tON R.ParentAgencyDivisionID = ad.AgencyDivisionSeqid\r\n\t\tWHERE R.LevelID = @levelIndex\r\n\t\tGROUP BY R.BillingPeriod, R.ParentAgencyDivisionID, R.BillingPeriod, R.Cost, R.IsCostTotal;\r\n\t\r\n\t\tSET @levelIndex = @levelIndex - 1;\r\n\tEND;\r\n\r\n\tSELECT MAX(PublishedBillingPeriod) AS PublishedBillingPeriod,\r\n\t\tBillingPeriod,\r\n\t\tMAX(FiscalYear) AS FiscalYear,\r\n\t\tMAX(BillingMonth) AS BillingMonth,\r\n\t\tAgencyCodeOEC,\r\n\t\tMAX(AgencyName) AS AgencyName,\r\n\t\tCost,\r\n\t\tSUM(RevisedBilledAmount) AS RevisedBilledAmount\r\n\tFROM @TableReturn\r\n\tGROUP BY BillingPeriod, AgencyCodeOEC, Cost\r\n\tORDER BY AgencyCodeOEC, FiscalYear DESC, billingperiod, Cost ASC;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

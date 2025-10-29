@@ -1,0 +1,1266 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessExchange_Code46",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[Common].[usp_ProcessExchange_Code46]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to add a meter to an existing account in a billing system. It processes an exchange record identified by "
+        },
+        {
+          "type": "text",
+          "text": "@ExchangeSeqid",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and performs various checks and operations to ensure the meter is correctly added to the account. The procedure handles validation, inserts new records into the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.Meter",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountExchangeMeterTrack",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables, and updates the "
+        },
+        {
+          "type": "text",
+          "text": "Common.ExchangeData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to mark the exchange as processed."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple validation checks, conditional logic, and database operations, including inserts and updates across several tables. It also includes exception handling with "
+        },
+        {
+          "type": "text",
+          "text": "TRY...CATCH",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " blocks, which adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ExchangeSeqid AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the exchange record to be processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the ID of the user performing the operation, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode AS INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that indicates the success (1) or failure (0) of the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Message AS VARCHAR(1000) OUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that provides a message detailing the result or error encountered during execution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure first checks if the exchange record is flagged as excluded. If so, it exits with a message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It verifies the existence of the exchange record in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if the exchange record has already been processed."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account and Meter Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves the current account and meter numbers from the exchange data."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Checks if the account is active by looking up the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Ensures that special meters ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "0000000",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TRNSM",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "STANDBY",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") do not already exist on the account."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Meter Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts a new meter record into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Meter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table with default and retrieved values."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UniqueMeterSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for the newly inserted meter."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account and Meter Tracking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves account details and updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UniqueAccountSeqID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Meter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts a record into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.AccountExchangeMeterTrack",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to track the association between the account and the new meter."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Marks the exchange record as processed in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sets the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to 1 to indicate success."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Exception Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Uses a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TRY...CATCH",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " block to handle exceptions, setting the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to 0 and providing an error message if an exception occurs."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "ExchangeDataSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize lookup and update operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple table updates and inserts, which could lead to locking issues in a high-concurrency environment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although not explicitly using transactions, the procedure's operations are logically grouped and should be considered for transaction management to ensure atomicity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "THROW",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " within the procedure will terminate execution and propagate the error, which may not be desirable in all contexts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in "
+                },
+                {
+                  "type": "text",
+                  "text": "Common.ExchangeData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is accurate and complete. Any discrepancies could lead to incorrect processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the system grows, the procedure may need optimization to handle larger volumes of data efficiently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of hardcoded values like "
+                },
+                {
+                  "type": "text",
+                  "text": "'999912'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "'99991231'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for dates could lead to issues if not consistently managed across the system."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Common].[usp_ProcessExchange_Code46]\n(\r\n\t@ExchangeSeqid AS INT\r\n\t,@AuthenticatedUserID AS INT\r\n\t,@StatusCode AS INT OUTPUT\r\n\t,@Message AS VARCHAR(1000) OUT\r\n)\r\nAS \r\n--**************************************************************************************\r\n--* Description:\t\"46\" Add a meter to an existing account\r\n--*\r\n--* AUTHOR:       MOHAMMED BELARREM\r\n--* Created On:   06/17/2016\r\n--**************************************************************************************\r\n--* Change Log\r\n--* \r\n--* 06/17/2016 MOH  First Version \r\n--* 2016-09-22\tzd\tadded UniqueMeterSeqid, RecordVersion, IsCurrentRecord fields\r\n--* 03/27/2017 zd  Added Throw for exception handling\r\n--* 12/27/2018  vy  Modified for UniqueAccountSeqID in Billing.Meter\r\n--***************************************************************************************\r\nBEGIN\r\n\t\tDECLARE @RecordExchangeCode VARCHAR(2)\r\n\r\n\r\n\t\t-- if the record is flagged as exclude, return and exit\r\n\t\tIF ( 'Y' = ( SELECT Exclude FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid) )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'This 46 exchange is excluded from processing. ExchangeSeqid: ' + CAST(@ExchangeSeqid AS VARCHAR (10)) \r\n\t\t\tSET @StatusCode = 1\t-- this is not necessary an error\r\n\t\t\t;THROW 50000,@Message,1;\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- do some validation \r\n\r\n\t\t-- CHECK IF the record exists\r\n\t\tIF ( NOT EXISTS ( SELECT ExchangeDataSeqid FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid ))\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'Error in processing 46. The ExchangeSeqid ' + CAST(@ExchangeSeqid AS VARCHAR (10)) + ' does not exist. Please verify '\r\n\t\t\tSET @StatusCode = 0\r\n\t\t\t;THROW 50000,@Message,1;\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- check if the record was processed\r\n\t\tIF ( 'Y' = ( SELECT IsProcessed FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid) )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'This 46 exchange was already processed. ExchangeSeqid: ' + CAST(@ExchangeSeqid AS VARCHAR (10))\r\n\t\t\tSET @StatusCode = 0\r\n\t\t\t;THROW 50000,@Message,1;\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- check if the current account number is already in the system under an active status\r\n\t\tDECLARE @AccountNumber VARCHAR(15)\r\n\t\tDECLARE @AccountSeqid int\r\n\t\tDECLARE @MeterNumber VARCHAR(12)\r\n\t\tSELECT @AccountNumber = CurrentAccountNumber, @MeterNumber = CurrentMeterNumber FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid\r\n\r\n\t\t-- get the account seqid of the active account if it exists\r\n\t\tSELECT @AccountSeqid = AccountSeqid FROM Billing.Account WHERE OriginalAccountNumber = @AccountNumber AND AccountStatus IN ('AC' , '47', '46', 'UA') AND IsCurrentRecord = 'Y' \r\n\r\n\t\tIF ( @AccountSeqid IS NULL )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'Error in processing 46. The account number: ' + @AccountNumber + ' is NOT in the system under an active status. Please verfiy ' \r\n\t\t\tSET @StatusCode = 0\r\n\t\t\t;THROW 50000,@Message,1;\r\n\t\t\tRETURN\r\n\t\tEND;\r\n\r\n\t\t-- Check if the new special meters already exist on the account\r\n\t\tIF ( EXISTS (   SELECT * FROM Billing.Account \r\n\t\t                INNER JOIN Billing.AccountExchangeMeterTrack ON AccountExchangeMeterTrack.OriginalAccountSeqid = Account.AccountSeqid \r\n\t\t\t\t\t\tINNER JOIN  Billing.Meter ON Meter.MeterSeqid = AccountExchangeMeterTrack.OriginalMeterSeqid \r\n\t\t\t\t\t\tWHERE AccountSeqid = @AccountSeqid AND CurrentMeterNumber = @MeterNumber AND meter.OriginalMeterNumber = @MeterNumber \r\n\t\t\t\t\t\tAND @MeterNumber in ('0000000','TRNSM','STANDBY')     ))\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'Error in processing 46. The meter number (0000000 or TRNSM or STANDBY) in the exchange ' + CAST( @ExchangeSeqid AS VARCHAR ) + ' exists already on the Account . Please verify ' \r\n\t\t\tSET @StatusCode = 0\r\n\t\t\t;THROW 50000,@Message,1;\r\n\t\t\tRETURN\r\n\t\tEND;\r\n\r\n\t\tBEGIN TRY\r\n\t\t\t-- set some defaults\r\n\t\t\tDECLARE @AgencySeqid AS INT, @FacilitySeqid AS INT, @MeterStatus AS VARCHAR(2)\r\n\t\t\t\t,@PreviousMeterStatus AS VARCHAR(2), @AccountEffectiveTurnOn AS VARCHAR(8)\r\n\t\t\t\t,@AccountEffectiveTurnOff AS VARCHAR(8), @BillingPeriod AS VARCHAR(6), @MeterSeqid AS INT\r\n\t\t\t\t,@UniqueAccountSeqID AS INT; /* added on 12/27/2018 */\r\n\r\n\t\t\tSELECT @MeterStatus = 'AC', @PreviousMeterStatus = 'AC';\r\n\r\n\t\t\tSELECT @BillingPeriod = BillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y';\r\n\r\n\t\t\t-- insert the new meter number\r\n\t\t\tINSERT INTO Billing.Meter\r\n\t\t\t\t(UtilityServiceAddress\r\n\t\t\t\t,OriginalAccountNumber\r\n\t\t\t\t,CurrentMeterNumber\r\n\t\t\t\t,OriginalMeterNumber\r\n\t\t\t\t,Tension\r\n\t\t\t\t,IsOECDefinedMeter\r\n\t\t\t\t,IsUploadProcessed\r\n\t\t\t\t,IsMeterUsageTracked\r\n\t\t\t\t,EnergySource\r\n\t\t\t\t,EnergyAccountDescription\r\n\t\t\t\t,MeterStatus\r\n\t\t\t\t,MeterPreviousStatus\r\n\t\t\t\t,MeterStatusCodePeriod\r\n\t\t\t\t,AssociatedDemandMeter\r\n\t\t\t\t,AgencyELOMeterLocation\r\n\t\t\t\t,UtilityAddressMeterLocation\r\n\t\t\t\t,MeterSquareFootageCoverage\r\n\t\t\t\t,TurnOnDate\r\n\t\t\t\t,TurnOffDate\r\n\t\t\t\t,MeterEffectiveOnDate\r\n\t\t\t\t,MeterEffectiveOffDate\r\n\t\t\t\t,MeterType\r\n\t\t\t\t,MeterDials\r\n\t\t\t\t,MeterConstant\r\n\t\t\t\t,LastPeriodOriginalBilled\r\n\t\t\t\t,LastPeriodAdjustmentBilled\r\n\t\t\t\t,LastZeroUsageBillingPeriod\r\n\t\t\t\t,AdjustmentRecordSeqid\r\n\t\t\t\t,Notes\r\n\t\t\t\t,AuthenticatedUserID\r\n\t\t\t\t,DateAdded\r\n\t\t\t\t,LastUpdate\r\n\t\t\t\t,AMRIndicator\r\n\t\t\t\t,UniqueMeterSeqid\r\n\t\t\t\t,RecordVersion\r\n\t\t\t\t,IsCurrentRecord)\r\n\t\t\tSELECT AccountAddress\t   \t\t\t\t\t--- UtilityServiceAddress                             \r\n\t\t\t\t,CurrentAccountNumber   \t\t\t\t--- OriginalAccountNumber                                                                                \r\n\t\t\t\t,CurrentMeterNumber\t           \t\t--- CurrentMeterNumber         \r\n\t\t\t\t,CurrentMeterNumber\t           \t\t--- OriginalMeterNumber         \r\n\t\t\t\t,null\t                   \t\t\t\t--- Tension \r\n\t\t\t\t,CASE EnergyDeliveryType WHEN '5' THEN 'N' ELSE 'Y' END  --- IsOECDefinedMeter \r\n\t\t\t\t,'Y'\t                   \t\t\t\t--- IsUploadProcessed \r\n\t\t\t\t,'Y'\t                   \t\t\t\t--- IsMeterUsageTracked \r\n\t\t\t\t,EnergyDeliveryType       \t\t\t\t--- EnergySource         \r\n\t\t\t\t,EnergyDeliveryType       \t\t\t\t--- EnergyAccountDescription         \r\n\t\t\t\t,@MeterStatus\t\t       \t\t\t\t--- MeterStatus             \r\n\t\t\t\t,@PreviousMeterStatus\t   \t\t\t\t--- MeterPreviousStatus                 \r\n\t\t\t\t,@BillingPeriod\t    \t\t\t\t--- MeterStatusCodePeriod                  \r\n\t\t\t\t,AssociatedDemandMeter    \t\t\t\t--- AssociatedDemandMeter \r\n\t\t\t\t,NULL                 \t\t\t\t\t--- AgencyELOMeterLocation \r\n\t\t\t\t,NULL \t                   \t\t\t\t--- UtilityAddressMeterLocation \r\n\t\t\t\t,NULL \t                   \t\t\t\t--- MeterSquareFootageCoverage \r\n\t\t\t\t,BillingPeriod\t\t\t   \t\t\t\t--- TurnOnDate                 \r\n\t\t\t\t,'999912'\t               \t\t\t\t--- TurnOffDate     \r\n\t\t\t\t,MeterEffectiveTurnOnDate \t\t\t\t--- MeterEffectiveOnDate                    \r\n\t\t\t\t,'99991231'\t           \t\t\t\t--- MeterEffectiveOffDate         \r\n\t\t\t\t,MeterType\t               \t\t\t\t--- MeterType     \r\n\t\t\t\t,MeterNumberOfDials\t           \t\t--- MeterDials         \r\n\t\t\t\t,MeterConstant\t           \t\t\t\t--- MeterConstant         \r\n\t\t\t\t,NULL\t                   \t\t\t\t--- LastPeriodOriginalBilled \r\n\t\t\t\t,NULL\t                   \t\t\t\t--- LastPeriodAdjustmentBilled \r\n\t\t\t\t,NULL\t                   \t\t\t\t--- LastZeroUsageBillingPeriod \r\n\t\t\t\t,NULL\t   \t               \t\t\t\t--- AdjustmentRecordSeqid                                                              \r\n\t\t\t\t,NULL \t                   \t\t\t\t--- Notes \r\n\t\t\t\t,@AuthenticatedUserID\t   \t\t\t\t--- AuthenticatedUserID                 \r\n\t\t\t\t,getDate()\t               \t\t\t\t--- DateAdded     \r\n\t\t\t\t,getDate()\t               \t\t\t\t--- LastUpdate  \r\n\t\t\t\t,AMRIndicator\t\t\t\t\t\t\t--- AMRIndicator\r\n\t\t\t\t,NULL\r\n\t\t\t\t,1\r\n\t\t\t\t,'Y'\r\n\t\t\tFROM Common.ExchangeData\r\n\t\t\tWHERE ExchangeDataSeqid = @ExchangeSeqid;\r\n\r\n\t\t\t--\tFind new sequence id and save it for insertion into the AccountExchangeMeterTrack and the new @CurrentMeterNumber\r\n\t\t\tSELECT @MeterSeqid  = ident_current('Billing.Meter')\r\n\r\n\t\t\tUPDATE Billing.Meter SET UniqueMeterSeqid = @MeterSeqid WHERE MeterSeqid = @MeterSeqid\r\n\r\n\t\t\t-- find the account number ( if the account number was reused this should bring the latest)\r\n\t\t\tSELECT @FacilitySeqid\t\t\t\t= FacilityAccount\r\n\t\t\t\t,@AgencySeqid\t\t\t\t= AgencyAccount\r\n\t\t\t\t,@AccountEffectiveTurnOn\t= AccountEffectiveTurnOn\r\n\t\t\t\t,@AccountEffectiveTurnOff\t= AccountEffectiveTurnOff\r\n\t\t\t\t,@UniqueAccountSeqID        = UniqueAccountSeqid\r\n\t\t\tFROM Billing.Account\r\n\t\t\tWHERE AccountSeqid = @AccountSeqid\r\n\r\n\t\t\tUPDATE Billing.Meter Set UniqueAccountSeqID = @UniqueAccountSeqID WHERE MeterSeqID=@MeterSeqid /* added on 12/27/2018 */\r\n\r\n\t\t\t-- insert the accountExchangeTrackMeter\r\n\t\t\tINSERT INTO Billing.AccountExchangeMeterTrack\r\n\t\t\t\t(UtilityCompanySeqid\r\n\t\t\t\t,OriginalAgencyDivisionSeqid\r\n\t\t\t\t,OriginalFacilitySeqid\r\n\t\t\t\t,OriginalAccountSeqid\r\n\t\t\t\t,OriginalMeterSeqid\r\n\t\t\t\t,OriginalAccountNumber\r\n\t\t\t\t,OriginalMeterNumber\r\n\t\t\t\t,AccountEffectiveBillingStartDate\r\n\t\t\t\t,AccountEffectiveBillingEndDate\r\n\t\t\t\t,MeterEffectiveBillingStartDate\r\n\t\t\t\t,MeterEffectiveBillingEndDate\r\n\t\t\t\t,AuthenticatedUserID\r\n\t\t\t\t,DateAdded\r\n\t\t\t\t,LastUpdate)\r\n\t\t\tSELECT UtilityCompanySeqid\r\n\t\t\t\t,@AgencySeqid\r\n\t\t\t\t,@FacilitySeqid\r\n\t\t\t\t,@AccountSeqid\r\n\t\t\t\t,@MeterSeqid\r\n\t\t\t\t,@AccountNumber\r\n\t\t\t\t,@MeterNumber\r\n\t\t\t\t,@AccountEffectiveTurnOn\r\n\t\t\t\t,@AccountEffectiveTurnOff\r\n\t\t\t\t,MeterEffectiveTurnOnDate\r\n\t\t\t\t,'99991231'\r\n\t\t\t\t,@AuthenticatedUserID\r\n\t\t\t\t,getDate()\r\n\t\t\t\t,getDate()\r\n\t\t\tFROM Common.ExchangeData\r\n\t\t\tWHERE ExchangeDataSeqid = @ExchangeSeqid;\r\n\r\n\t\t\t-- update UniqueMeter and isCurrentRecord since this is a freshly created record\r\n\r\n\t\t\tUPDATE Billing.Meter\r\n\t\t\tSET UniqueMeterSeqid = @MeterSeqid,\r\n\t\t\t\tIsCurrentRecord = 'Y',\r\n\t\t\t\tRecordVersion = 1 , -- since this is the first one\r\n\t\t\t\tFireAuditTrigger = 'N'\r\n\t\t\tWHERE MeterSeqid = @MeterSeqid\r\n\r\n\t\t\t-- if we make it here and all is well, come back and update the record as processes\r\n\t\t\tUPDATE Common.ExchangeData\r\n\t\t\tSET IsProcessed = 'Y',\r\n\t\t\t\tMeterSeqid = @MeterSeqid,\r\n\t\t\t\tAccountSeqid = @AccountSeqid\r\n\t\t\tWHERE ExchangeDataSeqid = @ExchangeSeqid;\r\n\r\n\t\t\tSELECT @Message = '', @StatusCode = 1;\r\n\t\tEND TRY\r\n\t\tBEGIN CATCH\r\n\t\t\tSET @Message = 'Error in processing 46. Error processing exchange  ' + CAST(@ExchangeSeqid AS VARCHAR (10)) + ' error message: ' + ERROR_MESSAGE()\r\n\t\t\tSET @StatusCode = 0\r\n\t\t\t;THROW 50000, @Message, 1;\r\n\t\tEND CATCH;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

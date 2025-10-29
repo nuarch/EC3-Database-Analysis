@@ -1,0 +1,1064 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_ActualVsBudget_RetrieveActualData_ByBudgetGroup",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_ActualVsBudget_RetrieveActualData_ByBudgetGroup",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve actual financial and usage data for budget groups within a specified billing period range. It calculates fiscal year based on the end billing period and filters data based on specific criteria related to report data types. The procedure uses temporary tables to manage intermediate data and joins with preloaded budget group information to produce a final result set that includes actual dollar amounts, usage, rates, and adjustments."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including dynamic fiscal year calculation, conditional data filtering, and complex joins. It also uses user-defined table types and functions, which adds to its complexity. However, it does not involve highly complex logic or recursive operations, keeping it at a medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@startBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The start of the billing period in 'YYYYMM' format. It defines the lower bound of the period for which data is retrieved."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@endBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The end of the billing period in 'YYYYMM' format. It defines the upper bound of the period for which data is retrieved."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsProjection AS BIT = 0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A flag indicating whether the data retrieval is for projection purposes. Defaults to 0 (false)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initial Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure sets the transaction isolation level to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "READ UNCOMMITTED",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to avoid locking issues and improve performance."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It declares variables and temporary tables to store intermediate data."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Fiscal Year Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Determines the fiscal year ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@fy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") based on the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@endBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". If the month is before July, the fiscal year is the same as the year in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@endBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "; otherwise, it is the next year."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Populates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@notImplTNCReportIDs",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with report data types related to 'Reactive P%' from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "report.ReportDataType",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Conditionally populates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@notShowUsageReportIDs",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with report data types related to 'Non-NYPA E%' if the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@startBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is before a cutoff date."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calls a user-defined function "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UDF_ActualVsBudget_GetActual_ByBudgetGroup",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to retrieve actual data for the specified billing period range and inserts it into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@ActualByBudgetGroup",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Data Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Joins the data in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@ActualByBudgetGroup",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with budget group information to produce the final result set."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Applies conditional logic to calculate "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ActualRate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " based on the presence of report data types in the filtered lists."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This isolation level can improve performance by reducing locking but may lead to dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables can be efficient for managing intermediate data but may increase memory usage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Call",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a user-defined function ("
+                },
+                {
+                  "type": "text",
+                  "text": "UDF_ActualVsBudget_GetActual_ByBudgetGroup",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") can impact performance depending on its complexity and execution time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The conditional logic for calculating "
+                },
+                {
+                  "type": "text",
+                  "text": "ActualUsage",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "ActualRate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is straightforward but could be optimized if performance issues arise."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted data, which might not be suitable for all business scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Type Mismatches",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes specific data types for input parameters and intermediate calculations, which could lead to errors if the underlying data types change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Cutoff Date",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cutoff date for "
+                },
+                {
+                  "type": "text",
+                  "text": "@ShowNonNYPAEnergyUsage_CutOffDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is hardcoded, which may require updates if business rules change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the data volume grows, the performance of joins and function calls may degrade, requiring optimization or indexing strategies."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [report].[USP_ActualVsBudget_RetrieveActualData_ByBudgetGroup]\n(\r\n\t@startBillingPeriod AS VARCHAR(6)\r\n\t,@endBillingPeriod AS VARCHAR(6)\r\n\t,@IsProjection AS BIT = 0\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @fy AS INT, @notImplTNCReportIDs AS input.UDT_IDList, @notShowUsageReportIDs AS input.UDT_IDList, @ShowNonNYPAEnergyUsage_CutOffDate AS VARCHAR(6) = '202107';\r\n\t\r\n\tDECLARE @ActualByBudgetGroup TABLE (BudgetGroupID INT\r\n\t\t,ReportDataTypeId INT\r\n\t\t,ActualDollar MONEY\r\n\t\t,ActualUsage DECIMAL(20, 2)\r\n\t\t,ActualRate MONEY\r\n\t\t,ActualAdjustmentSurplus MONEY\r\n\t\t,LastMonthActualDollar MONEY);\r\n\r\n\tIF CAST(RIGHT(@endBillingPeriod, 2) AS INT) < 7\r\n\t\tSET @fy = CAST(LEFT(@endBillingPeriod, 4) AS INT)\r\n\tELSE\t\r\n\t\tSET @fy = CAST(LEFT(@endBillingPeriod, 4) AS INT) + 1\r\n\r\n\tINSERT INTO @notImplTNCReportIDs (ID) SELECT ReportDataTypeId FROM report.ReportDataType WHERE TypeLevel3 LIKE 'Reactive P%';\r\n\t\r\n\tIF @startBillingPeriod < @ShowNonNYPAEnergyUsage_CutOffDate\r\n\t\tINSERT INTO @notShowUsageReportIDs (ID) SELECT ReportDataTypeId FROM report.ReportDataType WHERE TypeLevel2 LIKE 'Non-NYPA E%';\r\n\r\n\tINSERT INTO @ActualByBudgetGroup (BudgetGroupID, ReportDataTypeId, ActualDollar, ActualUsage, ActualRate, ActualAdjustmentSurplus, LastMonthActualDollar)\r\n\tSELECT BudgetGroupID, ReportDataTypeId, ActualDollar, ActualUsage, ActualRate, AdjustmentSurplus, LastMonthActualDollar\r\n\tFROM dbo.UDF_ActualVsBudget_GetActual_ByBudgetGroup (@startBillingPeriod, @endBillingPeriod);\r\n\r\n\tSELECT a.BudgetGroupID\r\n\t\t,b.BudgetGroupName\r\n\t\t,@startBillingPeriod AS StartBillingPeriod\r\n\t\t,@endBillingPeriod AS EndBillingPeriod\r\n\t\t,a.ReportDataTypeId\r\n\t\t,@IsProjection AS IsProjection\r\n\t\t,ISNULL(a.ActualDollar, 0) AS ActualDollar\r\n\t\t,CASE WHEN a.ReportDataTypeId IN (SELECT ID FROM @notImplTNCReportIDs) THEN ISNULL(a.ActualUsage, 0)\r\n\t\t\tWHEN a.ReportDataTypeId IN (SELECT ID FROM @notShowUsageReportIDs) THEN 0\r\n\t\t\tELSE ISNULL(a.ActualUsage, 0) END AS ActualUsage\r\n\t\t,CASE WHEN a.ReportDataTypeId IN (SELECT ID FROM @notImplTNCReportIDs) THEN\r\n\t\t\tCASE WHEN ISNULL(a.ActualUsage, 0) <> 0 THEN ISNULL(a.ActualDollar, 0)/ISNULL(a.ActualUsage, 0)\r\n\t\t\t\tELSE 0 END \r\n\t\t\tWHEN a.ReportDataTypeId IN (SELECT ID FROM @notShowUsageReportIDs) THEN 0\r\n\t\t\tELSE\r\n\t\t\t\tCASE WHEN ISNULL(a.ActualUsage, 0) <> 0 THEN (ISNULL(a.ActualDollar, 0) + ISNULL(a.ActualAdjustmentSurplus, 0)) / ISNULL(a.ActualUsage, 0)\r\n\t\t\t\tELSE 0 END \r\n\t\t\tEND AS ActualRate\r\n\t\t,ISNULL(a.ActualAdjustmentSurplus, 0) AS ActualAdjustmentSurplus\r\n\t\t,0 AS ActualTenantDollar\r\n\t\t,0 AS ActualTenantUsage\r\n\t\t,ISNULL(a.LastMonthActualDollar, 0) AS LastMonthActualDollar\r\n\tFROM @ActualByBudgetGroup a\r\n\t\tINNER JOIN preload.BudgetGroup b ON a.BudgetGroupID = b.BudgetGroupID\r\n\t\tINNER JOIN preload.BudgetGroupByFY c ON b.BudgetGroupID = c.BudgetGroupID\r\n\tWHERE c.FY = @fy;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,939 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Utils",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_RebuildEC3PublishedTableIndexes",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_RebuildEC3PublishedTableIndexes",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to rebuild indexes on several tables within the "
+        },
+        {
+          "type": "text",
+          "text": "Published",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema of a database named "
+        },
+        {
+          "type": "text",
+          "text": "EC3Database",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure also temporarily changes the database recovery model to "
+        },
+        {
+          "type": "text",
+          "text": "SIMPLE",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and shrinks the transaction log file before reverting the recovery model back to "
+        },
+        {
+          "type": "text",
+          "text": "FULL",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". This process is repeated multiple times throughout the procedure."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is considered medium. While the individual operations (index rebuilds and log file management) are straightforward, the repeated switching of the recovery model and log file shrinking add layers of complexity, particularly in terms of understanding the implications on database performance and recovery."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates directly on predefined tables within the "
+        },
+        {
+          "type": "text",
+          "text": "Published",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema of the "
+        },
+        {
+          "type": "text",
+          "text": "EC3Database",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Rebuilding",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure rebuilds all indexes on several tables. Rebuilding indexes can improve query performance by reorganizing the data pages and updating statistics."
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Tables involved include:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "bulletList",
+                      "content": [
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountLevelRawDataForCurrentPeriod",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountMeterLevelRawDataForCurrentPeriod",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountLevelSummaryByAgency",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountLevelSummaryByCityWide",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountLevelSummaryByFacility",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.AccountLevelSummaryForDollarsBtusAndCo2",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.EnergyUsageSummaryGroupByAgencyAndEnergyType",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.FiscalYearPivotByAgencyAndFacilityDollarsAndUsage",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.FiscalYearPivotByAgencyDollarsAndUsage",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Published.FiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Recovery Model Switching",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure switches the database recovery model to "
+                },
+                {
+                  "type": "text",
+                  "text": "SIMPLE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " before shrinking the log file and then back to "
+                },
+                {
+                  "type": "text",
+                  "text": "FULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". This is done to minimize the size of the transaction log during index rebuilds."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Log File Shrinking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction log file ("
+                },
+                {
+                  "type": "text",
+                  "text": "EC3Database_log",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") is shrunk to 1 MB after each set of index rebuilds. This is intended to free up space but can have implications on performance and recovery."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Rebuilds",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Rebuilding indexes can be resource-intensive, especially on large tables. It can lead to increased I/O and CPU usage, potentially impacting database performance during execution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Recovery Model Switching",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Changing the recovery model to "
+                },
+                {
+                  "type": "text",
+                  "text": "SIMPLE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " reduces the transaction log size but can affect the ability to perform point-in-time recovery. Frequent switching can also lead to increased administrative overhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Log File Shrinking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Shrinking the log file can lead to fragmentation and may require the log file to grow again, which can be a costly operation in terms of performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Recovery",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Switching to "
+                },
+                {
+                  "type": "text",
+                  "text": "SIMPLE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " recovery model means that point-in-time recovery is not possible during the procedure execution. This could be a risk if a failure occurs during this time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Log File Fragmentation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Repeated shrinking of the log file can lead to fragmentation, which can degrade performance over time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Resource Utilization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure can consume significant resources, potentially affecting other operations on the database server."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the procedure is run during peak usage times, it could lead to contention and slow down other processes accessing the same tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which means any failure during execution could leave the database in an inconsistent state or with an unintended recovery model."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Utils].[usp_RebuildEC3PublishedTableIndexes]\nAS\r\n\r\nALTER INDEX ALL ON Published.AccountLevelRawDataForCurrentPeriod\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n              \r\nALTER DATABASE EC3Database SET RECOVERY SIMPLE WITH NO_WAIT\r\nDBCC SHRINKFILE(EC3Database_log, 1)\r\nALTER DATABASE EC3Database SET RECOVERY FULL WITH NO_WAIT\r\n\r\n\r\nALTER INDEX ALL ON Published.AccountMeterLevelRawDataForCurrentPeriod\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER DATABASE EC3Database SET RECOVERY SIMPLE WITH NO_WAIT\r\nDBCC SHRINKFILE(EC3Database_log, 1)\r\nALTER DATABASE EC3Database SET RECOVERY FULL WITH NO_WAIT\r\n\r\nALTER INDEX ALL ON Published.AccountLevelSummaryByAgency\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.AccountLevelSummaryByCityWide\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.AccountLevelSummaryByFacility\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.AccountLevelSummaryForDollarsBtusAndCo2\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER DATABASE EC3Database SET RECOVERY SIMPLE WITH NO_WAIT\r\nDBCC SHRINKFILE(EC3Database_log, 1)\r\nALTER DATABASE EC3Database SET RECOVERY FULL WITH NO_WAIT\r\n\r\nALTER INDEX ALL ON Published.EnergyUsageSummaryGroupByAgencyAndEnergyType\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.FiscalYearPivotByAgencyAndFacilityDollarsAndUsage\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.FiscalYearPivotByAgencyDollarsAndUsage\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER INDEX ALL ON Published.FiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage\r\nREBUILD WITH (SORT_IN_TEMPDB = ON,\r\n              STATISTICS_NORECOMPUTE = ON);\r\n\r\nALTER DATABASE EC3Database SET RECOVERY SIMPLE WITH NO_WAIT\r\nDBCC SHRINKFILE(EC3Database_log, 1)\r\nALTER DATABASE EC3Database SET RECOVERY FULL WITH NO_WAIT"
+        }
+      ]
+    }
+  ]
+}

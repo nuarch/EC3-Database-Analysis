@@ -1,0 +1,941 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_GetUsagePercentageByEnergyType",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_GetUsagePercentageByEnergyType",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to calculate and return the energy usage in BTUs for different energy types (Electricity, Gas, and Steam) for a given scenario, identified by a scenario ID. It excludes Chilled Water (CHW) and Transmission and Distribution (TNC) energy types from the calculation. The procedure uses conversion factors specific to the calendar year to convert energy usage into BTUs."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data retrieval, conditional logic, and arithmetic operations. It interacts with multiple tables and uses dynamic data based on the current date, which adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@sid AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the scenario ID for which the energy usage percentages are to be calculated. It is used to filter the data in the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.vwTotalBudget",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " view."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the message indicating the number of rows affected by a SQL statement from being returned. It declares several variables to store conversion multipliers and the calendar year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Calendar Year",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the calendar year by extracting the year from the maximum "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the "
+                },
+                {
+                  "type": "text",
+                  "text": "EC3DB.Published_MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. If this year is greater than the current year, it defaults to the current year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Conversion Factors",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": For each energy type (Electricity, Gas, Steam, and Chilled Water), the procedure retrieves the maximum conversion factor ("
+                },
+                {
+                  "type": "text",
+                  "text": "MMBtusFactor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") for the determined calendar year from the "
+                },
+                {
+                  "type": "text",
+                  "text": "EC3DB.Factors_ConversionEquivalentsForBtuAndCO2e",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Calculate BTUs",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the total energy usage in BTUs for each energy type (excluding TNC and CHW) by:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Summing the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EnergyUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "budget.vwTotalBudget",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " view for the given scenario ID."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Multiplying the sum by the respective conversion factor."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Rounding the result and converting it to a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "bigint",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Return Results",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results are grouped by "
+                },
+                {
+                  "type": "text",
+                  "text": "EnergyType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and returned as a result set."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in the "
+                },
+                {
+                  "type": "text",
+                  "text": "WHERE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " clause and joins (e.g., "
+                },
+                {
+                  "type": "text",
+                  "text": "ScenarioId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "EnergyType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "CalendarYear",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") are indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The performance may degrade with large datasets, especially if the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.vwTotalBudget",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " view or the conversion factors table contains a significant amount of data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "NOCOUNT",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SET NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " helps reduce network traffic by suppressing the \"rows affected\" message."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that conversion factors are available for the determined calendar year. If these factors are missing, the procedure may return incorrect results or fail."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Future Dates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " contains future dates, the procedure defaults to the current year, which might not be the intended behavior."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Exclusion of CHW",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The exclusion of CHW is hardcoded, which may not be suitable if business requirements change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which could lead to unhandled exceptions if, for example, the conversion factors are not found."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Type Conversion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The conversion to "
+                },
+                {
+                  "type": "text",
+                  "text": "bigint",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may lead to data truncation if the calculated BTU values exceed the range of a "
+                },
+                {
+                  "type": "text",
+                  "text": "bigint",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================================\n-- Get Cost Percentage By Energy Type for Scenario Not including CHW because it's too insignificant, i.e. less than 0.1% of ELECTRICITY\r\n-- =============================================================\r\nCREATE PROCEDURE [Common].[USP_GetUsagePercentageByEnergyType]\r\n(\r\n    @sid AS INT\r\n)\r\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n\r\n    DECLARE @mmBTUEleMultiplier AS FLOAT, @mmBTUGasMultiplier AS FLOAT, @mmBTUSTMMultiplier AS FLOAT\r\n\t\t,@mmBTUCHWMultiplier AS FLOAT, @calendaryear AS INT;\r\n    \r\n    SET @calendaryear = SUBSTRING((SELECT MAX(PublishedBillingPeriod) FROM EC3DB.Published_MonthlyPublishedSummaryData), 1, 4);\r\n\r\n\tIF (@calendaryear > YEAR(GETDATE()))\r\n\tBEGIN\r\n\t\tSET @calendaryear = YEAR(GETDATE());\r\n\tEND;\r\n    \r\n    SELECT @mmBTUEleMultiplier = MAX(MMBtusFactor)\r\n\tFROM EC3DB.Factors_ConversionEquivalentsForBtuAndCO2e\r\n\tWHERE CalendarYear = @calendaryear AND EnergyType= 'ELE'; --EnergyDeliveryType = 1;fac\r\n\r\n    SELECT @mmBTUGasMultiplier = MAX(MMBtusFactor)\r\n\tFROM EC3DB.Factors_ConversionEquivalentsForBtuAndCO2e\r\n\tWHERE CalendarYear = @calendaryear AND EnergyType= 'GAS'; --EnergyDeliveryType = 5;\r\n\r\n    SELECT @mmBTUSTMMultiplier = MAX(MMBtusFactor)\r\n\tFROM EC3DB.Factors_ConversionEquivalentsForBtuAndCO2e\r\n\tWHERE CalendarYear = @calendaryear AND EnergyType= 'STM'; --EnergyDeliveryType = 6;\r\n\r\n\tSELECT @mmBTUCHWMultiplier = MAX(MMBtusFactor)\r\n\tFROM EC3DB.Factors_ConversionEquivalentsForBtuAndCO2e\r\n\tWHERE CalendarYear = @calendaryear AND EnergyType= 'CHW'; --EnergyDeliveryType = 6;\r\n\r\n\tSELECT EnergyType AS EnergyType,\r\n\t\t(CASE WHEN EnergyType = 'ELE' THEN CONVERT(bigint, ROUND(ISNULL(SUM(EnergyUsage), 0) * @mmBTUEleMultiplier, 0))\r\n\t\t\t WHEN EnergyType = 'GAS' THEN CONVERT(bigint, ROUND(ISNULL(SUM(EnergyUsage), 0) * @mmBTUGasMultiplier, 0)) \r\n\t\t\t WHEN EnergyType = 'STM' THEN CONVERT(bigint, ROUND(ISNULL(SUM(EnergyUsage), 0) * @mmBTUSTMMultiplier, 0))\r\n\t\t END) AS BTU\r\n\tFROM budget.vwTotalBudget \r\n\tWHERE ScenarioId = @sid\r\n\t\tAND EnergyType <> 'TNC'\r\n\t\tAND EnergyType <> 'CHW'\r\n\tGROUP BY EnergyType;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

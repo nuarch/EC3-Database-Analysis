@@ -1,0 +1,929 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Preload",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_PreloadEC3BaseData_InsertNewSet",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_PreloadEC3BaseData_InsertNewSet",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to insert new records into the "
+        },
+        {
+          "type": "text",
+          "text": "Preload.EC3BaseData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table for a specified fiscal year, agency code, and budget group if such records do not already exist. It initializes these records with default values and updates specific fields if certain conditions are met. The procedure is part of a data preloading process, likely used to prepare or initialize data for further processing or reporting."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves conditional logic, the use of common table expressions (CTEs), and an update operation based on a join with another table. While not overly complex, it requires a good understanding of SQL operations and the specific business logic it implements."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@fy AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the fiscal year for which data is being inserted. Defaults to the next year if not provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy AS VARCHAR(25) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Indicates who is performing the action. Defaults to 'SYSTEM' if not provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@agencyCodeOEC AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the agency code for which data is being inserted. This is a required parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@budgetGroupDEM AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the budget group for which data is being inserted. This is a required parameter."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sets default values for "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@fy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@actionBy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " if they are not provided."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calculates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@baseYear",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " as two years prior to the fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Existence Check",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Checks if records for the specified fiscal year, agency code, and budget group already exist in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.EC3BaseData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If no existing records are found, it inserts new records with default values (mostly zeros) for various fields, using a CTE to determine distinct billing periods."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If the budget group matches a predefined street lighting budget group, it updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "StreetLightingFacilityPoints",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " field based on aggregated data from another table ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.Billing_AccountBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.Billing_AccountBillingElectric",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ")."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The performance of the existence check and update operations can be significantly affected by the presence or absence of appropriate indexes on the "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.EC3BaseData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, particularly on the "
+                },
+                {
+                  "type": "text",
+                  "text": "FY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "AgencyCodeOEC",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupDEM",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CTE Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a CTE for selecting distinct billing periods is efficient for this purpose, but the underlying query should be optimized to ensure it does not become a bottleneck."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The update operation involves a join with another table, which can be resource-intensive if the tables are large and not properly indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure are run simultaneously with the same parameters, it could lead to race conditions or duplicate data unless proper locking mechanisms are in place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the default values being inserted are appropriate for all scenarios, which may not always be the case. This could lead to incorrect data being preloaded."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded values (e.g., "
+                },
+                {
+                  "type": "text",
+                  "text": "2012",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the update query), which could lead to maintenance challenges and potential errors if the logic needs to be adapted for different timeframes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure may degrade if not optimized, particularly the update operation which involves aggregation and joining with another table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Preload].[USP_PreloadEC3BaseData_InsertNewSet]\r\n\t@fy AS INT = NULL\r\n\t,@actionBy AS VARCHAR(25) = NULL\r\n\t,@agencyCodeOEC AS VARCHAR(6)\r\n\t,@budgetGroupDEM AS INT\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @baseYear AS INT\r\n\tDECLARE @createdDate AS DATETIME = GETDATE();\r\n\tDECLARE @streetLightingBudgetGroupDEM AS INT = 7;\r\n\r\n\tSET @fy = ISNULL(@fy, DATEPART(yyyy, GETDATE())+1)\r\n\tSET @actionBy = ISNULL(@actionBy, 'SYSTEM')\r\n\tSET @baseYear = @fy - 2\r\n\r\n\tIF NOT EXISTS (SELECT 1 FROM Preload.EC3BaseData WHERE FY = @fy AND AgencyCodeOEC = @agencyCodeOEC AND BudgetGroupDEM = @budgetGroupDEM)\r\n\tBEGIN\r\n\t-- 1. Insert new billing records for input Agency-BudgetGroup\r\n\t\tWITH newAgcBGrpBillingPrdTbl AS\r\n\t\t(\r\n\t\t\tSELECT DISTINCT @agencyCodeOEC AS AgencyCodeOEC, @budgetGroupDEM AS BudgetGroupDEM, BillingPeriod\r\n\t\t\tFROM Preload.EC3BaseData\r\n\t\t)\r\n\t\tINSERT INTO [Preload].[EC3BaseData] ([AgencyCodeOEC]\r\n\t\t\t\t,[BudgetGroupDEM]\r\n\t\t\t\t,[BillingPeriod]\r\n\t\t\t\t,[BaseEnergyUsage]\r\n\t\t\t\t,[BaseDemandUsage]\r\n\t\t\t\t,[BaseBilledDollars]\r\n\t\t\t\t,[NumberOfDistinctAccounts]\r\n\t\t\t\t,[AdditionalProductionDemandUnitsBilled]\r\n\t\t\t\t,[AdditionalDeliveryDemandUnitsBilled]\r\n\t\t\t\t,[Additional062MinimumBilledEnergyUsageUnits]\r\n\t\t\t\t,[BaseOnPeakEnergyUsage]\r\n\t\t\t\t,[BaseOffPeakEnergyUsage]\r\n\t\t\t\t,[BaseAccountReactivePowerEnergy]\r\n\t\t\t\t,[DeliveryStreetLightingFacilityPoints]\r\n\t\t\t\t,[StreetLightingFacilityPoints]\r\n\t\t\t\t,[CommodityAllocationChargeAdder]\r\n\t\t\t\t,[DeliveryAllocationChargeAdder]\r\n\t\t\t\t,[IsNotBilled]\r\n\t\t\t\t,[CreatedDate]\r\n\t\t\t\t,[CreatedBy])\r\n\t\tSELECT AgencyCodeOEC\r\n\t\t\t\t,BudgetGroupDEM\r\n\t\t\t\t,BillingPeriod\r\n\t\t\t\t,0 AS EnergyUsage\r\n\t\t\t\t,0 AS DemandUsage\r\n\t\t\t\t,0 AS BilledDollars\r\n\t\t\t\t,0 AS NumberOfDistinctAccounts\r\n\t\t\t\t,0 AS AdditionalProductionDemandUnitsBilled\r\n\t\t\t\t,0 AS AdditionalDeliveryDemandUnitsBilled\r\n\t\t\t\t,0 AS Additional062MinimumBilledEnergyUsageUnits\r\n\t\t\t\t,0 AS OnPeakEnergyUsage\r\n\t\t\t\t,0 AS OffPeakEnergyUsage\r\n\t\t\t\t,0 AS BaseAccountReactivePowerEnergy\r\n\t\t\t\t,0 AS DeliveryStreetLightingFacilityPoints\r\n\t\t\t\t,0 AS StreetLightingFacilityPoints\r\n\t\t\t\t,0 AS CommodityAllocationChargeAdder\r\n\t\t\t\t,0 AS DeliveryAllocationChargeAdder\r\n\t\t\t\t,1 AS IsNotBilled\r\n\t\t\t\t,@createdDate\r\n\t\t\t\t,@actionBy\r\n\t\tFROM newAgcBGrpBillingPrdTbl;\r\n\r\n\t-- 2. Update StreetLightingFacilityPoints\r\n\t\tIF @budgetGroupDEM = @streetLightingBudgetGroupDEM\r\n\t\t\tUPDATE Preload.EC3BaseData\r\n\t\t\tSET StreetLightingFacilityPoints = ec3StreetLighting.DeliveryStreetLightingFacilityPoints\r\n\t\t\tFROM \r\n\t\t\t(\r\n\t\t\t\tSELECT Eab.BillingPeriodRevision, SUM(eabe.DeliveryStreetLightingFacilityPoints) AS DeliveryStreetLightingFacilityPoints\r\n\t\t\t\tFROM EC3DB.Billing_AccountBilling AS Eab INNER JOIN EC3DB.Billing_AccountBillingElectric AS eabe\r\n\t\t\t\t\tON Eab.AccountBillingSeqId = eabe.MonthlyAccountBillingChargesElectric\r\n\t\t\t\tWHERE (Eab.OriginalAccountNumber > '8') AND SUBSTRING(Eab.BillingPeriodRevision, 1, 4) = '2012'\r\n\t\t\t\tGROUP BY Eab.BillingPeriodRevision\r\n\t\t\t) AS ec3StreetLighting\r\n\t\t\tWHERE Preload.EC3BaseData.FY = @fy \r\n\t\t\t\tAND Preload.EC3BaseData.AgencyCodeOEC = @agencyCodeOEC\r\n\t\t\t\tAND Preload.EC3BaseData.BudgetGroupDEM = @budgetGroupDEM \r\n\t\t\t\tAND Preload.EC3BaseData.BillingPeriod = ec3StreetLighting.BillingPeriodRevision;\r\n\tEND --end if\r\nEND\r"
+        }
+      ]
+    }
+  ]
+}

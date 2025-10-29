@@ -1,0 +1,1107 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Upload_17_TransferPreProcessedDataIntoGasSchemaTables",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Upload_17_TransferPreProcessedDataIntoGasSchemaTables",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to transfer data from two source tables in the "
+        },
+        {
+          "type": "text",
+          "text": "ConEd",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema to their corresponding destination tables in the "
+        },
+        {
+          "type": "text",
+          "text": "Gas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema. The procedure handles data related to account and meter billing adjustments for gas services. It performs the following operations:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Clears existing data in the destination tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Inserts data from the source tables into the destination tables, with some transformations and default values."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Updates certain date fields in the destination tables using data from a parameter table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "PaidAdjustmentAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " field in the destination table based on calculated values from a view."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Executes a validation procedure to ensure data integrity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data truncation, insertion with identity insert management, updates with joins, and a validation step. The complexity arises from the need to manage identity columns, perform multiple updates, and ensure data consistency across different tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure does not take any input parameters. It uses a hardcoded value for "
+        },
+        {
+          "type": "text",
+          "text": "@invoiceGroupId",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and relies on data from the "
+        },
+        {
+          "type": "text",
+          "text": "ConEd",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema tables and the "
+        },
+        {
+          "type": "text",
+          "text": "Common.UploadCycleParameters",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization and Setup:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by setting "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NOCOUNT ON",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to prevent the message that shows the count of affected rows from being returned."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An integer variable "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@invoiceGroupId",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is declared and set to 2."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Truncation:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The destination tables "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadMeterBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " are truncated to remove existing data."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Identity insert is enabled for the destination tables to allow explicit values to be inserted into identity columns."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Data is inserted from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", with some fields directly mapped and others set to default values or transformed."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Similarly, data is inserted from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonMeterBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadMeterBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure updates date-related fields in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.UploadCycleParameters",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "PaidAdjustmentAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " field in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.UploadAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using calculated values from the view "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Gas.uvw_CalculateUploadAccountBillingNetPaidAdjustment",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure concludes by executing "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.usp_Validation_CheckedTransformedData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to validate the transformed data."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncation and Identity Insert:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Truncating tables and managing identity inserts can be resource-intensive, especially if the tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Updates:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " The updates involve joins, which can be costly in terms of performance if the tables are large or if indexes are not properly configured."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " The procedure does not handle concurrency explicitly, which could lead to issues if multiple instances are run simultaneously."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Loss:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Truncating tables without backup or logging can lead to data loss if the procedure is executed unintentionally."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " The use of hardcoded values (e.g., "
+                },
+                {
+                  "type": "text",
+                  "text": "@invoiceGroupId = 2",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") reduces flexibility and may require changes in the procedure if business logic changes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Identity Insert Management:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " Improper handling of identity insert settings can lead to errors or data integrity issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Dependency:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " The procedure relies on a separate validation procedure, which must be correctly implemented to ensure data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Lack of Error Handling:",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " The procedure does not include error handling, which could lead to unhandled exceptions and incomplete transactions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ConEd].[usp_Upload_17_TransferPreProcessedDataIntoGasSchemaTables]\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\t-- Transfer the ConEd.UploadConEdisonAccountBillingAdjustmentGas and ConEd.UploadConEdisonMeterBillingAdjustmentGas information into their\r\n\t-- gas couterparts (Gas.UploadAccountBillingAdjustmentGas, Gas.UploadMeterBillingAdjustmentGas) to be used for directly processing the data\r\n\t-- into EC3 Billing.AccountBillingXXXX and Billing.meterBillingXXXX tables.\r\n\tDECLARE @invoiceGroupId INT;\r\n\tSET @invoiceGroupId = 2;\r\n\r\n\tTRUNCATE TABLE Gas.UploadAccountBillingAdjustmentGas;\r\n\tTRUNCATE TABLE Gas.UploadMeterBillingAdjustmentGas;\r\n\t\r\n\tSET IDENTITY_INSERT Gas.UploadAccountBillingAdjustmentGas ON;\r\n\r\n\tINSERT INTO Gas.UploadAccountBillingAdjustmentGas\r\n\t\t(UploadAccountBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, AccountSeqid, AccountBillingSeqid, AccountBillingGasSeqid, \r\n\t\tUtilityCompanySeqid, AccountStatus, AccountpreviousStatus, AccountStatusPeriod, InvoiceAccountBillingGroupSeqid, NumberOfTransactions, \r\n\t\tNumberOfRebillTransactions, NumberOfCancelTransactions, OriginalAccountNumber, BillingPeriod, BillingPeriodRevision, FirstCanceledBillingPeriod, \r\n\t\tEstimatedOrActualBilling, InitialCancelFromDate, CurrentBillingToDate, NumberOfBillingPeriods, TotalBillingDaysRebilled, TotalRebilledAmount, \r\n\t\tTotalCanceledAmount, PriorRevisedBilledAmount, RevisedBilledAmount, CanceledBilledAmount, PriorRevisedCCF, RevisedCCF, CanceledCCF, \r\n\t\tPriorRevisedTherms, RevisedTherms, CanceledTherms, AverageRebillCostOfGasCharge, AverageRebillThermsFactor, BillingDays, BillingDate, \r\n\t\tToDate, FromDate, BillingAction, ProcessedInTheCurrentPeriod, GasRateCode, TotalCCF, TotalTherms, ThermsFactor, CancelFromDate, CancelToDate, \r\n\t\tCancelTotalCCF, CancelTotalTherms, CancelThermsFactor, CancelBillingDays, ProcessEffectiveDate, DerivedFromSpannedBill, \r\n\t\tSpannedBillingPeriodRevision, SpannedFirstCanceledBillingPeriod, SpannedBilledAmount, SpannedCCF, SpannedThermFactor, SpannedTherm, \r\n\t\tSpannedMonthlyPercentage, SpannedTotalPercentage, Notes, AuthenticatedUserID, DateAdded, LastUpdate,\r\n\t\tEnergySource,BillingCycle,SalesType,ManualPaymentOverride,ManualDataEntry,IsTimeOfDayAccount,LastPeriodModified, UniqueAccountSeqID)\r\n\tSELECT \r\n\t\tUploadConEdisonAccountBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, AdjustedAccount, AdjustedAccountBilling, \r\n\t\tAdjustedAccountBillingGas, AccountUtilityCompanySeqid, AccountStatus, AccountpreviousStatus, AccountStatusPeriod, \r\n\t\t@invoiceGroupId, NumberOfTransactions, NumberOfRebillTransactions, NumberOfCancelTransactions, OriginalAccountNumber, \r\n\t\tBillingPeriod, BillingPeriodRevision, FirstCanceledBillingPeriod, EstimatedOrActualBilling, InitialCancelFromDate, CurrentBillingToDate, \r\n\t\tNumberOfBillingPeriods, TotalBillingDaysRebilled, TotalRebilledAmount, TotalCanceledAmount, PriorRevisedBilledAmount, RevisedBilledAmount, \r\n\t\tCanceledBilledAmount, PriorRevisedCCF, RevisedCCF, CanceledCCF, PriorRevisedTherms, RevisedTherms, CanceledTherms, \r\n\t\tAverageRebillCostOfGasCharge, AverageRebillThermsFactor, BillingDays, BillingDate, ToDate, FromDate, BillingAction, ProcessedInTheCurrentPeriod, \r\n\t\tGasRateCode, TotalCCF, TotalTherms, ThermsFactor, CancelFromDate, CancelToDate, CancelTotalCCF, CancelTotalTherms, CancelThermsFactor, \r\n\t\tCancelBillingDays, ProcessEffectiveDate, DerivedFromSpannedBill, SpannedBillingPeriodRevision, SpannedFirstCanceledBillingPeriod, \r\n\t\tSpannedBilledAmount, SpannedCCF, SpannedThermFactor, SpannedTherm, SpannedMonthlyPercentage, SpannedTotalPercentage, Notes, \r\n\t\tAuthenticatedUserID, DateAdded, LastUpdate,\r\n\t\tIsNull(EnergySource,5), BillingCycle,SalesType,ManualPaymentOverride,ManualDataEntry,'N' /*IsTimeOfDayAccount*/,BillingPeriod--LastPeriodModified\r\n\t\t,UniqueAccountSeqID\r\n\tFROM ConEd.UploadConEdisonAccountBillingAdjustmentGas;\r\n\r\n\tSET IDENTITY_INSERT Gas.UploadAccountBillingAdjustmentGas OFF;\r\n\tSET IDENTITY_INSERT Gas.UploadMeterBillingAdjustmentGas ON;\r\n\r\n\tINSERT INTO Gas.UploadMeterBillingAdjustmentGas\r\n\t\t(UploadMeterBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, UtilityCompanySeqid, AccountSeqid, MeterSeqid, \r\n\t\tAccountExchangeMeterTrackSeqid, MeterBillingSeqid, MeterBillingGasSeqid, OriginalAccountNumber, OriginalMeterNumber, BillingPeriod, \r\n\t\tBillingPeriodRevision, FirstCancelPeriod, NumberOfTransactions, NumberOfRebillTransactions, NumberOfCancelTransactions, BillingAction, \r\n\t\tMeterBillingStatus, MeterBillingPreviousStatus, MeterBillingStatusPeriod, PriorRevisedBilledCCF, RevisedBilledCCF, CanceledBilledCCF, \r\n\t\tPriorRevisedBilledTherms, RevisedBilledTherms, CanceledBilledTherms, InitialCancelFromDate, CurrentBillingToDate, GasRateCode, FromDate, \r\n\t\tToDate, FromReadingDate, ToReadingDate, MeterFromReading, MeterToReading, Ccf, Therms, ThermsFactor, MeterConstant, \r\n\t\tTotalBillingDaysRebilled, NumberOfBillingPeriods, BillingDays, BillingDate, ReadingCode, NumberOfDials, MeterType, ProcessedInTheCurrentPeriod, \r\n\t\tProcessEffectiveDate, CancelReadingCode, CancelFromDate, CancelToDate, CancelMeterFromReading, CancelMeterToReading, CancelCcf, \r\n\t\tCancelTherms, CancelThermsFactor, CancelMeterConstant, InitialPostingDate, DerivedFromSpannedBill, SpannedBillingPeriodRevision, \r\n\t\tSpannedFirstCanceledBillingPeriod, SpannedCCF, SpannedThermFactor, SpannedTherm, SpannedMonthlyPercentage, SpannedTotalPercentage, \r\n\t\tEstimatedOrActualBilling, MeterReset,AuthenticatedUserID, Notes, DateAdded, LastUpdate,LastPeriodModified,\r\n\t\tBillCreationDate,EnergySource,BillingCycle,SalesType,IsTimeOfDayAccount,UtilityServiceAddress,MeterDials, UniqueAccountSeqID, UniqueMeterSeqID)\r\n\tSELECT UploadConEdisonMeterBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, AccountUtilityCompanySeqid, AccountBilled, MeterBilled, \r\n\t\tAccountExchangeMeterTrackSeqid, AdjustedMeterBilling, AdjustedMeterBillingGas, OriginalAccountNumber, OriginalMeterNumber, BillingPeriod, \r\n\t\tBillingPeriodRevision, FirstCancelPeriod, NumberOfTransactions, NumberOfRebillTransactions, NumberOfCancelTransactions, BillingAction, \r\n\t\tMeterBillingStatus, MeterBillingPreviousStatus, MeterBillingStatusPeriod, PriorRevisedBilledCCF, RevisedBilledCCF, CanceledBilledCCF, \r\n\t\tPriorRevisedBilledTherms, RevisedBilledTherms, CanceledBilledTherms, InitialCancelFromDate, CurrentBillingToDate, GasRateCode, FromDate, \r\n\t\tToDate, FromReadingDate, ToReadingDate, MeterFromReading, MeterToReading, Ccf, Therms, ThermsFactor, MeterConstant, \r\n\t\tTotalBillingDaysRebilled, NumberOfBillingPeriods, BillingDays, BillingDate, ReadingCode, NumberOfDials, MeterType, ProcessedInTheCurrentPeriod, \r\n\t\tProcessEffectiveDate, CancelReadingCode, CancelFromDate, CancelToDate, CancelMeterFromReading, CancelMeterToReading, CancelCcf, \r\n\t\tCancelTherms, CancelThermsFactor, CancelMeterConstant, InitialPostingDate, DerivedFromSpannedBill, SpannedBillingPeriodRevision, \r\n\t\tSpannedFirstCanceledBillingPeriod, SpannedCCF, SpannedThermFactor, SpannedTherm, SpannedMonthlyPercentage, SpannedTotalPercentage, \r\n\t\tEstimatedOrActualBilling, MeterReset,AuthenticatedUserID, Notes, DateAdded, LastUpdate,BillingPeriod, --LastPeriodModified,\r\n\t\tBillCreationDate,EnergySource,BillingCycle,SalesType,'N'/*IsTimeOfDayAccount*/,UtilityServiceAddress,MeterDials,UniqueAccountSeqID, UniqueMeterSeqID\r\n\tFROM ConEd.UploadConEdisonMeterBillingAdjustmentGas;\r\n\r\n\tSET IDENTITY_INSERT Gas.UploadMeterBillingAdjustmentGas OFF;\r\n\r\n\t--\tSet the dates below into each of the account billing row.  The information is being retrieved from the\r\n\t--\tCommon.UploadCycleParameters table:--\r\n\t--\t\tBillCreationDate\r\n\t--\t\tPostMarkDate \r\n\t--\t\tDatePaymentDue \r\n\t--\t\tDateAcceptanceIntoOEC\r\n\tUPDATE G\r\n\tSET\tBillCreationDate = P.BillCreationDate, \r\n\t\tPostMarkDate = P.PostMarkDate, \r\n\t\tDatePaymentDue = P.DatePaymentDue,\r\n\t\tDateAcceptanceIntoOEC = P.DateAcceptanceIntoOEC\r\n\tFROM Gas.UploadAccountBillingAdjustmentGas AS G INNER JOIN Common.UploadCycleParameters AS P ON \r\n\t\tG.UtilityCompanySeqid = P.UtilityCompanySeqid AND G.BillingPeriod = P.BillingPeriod;\r\n\r\n\t--\tPost the non-zero NetPaidAdjustment to the current billing period account billing row\r\n\tUPDATE Gas.UploadAccountBillingAdjustmentGas\r\n\tSET PaidAdjustmentAmount = VC.NetPaidAdjustment\r\n\tFROM Gas.uvw_CalculateUploadAccountBillingNetPaidAdjustment AS VC\r\n\t\tINNER JOIN Gas.UploadAccountBillingAdjustmentGas AS G ON \r\n\t\tVC.UtilityCompanySeqid = G.UtilityCompanySeqid \r\n\t\tAND G.UniqueAccountSeqID = VC.UniqueAccountSeqID\r\n\tWHERE G.BillingPeriod = G.BillingPeriodRevision;\r\n\r\n\t/* Validation */\r\n\tEXEC ConEd.usp_Validation_CheckedTransformedData;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

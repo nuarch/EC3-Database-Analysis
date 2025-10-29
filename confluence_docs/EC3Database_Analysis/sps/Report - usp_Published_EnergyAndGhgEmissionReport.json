@@ -1,0 +1,1116 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Published_EnergyAndGhgEmissionReport",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Published_EnergyAndGhgEmissionReport",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report on energy usage and greenhouse gas (GHG) emissions for different agency divisions over specified billing periods and fiscal years. It utilizes temporal tables to manage historical data and calculates various metrics such as year-to-date (YTD) and monthly energy usage, BTU consumption, and CO2e emissions. The procedure aggregates data by agency division groups and compares current and prior fiscal year data, as well as a specified fiscal year for CO2e emissions."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple temporary tables and common table expressions (CTEs) for data aggregation and transformation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It performs several updates and calculations based on different fiscal years and billing periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes logic for handling hierarchical data structures and temporal data."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@publishedBillingPeriod BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period for which the report is being generated."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CompareFiscalYearCo2e yyyy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the fiscal year to compare CO2e emissions against the current fiscal year."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure initializes several variables to store fiscal years and billing periods."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It calculates the current fiscal year and the prior fiscal year using helper functions."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agency Group Assignment",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Temporary tables "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@agenyGroupAss",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@reportResult",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " are declared to store agency group assignments and report results, respectively."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure populates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@agenyGroupAss",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with agency division and group associations, handling both parent and child divisions."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Report Result Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@reportResult",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is populated with initial data, including agency group IDs, names, and fiscal year information."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "YTD and Monthly Data Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "CTEs "
+                        },
+                        {
+                          "type": "text",
+                          "text": "YTDInformation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MTHInfomration",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " are used to calculate YTD and monthly energy usage and BTU consumption."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The results are updated into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@reportResult",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CO2e Emissions Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure updates CO2e emissions data for fuel oil and other energy types for both the prior fiscal year and the specified comparison fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It also calculates CO2e emissions for the last 12 months."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Data Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The final report data is selected from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@reportResult",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and ordered by display index."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "An additional query selects data from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalEnergyUsageSummaryGroupByAgencyAndEnergyType",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table for agencies not included in the group assignments."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved in joins and subqueries are properly indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables can lead to increased I/O operations. Consider using table variables if the data volume is small."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CTEs",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While CTEs improve readability, they may not always be optimized for performance. Consider materializing intermediate results if performance issues arise."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may lock resources during execution, potentially affecting concurrent operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the helper functions "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateFiscalYear",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "CalcBillingPeriodYearPrior",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " return valid fiscal years. Any issues with these functions could lead to incorrect calculations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure may degrade, especially with large temporal tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of hardcoded values like "
+                },
+                {
+                  "type": "text",
+                  "text": "@targetReportSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "@otherGroupSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may require updates if business logic changes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Consistency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on temporal data consistency. Any discrepancies in temporal data could affect the accuracy of the report."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "--**************************************************************************************\n--* Date       Tech Description of Change\r\n--* ---------- ---\t-------------------------------------------------------------\r\n--* 03/17/2016\tZD\tUpdate: Changed to use temporal tables \r\n--**************************************************************************************\r\n\r\n\r\nCREATE PROCEDURE [Report].[usp_Published_EnergyAndGhgEmissionReport]\r\n    @publishedBillingPeriod BillingPeriod ,\r\n    @CompareFiscalYearCo2e yyyy\r\nAS \r\n    BEGIN\r\n\r\n\r\n\r\n\r\n        DECLARE @targetReportSeqId INT\r\n        DECLARE @otherGroupSeqId INT\r\n        DECLARE @CurrentFiscalYear yyyy\r\n        DECLARE @PriorFiscalYear yyyy\r\n        DECLARE @BillingPeriodPriorFiscalYear yyyymm\r\n\t\t\r\n        SET @CurrentFiscalYear = dbo.CalculateFiscalYear(@PublishedBillingPeriod)\r\n        SET @BillingPeriodPriorFiscalYear = dbo.CalcBillingPeriodYearPrior(@publishedBillingPeriod)\r\n\t\t\r\n        SET @PriorFiscalYear = CAST(CAST(@CurrentFiscalYear AS INT) - 1 AS VARCHAR(4))\r\n\r\n        SET @targetReportSeqId = 2\r\n        SET @otherGroupSeqId = 25\r\n\r\n\r\n        DECLARE @agenyGroupAss TABLE\r\n            (\r\n              AgencyDivisionSeqId INT ,\r\n              AgencyDivisionGroupSeqId INT ,\r\n              AgencyCodeOEC AgencyCodeOEC ,\r\n              UNIQUE ( AgencyDivisionSeqId, AgencyDivisionGroupSeqId )\r\n            )\r\n\r\n        DECLARE @reportResult TABLE\r\n            (\r\n              AgencyDivisionGroupSeqId INT ,\r\n              AgencyDivisionGroupName VARCHAR(200) ,\r\n              YTDTotalUsage INT ,\r\n              YTDTotalBTU INT ,\r\n              YTDTotalUsagePrior INT ,\r\n              YTDTotalBTUPrior INT ,\r\n              MonthTotalUsage INT ,\r\n              MonthTotalBTU INT ,\r\n              MonthTotalUsagePrior INT ,\r\n              MonthTotalBTUPrior INT ,\r\n              Co2e INT ,\r\n              Co2eLast12Month INT ,\r\n              Co2eRank INT ,\r\n              Co2eFiscalYearCompare INT ,\r\n              FiscalYear VARCHAR(4) ,\r\n              PriorFiscalYear VARCHAR(4) ,\r\n              DisplayOrderIndex INT\r\n            )\r\n\r\n\t-- division parent\r\n        INSERT  INTO @agenyGroupAss\r\n                ( AgencyDivisionSeqId ,\r\n                  AgencyDivisionGroupSeqId ,\r\n                  AgencyCodeOEC\r\n\t        \r\n                )\r\n                SELECT  DISTINCT\r\n                        pad.AgencyDivisionSeqid ,\r\n                        ISNULL(ag.AgencyGroupSeqID, @otherGroupSeqId) ,\r\n                        pad.AgencyCodeOEC\r\n                FROM ( report.AgencyGroupItem AS agi\r\n                          INNER JOIN Report.AgencyGroup AS ag ON agi.AgencyGroupSeqID = ag.AgencyGroupSeqID\r\n                                                              AND ag.TargetReportSeqID = @targetReportSeqId\r\n                          INNER JOIN Billing.AgencyDivision AS pad ON pad.AgencyDivisionSeqId = agi.AgencyDivisionSeqID\r\n                                                              AND pad.Inactive = 'N'\r\n                        )\r\n               \r\n\r\n\t\t\t-- division children\r\n        INSERT  INTO @agenyGroupAss\r\n                ( AgencyDivisionSeqId ,\r\n                  AgencyDivisionGroupSeqId ,\r\n                  AgencyCodeOEC\r\n                \r\n                )\r\n                SELECT  DISTINCT\r\n                        ad.AgencyDivisionSeqid ,\r\n                        agi.AgencyDivisionGroupSeqId ,\r\n                        ad.AgencyCodeOEC\r\n                FROM ( @agenyGroupAss AS agi\r\n                          INNER JOIN Billing.AgencyDivision AS pad ON pad.AgencyDivisionSeqId = agi.AgencyDivisionSeqID\r\n                                                              AND pad.Inactive = 'N'\r\n                        )\r\n                        INNER JOIN Billing.AgencyDivision AS ad ON ad.AgencyDivisionHierarchy.IsDescendantOf(pad.AgencyDivisionHierarchy) = 1\r\n                                                              AND ad.Inactive = 'N'\r\n                                                              AND pad.AgencyDivisionSeqId <> ad.AgencyDivisionSeqID\r\n                WHERE   ad.AgencyDivisionSeqid NOT IN (\r\n                        SELECT  AgencyDivisionSeqId\r\n                        FROM @agenyGroupAss AS agi )      \r\n\r\n        INSERT  INTO @agenyGroupAss\r\n                ( AgencyDivisionSeqId ,\r\n                  AgencyDivisionGroupSeqId ,\r\n                  AgencyCodeOEC\r\n\t\t        )\r\n                SELECT  AgencyDivisionSeqId ,\r\n                        @otherGroupSeqId ,\r\n                        AgencyCodeOEC\r\n                FROM Billing.AgencyDivision AS ad\r\n                WHERE   AgencyDivisionSeqid NOT IN (\r\n                        SELECT  AgencyDivisionSeqId\r\n                        FROM @agenyGroupAss AS aga )      \r\n\r\n\r\n        INSERT  INTO @reportResult\r\n                ( AgencyDivisionGroupSeqId ,\r\n                  AgencyDivisionGroupName ,\r\n                  FiscalYear ,\r\n                  PriorFiscalYear ,\r\n                  DisplayOrderIndex\r\n                \r\n                )\r\n                SELECT  AgencyGroupSeqID ,\r\n                        AgencyGroupName ,\r\n                        @CurrentFiscalYear ,\r\n                        @PriorFiscalYear ,\r\n                        DisplayOrderIndex\r\n                FROM report.AgencyGroup AS ag\r\n                WHERE   TargetReportSeqID = @targetReportSeqId\r\n                ORDER BY DisplayOrderIndex\r\n\r\n-- ytd information\r\n\r\n;\r\n        WITH    YTDInformation\r\n                 AS ( SELECT   ad.AgencyDivisionGroupSeqId ,\r\n                                SUM(CASE WHEN YTDSummary.PeriodSpan = @CurrentFiscalYear\r\n                                         THEN YTDSummary.TotalUsage\r\n                                         ELSE 0\r\n                                    END) AS YTDTotalUsage ,\r\n                                SUM(CASE WHEN YTDSummary.PeriodSpan = @CurrentFiscalYear\r\n                                         THEN YTDSummary.TotalBTU\r\n                                         ELSE 0\r\n                                    END) AS YTDTotalBTU ,\r\n                                SUM(CASE WHEN YTDSummary.PeriodSpan = @PriorFiscalYear\r\n                                         THEN YTDSummary.TotalUsage\r\n                                         ELSE 0\r\n                                    END) AS YTDTotalUsagePrior ,\r\n                                SUM(CASE WHEN YTDSummary.PeriodSpan = @PriorFiscalYear\r\n                                         THEN YTDSummary.TotalBTU\r\n                                         ELSE 0\r\n                                    END) AS YTDTotalBTUPrior\r\n                       FROM  ( SELECT    SUM(TotalUsage) TotalUsage ,\r\n                                            SUM(TotalBTU) TotalBTU ,\r\n                                            AgencyCodeOEC ,\r\n                                            MAX(AgencyName) AS AgencyName ,\r\n                                            PeriodSpan\r\n                                  FROM   Published.TemporalEnergyUsageSummaryGroupByAgencyAndEnergyType\r\n                                  WHERE TypeOfCalculation = 'YTD'\r\n                                            AND (EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                                            AND PeriodSpan IN (\r\n                                            @CurrentFiscalYear,\r\n                                            @PriorFiscalYear )\r\n                                  GROUP BY  AgencyCodeOEC ,\r\n                                            PeriodSpan\r\n                                ) YTDSummary\r\n                                INNER JOIN @agenyGroupAss AS ad ON YTDSummary.AgencyCodeOEC = ad.AgencyCodeOEC\r\n                       GROUP BY ad.AgencyDivisionGroupSeqId\r\n                     )\r\n            UPDATE  rr\r\n            SET     rr.YTDTotalUsage = i.YTDTotalUsage ,\r\n                    rr.YTDTotalBTU = i.YTDTotalBTU ,\r\n                    rr.YTDTotalUsagePrior = i.YTDTotalUsagePrior ,\r\n                    rr.YTDTotalBTUPrior = i.YTDTotalBTUPrior\r\n            FROM YTDInformation AS i\r\n                    INNER JOIN @reportResult AS rr ON i.AgencyDivisionGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n\r\n\r\n\r\n\t\t-- monthly data\r\n\r\n\r\n\t\t;\r\n        WITH    MTHInfomration\r\n                 AS ( SELECT   ad.AgencyDivisionGroupSeqId ,\r\n                                SUM(CASE WHEN MTHSummary.PeriodSpan = @publishedBillingPeriod\r\n                                         THEN MTHSummary.TotalUsage\r\n                                         ELSE 0\r\n                                    END) AS MTHTotalUsage ,\r\n                                SUM(CASE WHEN MTHSummary.PeriodSpan = @publishedBillingPeriod\r\n                                         THEN MTHSummary.TotalBTU\r\n                                         ELSE 0\r\n                                    END) AS MTHTotalBTU ,\r\n                                SUM(CASE WHEN MTHSummary.PeriodSpan = @BillingPeriodPriorFiscalYear\r\n                                         THEN MTHSummary.TotalUsage\r\n                                         ELSE 0\r\n                                    END) AS MTHTotalUsagePrior ,\r\n                                SUM(CASE WHEN MTHSummary.PeriodSpan = @BillingPeriodPriorFiscalYear\r\n                                         THEN MTHSummary.TotalBTU\r\n                                         ELSE 0\r\n                                    END) AS MTHTotalBTUPrior\r\n                       FROM  ( SELECT    SUM(TotalUsage) TotalUsage ,\r\n                                            SUM(TotalBTU) TotalBTU ,\r\n                                            PeriodSpan ,\r\n                                            AgencyCodeOEC\r\n                                  FROM   Published.TemporalEnergyUsageSummaryGroupByAgencyAndEnergyType\r\n                                  WHERE TypeOfCalculation <> 'YTD'\r\n                                            AND (EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                                            AND PeriodSpan IN (\r\n                                            @publishedBillingPeriod,\r\n                                            @BillingPeriodPriorFiscalYear )\r\n                                  GROUP BY  AgencyCodeOEC ,\r\n                                            PeriodSpan\r\n                                ) MTHSummary\r\n                                INNER JOIN @agenyGroupAss AS ad ON MTHSummary.AgencyCodeOEC = ad.AgencyCodeOEC\r\n                       GROUP BY ad.AgencyDivisionGroupSeqId\r\n                     )\r\n            UPDATE  rr\r\n            SET     rr.MonthTotalUsage = i.MTHTotalUsage ,\r\n                    rr.MonthTotalBTU = i.MTHTotalBTU ,\r\n                    rr.MonthTotalUsagePrior = i.MTHTotalUsagePrior ,\r\n                    rr.MonthTotalBTUPrior = i.MTHTotalBTUPrior\r\n            FROM MTHInfomration AS i\r\n                    INNER JOIN @reportResult AS rr ON i.AgencyDivisionGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n\r\n\r\n\r\n\r\n\t\t\t\t\t\r\n\r\n-- fuel oil\r\n\r\n        UPDATE  rr\r\n        SET     rr.Co2e = agds.FuelOilCo2e ,\r\n                rr.Co2eRank = agds.Co2eRank ,\r\n                rr.Co2eLast12Month = agds.FuelOilCo2eLast12Month\r\n        FROM @reportResult AS rr\r\n                INNER JOIN report.AgencyGroupDataSummary AS agds ON agds.AgencyGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n                                                              AND agds.FiscalYear = @PriorFiscalYear\r\n\r\n        UPDATE  rr\r\n        SET     rr.Co2eFiscalYearCompare =agds.FuelOilCo2e\r\n        FROM @reportResult AS rr\r\n                INNER JOIN report.AgencyGroupDataSummary AS agds ON agds.AgencyGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n                                                              AND agds.FiscalYear = @CompareFiscalYearCo2e\r\n\r\n\r\n-- non fuel oil\r\n-- prior fiscal year - all other energy\r\n        UPDATE  rr\r\n        SET     rr.Co2e = rr.Co2e + agds.co2e\r\n        FROM @reportResult AS rr\r\n                INNER JOIN ( SELECT SUM(alsba.co2) co2e ,\r\n                                    aga.AgencyDivisionGroupSeqId\r\n                             FROM Published.TemporalAccountLevelSummaryByAgency AS alsba\r\n                                    INNER JOIN @agenyGroupAss AS aga ON aga.AgencyCodeOec = alsba.AgencyCodeOEC\r\n                             WHERE  FiscalYear = @PriorFiscalYear \r\n\t\t\t\t\t\t\t AND (alsba.EffectiveStartPeriod <= @PublishedBillingPeriod AND alsba.EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                             GROUP BY aga.AgencyDivisionGroupSeqId\r\n                           ) AS agds ON agds.AgencyDivisionGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n\r\n\r\n-- selected fiscal year to compare - - all other energy\r\n\r\n        UPDATE  rr\r\n        SET     rr.Co2eFiscalYearCompare = rr.Co2eFiscalYearCompare\r\n                + agds.co2e\r\n        FROM @reportResult AS rr\r\n                INNER JOIN ( SELECT SUM(alsba.co2) co2e ,\r\n                                    aga.AgencyDivisionGroupSeqId\r\n                             FROM Published.TemporalAccountLevelSummaryByAgency AS alsba\r\n                                    INNER JOIN @agenyGroupAss AS aga ON aga.AgencyCodeOec = alsba.AgencyCodeOEC\r\n                             WHERE  FiscalYear = @CompareFiscalYearCo2e\r\n\t\t\t\t\t\t\t AND (alsba.EffectiveStartPeriod <= @PublishedBillingPeriod AND alsba.EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                             GROUP BY aga.AgencyDivisionGroupSeqId\r\n                           ) AS agds ON agds.AgencyDivisionGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n\r\n\r\n\r\n\r\n\r\n        UPDATE  rr\r\n        SET     rr.Co2eLast12Month =  rr.Co2eLast12Month + agds.co2e\r\n        FROM @reportResult AS rr\r\n                INNER JOIN ( SELECT SUM(alsba.co2) co2e ,\r\n                                    aga.AgencyDivisionGroupSeqId\r\n                             FROM Published.TemporalAccountLevelSummaryByAgency AS alsba\r\n                                    INNER JOIN @agenyGroupAss AS aga ON aga.AgencyCodeOec = alsba.AgencyCodeOEC\r\n                             WHERE  alsba.BillingPeriod > @BillingPeriodPriorFiscalYear\r\n                                    AND alsba.BillingPeriod <= @publishedBillingPeriod\r\n\t\t\t\t\t\t\t\t\tAND (alsba.EffectiveStartPeriod <= @PublishedBillingPeriod AND alsba.EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                             GROUP BY aga.AgencyDivisionGroupSeqId\r\n                           ) AS agds ON agds.AgencyDivisionGroupSeqId = rr.AgencyDivisionGroupSeqId\r\n\r\n\r\n\r\n-- select data\r\n        SELECT  AgencyDivisionGroupSeqId AS AgencyGroupSeqId ,\r\n                AgencyDivisionGroupName AS AgencyDivisionGroupName ,\r\n                YTDTotalUsage ,\r\n                YTDTotalBTU ,\r\n                YTDTotalUsagePrior ,\r\n                YTDTotalBTUPrior ,\r\n                MonthTotalUsage ,\r\n                MonthTotalBTU ,\r\n                MonthTotalUsagePrior ,\r\n                MonthTotalBTUPrior ,\r\n                Co2e ,\r\n                Co2eLast12Month ,\r\n                Co2eRank ,\r\n                Co2eFiscalYearCompare ,\r\n                FiscalYear ,\r\n                PriorFiscalYear ,\r\n                DisplayOrderIndex\r\n        FROM @reportResult AS rr\r\n        ORDER BY DisplayOrderIndex\r\n\r\n\r\n\r\n        SELECT  *\r\n        FROM Published.TemporalEnergyUsageSummaryGroupByAgencyAndEnergyType\r\n        WHERE   AgencyCodeOEC NOT IN (\r\n                SELECT  ad2.AgencyCodeOEC\r\n                FROM @agenyGroupAss AS ad1\r\n                        INNER JOIN Billing.AgencyDivision AS ad2 ON ad1.agencyDivisionSeqid = ad2.AgencyDivisionSeqid )\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n    END"
+        }
+      ]
+    }
+  ]
+}

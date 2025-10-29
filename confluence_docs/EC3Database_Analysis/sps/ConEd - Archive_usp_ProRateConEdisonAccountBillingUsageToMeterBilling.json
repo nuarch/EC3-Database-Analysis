@@ -1,0 +1,800 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Archive_usp_ProRateConEdisonAccountBillingUsageToMeterBilling",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[ConEd].[Archive_usp_ProRateConEdisonAccountBillingUsageToMeterBilling]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to pro-rate billing usage from account-level data to individual meter-level data for Con Edison gas accounts. It processes accounts with multiple meters, distributing the account-level usage across these meters based on their individual usage. The procedure updates the "
+        },
+        {
+          "type": "text",
+          "text": "ConEd.UploadConEdisonMeterBillingAdjustmentGas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table with the pro-rated values."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the use of a cursor for row-by-row processing, multiple calculations for pro-rating usage, and the need to handle multiple meters per account. The logic involves conditional calculations and updates, which add to the complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is an output parameter intended to return the status of the procedure execution. A value of "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates success, while "
+                },
+                {
+                  "type": "text",
+                  "text": "9",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by declaring and initializing several variables that will be used to store data retrieved from the database and intermediate calculation results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor named "
+                },
+                {
+                  "type": "text",
+                  "text": "IndividualMeterOnMultiMeterAccountCursor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to iterate over accounts with multiple meters. The cursor fetches data from a join of "
+                },
+                {
+                  "type": "text",
+                  "text": "ConEd.UploadConEdisonMeterBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "ConEd.UploadConEdisonAccountBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", grouped by billing period revision and account number."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor processes each account:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For accounts with more than one meter, it calculates pro-rated usage for each meter except the last one. The pro-rated values are calculated based on the ratio of the meter's CCF usage to the account's total CCF usage."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For the last meter, the remaining usage is assigned to ensure the total matches the account-level usage."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After calculating the pro-rated values, the procedure updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "ConEd.UploadConEdisonMeterBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table with the new values for "
+                },
+                {
+                  "type": "text",
+                  "text": "CanceledBilledCCF",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "CanceledBilledTherms",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "RevisedBilledTherms",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all rows."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes rows one at a time. This can be inefficient compared to set-based operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure includes basic error handling using "
+                },
+                {
+                  "type": "text",
+                  "text": "@@error",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", but it could be enhanced with more robust error management techniques."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved have appropriate indexes to optimize the joins and where clauses used in the cursor's query."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Division by Zero",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure includes checks to prevent division by zero, but any changes to the logic should ensure these checks remain intact."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, there could be concurrency issues, especially with updates to the same rows."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the input data is accurate and complete. Any discrepancies in the input data could lead to incorrect pro-ration results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the cursor-based approach may not scale well, leading to longer execution times. Consider refactoring to a set-based approach if performance becomes an issue."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ConEd].[Archive_usp_ProRateConEdisonAccountBillingUsageToMeterBilling] (@Status int output)\nAS\r\n--**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Not Used\r\n---*               \r\n--* Exec:       \t\tusp_ProRateConEdisonAccountBillingUsageToMeterBilling\r\n--*\r\n--* Parameter(s):         @Status int output\r\n--*\r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*                   9 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   5/05/2006\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 10/26/2005 PAH  First Version \r\n--**************************************************************************************\r\n\r\n--**************************************************************************************\r\n--Declare Variables\r\n--**************************************************************************************\r\n--\r\n--**************************************************************************************\r\n--Set defaults\r\n--**************************************************************************************\r\n\r\n--**************************************************************************************\r\n--Main Process \r\n--**************************************************************************************\r\n--\r\n--\tAll of the accounts that have more than one meter and were billed on more than one meter for the billing period revision will be \r\n--\tprocess through a cursor.  The meters will be processed in ascending ccf usage order.  The usage will be pro-rated \r\n--\tby the ration of the meter ccf usage divided by account ccf usage rounded to zero decimal places for n-1 meters that were billed \r\n--\tfor the billing period revision.  The last meter usage will be derived by account billing usage minus the summed n-1 meter pro-rated\r\n--\tusage.\r\n--\r\ndeclare @UploadConEdisonAccountBillingAdjustmentGasSeqid int\r\ndeclare @UploadConEdisonMeterBillingAdjustmentGasSeqid int\r\n\r\ndeclare @NumberOfMeters int\r\ndeclare @AccountBillingRevisedCCF int\r\ndeclare @AccountBillingRevisedTherms int\r\ndeclare @AccountBillingCanceledTherms int\r\ndeclare @AccountBillingCanceledCCF int\r\ndeclare @MeterCCF int\r\ndeclare @BillingPeriod varchar(6)\r\ndeclare @BillingPeriodRevision  varchar(6)\r\ndeclare @OriginalAccountNumber varchar(15) \r\ndeclare @OriginalMeterNumber  varchar(12)\r\n--\r\ndeclare @NumberOfMetersRemainToBeProcessed int\r\ndeclare @ProRatedAccountBillingCanceledCCF int\r\ndeclare @ProRatedAccountBillingCanceledTherms int\r\ndeclare @ProRatedAccountBillingRevisedTherms int\r\ndeclare @ProRatedMeterBillingCanceledCCF int\r\ndeclare @ProRatedMeterBillingRevisedTherms int\r\ndeclare @ProRatedMeterBillingCanceledTherms int\r\n--\r\ndeclare @idx int\r\nset @idx=0\r\n--\r\n\r\nDeclare IndividualMeterOnMultiMeterAccountCursor cursor for \r\nSELECT  AccountBillingAdjustmentGas.UploadConEdisonAccountBillingAdjustmentGasSeqid,\r\n\t\tMeterBillingAdjustmentGas.UploadConEdisonMeterBillingAdjustmentGasSeqid,\r\n\t\tMeterCount.NumberOfMeters,   \r\n\t\tMeterBillingAdjustmentGas.BillingPeriodRevision,  \r\n\t\tMeterBillingAdjustmentGas.OriginalAccountNumber,  \r\n\t\tMeterBillingAdjustmentGas.OriginalMeterNumber,\r\n\t\tisnull(MeterBillingAdjustmentGas.RevisedBilledCCF,0) AS mbCCF,\r\n\t\tisnull(AccountBillingAdjustmentGas.abRevisedCCF,0) as abRevisedCCF, \r\n\t\tisnull(AccountBillingAdjustmentGas.abCanceledCCF,0) as abCanceledCCF,\r\n\t\tisnull(AccountBillingAdjustmentGas.abRevisedTherms,0) as abRevisedTherms, \r\n\t\tisnull(AccountBillingAdjustmentGas.abCanceledTherms,0) as abCanceledTherms\r\nFROM \r\n\t\tConEd.UploadConEdisonMeterBillingAdjustmentGas AS MeterBillingAdjustmentGas \r\n\t\tinner join\r\n\t(\r\n\t\tSELECT  min(UploadConEdisonAccountBillingAdjustmentGasSeqid) as UploadConEdisonAccountBillingAdjustmentGasSeqid,   \r\n\t\t\t\tBillingPeriodRevision,OriginalAccountNumber,\r\n\t\t\t\tSUM(RevisedCCF) AS abRevisedCCF, \r\n\t\t\t\tSUM(CanceledCCF) AS abCanceledCCF,\r\n\t\t\t\tSUM(RevisedTherms) AS abRevisedTherms, \r\n\t\t\t\tSUM(CanceledTherms) AS abCanceledTherms\r\n\t\tFROM \r\n\t\t\t\tConEd.UploadConEdisonAccountBillingAdjustmentGas\r\n\t\tGROUP BY \r\n\t\t\t\tBillingPeriodRevision,OriginalAccountNumber\r\n\t) as AccountBillingAdjustmentGas on \r\n\t\tMeterBillingAdjustmentGas.BillingPeriodRevision = AccountBillingAdjustmentGas.BillingPeriodRevision and\r\n\t\tMeterBillingAdjustmentGas.OriginalAccountNumber = AccountBillingAdjustmentGas.OriginalAccountNumber\r\n\t\tinner join\r\n\t(\r\n\t\tSELECT \r\n\t\t\t\tBillingPeriodRevision,OriginalAccountNumber,count(*) as NumberOfMeters\r\n\t\tFROM \r\n\t\t\t\tConEd.UploadConEdisonMeterBillingAdjustmentGas\r\n\t\tgroup by \r\n\t\t\t\tBillingPeriodRevision,OriginalAccountNumber\r\n\t) as MeterCount on \t\t\r\n\t\tMeterCount.BillingPeriodRevision = AccountBillingAdjustmentGas.BillingPeriodRevision and\r\n\t\tMeterCount.OriginalAccountNumber = AccountBillingAdjustmentGas.OriginalAccountNumber\r\norder by\r\n\t\tMeterBillingAdjustmentGas.BillingPeriodRevision,MeterBillingAdjustmentGas.OriginalAccountNumber,mbCCF\r\n--\r\nopen IndividualMeterOnMultiMeterAccountCursor\r\n\r\n-- Read first row\r\nfetch IndividualMeterOnMultiMeterAccountCursor into \r\n\t\t@UploadConEdisonAccountBillingAdjustmentGasSeqid,\r\n\t\t@UploadConEdisonMeterBillingAdjustmentGasSeqid,\r\n\t\t@NumberOfMeters,\r\n\t\t@BillingPeriodRevision,  \r\n\t\t@OriginalAccountNumber,  \r\n\t\t@OriginalMeterNumber,\r\n\t\t@MeterCCF,\r\n\t\t@AccountBillingRevisedCCF, \r\n\t\t@AccountBillingCanceledCCF,\r\n\t\t@AccountBillingRevisedTherms, \r\n\t\t@AccountBillingCanceledTherms\r\n--\r\n--\tInitialize the variables after the initial read\r\n--\r\nset @ProRatedAccountBillingRevisedTherms = 0\r\nset @ProRatedAccountBillingCanceledTherms = 0\r\nset @ProRatedAccountBillingCanceledCCF = 0\r\nset @NumberOfMetersRemainToBeProcessed = @NumberOfMeters\t\r\n--\r\nwhile @@fetch_status =0\r\n  begin\r\n\t--\r\n--\tset @idx = @idx+1\r\n--\tprint 'Counter [ '+cast(@idx as varchar(10))+'] - AccountSeqid: '+cast(@UploadConEdisonAccountBillingAdjustmentGasSeqid as varchar(10))+' - MeterSeqid: '+cast(@UploadConEdisonMeterBillingAdjustmentGasSeqid as varchar(10))+' - '+@BillingPeriodRevision+' - '+@OriginalAccountNumber+' - '+@OriginalMeterNumber\r\n--\tprint 'Counter [ '+cast(@idx as varchar(10))+'] - Revised Therms: '+cast(@AccountBillingRevisedTherms as varchar(10))+' - MeterCCF: '+cast(@MeterCCF as varchar(10))+' - abRevisedCCF'+cast(@AccountBillingRevisedCCF as varchar(10))+' - abCanceledTherms: '+cast(@AccountBillingCanceledTherms as varchar(10))+' - '+' - abCanceledCCF: '+cast(@AccountBillingCanceledCCF as varchar(10))\r\n\t--\r\n\tif (@NumberOfMetersRemainToBeProcessed <> 1\t)\r\n\t   begin\r\n\t\t\t--\r\n\t\t\t--\tPro-rate the usage and accummulate the usage for the n-1 meters RevisedTherms\r\n\t\t\t--\r\n\t\t\tset @ProRatedMeterBillingRevisedTherms = case when @AccountBillingRevisedCCF = 0 then 0 else round(@AccountBillingRevisedTherms * (@MeterCCF/@AccountBillingRevisedCCF),0) end \r\n\t\t\tset @ProRatedMeterBillingCanceledTherms = case when @AccountBillingRevisedCCF = 0 then 0 else round(@AccountBillingCanceledTherms * (@MeterCCF/@AccountBillingRevisedCCF),0) end\r\n\t\t\tset @ProRatedMeterBillingCanceledCCF = case when @AccountBillingRevisedCCF = 0 then 0 else round(@AccountBillingCanceledCCF * (@MeterCCF/@AccountBillingRevisedCCF),0) end \r\n\t\t\t--\r\n\t\t\tdeclare @err int\r\n\t\t\t\r\n\t\t\tselect @err = @@error\r\n\t\t\tif(@err <>0)\r\n\t\t\tbegin\r\n\t\t\t\tprint '======================================================================'\r\n\t\t\t\tprint 'meter:' + @OriginalMeterNumber\r\n\t\t\t\tprint 'AccountBillingRevisedCCF' +\tcast(@AccountBillingRevisedCCF as varchar)\r\n\t\t\t\tprint 'AccountBillingRevisedTherms' + cast(@AccountBillingRevisedTherms as varchar)\r\n\t\t\t\tprint 'MeterCCF' + cast(@MeterCCF as varchar)\r\n\t\t\t\tprint 'AccountBillingRevisedCCF' + cast(@AccountBillingRevisedCCF as varchar)\r\n\t\t\t\tprint '======================================================================'\r\n\t\t\tend\r\n\t\t\t\r\n\t\t\tset @ProRatedMeterBillingCanceledTherms = case when @AccountBillingRevisedCCF = 0 then 0 else round(@AccountBillingCanceledTherms * (@MeterCCF/@AccountBillingRevisedCCF),0) end\r\n\t\t\tset @ProRatedMeterBillingCanceledCCF = case when @AccountBillingRevisedCCF = 0 then 0 else round(@AccountBillingCanceledCCF * (@MeterCCF/@AccountBillingRevisedCCF),0) end \r\n\t\t\t--\r\n\t\t\tset @ProRatedAccountBillingRevisedTherms = @ProRatedAccountBillingRevisedTherms + @ProRatedMeterBillingRevisedTherms\r\n\t\t\tset @ProRatedAccountBillingCanceledTherms = @ProRatedAccountBillingCanceledTherms + @ProRatedMeterBillingCanceledTherms\r\n\t\t\tset @ProRatedAccountBillingCanceledCCF = @ProRatedAccountBillingCanceledCCF + @ProRatedMeterBillingCanceledCCF\r\n\t   end\r\n\telse\r\n\t   BEGIN\r\n\t\t\t--\r\n\t\t\t--\tDerive the last meters usage and reset the usage accummulators for the next set of meters\r\n\t\t\t--\r\n\t\t\tset @ProRatedMeterBillingRevisedTherms = @AccountBillingRevisedTherms - @ProRatedAccountBillingRevisedTherms\r\n\t\t\tset @ProRatedMeterBillingCanceledTherms = @AccountBillingCanceledTherms - @ProRatedAccountBillingCanceledTherms\r\n\t\t\tset @ProRatedMeterBillingCanceledCCF = @AccountBillingCanceledCCF - @ProRatedAccountBillingCanceledCCF\r\n\t\t\t--\r\n\t\t\tset @ProRatedAccountBillingRevisedTherms = 0\r\n\t\t\tset @ProRatedAccountBillingCanceledTherms = 0\r\n\t\t\tset @ProRatedAccountBillingCanceledCCF = 0\r\n\t   end\r\n\t--\r\n--\r\n--\tCheck the data for testing purposes only\r\n--\r\n--\tselect \t@BillingPeriodRevision,@OriginalAccountNumber,@OriginalMeterNumber,\r\n--\t\t\t@NumberOfMetersRemainToBeProcessed,@MeterCCF,@AccountBillingRevisedCCF,@AccountBillingRevisedTherms,@AccountBillingCanceledTherms,@AccountBillingCanceledCCF,\r\n--\t\t\t@ProRatedMeterBillingRevisedTherms,@ProRatedMeterBillingCanceledTherms,@ProRatedMeterBillingCanceledCCF,\r\n--\t\t\t@ProRatedAccountBillingRevisedTherms,@ProRatedAccountBillingCanceledTherms,@ProRatedAccountBillingCanceledCCF\r\n\t--\r\n\t--\tUpdate the meter usage\r\n\t--\r\n\tUPDATE    ConEd.UploadConEdisonMeterBillingAdjustmentGas\r\n\tSET   \r\n\t\t\tCanceledBilledCCF = @ProRatedMeterBillingCanceledCCF,\r\n\t\t\tCanceledBilledTherms = @ProRatedMeterBillingCanceledTherms,\r\n\t\t\tRevisedBilledTherms = @ProRatedMeterBillingRevisedTherms\r\n\twhere\t\r\n\t\t\tBillingPeriodRevision = @BillingPeriodRevision and \r\n\t\t\tOriginalAccountNumber = @OriginalAccountNumber and \r\n\t\t\tOriginalMeterNumber = @OriginalMeterNumber\r\n\r\n\t--\t\r\n\tfetch IndividualMeterOnMultiMeterAccountCursor into \r\n\t\t@UploadConEdisonAccountBillingAdjustmentGasSeqid,\r\n\t\t@UploadConEdisonMeterBillingAdjustmentGasSeqid,\r\n\t\t@NumberOfMeters,\r\n\t\t@BillingPeriodRevision,  \r\n\t\t@OriginalAccountNumber,  \r\n\t\t@OriginalMeterNumber,\r\n\t\t@MeterCCF,\r\n\t\t@AccountBillingRevisedCCF, \r\n\t\t@AccountBillingCanceledCCF,\r\n\t\t@AccountBillingRevisedTherms, \r\n\t\t@AccountBillingCanceledTherms\r\n\t--\t\t\t\r\n\t--\tCheck if the number of meters that remain to be processed for the account in the billing period is not equal to one.\r\n\t--\t\t\t\r\n\tif (@NumberOfMetersRemainToBeProcessed <> 1\t)\r\n\t   BEGIN\r\n\t\t\tset @NumberOfMetersRemainToBeProcessed = @NumberOfMetersRemainToBeProcessed - 1\r\n\t   end\r\n\telse\r\n\t   BEGIN\r\n\t\t\tset @NumberOfMetersRemainToBeProcessed = @NumberOfMeters\t\r\n\t   end\r\n\r\n\t\r\n--\r\n end \r\n--\r\nclose IndividualMeterOnMultiMeterAccountCursor\r\n\r\nDeallocate IndividualMeterOnMultiMeterAccountCursor"
+        }
+      ]
+    }
+  ]
+}

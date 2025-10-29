@@ -1,0 +1,946 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_ValidateAccountData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_ValidateAccountData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to validate account data before processing it further. It performs several checks on account and billing data to ensure data integrity and correctness. The procedure checks if all accounts exist in the system, ensures billing dates do not exceed the current period, and verifies that the billing date ranges are valid (i.e., the start date is not after the end date). It uses transactions to ensure atomicity and includes error handling to manage exceptions gracefully."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple validation checks, uses transactions, and includes error handling, which adds to its complexity. However, it does not involve complex joins or subqueries, keeping it at a medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in a 'yyyymm' format. It is used to determine the cutoff date for billing validation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An integer representing the ID of the authenticated user or process. It is not used within the procedure, suggesting it might be reserved for auditing or logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter used to indicate the success or failure of the procedure. A value of 0 indicates success, while 1 indicates an error occurred."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Several variables are declared to store intermediate results, such as counts of unknown accounts, invoices from the next period, and flipped dates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins a transaction named "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterValidation",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to ensure that all operations are atomic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Unknown Accounts",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": It checks if all accounts in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " exist in the system or as new exchanges. If an account is not found, it is counted as unknown."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Billing Period Validation",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": It calculates the next period's start date using a helper function "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CalculateNextBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and checks if any billing dates exceed this period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Date Range Validation",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": It ensures that the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingFromDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is not after the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingToDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Display",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The counts of unknown accounts, invoices from the next period, and flipped dates are selected for review."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If an error occurs, the procedure captures detailed error information, constructs a custom error message, logs it, and rolls back the transaction."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Commit",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If no errors occur, the transaction is committed, finalizing the changes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved, especially "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadAccountBillingDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", have appropriate indexes on columns used in joins and where clauses to optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is well-defined, but long-running transactions can lead to locks. Ensure that the procedure is optimized to minimize execution time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling Overhead",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error handling mechanism, while robust, can add overhead. Ensure that the error logging does not become a bottleneck."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Unused Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@authenticatedID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is not used within the procedure, which could lead to confusion or missed functionality if it was intended for logging or auditing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded values like "
+                },
+                {
+                  "type": "text",
+                  "text": "'01'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "'21'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for "
+                },
+                {
+                  "type": "text",
+                  "text": "WDNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which might need to be parameterized for flexibility."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Message Length",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The custom error message construction could exceed the maximum length for "
+                },
+                {
+                  "type": "text",
+                  "text": "NVARCHAR(4000)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", leading to truncation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, ensure that the transaction isolation level is appropriate to prevent data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External Function",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on the "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateNextBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function, which must be correctly implemented and performant to avoid bottlenecks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_ValidateAccountData]\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@StatusCode int  OUTPUT      \r\n   \r\n AS \r\n BEGIN\r\n\t\t--********************************************************************************\r\n\t\t--\tAuthor: MOHAMMED BELARREM\r\n\t\t--\tDescription: Validate the Account information before processing\r\n\t\t--\r\n\t\t--\t\t--  validation rules\r\n\t\t--\t\t\t* All accounts should exist in the system or as new exchanges\r\n\t\t--\t\t\t* Billing should not exceed the current period\r\n\t\t--\t\t\t* fromDate <= toDate\r\n\t\t--\t\t\t* \r\n\t\t--\t\t\t* \r\n\t\t--\t\t\t* \r\n\t\t--\t\t\r\n\t\t--\r\n\t\t--\r\n\t\t--\tLog: \r\n\t\t--\t\tCreation\t06/10/2010\tMOH\r\n\t\t--\t\tupdate\t\t10/07/2016\tzd\tcommon.exchangedata integration\r\n\t\t--********************************************************************************\r\n\t \r\n\t\t--********************************************************************************\r\n\t\tDECLARE @AccountNumber acctnum\r\n\t\tDECLARE @MeterNumber MeterNumber\r\n\r\n\t\tDECLARE @CountOfUnknownAccounts INT\r\n\t\tDECLARE @NextPeriodStartDate yyyymmdd\r\n\t\tDECLARE @CountOfInvoicesFromNextPeriod INT \r\n\t\tDECLARE @CountOfFlippedDates INT\r\n\t\t\r\n\t\t\r\n\t\tDECLARE @CountOfUnvalidMeterNumber INT\r\n\t\tDECLARE @CountOfUnvalidCCF INT \r\n\t\tDECLARE @CountOfMetersOutsideAccountBillingRange INT \r\n\t\t\r\n\t\tdeclare @crlf varchar(2)\r\n\t\tset @crlf = CHAR(13) + CHAR(10) \r\n\r\n\t\r\n\t\t\t\r\n\t\tbegin try\t\r\n\t\t\r\n\t\t\t\tbegin TRANSACTION MeterValidation\r\n\t\t\t\tset @StatusCode  = 0\r\n\t\t\t\t\r\n\t\t\t\t--* All accounts should exist in the system or as new exchanges\r\n\t\t\t\tSELECT @CountOfUnknownAccounts = COUNT(*) \r\n\t\t\t\tFROM\r\n\t\t\t\tCrisNationalGridWest.UploadAccountBillingDetail\r\n\t\t\t\tLEFT JOIN \r\n\t\t\t\t(\r\n\t\t\t\t\tSELECT DISTINCT OriginalAccountNumber\r\n\t\t\t\t\tFROM Billing.Account\r\n\t\t\t\t\tWHERE CurrentInvoiceAccountGroup = 3 AND AccountStatus IN  ( 'AC' , '46' ) \r\n\t\t\t\t\tUNION ALL \r\n\t\t\t\t\tSELECT DISTINCT CurrentAccountNumber + '0000' AS OriginalAccountNumber\r\n\t\t\t\t\tFROM Common.ExchangeData -- CrisNationalGridWest.UploadExchangeDetail\r\n\t\t\t\t\tWHERE ExchangeCode = '47' \r\n\t\t\t\t) AS AllAccounts\t\t\t\t\t\r\n\t\t\t\tON CrisNationalGridWest.UploadAccountBillingDetail.AccountNumber = AllAccounts.OriginalAccountNumber \r\n\t\t\t\tWHERE AllAccounts.OriginalAccountNumber IS NULL  \r\n\r\n\t\t\t\t\r\n\r\n\r\n\t\t\t\t-- get cutoff date for billing\r\n\t\t\t\tSELECT @NextPeriodStartDate = ToDate FROM CrisNationalGridWest.CRISBillingPeriodByWD\r\n\t\t\t\tWHERE WDNumber IN ('01', '21') AND BillingPeriod = dbo.CalculateNextBillingPeriod(@BillingPeriod, 'M')\r\n\r\n\t\t\t\t\r\n\t\t\t\t--* Billing should not exceed the current period\t\t\t\t\r\n\t\t\t\tSELECT @CountOfInvoicesFromNextPeriod = COUNT(*) \r\n\t\t\t\tFROM CrisNationalGridWest.UploadAccountBillingDetail\r\n\t\t\t\tWHERE BillingToDate >= @NextPeriodStartDate\r\n\t\t\t\t\r\n\r\n\r\n\r\n\t\t\t\t--* fromDate <= toDate\r\n\t\t\t\tSELECT @CountOfFlippedDates = COUNT(*) \r\n\t\t\t\tFROM CrisNationalGridWest.UploadAccountBillingDetail\r\n\t\t\t\tWHERE BillingToDate < BillingFromDate\r\n\r\n\r\n\t\t\t\t\r\n\r\n\r\n\r\n\r\n\t\t\t\t-- show results\r\n\t\t\t\tSELECT \r\n\t\t\t\t\t\t@CountOfUnknownAccounts AS CountOfUnknownAccounts \r\n\t\t\t\t\t\t,@CountOfInvoicesFromNextPeriod AS CountOfInvoicesFromNextPeriod\r\n\t\t\t\t\t\t,@CountOfFlippedDates AS CountOfFlippedDates\r\n\t\t\t\t\t\r\n\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t\tcommit TRANSACTION MeterValidation\r\n\r\n\r\n\t\tEND TRY\r\n\t\tBEGIN CATCH\r\n\t\t\r\n\t\t\t\tDECLARE @CustomErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorSeverity INT;\r\n\t\t\t\tDECLARE @ErrorState INT;\r\n\t\t\t\tDECLARE @ErrorNumber INT;\r\n\t\t\t\tDECLARE @ErrorLine INT;\r\n\t\t\t\tDECLARE @ErrorProcedure NVARCHAR(126);\r\n\t\t\t\t--\r\n\t\t\t\tSELECT \r\n\t\t\t\t\t@CustomErrorMessage ='Error in StoredProcedure %s at line number %d' + @crlf + 'Billing Period: %s' + @crlf + 'Account:Meter (%s : %s)  ' + @crlf,\r\n\t\t\t\t\t@ErrorMessage\t= ERROR_MESSAGE(),\r\n\t\t\t\t\t@ErrorSeverity\t= ERROR_SEVERITY(),\r\n\t\t\t\t\t@ErrorState\t\t= ERROR_STATE(),\r\n\t\t\t\t\t@ErrorNumber\t= ERROR_NUMBER(),\r\n\t\t\t\t\t@ErrorProcedure = ERROR_PROCEDURE(),\r\n\t\t\t\t\t@ErrorLine\t\t= ERROR_LINE();\t\t\t\r\n\t\t\t\t--\r\n\t\t\t\tset\t@ErrorMessage = @CustomErrorMessage + @ErrorMessage + @crlf + 'ErrorNumber: ' + cast(@ErrorNumber as varchar(10)) + @crlf\r\n\t\t\t\t--\r\n\t\t\t\tRAISERROR (@ErrorMessage, -- Message text.\r\n\t\t\t\t\t\t   @ErrorSeverity, -- Severity.\r\n\t\t\t\t\t\t   @ErrorState, -- State.\r\n\t\t\t\t\t\t   @ErrorProcedure,\r\n\t\t\t\t\t\t   @ErrorLine,\r\n\t\t\t\t\t\t   @BillingPeriod,\r\n\t\t\t\t\t\t   @AccountNumber,\r\n\t\t\t\t\t\t   @MeterNumber\r\n\t\t\t\t\t\t   ) with log;\r\n\t\t\t\t\r\n\t\t\t\tset @StatusCode  = 1\r\n\t\t\t\t\t\t   \r\n\t\t\t\tROLLBACK TRANSACTION MeterValidation\t\r\n\t\t\t\t\t\t   \r\n\t\tEND CATCH\r\n\r\n\r\n\r\n\r\n\t\r\n end"
+        }
+      ]
+    }
+  ]
+}

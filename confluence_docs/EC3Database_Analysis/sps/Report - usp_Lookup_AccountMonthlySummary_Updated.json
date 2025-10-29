@@ -1,0 +1,982 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Lookup_AccountMonthlySummary_Updated",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Lookup_AccountMonthlySummary_Updated",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a monthly summary of account billing data for a specified account. It retrieves and aggregates energy usage, demand, and billed dollar amounts for the past three fiscal years, based on the current or published billing period. The procedure supports both agency and non-agency users, with different logic for determining the billing period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including conditional logic, table variable usage, and aggregation of data over multiple fiscal years. While it is not overly complex, it requires a good understanding of SQL, table joins, and data aggregation."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UniqueAccountSeqId AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter specifies the unique identifier for the account whose billing summary is to be retrieved."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsAgencyUser BIT = 0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This optional parameter indicates whether the user is an agency user. It defaults to 0 (non-agency user). The value affects how the billing period is determined."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level and NOCOUNT",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and uses "
+                },
+                {
+                  "type": "text",
+                  "text": "SET NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of row count messages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For agency users ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@IsAgencyUser = 1",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "), the current processing period is retrieved from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.ApplicationTimeFrame",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For non-agency users, the maximum published billing period is retrieved from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.MonthlyPublishedSummaryData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Current Account Numbers",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure inserts distinct account numbers associated with the provided "
+                },
+                {
+                  "type": "text",
+                  "text": "@UniqueAccountSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " into a table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@CurrentAccountNumbers",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Latest Fiscal Year with Billing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The maximum fiscal year with billing data is determined by joining "
+                },
+                {
+                  "type": "text",
+                  "text": "@CurrentAccountNumbers",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.TemporalFiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Populate Account Billing Summary",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Energy Usage",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Aggregates energy usage data by fiscal year and energy type, converting it to appropriate units (KWH, THERMS, MLBS)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Electric Demand (KW)",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Aggregates electric demand data for fiscal years where the energy type is 'ELE'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Revised Billed Amounts",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Aggregates revised billed dollar amounts for the past three fiscal years."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Nullify Zero Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates the summary table to replace zero values with NULL for better readability and data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Return Results",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The final aggregated data is selected from "
+                },
+                {
+                  "type": "text",
+                  "text": "@AccountBillingSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and returned to the caller."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking but may lead to reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Variables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of table variables ("
+                },
+                {
+                  "type": "text",
+                  "text": "@CurrentAccountNumbers",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "@AccountBillingSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") is efficient for small datasets but may not perform well with large data volumes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs multiple aggregations, which can be resource-intensive, especially if the underlying tables are large or not properly indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may lead to dirty reads, which could affect the accuracy of the data returned."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may not scale well with large datasets due to the use of table variables and multiple joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or incomplete transactions in case of errors."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Assumptions on Data Availability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the necessary data is available in the referenced tables, which may not always be the case, leading to potential NULL or empty results."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_Lookup_AccountMonthlySummary_Updated]\n(\r\n\t@UniqueAccountSeqId AS INT\r\n\t,@IsAgencyUser BIT = 0\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRAN ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @PublishedBillingPeriod AS VARCHAR(6), @LatestFiscalYearWithBilling AS INT;\r\n\tDECLARE @CurrentAccountNumbers AS TABLE(CurrentAccountNumber acctnum NOT NULL PRIMARY KEY);\r\n\r\n\tIF (@IsAgencyUser = 1)\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = PublishedBillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y';\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData;\r\n\tEND;\r\n\r\n\tINSERT INTO @CurrentAccountNumbers (CurrentAccountNumber)\r\n\tSELECT DISTINCT OriginalAccountNumber\r\n\tFROM Billing.Account WHERE UniqueAccountSeqid = @UniqueAccountSeqId;\r\n\r\n\t-- Changed the query to get the fiscal year as max fiscal year for the currentaccountnumber\r\n\tSELECT @LatestFiscalYearWithBilling = MAX(T.FiscalYear)\r\n\tFROM Published.TemporalFiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage AS T\r\n\t\tINNER JOIN @CurrentAccountNumbers AS A ON A.CurrentAccountNumber = T.CurrentAccountNumber\r\n\tWHERE T.EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\tAND T.EffectiveEndPeriod > @PublishedBillingPeriod;\r\n\r\n\tDECLARE @AccountBillingSummary TABLE\r\n\t\t(fiscalYear VARCHAR(4) NOT NULL,\r\n\t\trecordType INT NOT NULL,\r\n\t\tunit VARCHAR(6) NOT NULL,\r\n\t\tJuly DECIMAL(18, 2) NULL,\r\n\t\tAugust DECIMAL(18, 2) NULL,\r\n\t\tSeptember DECIMAL(18, 2) NULL,\r\n\t\tOctober DECIMAL(18, 2) NULL,\r\n\t\tNovember DECIMAL(18, 2) NULL,\r\n\t\tDecember DECIMAL(18, 2) NULL,\r\n\t\tJanuary DECIMAL(18, 2) NULL,\r\n\t\tFebruary DECIMAL(18, 2) NULL,\r\n\t\tMarch DECIMAL(18, 2) NULL,\r\n\t\tApril DECIMAL(18, 2) NULL,\r\n\t\tMay DECIMAL(18, 2) NULL,\r\n\t\tJune DECIMAL(18, 2) NULL)\r\n\r\n\t-- Energy usage:\r\n\tINSERT INTO @AccountBillingSummary\r\n\t\t(fiscalYear,\r\n\t\trecordType,\r\n\t\tunit,\r\n\t\tJuly,\r\n\t\tAugust,\r\n\t\tSeptember,\r\n\t\tOctober,\r\n\t\tNovember,\r\n\t\tDecember,\r\n\t\tJanuary,\r\n\t\tFebruary,\r\n\t\tMarch,\r\n\t\tApril,\r\n\t\tMay,\r\n\t\tJune)\r\n\tSELECT T.FiscalYear,\r\n\t\t1,\r\n\t\tCASE WHEN T.EnergyType = 'ELE' THEN 'KWH'\r\n\t\t\tWHEN T.EnergyType ='GAS' THEN 'THERMS'\r\n\t\t\tWHEN T.EnergyType ='STM' THEN 'MLBS' END,\r\n\t\tSUM(T.JulyRevisedEnergy),\r\n\t\tSUM(T.AugustRevisedEnergy),\r\n\t\tSUM(T.SeptemberRevisedEnergy),\r\n\t\tSUM(T.OctoberRevisedEnergy),\r\n\t\tSUM(T.NovemberRevisedEnergy),\r\n\t\tSUM(T.DecemberRevisedEnergy),\r\n\t\tSUM(T.JanuaryRevisedEnergy),\r\n\t\tSUM(T.FebruaryRevisedEnergy),\r\n\t\tSUM(T.MarchRevisedEnergy),\r\n\t\tSUM(T.AprilRevisedEnergy),\r\n\t\tSUM(T.MayRevisedEnergy),\r\n\t\tSUM(T.JuneRevisedEnergy)\r\n\tFROM Published.TemporalFiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage AS T\r\n\t\tINNER JOIN @CurrentAccountNumbers AS A ON A.CurrentAccountNumber = T.CurrentAccountNumber\r\n\tWHERE CAST(T.FiscalYear AS INT) > @LatestFiscalYearWithBilling - 3\r\n\t\tAND T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\tGROUP BY T.FiscalYear, T.EnergyType\r\n\tORDER BY T.FiscalYear;\r\n\r\n\t-- ELE KW\r\n\tINSERT INTO @AccountBillingSummary\r\n\t\t(fiscalYear,\r\n        recordType,\r\n\t\tunit,\r\n\t\tJuly,\r\n\t\tAugust,\r\n\t\tSeptember,\r\n\t\tOctober,\r\n\t\tNovember,\r\n\t\tDecember,\r\n\t\tJanuary,\r\n\t\tFebruary,\r\n\t\tMarch,\r\n\t\tApril,\r\n\t\tMay,\r\n\t\tJune)\r\n\tSELECT T.FiscalYear,\r\n\t\t2,\r\n        'KW',\r\n\t\tSUM(T.JulyRevisedDemand),\r\n        SUM(T.AugustRevisedDemand),\r\n        SUM(T.SeptemberRevisedDemand),\r\n        SUM(T.OctoberRevisedDemand),\r\n        SUM(T.NovemberRevisedDemand),\r\n        SUM(T.DecemberRevisedDemand),\r\n        SUM(T.JanuaryRevisedDemand),\r\n        SUM(T.FebruaryRevisedDemand),\r\n        SUM(T.MarchRevisedDemand),\r\n        SUM(T.AprilRevisedDemand),\r\n        SUM(T.MayRevisedDemand),\r\n        SUM(T.JuneRevisedDemand)\r\n\tFROM Published.TemporalFiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage AS T\r\n\t\tINNER JOIN @CurrentAccountNumbers AS A ON A.CurrentAccountNumber = T.CurrentAccountNumber\r\n\tWHERE CAST(T.FiscalYear AS INT) > @LatestFiscalYearWithBilling - 3\r\n        AND T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod AND T.EnergyType = 'ELE'\r\n\tGROUP BY T.FiscalYear\r\n\tORDER BY T.FiscalYear;\r\n\r\n\t-- revised amount\r\n\tINSERT INTO @AccountBillingSummary\r\n\t\t(fiscalYear,\r\n\t\trecordType,\r\n        unit,\r\n        July,\r\n        August,\r\n        September,\r\n        October,\r\n        November,\r\n        December,\r\n        January,\r\n        February,\r\n        March,\r\n        April,\r\n        May,\r\n        June)\r\n\tSELECT T.FiscalYear,\r\n\t\t3,\r\n        '$$$',\r\n\t\tSUM(T.JulyRevisedBilledDollars),\r\n        SUM(T.AugustRevisedBilledDollars),\r\n        SUM(T.SeptemberRevisedBilledDollars),\r\n        SUM(T.OctoberRevisedBilledDollars),\r\n        SUM(T.NovemberRevisedBilledDollars),\r\n        SUM(T.DecemberRevisedBilledDollars),\r\n        SUM(T.JanuaryRevisedBilledDollars),\r\n        SUM(T.FebruaryRevisedBilledDollars),\r\n        SUM(T.MarchRevisedBilledDollars),\r\n        SUM(T.AprilRevisedBilledDollars),\r\n        SUM(T.MayRevisedBilledDollars),\r\n        SUM(T.JuneRevisedBilledDollars)\r\n\tFROM Published.TemporalFiscalYearPivotByAgencyFacilityAndAccountDollarsAndUsage AS T\r\n\t\tINNER JOIN @CurrentAccountNumbers AS A ON A.CurrentAccountNumber = T.CurrentAccountNumber\r\n\tWHERE CAST(T.FiscalYear AS INT) > @LatestFiscalYearWithBilling - 3\r\n\t\tAND T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\tGROUP BY T.FiscalYear\r\n\tORDER BY T.FiscalYear;\r\n\r\n\tUPDATE @AccountBillingSummary\r\n\tSET July = CASE WHEN July = 0 THEN NULL ELSE July END\r\n\t\t,August = CASE WHEN August = 0 THEN NULL ELSE August END\r\n\t\t,September = CASE WHEN September = 0 THEN NULL ELSE September END\r\n\t\t,October = CASE WHEN October = 0 THEN NULL ELSE October END\r\n\t\t,November = CASE WHEN November = 0 THEN NULL ELSE November END\r\n\t\t,December = CASE WHEN December = 0 THEN NULL ELSE December END\r\n\t\t,January = CASE WHEN January = 0 THEN NULL ELSE January END\r\n\t\t,February = CASE WHEN February = 0 THEN NULL ELSE February END\r\n\t\t,March = CASE WHEN March = 0 THEN NULL ELSE March END\r\n\t\t,April = CASE WHEN April = 0 THEN NULL ELSE April END\r\n\t\t,May = CASE WHEN May = 0 THEN NULL ELSE May END\r\n\t\t,June = CASE WHEN June = 0 THEN NULL ELSE June END;\r\n\r\n\tSELECT FiscalYear\r\n        ,RecordType\r\n        ,Unit\r\n        ,July\r\n        ,August\r\n        ,September\r\n        ,October\r\n        ,November\r\n        ,December\r\n        ,January\r\n        ,February\r\n        ,March\r\n        ,April\r\n        ,May\r\n        ,June\r\n\tFROM @AccountBillingSummary;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

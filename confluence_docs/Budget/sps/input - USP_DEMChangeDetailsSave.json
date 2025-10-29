@@ -1,0 +1,1013 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "input",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_DEMChangeDetailsSave",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_DEMChangeDetailsSave",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and save details related to demand changes. It takes a table-valued parameter containing multiple records of demand change details and either updates existing records or inserts new ones into the "
+        },
+        {
+          "type": "text",
+          "text": "input.DEMChangeDetail",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. After processing the details, it updates the modification metadata in the "
+        },
+        {
+          "type": "text",
+          "text": "input.DEMChange",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and sets the status of related scenarios in the "
+        },
+        {
+          "type": "text",
+          "text": "budget.Scenario",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to 'REQUIRERECALC' if they are currently 'CALCULATED'."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple operations, including cursor-based iteration over a table-valued parameter, conditional logic for updates and inserts, and updates to related tables. The use of cursors and multiple table updates increases the complexity compared to simpler CRUD operations."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@details AS input.UDT_DEMChangeDetail READONLY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A table-valued parameter that contains the demand change details to be processed. It is expected to be a user-defined table type with columns matching those in the "
+                },
+                {
+                  "type": "text",
+                  "text": "input.DEMChangeDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy AS VARCHAR(25) = 'SYSTEM'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional parameter that specifies the user or system entity responsible for the changes. Defaults to 'SYSTEM' if not provided."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of row count messages, which can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Entity ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the next available "
+                },
+                {
+                  "type": "text",
+                  "text": "DEMChangeDetailEntityID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " by finding the maximum current ID and adding one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor is declared and opened to iterate over the records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "@details",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Processing Each Record",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each record, it checks if "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DEMChangeDetailEntityID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is greater than -1."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If true, it updates the existing record in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.DEMChangeDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " with matching "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DEMChangeDetailEntityID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If false, it inserts a new record into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.DEMChangeDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using the calculated "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DEMChangeDetailEntityIDMaxPlusOne",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Metadata",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "input.DEMChange",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is updated with the current date and the "
+                },
+                {
+                  "type": "text",
+                  "text": "@actionBy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " value."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Scenario Status",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is updated to set the status to 'REQUIRERECALC' for scenarios related to the processed "
+                },
+                {
+                  "type": "text",
+                  "text": "DEMChangeID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " that are currently 'CALCULATED'."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes each row individually. Consider using set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction handling, which could lead to issues in a high-concurrency environment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "DEMChangeDetailEntityID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "DEMChangeID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize the update and insert operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor-based approach may not scale well with large datasets, potentially leading to long execution times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without explicit transaction management, there is a risk of data inconsistency if multiple instances of the procedure run concurrently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which could lead to unhandled exceptions and partial updates in case of failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Assumption of Unique Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The update logic assumes that "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is unique for each "
+                },
+                {
+                  "type": "text",
+                  "text": "DEMChangeDetailEntityID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which may not hold true if the data model changes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [input].[USP_DEMChangeDetailsSave]\n(\r\n\t@details AS input.UDT_DEMChangeDetail READONLY\r\n\t,@actionBy AS VARCHAR(25) = 'SYSTEM'\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @DEMChangeDetailEntityIDMaxPlusOne AS INT, @DEMChangeID AS INT, @DEMChangeDetailEntityID AS INT, @AgencyCode AS VARCHAR(6)\r\n\t\t,@DistinctAccountCount AS INT = 0, @BudgetGroupID AS INT, @BillingPeriod AS INT, @DemandUsage AS DECIMAL(18, 5) = 0.0\r\n\t\t,@EnergyUsage AS DECIMAL(18, 5) = 0.0, @EnergyUsagePeakPercentage AS DECIMAL(10, 5) = 1.0, @EnergyUsageReactivePower AS DECIMAL(18, 5) = 0.0\r\n\t\t,@StreetLightingFacilityPoints AS DECIMAL(18, 5) = 0.0, @Notes AS VARCHAR(200);\r\n\r\n\tSELECT @DEMChangeDetailEntityIDMaxPlusOne = Max(DEMChangeDetailEntityID) + 1 FROM input.DEMChangeDetail\r\n\r\n\tDECLARE @detailCursor CURSOR;    \r\n    SET @detailCursor =  CURSOR FOR \r\n\t\tSELECT DEMChangeID,\r\n\t\t\tDEMChangeDetailEntityID,\r\n\t\t\tAgencyCode,\r\n\t\t\tDistinctAccountCount,\r\n\t\t\tBudgetGroupID,\r\n\t\t\tBillingPeriod,\r\n\t\t\tDemandUsage,\r\n\t\t\tEnergyUsage,\r\n\t\t\tEnergyUsagePeakPercentage,\r\n\t\t\tEnergyUsageReactivePower,\r\n\t\t\tStreetLightingFacilityPoints,\r\n\t\t\tNotes\r\n\t\tFROM @details\r\n\t\tOPEN @detailCursor;\r\n\r\n\tFETCH NEXT FROM  @detailCursor INTO @DEMChangeID,\r\n\t\t@DEMChangeDetailEntityID,\r\n\t\t@AgencyCode,\r\n\t\t@DistinctAccountCount,\r\n\t\t@BudgetGroupID,\r\n\t\t@BillingPeriod,\r\n\t\t@DemandUsage, \r\n\t\t@EnergyUsage,\r\n\t\t@EnergyUsagePeakPercentage,\r\n\t\t@EnergyUsageReactivePower,\r\n\t\t@StreetLightingFacilityPoints,\r\n\t\t@Notes\r\n\tWHILE @@FETCH_STATUS = 0\r\n\tBEGIN\r\n\t\tIF @DEMChangeDetailEntityID > -1\r\n\t\tBEGIN\r\n\t\t\tUPDATE input.DEMChangeDetail\r\n\t\t\tSET AgencyCode = @AgencyCode,\r\n\t\t\t\tDistinctAccountCount = @DistinctAccountCount,\r\n\t\t\t\tBudgetGroupID = @BudgetGroupID, \r\n\t\t\t\tDemandUsage = @DemandUsage, \r\n\t\t\t\tEnergyUsage = @EnergyUsage,\r\n\t\t\t\tEnergyUsagePeakPercentage = @EnergyUsagePeakPercentage,\r\n\t\t\t\tEnergyUsageReactivePower = @EnergyUsageReactivePower, \r\n\t\t\t\tStreetLightingFacilityPoints = @StreetLightingFacilityPoints,\r\n\t\t\t\tNotes = @Notes\r\n\t\t\tWHERE input.DEMChangeDetail.DEMChangeDetailEntityID = @DEMChangeDetailEntityID\r\n\t\t\t\tAND BillingPeriod = @BillingPeriod;\r\n\t\tEND\r\n\t\tELSE\r\n\t\tBEGIN\r\n\t\t\tINSERT INTO [input].[DEMChangeDetail]\r\n\t\t\t\t([DEMChangeID]\r\n\t\t\t\t,[AgencyCode]\r\n\t\t\t\t,[BudgetGroupID]\r\n\t\t\t\t,[BillingPeriod]\r\n\t\t\t\t,[DistinctAccountCount]\r\n\t\t\t\t,[DemandUsage]\r\n\t\t\t\t,[EnergyUsage]\r\n\t\t\t\t,[EnergyUsagePeakPercentage]\r\n\t\t\t\t,[EnergyUsageReactivePower]\r\n\t\t\t\t,[StreetLightingFacilityPoints]\r\n\t\t\t\t,[DEMChangeDetailEntityID]\r\n\t\t\t\t,[Notes])\r\n\t\t\tVALUES (@DEMChangeID\r\n\t\t\t\t,@AgencyCode\r\n\t\t\t\t,@BudgetGroupID\r\n\t\t\t\t,@BillingPeriod\r\n\t\t\t\t,@DistinctAccountCount\r\n\t\t\t\t,@DemandUsage\r\n\t\t\t\t,@EnergyUsage\r\n\t\t\t\t,@EnergyUsagePeakPercentage\r\n\t\t\t\t,@EnergyUsageReactivePower\r\n\t\t\t\t,@StreetLightingFacilityPoints\r\n\t\t\t\t,@DEMChangeDetailEntityIDMaxPlusOne\r\n\t\t\t\t,@Notes);\r\n\t\tEND;\r\n\r\n\t\tFETCH NEXT FROM  @detailCursor INTO @DEMChangeID, \r\n\t\t\t@DEMChangeDetailEntityID, \r\n\t\t\t@AgencyCode,\r\n\t\t\t@DistinctAccountCount,\r\n\t\t\t@BudgetGroupID, \r\n\t\t\t@BillingPeriod, \r\n\t\t\t@DemandUsage, \r\n\t\t\t@EnergyUsage,\r\n\t\t\t@EnergyUsagePeakPercentage,\r\n\t\t\t@EnergyUsageReactivePower, \r\n\t\t\t@StreetLightingFacilityPoints,\r\n\t\t\t@Notes\r\n\tEND;\r\n\tCLOSE @detailCursor;\r\n\tDEALLOCATE @detailCursor;\r\n\r\n\tUPDATE input.DEMChange\r\n\tSET ModifiedDate = GETDATE(), ModifiedBy = @actionBy\r\n\tWHERE id = @DEMChangeID;\r\n\r\n\tUPDATE budget.Scenario\r\n\tSET [Status] = 'REQUIRERECALC'\r\n\tWHERE DEMChangeID = @DEMChangeID AND [Status] IN ('CALCULATED');\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

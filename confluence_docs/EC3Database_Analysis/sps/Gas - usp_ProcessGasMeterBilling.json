@@ -1,0 +1,846 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Gas",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessGasMeterBilling",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[Gas].[usp_ProcessGasMeterBilling]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process gas meter billing adjustments for a utility company. It sequentially processes records from a temporary table, "
+        },
+        {
+          "type": "text",
+          "text": "Gas.UploadMeterBillingAdjustmentGas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", and updates or inserts records into the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.MeterBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "Billing.MeterBillingGas",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables. The procedure handles various scenarios, including updating existing records and inserting new ones, based on the presence or absence of certain records. It also updates the status of meters in the "
+        },
+        {
+          "type": "text",
+          "text": "billing.Meter",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure is complex due to its extensive use of conditional logic, multiple table joins, and the handling of various scenarios for updating and inserting records. It involves multiple steps and checks to ensure data integrity and correct processing of billing adjustments."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to track the user who is executing the procedure, ensuring that changes are authenticated and traceable."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This output parameter is intended to return the status of the procedure execution, indicating success or failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by declaring several local variables to track the state and results of various operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Current Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It selects the current billing period and related identifiers from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Gas.UploadAccountBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Check for Existing Adjustments",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if there are existing meter billing adjustments for the current billing period and utility company."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert New Adjustments",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If no existing adjustments are found, it inserts new records into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.MeterBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table from the temporary table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Existing Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If existing records are found, it updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.MeterBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.MeterBillingGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables with new adjustment data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert New Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If no corresponding records exist in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.MeterBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, it inserts new records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Meter Status",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Finally, it updates the status of meters in the "
+                },
+                {
+                  "type": "text",
+                  "text": "billing.Meter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table from 'UM' to 'AC'."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although not explicitly using a cursor, the procedure processes data row by row, which can be inefficient for large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Multiple Joins",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins, which can be resource-intensive and slow down performance, especially if indexes are not properly utilized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The extensive use of conditional logic can lead to complex execution paths, potentially affecting performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face concurrency issues if multiple instances are run simultaneously, potentially leading to data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no explicit error handling within the procedure, which could lead to unhandled exceptions and incomplete transactions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure's complexity and reliance on sequential processing may not scale well with large volumes of data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that data in the temporary table is accurate and complete, which may not always be the case, leading to incorrect billing adjustments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Audit Trail",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While the procedure updates records, it relies on triggers for auditing, which may not capture all necessary changes if triggers are disabled or misconfigured."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Gas].[usp_ProcessGasMeterBilling](@AuthenticatedUserID int, @StatusCode int output)\nAS\r\n--**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Process the NYPA Meter billing adjustments sequentially.\r\n--* \t\t  \r\n--* \t\t  The Meter billing adjustments are in the UploadNYPAMeterBillingTemporary table. \r\n--* \t\t  The information is processed by creating a cursor to sequentially process\r\n--* \t\t  the data one row at a time.  The usp_ProcessMeterBillingEachCanceRebill\r\n--* \t\t  stored procedure will handle all of the pssoible cases in the transaction\r\n--* \t\t  processing. The most notable is when an original billing period record does \r\n--* \t\t  exist the system will create one on behalf of the revision. When the records\r\n--* \t\t  exist they will update the various records.\r\n--*               \r\n--* Exec:       \t\tusp_ProcessMeterBillingRebills\r\n--*\r\n--* Parameter(s):         \r\n--*                             @UtiltiyCompanySeqid int,\r\n--*                             @CurrentBillingPeriod varchar(6),\r\n--*\t\t\t\t @StatusCode int output)\r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*                   9 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   10/26/2005\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 10/26/2005 PAH  First Version  \r\n--* 03/27/2006 PAH  Revised to \r\n--* 10/30/2006 PAH  Revised to \r\n--***************************************************************************************\r\nBegin \r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--\r\ndeclare @RC int\r\n--\r\ndeclare @NumberOfAdjustmentsAdded int\r\ndeclare @CurrentBillingPeriod varchar(8)\r\ndeclare @InvoiceAccountBillingGroupSeqid int \r\ndeclare @UtilityCompanySeqid int\r\n--\r\ndeclare @HasMeterBillingAdjustmentGasBeenProcessed int\r\ndeclare @HasMeterBillingGasBeenProcessed int\r\ndeclare @HasMeterBillingBeenProcessed int\r\ndeclare @HasMeterBillingInsertsBeenProcessed int\r\n--\r\ndeclare @BillingMeterBillingGasUpdateTransactionCount int\r\ndeclare @BillingMeterBillingUpdateTransactionCount int \r\n--\r\ndeclare @BillingMeterBillingGasInsertTransactionCount int\r\ndeclare @BillingMeterBillingInsertTransactionCount int \r\n--\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\n--\r\n--************************************************************************************** \r\n--\tMain Processing\r\n--**************************************************************************************\r\n--\r\n--\r\nSELECT TOP (1) @CurrentBillingPeriod = BillingPeriod, @InvoiceAccountBillingGroupSeqid=InvoiceAccountBillingGroupSeqid, @UtilityCompanySeqid=UtilityCompanySeqid\r\nFROM Gas.UploadAccountBillingAdjustmentGas\r\n--\r\nSELECT  @HasMeterBillingAdjustmentGasBeenProcessed = COUNT(*)\r\nFROM \r\n\t\tBilling.MeterBillingAdjustmentGas INNER JOIN\r\n\t\tBilling.Account ON Billing.MeterBillingAdjustmentGas.AccountSeqid = Billing.Account.AccountSeqid AND \r\n\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = Billing.Account.UtilityAccountProvider AND \r\n\t\tBilling.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.Account.OriginalAccountNumber\r\nwhere \r\n\t\tBilling.MeterBillingAdjustmentGas.LastPeriodModified  = @CurrentBillingPeriod and\r\n\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = @UtilityCompanySeqid and \r\n\t\tBilling.Account.CurrentInvoiceAccountGroup = @InvoiceAccountBillingGroupSeqid\r\n--\r\n\tif (@HasMeterBillingAdjustmentGasBeenProcessed = 0)\r\n\tBEGIN\r\n\t\t--\r\n\t\tINSERT INTO Billing.MeterBillingAdjustmentGas\r\n\t\t\t  ( UploadMeterBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, UtilityCompanySeqid, AccountSeqid, \r\n\t\t\t  MeterSeqid, AccountExchangeMeterTrackSeqid, MeterBillingSeqid, MeterBillingGasSeqid, OriginalAccountNumber, OriginalMeterNumber, \r\n\t\t\t  LastPeriodModified, BillingPeriod, BillingPeriodRevision, FirstCancelPeriod, NumberOfTransactions, NumberOfRebillTransactions, \r\n\t\t\t  NumberOfCancelTransactions, BillingAction, MeterBillingStatus, MeterBillingPreviousStatus, MeterBillingStatusPeriod, PriorRevisedBilledCCF, \r\n\t\t\t  RevisedBilledCCF, CanceledBilledCCF, PriorRevisedBilledTherms, RevisedBilledTherms, CanceledBilledTherms, InitialCancelFromDate, \r\n\t\t\t  CurrentBillingToDate, GasRateCode, FromDate, ToDate, FromReadingDate, ToReadingDate, MeterFromReading, MeterToReading, Ccf, Therms, \r\n\t\t\t  ThermsFactor, MeterConstant, TotalBillingDaysRebilled, NumberOfBillingPeriods, BillingDays, BillingDate, ReadingCode, NumberOfDials, MeterType, \r\n\t\t\t  ProcessedInTheCurrentPeriod, ProcessEffectiveDate, CancelReadingCode, CancelFromDate, CancelToDate, CancelMeterFromReading, \r\n\t\t\t  CancelMeterToReading, CancelCcf, CancelTherms, CancelThermsFactor, CancelMeterConstant, InitialPostingDate, DerivedFromSpannedBill, \r\n\t\t\t  SpannedBillingPeriodRevision, SpannedFirstCanceledBillingPeriod, SpannedCCF, SpannedThermFactor, SpannedTherm, SpannedMonthlyPercentage, \r\n\t\t\t  SpannedTotalPercentage, EstimatedOrActualBilling, MeterReset, AuthenticatedUserID, Notes, DateAdded, LastUpdate,\r\n\t\t\t  BillCreationDate,EnergySource,BillingCycle,SalesType,IsTimeOfDayAccount,MeterDials,GasCorrectionFactor)\r\n\r\n\t\tSELECT    \r\n\t\t\t\tUploadMeterBillingAdjustmentGasSeqid, FacilityName, ServiceAddress, UtilityCompanySeqid, AccountSeqid, MeterSeqid, \r\n\t\t\t\tAccountExchangeMeterTrackSeqid, MeterBillingSeqid, MeterBillingGasSeqid, OriginalAccountNumber, OriginalMeterNumber, BillingPeriod, --LastPeriodModified, \r\n\t\t\t\tBillingPeriod, BillingPeriodRevision, FirstCancelPeriod, NumberOfTransactions, NumberOfRebillTransactions, NumberOfCancelTransactions, \r\n\t\t\t\tBillingAction, MeterBillingStatus, MeterBillingPreviousStatus, MeterBillingStatusPeriod, PriorRevisedBilledCCF, RevisedBilledCCF, \r\n\t\t\t\tCanceledBilledCCF, PriorRevisedBilledTherms, RevisedBilledTherms, CanceledBilledTherms, InitialCancelFromDate, CurrentBillingToDate, \r\n\t\t\t\tGasRateCode, FromDate, ToDate, FromReadingDate, ToReadingDate, MeterFromReading, MeterToReading, Ccf, Therms, ThermsFactor, \r\n\t\t\t\tMeterConstant, TotalBillingDaysRebilled, NumberOfBillingPeriods, BillingDays, BillingDate, ReadingCode, NumberOfDials, MeterType, \r\n\t\t\t\tProcessedInTheCurrentPeriod, ProcessEffectiveDate, CancelReadingCode, CancelFromDate, CancelToDate, CancelMeterFromReading, \r\n\t\t\t\tCancelMeterToReading, CancelCcf, CancelTherms, CancelThermsFactor, CancelMeterConstant, InitialPostingDate, DerivedFromSpannedBill, \r\n\t\t\t\tSpannedBillingPeriodRevision, SpannedFirstCanceledBillingPeriod, SpannedCCF, SpannedThermFactor, SpannedTherm, SpannedMonthlyPercentage, \r\n\t\t\t\tSpannedTotalPercentage, EstimatedOrActualBilling, MeterReset, AuthenticatedUserID, Notes, DateAdded, LastUpdate,\r\n\t\t\t\tBillCreationDate,EnergySource,BillingCycle,SalesType,IsTimeOfDayAccount,MeterDials,GasCorrectionFactor\r\n\t\tFROM Gas.UploadMeterBillingAdjustmentGas\r\n\tend\r\n\t--\r\n\t--\r\n\t-- Update the adjustments first since the Billing.AccountBillingAdjustmentGas for the current period\r\n\t-- has indetified all of the adjustments that exist in EC3.  The Billing.MeterBilling MeterBillingSeqid\r\n\t-- is not null and the Billing.MeterBillingGas MeterBillingGasSeqid is not null.\r\n\t-- \r\n\t-- The key to this update is the setting of the LastUpdate to a null value so the audit trigger preserves\r\n\t-- the prior state of the row before the Billing.AccountBilling or Billing.AccountBillingGas are updated\r\n\t-- with the adjusted values.\r\n\t--\r\n--\tselect @HasMeterBillingGasBeenProcessed = count(*) from Billing.MeterBillingGas  where BillingPeriod = @CurrentBillingPeriod and @UtilityCompanySeqid=UtilityCompanySeqid\r\n--\tselect @HasMeterBillingBeenProcessed = count(*) from Billing.MeterBilling  \r\n--\twhere BillingPeriod = @CurrentBillingPeriod and @UtilityCompanySeqid=AccountUtilityCompanySeqid\r\n--\r\n\tdeclare @HasMeterBillingUpdatedBeenProcessed int\r\n--\r\n\tSELECT @HasMeterBillingUpdatedBeenProcessed = COUNT(*)\r\n\tFROM \r\n\t\t\tBilling.MeterBillingAdjustmentGas INNER JOIN\r\n\t\t\tBilling.Account ON Billing.MeterBillingAdjustmentGas.AccountSeqid = Billing.Account.AccountSeqid AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = Billing.Account.UtilityAccountProvider AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.Account.OriginalAccountNumber LEFT JOIN\r\n\t\t\tBilling.MeterBilling ON Billing.MeterBillingAdjustmentGas.MeterBillingSeqid = Billing.MeterBilling.MeterBillingSeqid AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.MeterBilling.OriginalAccountNumber AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalMeterNumber = Billing.MeterBilling.OriginalMeterNumber AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.LastPeriodModified = Billing.MeterBilling.LastPeriodModified\r\n\tWHERE \r\n\t\t\t(Billing.MeterBillingAdjustmentGas.MeterBillingSeqid is not null) and\r\n\t\t\tBilling.MeterBillingAdjustmentGas.LastPeriodModified  = @CurrentBillingPeriod and\r\n\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = @UtilityCompanySeqid and \r\n\t\t\tBilling.Account.CurrentInvoiceAccountGroup = @InvoiceAccountBillingGroupSeqid\r\n\r\n\t--\r\n\t-- if this occurs \"isnull(@HasMeterBillingInsertsBeenProcessed,1)\"  then set the value to 1 and do not process\r\n\t--\r\nif (isnull(@HasMeterBillingUpdatedBeenProcessed,0) <> 0)\r\n   BEGIN\r\n\t\t--\r\n\t\t--\tUpdate the existing Billing.MeterBilling adjustments prior to inserting the adjustments\r\n\t\t--\r\n\t\tUPDATE    Billing.MeterBilling\r\n\t\tSET              \r\n\t\t\t\tIsDerived =Billing.MeterBillingAdjustmentGas.DerivedFromSpannedBill, \r\n\t\t\t\tUploadFileSeqid =Billing.MeterBillingAdjustmentGas.UploadMeterBillingAdjustmentGasSeqid, \r\n\t\t\t\tLastPeriodModified =Billing.MeterBillingAdjustmentGas.LastPeriodModified, \r\n\t\t\t\tMeterBillingStatus =Billing.MeterBillingAdjustmentGas.MeterBillingStatus, \r\n\t\t\t\tPreviousMeterBillingStatus =Billing.MeterBillingAdjustmentGas.MeterBillingPreviousStatus,\r\n\t\t\t\tMeterBillingStatusCodePeriod =Billing.MeterBillingAdjustmentGas.MeterBillingStatusPeriod, \r\n\t\t\t\tEstimatedReading =Billing.MeterBillingAdjustmentGas.EstimatedOrActualBilling,\r\n\t\t\t\tConsecutivePeriodsEstimatedReading =[Common].[CalculateConsecutiveNumberOfEstimatedReadings]\r\n\t\t\t\t\t(\tBilling.MeterBilling.OriginalAccountNumber, \r\n\t\t\t\t\t\tBilling.MeterBilling.OriginalMeterNumber, \r\n\t\t\t\t\t\tBilling.MeterBilling.AccountUtilityCompanySeqid, \r\n\t\t\t\t\t\tBilling.MeterBilling.BillingPeriodRevision,\r\n\t\t\t\t\t\tBilling.MeterBillingAdjustmentGas.BillingCycle,\r\n\t\t\t\t\t\tBilling.MeterBillingAdjustmentGas.EstimatedOrActualBilling\r\n\t\t\t\t\t),\r\n\t\t\t\tBillingPeriodDays =Billing.MeterBillingAdjustmentGas.BillingDays, \r\n\t\t\t\tFromDate =Billing.MeterBillingAdjustmentGas.FromDate, \r\n\t\t\t\tToDate =Billing.MeterBillingAdjustmentGas.ToDate, \r\n\t\t\t\tToReadingDate =Billing.MeterBillingAdjustmentGas.ToReadingDate, \r\n\t\t\t\tFromReadingDate =Billing.MeterBillingAdjustmentGas.FromReadingDate, \r\n\t\t\t\tConsumption =Billing.MeterBillingAdjustmentGas.RevisedBilledTherms,\r\n\t\t\t\tAdjustmentRecordSeqid =Billing.MeterBillingAdjustmentGas.MeterBillingAdjustmentGasSeqid, \r\n\t\t\t\tAuthenticatedUserID =Billing.MeterBillingAdjustmentGas.AuthenticatedUserID, \r\n\t\t\t\tNotes =Billing.MeterBillingAdjustmentGas.Notes, \r\n\t\t\t\tLastUpdate = getdate(),\r\n\t\t\t\tFireAuditTrigger = 'Y'\r\n\t\tFROM \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas INNER JOIN\r\n\t\t\t\tBilling.MeterBilling ON Billing.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.MeterBilling.OriginalAccountNumber AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.OriginalMeterNumber = Billing.MeterBilling.OriginalMeterNumber AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = Billing.MeterBilling.AccountUtilityCompanySeqid AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.BillingPeriodRevision = Billing.MeterBilling.BillingPeriod AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.BillingPeriodRevision = Billing.MeterBilling.BillingPeriodRevision\r\n\t\tWHERE   \r\n\t\t\t\t(Billing.MeterBillingAdjustmentGas.MeterBillingSeqid IS NOT NULL) AND \r\n\t\t\t\t(Billing.MeterBillingAdjustmentGas.BillingPeriod = @CurrentBillingPeriod)\r\n\t\t--\r\n\t\tset @BillingMeterBillingUpdateTransactionCount = @@rowcount\r\n\t\t--\r\n\t\t--\tUpdate the existing Billing.MeterBillingGas adjustments prior to inserting the adjustments\r\n\t\t--\r\n\t\t--\tNote:  The legacy GasCorrectionFactor will never be adjusted.\r\n\t\t--\r\n\t\tUPDATE    Billing.MeterBillingGas\r\n\t\tSET             \r\n\t\t\t\tMeterBillingAdjustmentGasSeqid =Billing.MeterBillingAdjustmentGas.MeterBillingAdjustmentGasSeqid, \r\n\t\t\t\tMeterBillingRowState =2, \r\n\t\t\t\tFromDate =Billing.MeterBillingAdjustmentGas.FromDate, \r\n\t\t\t\tToDate =Billing.MeterBillingAdjustmentGas.ToDate, \r\n\t\t\t\tFromReadingDate =Billing.MeterBillingAdjustmentGas.FromReadingDate, \r\n\t\t\t\tToReadingDate =Billing.MeterBillingAdjustmentGas.ToReadingDate, \r\n\t\t\t\tReadingCode =Billing.MeterBillingAdjustmentGas.ReadingCode, \r\n\t\t\t\tMeterReset =Billing.MeterBillingAdjustmentGas.MeterReset, \r\n\t\t\t\tMeterFromReading =Billing.MeterBillingAdjustmentGas.MeterFromReading, \r\n\t\t\t\tMeterToReading =Billing.MeterBillingAdjustmentGas.MeterToReading, \r\n\t\t\t\tMeterConstant =Billing.MeterBillingAdjustmentGas.MeterConstant, \r\n\t\t\t\tCcf =Billing.MeterBillingAdjustmentGas.RevisedBilledCCF, \r\n\t\t\t\tThermsFactor =Billing.MeterBillingAdjustmentGas.ThermsFactor, \r\n\t\t\t\tTherms =Billing.MeterBillingAdjustmentGas.RevisedBilledTherms, \r\n\t\t\t\tAuthenticatedUserID =Billing.MeterBillingAdjustmentGas.AuthenticatedUserID, \r\n\t\t\t\tNotes =Billing.MeterBillingAdjustmentGas.Notes, \r\n\t\t\t\tLastPeriodModified =Billing.MeterBillingAdjustmentGas.LastPeriodModified, \r\n\t\t\t\tLastUpdate = getdate(),\r\n\t\t\t\tFireAuditTrigger = 'Y'\r\n\t\tFROM \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas INNER JOIN\r\n\t\t\t\tBilling.MeterBillingGas ON Billing.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.MeterBillingGas.OriginalAccountNumber AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.OriginalMeterNumber = Billing.MeterBillingGas.OriginalMeterNumber AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = Billing.MeterBillingGas.UtilityCompanySeqid AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.BillingPeriodRevision = Billing.MeterBillingGas.BillingPeriod AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentGas.BillingPeriodRevision = Billing.MeterBillingGas.BillingPeriodRevision\r\n\t\tWHERE \r\n\t\t\t\t(Billing.MeterBillingAdjustmentGas.MeterBillingSeqid IS NOT NULL) AND \r\n\t\t\t\t(Billing.MeterBillingAdjustmentGas.BillingPeriod = @CurrentBillingPeriod)\r\n\t\tset @BillingMeterBillingGasUpdateTransactionCount = @@rowcount\r\n   end\r\n\t--\r\n\tdeclare @HasMeterBillingInsertedBeenProcessed int\r\n\t--\r\n--\tselect @HasMeterBillingInsertedBeenProcessed = count(*) from Billing.MeterBilling  \r\n--\twhere BillingPeriod = @CurrentBillingPeriod and @UtilityCompanySeqid=AccountUtilityCompanySeqid\r\n\t--\r\n\tSELECT  @HasMeterBillingInsertedBeenProcessed = COUNT(*)\r\n\tFROM \r\n\t\t\tBilling.MeterBillingAdjustmentGas INNER JOIN\r\n\t\t\tBilling.Account ON Billing.MeterBillingAdjustmentGas.AccountSeqid = Billing.Account.AccountSeqid AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = Billing.Account.UtilityAccountProvider AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.Account.OriginalAccountNumber LEFT JOIN\r\n\t\t\tBilling.MeterBilling ON Billing.MeterBillingAdjustmentGas.MeterBillingSeqid = Billing.MeterBilling.MeterBillingSeqid AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalAccountNumber = Billing.MeterBilling.OriginalAccountNumber AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.OriginalMeterNumber = Billing.MeterBilling.OriginalMeterNumber AND \r\n\t\t\tBilling.MeterBillingAdjustmentGas.LastPeriodModified = Billing.MeterBilling.LastPeriodModified\r\n\tWHERE \r\n\t\t\t(Billing.MeterBilling.MeterBillingSeqid is null) and\r\n\t\t\t(Billing.MeterBillingAdjustmentGas.MeterBillingSeqid is null) and\r\n\t\t\tBilling.MeterBillingAdjustmentGas.LastPeriodModified  = @CurrentBillingPeriod and\r\n\t\t\tBilling.MeterBillingAdjustmentGas.UtilityCompanySeqid = @UtilityCompanySeqid and \r\n\t\t\tBilling.Account.CurrentInvoiceAccountGroup = @InvoiceAccountBillingGroupSeqid\r\n\t--\r\n\t-- if this occurs in either case \"isnull(@HasMeterBillingGasBeenProcessed,1)\" or \"isnull(@HasMeterBillingBeenProcessed\" then set the value to 1 and not process\r\n\t--\r\nif (isnull(@HasMeterBillingInsertedBeenProcessed,0) <> 0)\r\n   BEGIN\r\n\t\tdeclare @maxMeterBillingSeqid int\r\n\t\tdeclare @maxMeterBillingGasSeqid int\r\n\t\t--\r\n\t\tselect @maxMeterBillingSeqid = max(MeterBillingSeqid) from Billing.MeterBilling\t\r\n\t\tselect @maxMeterBillingGasSeqid = max(MeterBillingGasSeqid) from Billing.MeterBillingGas\t\r\n\t\t--\r\n\t\tINSERT INTO Billing.MeterBilling\r\n\t\t(\t\tAccountExchangeMeterTrackSeqid,\r\n\t\t\t\tIsTimeOfDayAccount,\r\n\t\t\t\tIsDerived, \r\n\t\t\t\tOriginalAccountNumber, \r\n\t\t\t\tOriginalMeterNumber, \r\n\t\t\t\tAccountUtilityCompanySeqid, \r\n\t\t\t\tUploadFileSeqid,\r\n\t\t\t\tLastPeriodModified,\r\n\t\t\t\tBillingPeriod,\r\n\t\t\t\tBillingPeriodRevision, \r\n\t\t\t\tNextBillingPeriod,\r\n\t\t\t\tPreviousBillingPeriod, \r\n\t\t\t\tBillCreationDate, \r\n\t\t\t\tBillingAction, \r\n\t\t\t\tMeterBillingStatus, \r\n\t\t\t\tPreviousMeterBillingStatus, \r\n\t\t\t\tMeterBillingStatusCodePeriod, \r\n\t\t\t\tEnergySource, \r\n\t\t\t\tProcessedInTheCurrentPeriod,\r\n\t\t\t\tSalesType, \r\n\t\t\t\tMeterType, \r\n\t\t\t\tUtilityServiceAddress,\r\n\t\t\t\tMeterDials, \r\n\t\t\t\tMeterConstant,\r\n\t\t\t\tTension, \r\n\t\t\t\tEstimatedReading, \r\n\t\t\t\tConsecutivePeriodsEstimatedReading,\r\n\t\t\t\tProductionAndDeliveryTariff, \r\n\t\t\t\tBillingPeriodDays,\r\n\t\t\t\tFromDate, \r\n\t\t\t\tToDate, \r\n\t\t\t\tToReadingDate,\r\n\t\t\t\tFromReadingDate, \r\n\t\t\t\tConsumption, \r\n\t\t\t\tDemand,\r\n\t\t\t\tInitialPostingDate, \r\n\t\t\t\tAdjustmentRecordSeqid, \r\n\t\t\t\tAuthenticatedUserID, \r\n\t\t\t\tNotes, \r\n\t\t\t\tDateAdded,\r\n\t\t\t\tLastUpdate\r\n\t\t)\r\n\t\tselect\r\n\t\t\t\tAccountExchangeMeterTrackSeqid,\r\n\t\t\t\tIsTimeOfDayAccount,\r\n\t\t\t\t[DerivedFromSpannedBill],\r\n\t\t\t\t[OriginalAccountNumber], \r\n\t\t\t\t[OriginalMeterNumber], \r\n\t\t\t\t[UtilityCompanySeqid],\r\n\t\t\t\t[UploadMeterBillingAdjustmentGasSeqid],\r\n\t\t\t\t[LastPeriodModified],\r\n\t\t\t\t[BillingPeriodRevision],\r\n\t\t\t\t[BillingPeriodRevision],\r\n\t\t\t\tdbo.CreateNextPeriod(Billing.MeterBillingAdjustmentGas.BillingPeriod, BillingCycle), -- [NextBillingPeriod] \r\n\t\t\t\tdbo.CreatePreviousPeriod(Billing.MeterBillingAdjustmentGas.BillingPeriod, BillingCycle), -- PreviousBillingPeriod\r\n\t\t\t\t[BillCreationDate],\r\n\t\t\t\t[BillingAction],\r\n\t\t\t\t[MeterBillingStatus],\r\n\t\t\t\t[MeterBillingPreviousStatus],\r\n\t\t\t\t[MeterBillingStatusPeriod],\r\n\t\t\t\tEnergySource,\r\n\t\t\t\t[ProcessedInTheCurrentPeriod],\r\n\t\t\t\tSalesType,\r\n\t\t\t\tMeterType,\r\n\t\t\t\tServiceAddress, \r\n\t\t\t\tMeterDials,\r\n\t\t\t\t[MeterConstant],\r\n\t\t\t\tnull, -- Demand currently only Electric\r\n\t\t\t\t[EstimatedOrActualBilling],\r\n\t\t\t\t[Common].[CalculateConsecutiveNumberOfEstimatedReadings] (OriginalAccountNumber,OriginalMeterNumber,UtilityCompanySeqid,BillingPeriodRevision,BillingCycle,EstimatedOrActualBilling), -- correct function Gas\r\n\t\t\t\tCommon.CalculateProductionAndDeliveryTariff(UtilityCompanySeqid,GasRateCode),\r\n\t\t\t\tBillingDays,\r\n\t\t\t\t[FromDate],\r\n\t\t\t\t[ToDate],\r\n\t\t\t\t[FromReadingDate],\r\n\t\t\t\t[ToReadingDate],\r\n\t\t\t\t[RevisedBilledTherms],\r\n\t\t\t\tNull, --[Demand]\r\n\t\t\t\t[InitialPostingDate], \r\n\t\t\t\t[MeterBillingAdjustmentGasSeqid], \r\n\t\t\t\t[AuthenticatedUserID],\r\n\t\t\t\t[Notes],\r\n\t\t\t\t[DateAdded],\r\n\t\t\t\t[LastUpdate]\r\n\t\tfrom\t[Billing].[MeterBillingAdjustmentGas]\r\n\t\twhere \r\n\t\t\t\tMeterBillingSeqid is null  AND \r\n\t\t\t\tBillingPeriod = @CurrentBillingPeriod\r\n\t\t--\r\n\t\tset @BillingMeterBillingInsertTransactionCount = @@rowcount\r\n\t\t--\r\n\t\t--\r\n\t\tINSERT INTO Billing.MeterBillingGas\r\n\t\t\t\t(\t\r\n\t\t\t\t\tMeterBillingSeqid, \r\n\t\t\t\t\tMeterBillingAdjustmentGasSeqid, \r\n\t\t\t\t\tUtilityCompanySeqid, \r\n\t\t\t\t\tOriginalAccountNumber, \r\n\t\t\t\t\tOriginalMeterNumber, \r\n\t\t\t\t\tLastPeriodModified, \r\n\t\t\t\t\tBillingPeriod, \r\n\t\t\t\t\tBillingPeriodRevision, \r\n\t\t\t\t\tMeterBillingRowState,\r\n\t\t\t\t\tFromDate, \r\n\t\t\t\t\tToDate, \r\n\t\t\t\t\tFromReadingDate,\r\n\t\t\t\t\tToReadingDate, \r\n\t\t\t\t\tReadingCode, \r\n\t\t\t\t\tMeterReset,\r\n\t\t\t\t\tMeterFromReading, \r\n\t\t\t\t\tMeterToReading, \r\n\t\t\t\t\tMeterConstant,\r\n\t\t\t\t\tCcf, \r\n\t\t\t\t\tThermsFactor, \r\n\t\t\t\t\tTherms, \r\n\t\t\t\t\tAuthenticatedUserID, \r\n\t\t\t\t\tNotes, \r\n\t\t\t\t\tDateAdded, \r\n\t\t\t\t\tLastUpdate,\r\n\t\t\t\t\tGasCorrectionFactor\r\n\t\t\t\t)\r\n\t\tSELECT  \r\n\t\t\t\t\tMeterBillingSeqid, \r\n\t\t\t\t\tMeterBillingAdjustmentGasSeqid, \r\n\t\t\t\t\tUtilityCompanySeqid, \r\n\t\t\t\t\tOriginalAccountNumber, \r\n\t\t\t\t\tOriginalMeterNumber, \r\n\t\t\t\t\tLastPeriodModified, \r\n\t\t\t\t\tBillingPeriodRevision,\r\n\t\t\t\t\tBillingPeriodRevision,\r\n\t\t\t\t\t1 AS MeterBillingRowState,\r\n\t\t\t\t\tFromDate, \r\n\t\t\t\t\tToDate, \r\n\t\t\t\t\tFromReadingDate, \r\n\t\t\t\t\tToReadingDate, \r\n\t\t\t\t\tReadingCode, \r\n\t\t\t\t\tMeterReset,\r\n\t\t\t\t\tMeterFromReading,\r\n\t\t\t\t\tMeterToReading, \r\n\t\t\t\t\tMeterConstant, \r\n\t\t\t\t\tRevisedBilledCCF, \r\n\t\t\t\t\tThermsFactor,\r\n\t\t\t\t\tRevisedBilledTherms,\r\n\t\t\t\t\tAuthenticatedUserID, \r\n\t\t\t\t\tNotes, \r\n\t\t\t\t\tDateAdded,\r\n\t\t\t\t\tLastUpdate,\r\n\t\t\t\t\tGasCorrectionFactor\r\n\t\tFROM Billing.MeterBillingAdjustmentGas\r\n\t\twhere \r\n\t\t\t\tMeterBillingSeqid is null  AND \r\n\t\t\t\tBillingPeriod = @CurrentBillingPeriod\r\n\t\t--\r\n\t\tset @BillingMeterBillingGasInsertTransactionCount = @@rowcount\r\n\t\t--\r\n\t\tUPDATE    Billing.MeterBillingGas\r\n\t\tSET         MeterBillingSeqid = Billing.MeterBilling.MeterBillingSeqid\r\n\t\tFROM \r\n\t\t\t\t\tBilling.MeterBilling INNER JOIN\r\n\t\t\t\t\tBilling.MeterBillingGas ON Billing.MeterBilling.LastPeriodModified = Billing.MeterBillingGas.LastPeriodModified AND \r\n\t\t\t\t\tBilling.MeterBilling.OriginalAccountNumber = Billing.MeterBillingGas.OriginalAccountNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.OriginalMeterNumber = Billing.MeterBillingGas.OriginalMeterNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.AccountUtilityCompanySeqid = Billing.MeterBillingGas.UtilityCompanySeqid AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriodRevision = Billing.MeterBillingGas.BillingPeriodRevision AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriod = Billing.MeterBillingGas.BillingPeriod INNER JOIN\r\n\t\t\t\t\tBilling.Account ON Billing.MeterBillingGas.OriginalAccountNumber = Billing.Account.OriginalAccountNumber AND \r\n\t\t\t\t\tBilling.MeterBillingGas.UtilityCompanySeqid = Billing.Account.UtilityAccountProvider\r\n\t\tWHERE (Billing.MeterBilling.LastPeriodModified = @CurrentBillingPeriod) and \r\n\t\t\t\t  (Billing.Account.CurrentInvoiceAccountGroup = @InvoiceAccountBillingGroupSeqid) and \r\n\t\t\t\t  (Billing.Account.UtilityAccountProvider = @UtilityCompanySeqid)\r\n\t\t\t\t\t\r\n\t\t\t\t\r\n\t\tUPDATE    Billing.MeterBillingAdjustmentGas\r\n\t\tSET              \r\n\t\t\t\t\tMeterBillingSeqid = Billing.MeterBillingGas.MeterBillingSeqid, \r\n\t\t\t\t\tMeterBillingGasSeqid = Billing.MeterBillingGas.MeterBillingGasSeqid\r\n\t\tFROM \r\n\t\t\t\t\tBilling.MeterBilling INNER JOIN\r\n\t\t\t\t\tBilling.MeterBillingGas ON Billing.MeterBilling.LastPeriodModified = Billing.MeterBillingGas.LastPeriodModified AND \r\n\t\t\t\t\tBilling.MeterBilling.OriginalAccountNumber = Billing.MeterBillingGas.OriginalAccountNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.OriginalMeterNumber = Billing.MeterBillingGas.OriginalMeterNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.AccountUtilityCompanySeqid = Billing.MeterBillingGas.UtilityCompanySeqid AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriodRevision = Billing.MeterBillingGas.BillingPeriodRevision AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriod = Billing.MeterBillingGas.BillingPeriod INNER JOIN\r\n\t\t\t\t\tBilling.Account ON Billing.MeterBillingGas.OriginalAccountNumber = Billing.Account.OriginalAccountNumber AND \r\n\t\t\t\t\tBilling.MeterBillingGas.UtilityCompanySeqid = Billing.Account.UtilityAccountProvider INNER JOIN\r\n\t\t\t\t\tBilling.MeterBillingAdjustmentGas ON Billing.MeterBilling.OriginalAccountNumber = Billing.MeterBillingAdjustmentGas.OriginalAccountNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.OriginalMeterNumber = Billing.MeterBillingAdjustmentGas.OriginalMeterNumber AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriod = Billing.MeterBillingAdjustmentGas.BillingPeriodRevision AND \r\n\t\t\t\t\tBilling.MeterBilling.BillingPeriodRevision = Billing.MeterBillingAdjustmentGas.BillingPeriodRevision AND \r\n\t\t\t\t\tBilling.MeterBilling.LastPeriodModified = Billing.MeterBillingAdjustmentGas.BillingPeriod\r\n\t\tWHERE \r\n\t\t\t\t(Billing.MeterBilling.LastPeriodModified = @CurrentBillingPeriod) AND \r\n\t\t\t\t(Billing.Account.CurrentInvoiceAccountGroup = @InvoiceAccountBillingGroupSeqid) AND \r\n\t\t\t\t(Billing.Account.UtilityAccountProvider = @UtilityCompanySeqid)\t\t\r\n\t\t--\r\n   END\r\n   \r\n   -- 2012/04/03 UM is not longer needed. All UM status will be changed to AC\r\n   UPDATE billing.Meter\r\n\tSET MeterStatus = 'AC'\r\n\tWHERE MeterStatus = 'UM'\r\n\r\nend"
+        }
+      ]
+    }
+  ]
+}

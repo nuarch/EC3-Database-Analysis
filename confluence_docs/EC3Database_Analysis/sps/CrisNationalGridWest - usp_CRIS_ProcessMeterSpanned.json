@@ -1,0 +1,947 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_ProcessMeterSpanned",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_ProcessMeterSpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process billing data for meters that span multiple billing periods. It prorates the meter readings and associated charges over these periods. The procedure fetches records from the "
+        },
+        {
+          "type": "text",
+          "text": "UploadMeterReadDetail",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table, calculates the prorated values for each period, and inserts the results into the "
+        },
+        {
+          "type": "text",
+          "text": "UploadMeterBillingCRISTransaction",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It handles errors using a TRY-CATCH block and logs detailed error messages."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure is complex due to several factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple calculations for prorating meter readings and charges."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over potentially large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes error handling with detailed logging."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple custom functions for calculations, which adds to the complexity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in 'YYYYMM' format. It is used for logging purposes in error messages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An identifier for the authenticated user or process. It is not directly used in the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that indicates the success (0) or failure (1) of the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Declares various local variables for processing, including those for meter readings, billing periods, and percentages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Begins a transaction named "
+                },
+                {
+                  "type": "text",
+                  "text": "spannedTransaction",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor "
+                },
+                {
+                  "type": "text",
+                  "text": "SpannedBillCursor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to fetch records from "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadMeterReadDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where the billing spans multiple periods and is not excluded."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Fetching and Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Iterates over each record using the cursor."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Fetches detailed information for each record."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calculates the number of periods spanned and the total reading."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Uses custom functions to calculate the total and monthly percentages for prorating."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Distributes the readings and charges over the spanned periods."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts prorated records into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadMeterBillingCRISTransaction",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Uses a TRY-CATCH block to handle errors. If an error occurs, it logs a detailed message and rolls back the transaction."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Commit",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Commits the transaction if no errors occur."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes rows one at a time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Multiple calls to custom functions for calculations can add overhead, especially if these functions are complex or inefficient."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is large, encompassing the entire cursor operation, which can lead to locking and blocking issues."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While errors are logged, the procedure does not attempt to retry or handle specific error types, which could lead to transaction failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the procedure fails after partial processing, it could leave the system in an inconsistent state unless the transaction is rolled back correctly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor and the complexity of calculations may not scale well with large datasets, potentially leading to long execution times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External Functions",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on several custom functions ("
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateDeltaBillingPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateTotalGasSpannedBilledPercentage",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", etc.), which are not visible in the code. Any issues or inefficiencies in these functions could affect the procedure's performance and correctness."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_ProcessMeterSpanned]\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@StatusCode int  OUTPUT      \r\n   \r\n AS \r\n BEGIN\r\n\t\t--********************************************************************************\r\n\t\t--\tAuthor: MOHAMMED BELARREM\r\n\t\t--\tDescription: Process the spanned meter billing and prorate over the spanned periods\r\n\t\t--\r\n\t\t--\tLog: \r\n\t\t--\t\t06/01/2010\tMOH\tCreation\r\n\t\t--\t\t06/14/2010\tMOH\tUpdate: added therms, thermsfactor and GasRateCode\r\n\t\t--\t\t07/09/2010\tMOH\tUpdate: added CurrentMeterNumber\r\n\t\t--\t\t07/30/2010  MOH Update: added  CrisNationalGridWest.ProRateToOrFromDate to evaluate date for periods that we dont have in schedule\r\n\t\t--\t\t01/11/2011\tMOH Update: added the condition to only pick up non excluded transactions\r\n\t\t--********************************************************************************\r\n\t \r\n\t\t--********************************************************************************\r\n\r\n\t\tDECLARE @UploadMeterReadDetailSeqid dbo.seqid \t\r\n\t\tDECLARE @BillingPeriodRevision dbo.yyyymm\t\t-- get value from CalculatedBillingPeriodRevision\r\n\t\tDECLARE @FirstBillingPeriodCanceled dbo.yyyymm  \r\n\t\tDECLARE @AccountNumber dbo.acctnum  \r\n\t\tDECLARE @MeterReadWorkDay dbo.TripNumber  \r\n\t\tDECLARE @ActivityDateTime datetime  \r\n\t\tDECLARE @TransactionCode nvarchar(2)  \r\n\t\tDECLARE @MeterNumber dbo.MeterNumber  \r\n\t\tDECLARE @CurrentMeterNumber dbo.MeterNumber  \r\n\t\tDECLARE @MeterReadType nvarchar(2)  \r\n\t\tDECLARE @EstimatedOrActual dbo.ActualOrEstimated  \r\n\t\tDECLARE @FromDate dbo.yyyymmdd  \r\n\t\tDECLARE @ToDate dbo.yyyymmdd  \r\n\t\tDECLARE @MeterFromReading dbo.MeterReading  \r\n\t\tDECLARE @MeterToReading dbo.MeterReading  \r\n\t\tDECLARE @IsCancel dbo.yesnoWithDefaultNo  \r\n\r\n\t\tDECLARE @NumberOfPeriods\t\t\t\t\tint\r\n\t\tdeclare @NumberOfPeriodsMinusOne\t\t\tint\r\n\t\tdeclare @TotalSpannedPercentage\t\t\t\tdbo.DiscountPercentage\r\n\t\tdeclare @MonthlyPercentage\t\t\t\t\tdbo.DiscountPercentage\r\n\t\t\r\n\t\tdeclare @ProratedBillingPeriodRevision\t\tdbo.yyyymm\r\n\t\tdeclare @ProratedFromDate\t\t\t\t\tdbo.yyyymmdd\r\n\t\tdeclare @ProratedToDate\t\t\t\t\t\tdbo.yyyymmdd\r\n\t\tdeclare @index\t\t\t\t\t\t\t\tint\r\n\t\tdeclare @TotalCCF\t\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @AccumulatedCCF\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @TotalTherms\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @AccumulatedTherms\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @ThermsFactor\t\t\t\t\t\tdbo.ThermsFactor\r\n\t\tDECLARE @GasRateCode\t\t\t\t\t\tdbo.GasRateCode\r\n\r\n\t\tdeclare @TotalReading\t\t\t\t\t\tint\r\n\t\tdeclare @ProratedFromReading\t\t\t\tint\r\n\t\tdeclare @ProratedToReading\t\t\t\t\tint\r\n\t\tdeclare @MonthlyCCF\t\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @LastPeriodCCF\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @MonthlyTherms\t\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @LastPeriodTherms\t\t\t\t\tdbo.EnergyUnit\r\n\t\t\r\n\t\tdeclare @Notes\t\t\t\t\t\t\t\tdbo.notes\r\n\t\tDECLARE @BillingCycle\t\t\t\t\t\tVARCHAR(1)\r\n\t\t\r\n\t\tdeclare @crlf varchar(2)\r\n\t\tset @crlf = CHAR(13) + CHAR(10) \r\n\t\t\r\n\t\tSET @BillingCycle = 'M'\r\n\t\t\r\n\r\n\r\n\t\t\r\n\t\tbegin try\t\r\n\t\t\r\n\t\t\t\tbegin TRANSACTION spannedTransaction\r\n\t\t\t\tset @StatusCode  = 0\r\n\r\n\t\t\t\t--\tDECLARE a cursor to find all account bills that span more than one period.\r\n\t\t\t\t--  grab only the good BI transaction \r\n\t\t\t\tDECLARE SpannedBillCursor CURSOR FOR\r\n\t\t\t\tSELECT  UploadMeterReadDetailSeqid\r\n\t\t\t\tFROM CrisNationalGridWest.UploadMeterReadDetail\t\t\r\n\t\t\t\tWHERE\tCalculatedBillingPeriodRevision <> FirstBillingPeriodCanceled AND ExcludeTest = 'N' AND BillingTransactionCode = 'BI'\r\n\t\t\t\t\t\t\r\n\t\t\t\tOPEN SpannedBillCursor;\r\n\r\n\t\t\t\tFETCH NEXT FROM SpannedBillCursor INTO @UploadMeterReadDetailSeqid\r\n\t\t\t\t--\r\n\t\t\t\t-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n\t\t\t\t--\r\n\t\t\t\tWHILE @@FETCH_STATUS = 0\r\n\t\t\t\tBEGIN -- begin processing for fetched record\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- collect the information\r\n\t\t\t\t\t\tSELECT \r\n\t\t\t\t\t\t\t @BillingPeriodRevision\t\t\t= CalculatedBillingPeriodRevision\r\n\t\t\t\t\t\t\t,@FirstBillingPeriodCanceled\t= FirstBillingPeriodCanceled\r\n\t\t\t\t\t\t\t,@AccountNumber\t\t\t\t\t= AccountNumber\r\n\t\t\t\t\t\t\t,@MeterReadWorkDay\t\t\t\t= MeterReadWorkDay\r\n\t\t\t\t\t\t\t,@ActivityDateTime\t\t\t\t= ActivityDateTime\r\n\t\t\t\t\t\t\t,@TransactionCode\t\t\t\t= TransactionCode\t\t\t\r\n\t\t\t\t\t\t\t,@MeterNumber\t\t\t\t\t= MeterNumber\r\n\t\t\t\t\t\t\t,@CurrentMeterNumber\t\t\t= CurrentMeterNumber\r\n\t\t\t\t\t\t\t,@MeterReadType\t\t\t\t\t= MeterReadType\r\n\t\t\t\t\t\t\t,@EstimatedOrActual\t\t\t\t= EstimatedOrActual \r\n\t\t\t\t\t\t\t,@FromDate\t\t\t\t\t\t= MeterReadingFromDate \r\n\t\t\t\t\t\t\t,@ToDate\t\t\t\t\t\t= MeterReadingToDate\r\n\t\t\t\t\t\t\t,@MeterFromReading\t\t\t\t= MeterFromReading\r\n\t\t\t\t\t\t\t,@MeterToReading\t\t\t\t= MeterToReading    \r\n\t\t\t\t\t\t\t,@TotalCCF\t\t\t\t\t\t= MeterCCF   \r\n\t\t\t\t\t\t\t,@TotalTherms\t\t\t\t\t= Therms\r\n\t\t\t\t\t\t\t,@ThermsFactor\t\t\t\t\t= ThermsFactor\r\n\t\t\t\t\t\t\t,@GasRateCode\t\t\t\t\t= GasRateCode\r\n\t\t\t\t\t\t\t,@IsCancel\t\t\t\t\t\t= IsCancel         \r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tfrom CrisNationalGridWest.UploadMeterReadDetail \r\n\t\t\t\t\t\twhere ( UploadMeterReadDetailSeqid = @UploadMeterReadDetailSeqid )\r\n\r\n\t\t\t\t\t\t-- Process n-1 spanned periods\r\n\t\t\t\r\n\t\t\t\t\t\t-- Distribute over spanned based on given percentage\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- calculate the delta of periods\r\n\t\t\t\t\t\tSET @NumberOfPeriods = dbo.CalculateDeltaBillingPeriods(@FirstBillingPeriodCanceled, @BillingPeriodRevision, @BillingCycle)\r\n\t\t\t\t\t\tSET @TotalReading = @MeterToReading - @MeterFromReading\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- calcualte the average City wide monthly energy usage percentage for the spanned billing periods \r\n\t\t\t\t\t\tselect @TotalSpannedPercentage = dbo.CalculateTotalGasSpannedBilledPercentage(@BillingCycle ,@NumberOfPeriods , @FirstBillingPeriodCanceled ,@BillingPeriodRevision )\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- determine the number of periods minus 1 to pro-rate the CCF.  \r\n\t\t\t\t\t\tset @NumberOfPeriodsMinusOne = @NumberOfPeriods - 1\r\n\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\t--\tInitialize the counters for the n-1 parses\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\tset @ProratedBillingPeriodRevision\t= @FirstBillingPeriodCanceled \r\n\t\t\t\t\t\tset @ProratedFromDate\t\t\t\t= @FromDate \r\n\t\t\t\t\t\tset @ProratedToDate\t\t\t\t\t= @ToDate \r\n\t\t\t\t\t\tset @index\t\t\t\t\t\t\t= 0 \r\n\t\t\t\t\t\tset @MonthlyCCF\t\t\t\t\t\t= 0\r\n\t\t\t\t\t\tSET @AccumulatedCCF\t\t\t\t\t= 0\r\n\t\t\t\t\t\tSET @MonthlyTherms\t\t\t\t\t= 0\r\n\t\t\t\t\t\tSET @AccumulatedTherms\t\t\t\t= 0\r\n\t\t\t\t\t\tSET @ProratedFromReading\t\t\t= @MeterFromReading\r\n\t\t\t\t\t\tSET @ProratedToReading\t\t\t\t= @MeterToReading\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t--- distribute / parse\r\n\t\t\t\t\t\twhile (@NumberOfPeriodsMinusOne > @index)\r\n\t\t\t\t\t\tBegin \r\n\r\n\t\t\t\t\t\t\t\t-- The @MonthlyPercentage holds the weigthed average for the particular month\r\n\t\t\t\t\t\t\t\tselect @MonthlyPercentage = dbo.CalculateApplyMonthlyPercentageGasSpannedBilled (@ProratedBillingPeriodRevision , @TotalSpannedPercentage )\r\n\r\n\t\t\t\t\t\t\t\t-- Apply the Monthly Percentage to the CCF\r\n\t\t\t\t\t\t\t\tset @MonthlyCCF\t= ROUND(@TotalCCF * @MonthlyPercentage, 0)\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t-- Apply the Monthly Percentage to the therms\r\n\t\t\t\t\t\t\t\tset @MonthlyTherms\t= ROUND(@TotalTherms * @MonthlyPercentage, 0)\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t-- Apply the Monthly Percentage to the readings\r\n\t\t\t\t\t\t\t\tset @ProratedToReading\t= @ProratedFromReading + ROUND(@TotalReading * @MonthlyPercentage, 0)\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t-- Accululate the weigthed average CCF.\r\n\t\t\t\t\t\t\t\tset @AccumulatedCCF\t= @AccumulatedCCF + @MonthlyCCF\r\n\r\n\t\t\t\t\t\t\t\t-- Accululate the weigthed average therms.\r\n\t\t\t\t\t\t\t\tset @AccumulatedTherms\t= @AccumulatedTherms + @MonthlyTherms\r\n\r\n\t\t\t\t\t\t\t\t-- atempt to get an actual ToDate from the AccountBilling table\r\n\t\t\t\t\t\t\t\tselect @ProratedToDate = CrisNationalGridWest.DeterminActualDate(@AccountNumber, 'T', @ProratedBillingPeriodRevision)\r\n\r\n\t\t\t\t\t\t\t\tif(@ProratedToDate is null)\r\n\t\t\t\t\t\t\t\t\tselect @ProratedToDate = CrisNationalGridWest.DetermineToDateFromBillingPeriodAndWDNumber(@MeterReadWorkDay, @ProratedBillingPeriodRevision ) \r\n\t\t\t\t\t\t\t\t\t-- if both above methods fail prorate\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t--**********************************************************************************************************************************************\r\n\t\t\t\r\n\t\t\t\t\t\t\t\tif(@ProratedToDate is null)\r\n\t\t\t\t\t\t\t\t\tselect @ProratedToDate = CrisNationalGridWest.ProRateToOrFromDate('T', @BillingCycle, @FromDate, @ToDate, @index, @NumberOfPeriods  )\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t--**********************************************************************************************************************************************\r\n\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\tset @Notes = SUBSTRING( ' First: '+@FirstBillingPeriodCanceled +' ( '+@FromDate+') Last: '+ \r\n\t\t\t\t\t\t\t\t@BillingPeriodRevision +' ( '+@ToDate+'). '+' period: ' + @ProratedBillingPeriodRevision + ' Month %: '+cast(@MonthlyPercentage as varchar(10))+\r\n\t\t\t\t\t\t\t\t' - Total %: '+cast(@TotalSpannedPercentage as varchar(10)), 1, 300)\r\n\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t-- insert the record\r\n\t\t\t\t\t\t\t\tINSERT INTO [CrisNationalGridWest].[UploadMeterBillingCRISTransaction]\r\n\t\t\t\t\t\t\t\t\t   ([UploadMeterReadDetailSeqid]\r\n\t\t\t\t\t\t\t\t\t   ,[UtilityCompanySeqid]\r\n\t\t\t\t\t\t\t\t\t   ,[AccountInvoiceBillingGroup]\r\n\t\t\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t\t\t   ,[BillingPeriodRevision]\r\n\t\t\t\t\t\t\t\t\t   ,[OriginalAccountNumber]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadWorkDay]\r\n\t\t\t\t\t\t\t\t\t   ,[UtilityServiceAccountName]\r\n\t\t\t\t\t\t\t\t\t   ,[UtilityServiceAddress]\r\n\t\t\t\t\t\t\t\t\t   ,[Borough]\r\n\t\t\t\t\t\t\t\t\t   ,[Zipcode]\r\n\t\t\t\t\t\t\t\t\t   ,[State]\r\n\t\t\t\t\t\t\t\t\t   ,[ActivityCode]\r\n\t\t\t\t\t\t\t\t\t   ,[ActivityDateTime]\r\n\t\t\t\t\t\t\t\t\t   ,[TransactionCode]\r\n\t\t\t\t\t\t\t\t\t   ,[SpecialLedgerAccountNumber]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterNumber]\r\n\t\t\t\t\t\t\t\t\t   ,[CurrentMeterNumber]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterConstant]\r\n\t\t\t\t\t\t\t\t\t   ,[NumberOfDials]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadType]\r\n\t\t\t\t\t\t\t\t\t   ,[EstimatedOrActual]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadStatus]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadSource]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadReason]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterType]\r\n\t\t\t\t\t\t\t\t\t   ,[FromDate]\r\n\t\t\t\t\t\t\t\t\t   ,[ToDate]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterFromReading]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterToReading]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterReadTime]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterCCF]\r\n\t\t\t\t\t\t\t\t\t   ,Therms\r\n\t\t\t\t\t\t\t\t\t   ,ThermsFactor\r\n\t\t\t\t\t\t\t\t\t   ,GasRateCode\r\n\t\t\t\t\t\t\t\t\t   ,[FixFactor]\r\n\t\t\t\t\t\t\t\t\t   ,[PartSupplied]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterBillingStatus]\r\n\t\t\t\t\t\t\t\t\t   ,[PreviousMeterBillingStatus]\r\n\t\t\t\t\t\t\t\t\t   ,[MeterBillingStatusCodePeriod]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedMeterCCF]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedFromDate]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedToDate]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedMeterReadingFrom]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedMeterReadingTo]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t\t\t   ,[SpannedTotalPercentage])\r\n\r\n\t\t\t\t\t\t\t\tSELECT   UploadMeterReadDetailSeqid           \t\t---[UploadMeterBillingSeqid]                                            \r\n\t\t\t\t\t\t\t\t\t\t,UtilityCompanySeqid                \t\t---[UtilityCompanySeqid]                                       \r\n\t\t\t\t\t\t\t\t\t\t,AccountInvoiceBillingGroup         \t\t---[AccountInvoiceBillingGroup]                                              \r\n\t\t\t\t\t\t\t\t\t\t,BillingPeriod                      \t\t---[BillingPeriod]                                 \r\n\t\t\t\t\t\t\t\t\t\t,@ProratedBillingPeriodRevision      \t\t---[BillingPeriodRevision]                                         \r\n\t\t\t\t\t\t\t\t\t\t,AccountNumber                      \t\t---[OriginalAccountNumber]                                 \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadWorkDay                   \t\t---[MeterReadWorkDay]                                    \r\n\t\t\t\t\t\t\t\t\t\t,UtilityServiceAccountName          \t\t---[UtilityServiceAccountName]                                             \r\n\t\t\t\t\t\t\t\t\t\t,UtilityServiceAddress              \t\t---[UtilityServiceAddress]                                         \r\n\t\t\t\t\t\t\t\t\t\t,Borough                            \t\t---[Borough]                           \r\n\t\t\t\t\t\t\t\t\t\t,Zipcode                            \t\t---[Zipcode]                           \r\n\t\t\t\t\t\t\t\t\t\t,State                              \t\t---[State]                         \r\n\t\t\t\t\t\t\t\t\t\t,ActivityCode                       \t\t---[ActivityCode]                                \r\n\t\t\t\t\t\t\t\t\t\t,ActivityDateTime                   \t\t---[ActivityDateTime]                                    \r\n\t\t\t\t\t\t\t\t\t\t,TransactionCode                    \t\t---[TransactionCode]                                   \r\n\t\t\t\t\t\t\t\t\t\t,SpecialLedgerAccountNumber         \t\t---[SpecialLedgerAccountNumber]                                              \r\n\t\t\t\t\t\t\t\t\t\t,MeterNumber                        \t\t---[MeterNumber]  \r\n\t\t\t\t\t\t\t\t\t\t,CurrentMeterNumber\t\t\t\t\t\t\t---[CurrentMeterNumber]                             \r\n\t\t\t\t\t\t\t\t\t\t,MeterConstant                      \t\t---[MeterConstant]                                 \r\n\t\t\t\t\t\t\t\t\t\t,NumberOfDials                      \t\t---[NumberOfDials]                                 \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadType                      \t\t---[MeterReadType]                                 \r\n\t\t\t\t\t\t\t\t\t\t,'EST'\t\t\t\t                  \t\t---[EstimatedOrActual]                                     \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadStatus                    \t\t---[MeterReadStatus]                                   \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadSource                    \t\t---[MeterReadSource]                                   \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadReason                    \t\t---[MeterReadReason]                                   \r\n\t\t\t\t\t\t\t\t\t\t,MeterType                          \t\t---[MeterType]                             \r\n\t\t\t\t\t\t\t\t\t\t,@ProratedFromDate\t\t               \t\t---[FromDate]                                        \r\n\t\t\t\t\t\t\t\t\t\t,@ProratedToDate\t                 \t\t---[ToDate]                                      \r\n\t\t\t\t\t\t\t\t\t\t,@ProratedFromReading                 \t\t---[MeterFromReading]                                    \r\n\t\t\t\t\t\t\t\t\t\t,@ProratedToReading                    \t\t---[MeterToReading]                                  \r\n\t\t\t\t\t\t\t\t\t\t,MeterReadTime                      \t\t---[MeterReadTime]                                 \r\n\t\t\t\t\t\t\t\t\t\t,@MonthlyCCF                           \t\t---[MeterCCF]\r\n\t\t\t\t\t\t\t\t\t\t,@MonthlyTherms\t\t\t\t\t\t\t\t--- therms\r\n\t\t\t\t\t\t\t\t\t\t,@ThermsFactor\t\t\t\t\t\t\t\t--- thermsFactor      \r\n\t\t\t\t\t\t\t\t\t\t,@GasRateCode\t\t\t\t\t\t\t\t--- GasRateCode                      \r\n\t\t\t\t\t\t\t\t\t\t,FixFactor                          \t\t---[FixFactor]                             \r\n\t\t\t\t\t\t\t\t\t\t,PartSupplied\t\t\t\t\t\t\t\t---[PartSupplied]\r\n\t\t\t\t\t\t\t\t\t\t,NULL\t\t\t\t\t\t\t\t\t\t---[MeterBillingStatus]\r\n\t\t\t\t\t\t\t\t\t\t,NULL \t\t\t\t\t\t\t\t\t\t---[PreviousMeterBillingStatus]\r\n\t\t\t\t\t\t\t\t\t\t,NULL\t\t\t\t\t\t\t\t\t\t---[MeterBillingStatusCodePeriod]\r\n\t\t\t\t\t\t\t\t\t\t,@TotalCCF\t\t\t\t\t\t\t\t\t---[SpannedMeterCCF]\r\n\t\t\t\t\t\t\t\t\t\t,@FromDate\t\t\t\t\t\t\t\t\t---[SpannedFromDate]\r\n\t\t\t\t\t\t\t\t\t\t,@ToDate\t\t\t\t\t\t\t\t\t---[SpannedToDate]\r\n\t\t\t\t\t\t\t\t\t\t,MeterFromReading\t\t\t\t\t\t\t---[SpannedMeterReadingFrom]\r\n\t\t\t\t\t\t\t\t\t\t,MeterToReading\t\t\t\t\t\t\t\t---[SpannedMeterReadingTo]\r\n\t\t\t\t\t\t\t\t\t\t,@MonthlyPercentage\t\t\t\t\t\t\t---[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t\t\t\t,@TotalSpannedPercentage\t\t\t\t\t---[SpannedTotalPercentage]\r\n\t\t                                                                                                    \r\n\t\t\t\t\t\t\t\tfrom CrisNationalGridWest.UploadMeterReadDetail \r\n\t\t\t\t\t\t\t\twhere ( UploadMeterReadDetailSeqid = @UploadMeterReadDetailSeqid )\r\n\t\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t--\tCalculate the next Revised Billing Period row.\r\n\t\t\t\t\t\t\t\tselect @ProratedBillingPeriodRevision = [dbo].[CalculateNextBillingPeriod]  (@ProratedBillingPeriodRevision,@BillingCycle)\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t-- set the fromDate for the next record\r\n\t\t\t\t\t\t\t\tset @ProratedFromDate = @ProratedToDate\r\n\r\n\t\t\t\t\t\t\t\t-- set the reading for the next record\r\n\t\t\t\t\t\t\t\tset @ProratedFromReading = @ProratedToReading\r\n\r\n\r\n\t\t\t\t\t\t\t\tset @index = @index + 1\r\n\t\t\t\t\t\tend -- end distribute/parse\r\n\r\n\t\t\t\t\t\t-- Process the last spanned period\r\n\r\n\t\t\t\t\t\t-- the last toDate is actually the actual ToDate of the record\t\t\r\n\t\t\t\t\t\tselect @ProratedToDate = @ToDate\r\n\r\n\t\t\t\t\t\t-- The @MonthlyPercentage holds the weigthed average for the particular month\r\n\t\t\t\t\t\tselect @MonthlyPercentage = dbo.CalculateApplyMonthlyPercentageGasSpannedBilled (@ProratedBillingPeriodRevision , @TotalSpannedPercentage )\r\n\r\n\t\t\t\t\t\t--\tDerive the net CCF change to avoid rounding errors\r\n\t\t\t\t\t\tset @LastPeriodCCF\t\t= @TotalCCF  - @AccumulatedCCF\r\n\t\t\t\t\t\tset @LastPeriodTherms\t= @TotalTherms  - @AccumulatedTherms\r\n\t\t\t\t\t\tset @ProratedToReading\t= @MeterToReading\r\n\t\t\t\r\n\t\t\t\t\t\t--\tCreate a custom note\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- insert the last record\r\n\t\t\t\t\t\tINSERT INTO [CrisNationalGridWest].[UploadMeterBillingCRISTransaction]\r\n\t\t\t\t\t\t\t   ([UploadMeterReadDetailSeqid]\r\n\t\t\t\t\t\t\t   ,[UtilityCompanySeqid]\r\n\t\t\t\t\t\t\t   ,[AccountInvoiceBillingGroup]\r\n\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t   ,[BillingPeriodRevision]\r\n\t\t\t\t\t\t\t   ,[OriginalAccountNumber]\r\n\t\t\t\t\t\t\t   ,[MeterReadWorkDay]\r\n\t\t\t\t\t\t\t   ,[UtilityServiceAccountName]\r\n\t\t\t\t\t\t\t   ,[UtilityServiceAddress]\r\n\t\t\t\t\t\t\t   ,[Borough]\r\n\t\t\t\t\t\t\t   ,[Zipcode]\r\n\t\t\t\t\t\t\t   ,[State]\r\n\t\t\t\t\t\t\t   ,[ActivityCode]\r\n\t\t\t\t\t\t\t   ,[ActivityDateTime]\r\n\t\t\t\t\t\t\t   ,[TransactionCode]\r\n\t\t\t\t\t\t\t   ,[SpecialLedgerAccountNumber]\r\n\t\t\t\t\t\t\t   ,[MeterNumber]\r\n\t\t\t\t\t\t\t   ,[CurrentMeterNumber]\r\n\t\t\t\t\t\t\t   ,[MeterConstant]\r\n\t\t\t\t\t\t\t   ,[NumberOfDials]\r\n\t\t\t\t\t\t\t   ,[MeterReadType]\r\n\t\t\t\t\t\t\t   ,[EstimatedOrActual]\r\n\t\t\t\t\t\t\t   ,[MeterReadStatus]\r\n\t\t\t\t\t\t\t   ,[MeterReadSource]\r\n\t\t\t\t\t\t\t   ,[MeterReadReason]\r\n\t\t\t\t\t\t\t   ,[MeterType]\r\n\t\t\t\t\t\t\t   ,[FromDate]\r\n\t\t\t\t\t\t\t   ,[ToDate]\r\n\t\t\t\t\t\t\t   ,[MeterFromReading]\r\n\t\t\t\t\t\t\t   ,[MeterToReading]\r\n\t\t\t\t\t\t\t   ,[MeterReadTime]\r\n\t\t\t\t\t\t\t   ,[MeterCCF]\r\n\t\t\t\t\t\t\t   ,Therms\r\n\t\t\t\t\t\t\t   ,ThermsFactor\r\n\t\t\t\t\t\t\t   ,GasRateCode\r\n\t\t\t\t\t\t\t   ,[FixFactor]\r\n\t\t\t\t\t\t\t   ,[PartSupplied]\r\n\t\t\t\t\t\t\t   ,[MeterBillingStatus]\r\n\t\t\t\t\t\t\t   ,[PreviousMeterBillingStatus]\r\n\t\t\t\t\t\t\t   ,[MeterBillingStatusCodePeriod]\r\n\t\t\t\t\t\t\t   ,[SpannedMeterCCF]\r\n\t\t\t\t\t\t\t   ,[SpannedFromDate]\r\n\t\t\t\t\t\t\t   ,[SpannedToDate]\r\n\t\t\t\t\t\t\t   ,[SpannedMeterReadingFrom]\r\n\t\t\t\t\t\t\t   ,[SpannedMeterReadingTo]\r\n\t\t\t\t\t\t\t   ,[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t   ,[SpannedTotalPercentage])\r\n\r\n\t\t\t\t\t\tSELECT   UploadMeterReadDetailSeqid           \t\t---[UploadMeterBillingSeqid]                                            \r\n\t\t\t\t\t\t\t\t,UtilityCompanySeqid                \t\t---[UtilityCompanySeqid]                                       \r\n\t\t\t\t\t\t\t\t,AccountInvoiceBillingGroup         \t\t---[AccountInvoiceBillingGroup]                                              \r\n\t\t\t\t\t\t\t\t,BillingPeriod                      \t\t---[BillingPeriod]                                 \r\n\t\t\t\t\t\t\t\t,@ProratedBillingPeriodRevision      \t\t---[BillingPeriodRevision]                                         \r\n\t\t\t\t\t\t\t\t,AccountNumber                      \t\t---[OriginalAccountNumber]                                 \r\n\t\t\t\t\t\t\t\t,MeterReadWorkDay                   \t\t---[MeterReadWorkDay]                                    \r\n\t\t\t\t\t\t\t\t,UtilityServiceAccountName          \t\t---[UtilityServiceAccountName]                                             \r\n\t\t\t\t\t\t\t\t,UtilityServiceAddress              \t\t---[UtilityServiceAddress]                                         \r\n\t\t\t\t\t\t\t\t,Borough                            \t\t---[Borough]                           \r\n\t\t\t\t\t\t\t\t,Zipcode                            \t\t---[Zipcode]                           \r\n\t\t\t\t\t\t\t\t,State                              \t\t---[State]                         \r\n\t\t\t\t\t\t\t\t,ActivityCode                       \t\t---[ActivityCode]                                \r\n\t\t\t\t\t\t\t\t,ActivityDateTime                   \t\t---[ActivityDateTime]                                    \r\n\t\t\t\t\t\t\t\t,TransactionCode                    \t\t---[TransactionCode]                                   \r\n\t\t\t\t\t\t\t\t,SpecialLedgerAccountNumber         \t\t---[SpecialLedgerAccountNumber]                                              \r\n\t\t\t\t\t\t\t\t,MeterNumber                        \t\t---[MeterNumber] \r\n\t\t\t\t\t\t\t\t,CurrentMeterNumber\t\t\t\t\t\t\t---[CurrentMeterNumber]                              \r\n\t\t\t\t\t\t\t\t,MeterConstant                      \t\t---[MeterConstant]                                 \r\n\t\t\t\t\t\t\t\t,NumberOfDials                      \t\t---[NumberOfDials]                                 \r\n\t\t\t\t\t\t\t\t,MeterReadType                      \t\t---[MeterReadType]                                 \r\n\t\t\t\t\t\t\t\t,EstimatedOrActual\t                  \t\t---[EstimatedOrActual]                                     \r\n\t\t\t\t\t\t\t\t,MeterReadStatus                    \t\t---[MeterReadStatus]                                   \r\n\t\t\t\t\t\t\t\t,MeterReadSource                    \t\t---[MeterReadSource]                                   \r\n\t\t\t\t\t\t\t\t,MeterReadReason                    \t\t---[MeterReadReason]                                   \r\n\t\t\t\t\t\t\t\t,MeterType                          \t\t---[MeterType]                             \r\n\t\t\t\t\t\t\t\t,@ProratedFromDate\t\t               \t\t---[FromDate]                                        \r\n\t\t\t\t\t\t\t\t,@ProratedToDate\t                 \t\t---[ToDate]                                      \r\n\t\t\t\t\t\t\t\t,@ProratedFromReading                  \t\t---[MeterFromReading]                                    \r\n\t\t\t\t\t\t\t\t,@ProratedToReading                    \t\t---[MeterToReading]                                  \r\n\t\t\t\t\t\t\t\t,MeterReadTime                      \t\t---[MeterReadTime]                                 \r\n\t\t\t\t\t\t\t\t,@LastPeriodCCF                        \t\t---[MeterCCF]     \r\n\t\t\t\t\t\t\t\t,@LastPeriodTherms\t\t\t\t\t\t\t---Therms\r\n\t\t\t\t\t\t\t\t,@ThermsFactor\t\t\t\t\t\t\t\t---ThermsFactor        \r\n\t\t\t\t\t\t\t\t,@GasRateCode\t\t\t\t\t\t\t\t---GasRateCode               \r\n\t\t\t\t\t\t\t\t,FixFactor                          \t\t---[FixFactor]                             \r\n\t\t\t\t\t\t\t\t,PartSupplied\t\t\t\t\t\t\t\t---[PartSupplied]\r\n\t\t\t\t\t\t\t\t,NULL\t\t\t\t\t\t\t\t\t\t---[MeterBillingStatus]\r\n\t\t\t\t\t\t\t\t,NULL \t\t\t\t\t\t\t\t\t\t---[PreviousMeterBillingStatus]\r\n\t\t\t\t\t\t\t\t,NULL\t\t\t\t\t\t\t\t\t\t---[MeterBillingStatusCodePeriod]\r\n\t\t\t\t\t\t\t\t,@TotalCCF\t\t\t\t\t\t\t\t\t---[SpannedMeterCCF]\r\n\t\t\t\t\t\t\t\t,@FromDate\t\t\t\t\t\t\t\t\t---[SpannedFromDate]\r\n\t\t\t\t\t\t\t\t,@ToDate\t\t\t\t\t\t\t\t\t---[SpannedToDate]\r\n\t\t\t\t\t\t\t\t,MeterFromReading\t\t\t\t\t\t\t---[SpannedMeterReadingFrom]\r\n\t\t\t\t\t\t\t\t,MeterToReading\t\t\t\t\t\t\t\t---[SpannedMeterReadingTo]\r\n\t\t\t\t\t\t\t\t,@MonthlyPercentage\t\t\t\t\t\t\t---[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t\t,@TotalSpannedPercentage\t\t\t\t\t---[SpannedTotalPercentage]\r\n\t\t                                                                                            \r\n\t\t\t\t\t\tfrom CrisNationalGridWest.UploadMeterReadDetail \r\n\t\t\t\t\t\twhere ( UploadMeterReadDetailSeqid = @UploadMeterReadDetailSeqid )\r\n\r\n\r\n\t\t\t\t\t\t--\tProcess the next row\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\tFETCH NEXT FROM SpannedBillCursor INTO @UploadMeterReadDetailSeqid\r\n\t\t\t\tEnd -- end processing for fetched record\r\n\r\n\t\t\t\tCLOSE SpannedBillCursor; -- close cursor\r\n\t\t\t\tDEALLOCATE SpannedBillCursor;\r\n\r\n\r\n\r\n\t\t\t\tcommit TRANSACTION spannedTransaction\r\n\r\n\r\n\t\tEND TRY\r\n\t\tBEGIN CATCH\r\n\t\t\r\n\t\t\t\tDECLARE @CustomErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorSeverity INT;\r\n\t\t\t\tDECLARE @ErrorState INT;\r\n\t\t\t\tDECLARE @ErrorNumber INT;\r\n\t\t\t\tDECLARE @ErrorLine INT;\r\n\t\t\t\tDECLARE @ErrorProcedure NVARCHAR(126);\r\n\t\t\t\t--\r\n\t\t\t\tSELECT \r\n\t\t\t\t\t@CustomErrorMessage ='Error in StoredProcedure %s at line number %d' + @crlf + 'Billing Period: %s' + @crlf + 'Account:Meter (%s : %s)  ' + @crlf,\r\n\t\t\t\t\t@ErrorMessage\t= ERROR_MESSAGE(),\r\n\t\t\t\t\t@ErrorSeverity\t= ERROR_SEVERITY(),\r\n\t\t\t\t\t@ErrorState\t\t= ERROR_STATE(),\r\n\t\t\t\t\t@ErrorNumber\t= ERROR_NUMBER(),\r\n\t\t\t\t\t@ErrorProcedure = ERROR_PROCEDURE(),\r\n\t\t\t\t\t@ErrorLine\t\t= ERROR_LINE();\t\t\t\r\n\t\t\t\t--\r\n\t\t\t\tset\t@ErrorMessage = @CustomErrorMessage + @ErrorMessage + @crlf + 'ErrorNumber: ' + cast(@ErrorNumber as varchar(10)) + @crlf\r\n\t\t\t\t--\r\n\t\t\t\tRAISERROR (@ErrorMessage, -- Message text.\r\n\t\t\t\t\t\t   @ErrorSeverity, -- Severity.\r\n\t\t\t\t\t\t   @ErrorState, -- State.\r\n\t\t\t\t\t\t   @ErrorProcedure,\r\n\t\t\t\t\t\t   @ErrorLine,\r\n\t\t\t\t\t\t   @BillingPeriod,\r\n\t\t\t\t\t\t   @AccountNumber,\r\n\t\t\t\t\t\t   @MeterNumber\r\n\t\t\t\t\t\t   ) with log;\r\n\t\t\t\t\r\n\t\t\t\tset @StatusCode  = 1\r\n\t\t\t\t\t\t   \r\n\t\t\t\tROLLBACK TRANSACTION spannedTransaction\t\r\n\t\t\t\t\t\t   \r\n\t\tEND CATCH\r\n\r\n\r\n\r\n\r\n\t\r\n end"
+        }
+      ]
+    }
+  ]
+}

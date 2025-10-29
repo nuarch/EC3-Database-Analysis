@@ -1,0 +1,921 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Published_AccountAndMeterListing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Published_AccountAndMeterListing",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report of account and meter listings for a specified billing period. It logs the usage of the report and retrieves data from a view, "
+        },
+        {
+          "type": "text",
+          "text": "Report.uvw_AccountAndMeterListing",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", based on the input parameters. The procedure supports filtering by agency code and optionally by facility number. It uses a transaction isolation level of READ UNCOMMITTED to avoid locking issues during data retrieval."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves conditional logic, dynamic joins with user-defined table-valued functions, and logging operations. The complexity arises from the conditional execution paths and the use of external functions to determine the scope of data retrieval."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report. Used for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which the report is generated. It is a key filter in the data retrieval process."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The agency code used to filter the data. It determines the scope of the data based on agency hierarchy."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OECFacilityNumber AS VARCHAR(MAX) = '*'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional parameter to filter data by a specific facility number. The default value '*' indicates that all facilities should be included."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by logging the report request using "
+                },
+                {
+                  "type": "text",
+                  "text": "Audit.usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". This includes details such as the report name, stored procedure name, requester email, and parameters used."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure checks if the "
+                },
+                {
+                  "type": "text",
+                  "text": "@OECFacilityNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is set to '*'. "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If true, it retrieves data for all facilities associated with the specified agency code."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If false, it retrieves data for a specific facility using the provided facility number."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The data is fetched from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Report.uvw_AccountAndMeterListing",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using a join with either "
+                        },
+                        {
+                          "type": "text",
+                          "text": "billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " or "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", depending on the condition."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The query filters records by "
+                        },
+                        {
+                          "type": "text",
+                          "text": "PublishedBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and ensures it matches the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This level allows dirty reads, which can improve performance by reducing locking overhead but may result in reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic Joins",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of table-valued functions for joins can impact performance, especially if these functions are complex or return large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in joins and filters ("
+                },
+                {
+                  "type": "text",
+                  "text": "AgencyCodeOEC",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "FacilitySeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") are properly indexed to optimize query performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using READ UNCOMMITTED can lead to reading uncommitted or inconsistent data, which might not be suitable for all reporting scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of VARCHAR(MAX) for "
+                },
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "@OECFacilityNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " might lead to inefficiencies if these parameters are excessively large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Dependencies",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on external functions ("
+                },
+                {
+                  "type": "text",
+                  "text": "uftn_TableGetAgencyChildrenByAgencyCodeOEC",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "uftn_TableGetOECFacilityNumberByAgencyHierarchy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "). Any changes or performance issues in these functions can directly affect the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete logging or data retrieval."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_Published_AccountAndMeterListing]\n(\r\n\t@EmailAddress AS VARCHAR(75),\r\n\t@PublishedBillingPeriod AS VARCHAR(6),\r\n\t@AgencyCodeOEC AS VARCHAR(MAX),\r\n\t@OECFacilityNumber AS VARCHAR(MAX) = '*'\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,\r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = @AgencyCodeOEC,\r\n\t\t@prmFacilityNumber_s = @OECFacilityNumber,\r\n\t\t@prmStartingBillingPeriod = NULL,\r\n\t\t@prmEndingBillingPeriod = NULL;\r\n\r\n\r\n\tIF (@OECFacilityNumber = '*')\r\n\tBEGIN\r\n\t\tSELECT DISTINCT AML.OECBN,\r\n\t\t\tAML.BIN,\r\n\t\t\tAML.BBL,\r\n\t\t\tAML.AccountAddress,\r\n\t\t\tAML.MeterAddress,\r\n\t\t\tAML.EnergyType,\r\n\t\t\tAML.PublishedBillingPeriod,\r\n\t\t\tAML.CurrentAccountNumber,\r\n\t\t\tAML.CurrentMeterNumber,\r\n\t\t\tAML.MeterEffectiveOnDate,\r\n\t\t\tAML.MeterStatus,\r\n\t\t\tAML.UtilityCompany,\r\n\t\t\tAML.FacilityName,\r\n\t\t\tAML.MeterConstant\r\n\t\tFROM Report.uvw_AccountAndMeterListing AS AML\r\n\t\t\tINNER JOIN billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress) AS AG ON AML.AgencyCodeOEC = AG.AgencyCodeOEC\r\n\t\tWHERE AML.PublishedBillingPeriod = @PublishedBillingPeriod AND AML.PublishedBillingPeriod = AML.BillingPeriod;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n\t\tSELECT DISTINCT AML.OECBN,\r\n\t\t\tAML.BIN,\r\n\t\t\tAML.BBL,\r\n\t\t\tAML.AccountAddress,\r\n\t\t\tAML.MeterAddress,\r\n\t\t\tAML.EnergyType,\r\n\t\t\tAML.PublishedBillingPeriod,\r\n\t\t\tAML.CurrentAccountNumber,\r\n\t\t\tAML.CurrentMeterNumber,\r\n\t\t\tAML.MeterEffectiveOnDate,\r\n\t\t\tAML.MeterStatus,\r\n\t\t\tAML.UtilityCompany,\r\n\t\t\tAML.FacilityName,\r\n\t\t\tAML.MeterConstant\r\n\t\tFROM Report.uvw_AccountAndMeterListing AS AML\r\n\t\t\tINNER JOIN Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy(@AgencyCodeOEC, @OECFacilityNumber, @EmailAddress) AS AG ON AML.AgencyCodeOEC = AG.AgencyCodeOEC AND AML.FacilitySeqid = AG.FacilitySeqid\r\n\t\tWHERE AML.PublishedBillingPeriod = @PublishedBillingPeriod AND AML.PublishedBillingPeriod = AML.BillingPeriod;\r\n\tEND;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

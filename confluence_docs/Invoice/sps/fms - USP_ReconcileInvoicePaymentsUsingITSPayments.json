@@ -1,0 +1,990 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "fms",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_ReconcileInvoicePaymentsUsingITSPayments",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_ReconcileInvoicePaymentsUsingITSPayments",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to reconcile invoice payments using data from ITS (presumably a payment system). It processes invoices by updating their status based on their reconciliation with ITS payments, logs the process, and handles any exceptions that occur during execution."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data selection, insertion into temporary tables, updates, and logging. It also includes error handling and transaction management, which adds to its complexity. However, it does not involve complex calculations or recursive logic, keeping it at a medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@correlationId AS VARCHAR(128)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used for tracking and logging purposes, defaults to a new GUID if not provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@machineName AS VARCHAR(128)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The name of the machine executing the procedure, defaults to the server name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@processName AS VARCHAR(128)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The name of the process, defaults to the schema and procedure name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@domain AS VARCHAR(25)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The domain of the user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@username AS VARCHAR(25)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The username of the person executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@userId AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the user executing the procedure, defaults to 0."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@exceptionDetails AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used to capture exception details in case of an error."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets up variables for logging and transaction management."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Start",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Begins a transaction to ensure atomicity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts new payment requests being processed by A&A into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@aaProcessing",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the status of these invoices to indicate they have been sent to A&A."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Logs an audit note for these invoices."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Reconciliation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts processed payment requests into another temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@aaProcessed",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the status of these invoices to indicate they have been processed by A&A."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Logs an audit note for these invoices."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Commit",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Commits the transaction if no errors occur."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Rolls back the transaction if an error occurs and logs the error details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls a logging procedure to record the operation's details, including any exceptions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables ("
+                },
+                {
+                  "type": "text",
+                  "text": "@aaProcessing",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "@aaProcessed",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") is efficient for small to medium datasets but could become a bottleneck with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the joins and WHERE clauses are supported by appropriate indexes to optimize performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is well-defined, but long-running transactions could lead to locking issues."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates invoice statuses, which could lead to concurrency issues if multiple instances run simultaneously."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While errors are caught and logged, the procedure does not provide a mechanism to retry or handle specific error types."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of in-memory tables may not scale well with very large datasets, potentially leading to memory pressure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging Overhead",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Extensive logging, especially with large volumes of data, could introduce performance overhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded values for "
+                },
+                {
+                  "type": "text",
+                  "text": "ModifiedBy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and other fields, which might not be suitable for all environments."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [fms].[USP_ReconcileInvoicePaymentsUsingITSPayments]\n(\r\n\t@correlationId AS VARCHAR(128) = NULL\r\n\t,@machineName AS VARCHAR(128) = NULL\r\n\t,@processName AS VARCHAR(128) = NULL\r\n\t,@domain AS VARCHAR(25) = NULL\r\n\t,@username AS VARCHAR(25) = NULL\r\n\t,@userId AS INT = NULL\r\n\t,@exceptionDetails AS VARCHAR(MAX) = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @action AS VARCHAR(25) = 'RETRIEVE', @severity AS VARCHAR(25) = 'INFO', @message AS VARCHAR(255) = 'Reconciled invoice payments using ITS payment(s)'\r\n\t\t,@messageDetails AS VARCHAR(MAX), @startTime AS DATETIME = GETDATE(), @elapsedTime AS INT, @sendEmail AS BIT = 0, @tranName AS VARCHAR(128) = CONVERT(VARCHAR(128), NEWID());\r\n\r\n\tSELECT @correlationId = ISNULL(@correlationId, CONVERT(VARCHAR(128), NEWID())), @machineName = COALESCE(@machineName, @@SERVERNAME, 'NA')\r\n\t\t,@processName = COALESCE(@processName, QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)) + '.' + QUOTENAME(OBJECT_NAME(@@PROCID)), 'NA')\r\n\t\t,@messageDetails\t= NULL, @userId = ISNULL(@userId, 0);\r\n\r\n\tBEGIN TRY\r\n\t\tDECLARE @aaProcessing TABLE(InvoiceID INT NOT NULL, InvoiceGroupContractID INT NOT NULL, ContractNumber VARCHAR(30) NOT NULL);\r\n\t\tDECLARE @aaProcessed TABLE(InvoiceID INT NOT NULL, InvoiceGroupContractID INT NOT NULL, ContractNumber VARCHAR(30) NOT NULL);\r\n\r\n\t\tBEGIN TRAN @tranName;\r\n\r\n\t\t-- Find only new payment requests being processed by A&A\r\n\t\tINSERT INTO @aaProcessing (InvoiceID, InvoiceGroupContractID, ContractNumber)\r\n\t\tSELECT DISTINCT IGC.InvoiceID, IGC.InvoiceGroupContractID, IGC.ContractNumber\r\n\t\tFROM Invoice.vwInvoiceGroupContracts AS IGC\r\n\t\t\tINNER JOIN its.AuditsAndAccountsPayments AS ITSPR ON RIGHT(ITSPR.InvoiceNumber ,9) = RIGHT(IGC.InvoiceNumber, 9) AND RIGHT(IGC.ContractNumber, 11) = ITSPR.PurchaseOrder_Registration\r\n\t\t\tINNER JOIN Invoice.vwInvoices AS INV ON INV.InvoiceID = IGC.InvoiceID\r\n\t\tWHERE INV.StatusID = 4 AND INV.Active = 1;\r\n\r\n\t\t-- Update status to sent to A&A\r\n\t\tUPDATE INV\r\n\t\tSET INV.StatusID = 5, INV.ModifiedDate = GETDATE(), ModifiedBy = 0\r\n\t\tFROM Invoice.Invoice AS INV\r\n\t\t\tINNER JOIN @aaProcessing AS PR ON PR.InvoiceID = INV.InvoiceID;\r\n\r\n\t\t-- Create audit note for all invoices that are being processed by A&A\r\n\t\tINSERT INTO Common.Note(ParentType, ParentID, [Action], Note, CreatedBy)\r\n\t\tSELECT 'INVOICE', T.InvoiceID, 'SENT TO A&A', 'A&A processing invoice', 0\r\n\t\tFROM (SELECT DISTINCT InvoiceID FROM @aaProcessing) AS T;\r\n\r\n\t\t-- Find only new payment requests processed by A&A\r\n\t\tINSERT INTO @aaProcessed (InvoiceID, InvoiceGroupContractID, ContractNumber)\r\n\t\tSELECT DISTINCT IGC.InvoiceID, IGC.InvoiceGroupContractID, IGC.ContractNumber\r\n\t\tFROM Invoice.vwInvoiceGroupContracts AS IGC\r\n\t\t\tINNER JOIN its.AuditsAndAccountsPayments AS ITSPR ON RIGHT(ITSPR.Invoicenumber, 9) = RIGHT(IGC.InvoiceNumber, 9) AND RIGHT(IGC.ContractNumber, 11) = ITSPR.PurchaseOrder_Registration\r\n\t\t\tINNER JOIN Invoice.vwInvoices AS INV ON INV.InvoiceID = IGC.InvoiceID\r\n\t\tWHERE INV.StatusID = 5 AND INV.Active = 1 AND NOT ITSPR.VoucherNumber IS NULL;\r\n\r\n\t\t-- Update status to processed by A&A\r\n\t\tUPDATE INV\r\n\t\tSET INV.StatusID = 6, INV.ModifiedDate = GETDATE(), ModifiedBy = 0\r\n\t\tFROM Invoice.Invoice AS INV\r\n\t\t\tINNER JOIN @aaProcessed AS PR ON PR.InvoiceID = INV.InvoiceID;\r\n\r\n\t\t-- Create audit note for all invoices that have been processed by A&A\r\n\t\tINSERT INTO Common.Note(ParentType, ParentID, [Action], Note, CreatedBy)\r\n\t\tSELECT 'INVOICE', T.InvoiceID, 'PROCESSED BY A&A', 'A&A has sent invoice to FMS', 0\r\n\t\tFROM (SELECT DISTINCT InvoiceID FROM @aaProcessed) AS T;\r\n\r\n\t\tCOMMIT TRAN @tranName;\r\n\tEND TRY\r\n\tBEGIN CATCH\r\n\t\tIF (XACT_STATE() <> 0)\r\n\t\tBEGIN\r\n\t\t\tROLLBACK TRAN @tranName;\r\n\t\tEND;\r\n\r\n\t\tSELECT @exceptionDetails = ERROR_MESSAGE(), @severity = 'ERROR', @message = 'Failed to reconcile invoice payments using ITS payment(s)', @sendEmail\t= 1;\r\n\tEND CATCH;\r\n\r\n\tSET @elapsedTime = DATEDIFF(MILLISECOND, GETDATE(), @startTime);\r\n\r\n\tEXEC dbo.USP_AppLogCreate @correlationId = @correlationId\r\n\t\t,@machineName = @machineName\r\n\t\t,@processName = @processName\r\n\t\t,@action = @action\r\n\t\t,@severity = @severity\r\n\t\t,@message = @message\r\n\t\t,@messageDetails = @messageDetails\r\n\t\t,@exceptionDetails = @exceptionDetails\r\n\t\t,@domain = @domain\r\n\t\t,@username = @username\r\n\t\t,@userId = @userId\r\n\t\t,@sendEmail = @sendEmail\r\n\t\t,@elapsedTime = @elapsedTime;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

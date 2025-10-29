@@ -1,0 +1,772 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Temporal",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByEncoreMonthlyPayments",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByEncoreMonthlyPayments",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage the insertion and update of fiscal period data from a published source table to a temporal destination table. It ensures that only the next sequential period is inserted and updates existing records to reflect changes in the fiscal period data. The procedure checks for data integrity by ensuring hash values are populated and manages effective period dates for records in the temporal table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple checks and updates, including validation of input parameters, data integrity checks, and complex SQL operations such as joins and conditional updates. The complexity is increased by the need to handle temporal data and ensure data consistency across different periods."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the billing period that is intended to be inserted into the temporal table. It is expected to be in a specific format (likely YYYYMM) and is used to validate and control the insertion process."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the next period based on the maximum effective start period in the temporal table using a helper function "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if the provided "
+                },
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " matches the calculated next period. If not, it raises an error and exits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity Check",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It verifies that all records in both the source and destination tables have non-null hash values. If any are missing, it raises an error and exits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Inserts new records from the source table into the temporal table for the specified billing period, ensuring no duplicate entries for the same hash value."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Existing Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveEndPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for records in the temporal table that are affected by the new period:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records where the fiscal year matches but the period is earlier."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records that exist in the temporal table but not in the current period of the source table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records that exist in the temporal table but not in the source table for the current period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although commented out, the procedure is designed to be executed within a transaction to ensure atomicity, with error handling to rollback in case of failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in joins and where clauses, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveStartPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure should be executed in a controlled environment to prevent concurrency issues, especially since it involves updates and inserts on potentially large tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The commented transaction management should be enabled to ensure data consistency, but care should be taken to minimize the transaction duration to avoid locking issues."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the hash values are not properly maintained, the procedure will fail, indicating a need for robust data validation processes upstream."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current error handling is rudimentary and could be enhanced to provide more detailed logging and recovery options."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without proper transaction management, there is a risk of data inconsistency due to concurrent modifications. Enabling transactions and ensuring they are as short as possible can mitigate this risk."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade, necessitating optimization of queries and possibly partitioning of tables."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Temporal].[usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByEncoreMonthlyPayments]\n\t@PublishedBillingPeriod VARCHAR(6)\r\nAS\r\n    BEGIN\t\r\n\tDECLARE @MaxPeriod VARCHAR(6) = (SELECT MAX(EffectiveStartPeriod) FROM Published.TemporalFiscalYearPivotByEncoreMonthlyPayments )\r\n\tDECLARE @NextPeriod VARCHAR(6) =  [dbo].[CreateNextPeriod](@MaxPeriod, 'M')\r\n        \r\n\t\t\r\n\t\t-- Make sure only next period after the max is being inserted\r\n\t\tIF ( @NextPeriod <> @PublishedBillingPeriod  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: You can only insert this period: %s', 12, 1, @NextPeriod) \r\n\t\t\tRETURN\r\n\t\tEND\r\n\t\t\t\t\t\t\r\n\t\t-- make sure the hashcode is populated before starting\r\n\t\tDECLARE @CountNullHashCodeSource int = ( SELECT COUNT(*) FROM [Published].[FiscalYearPivotByEncoreMonthlyPayments] WHERE HashValue IS null )\r\n\t\tDECLARE @CountNullHashCodeDestination INT =  ( SELECT COUNT(*) FROM [Published].[TemporalFiscalYearPivotByEncoreMonthlyPayments] WHERE HashValue IS null )\t\t\r\n\t\tIF ( @CountNullHashCodeSource > 0 OR @CountNullHashCodeDestination > 0  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: HashCode is missing from either [Published].[TemporalFiscalYearPivotByEncoreMonthlyPayments] or [Published].[FiscalYearPivotByEncoreMonthlyPayments].', 12, 1) \t\t\r\n\t\t\tRETURN\r\n\t\tEND\r\n\t\t\r\n\t\t\t\t--BEGIN TRANSACTION\r\n\t\t\t\t--\tBEGIN TRY \r\n\t\t\t\t\t---Process start---------------------------------------\r\n\t\t\t\t\t\r\n\t\t\t\t\tINSERT INTO Published.TemporalFiscalYearPivotByEncoreMonthlyPayments\r\n\t\t\t\t\t        ( FiscalYear\r\n\t\t\t\t\t        , JulyEncoreMonthlyDollars\r\n\t\t\t\t\t        , AugustEncoreMonthlyDollars\r\n\t\t\t\t\t        , SeptemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , OctoberEncoreMonthlyDollars\r\n\t\t\t\t\t        , NovemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , DecemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , JanuaryEncoreMonthlyDollars\r\n\t\t\t\t\t        , FebruaryEncoreMonthlyDollars\r\n\t\t\t\t\t        , MarchEncoreMonthlyDollars\r\n\t\t\t\t\t        , AprilEncoreMonthlyDollars\r\n\t\t\t\t\t        , MayEncoreMonthlyDollars\r\n\t\t\t\t\t        , JuneEncoreMonthlyDollars\r\n\t\t\t\t\t        , FiscalYearToDateEncoreMonthlyDollars\r\n\t\t\t\t\t        , Notes\r\n\t\t\t\t\t        , AuthenticatedUserID\r\n\t\t\t\t\t        , DateAdded\r\n\t\t\t\t\t        , LastUpdate\r\n\t\t\t\t\t        , EffectiveStartPeriod\r\n\t\t\t\t\t        , EffectiveEndPeriod\r\n\t\t\t\t\t        , HashValue\r\n\t\t\t\t\t        )\r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t\t\t  \t\tSELECT \r\n\t\t\t\t\t\t\t  FiscalYear\r\n\t\t\t\t\t        , JulyEncoreMonthlyDollars\r\n\t\t\t\t\t        , AugustEncoreMonthlyDollars\r\n\t\t\t\t\t        , SeptemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , OctoberEncoreMonthlyDollars\r\n\t\t\t\t\t        , NovemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , DecemberEncoreMonthlyDollars\r\n\t\t\t\t\t        , JanuaryEncoreMonthlyDollars\r\n\t\t\t\t\t        , FebruaryEncoreMonthlyDollars\r\n\t\t\t\t\t        , MarchEncoreMonthlyDollars\r\n\t\t\t\t\t        , AprilEncoreMonthlyDollars\r\n\t\t\t\t\t        , MayEncoreMonthlyDollars\r\n\t\t\t\t\t        , JuneEncoreMonthlyDollars\r\n\t\t\t\t\t        , FiscalYearToDateEncoreMonthlyDollars\r\n\t\t\t\t\t        , Notes\r\n\t\t\t\t\t        , AuthenticatedUserID\r\n\t\t\t\t\t        , DateAdded\r\n\t\t\t\t\t        , LastUpdate\r\n\t\t\t\t\t       \r\n\t\t\t\t\t\t\t, alsbf.PublishedBillingPeriod\r\n\t\t\t\t\t\t\t, '999912' \r\n\t\t\t\t\t\t\t, alsbf.HashValue\r\n\t\t\r\n\t\t\t\t\t\tFROM Published.FiscalYearPivotByEncoreMonthlyPayments AS alsbf\r\n\t\t\t\t\t\tleft JOIN \r\n\t\t\t\t\t\t(SELECT t.HashValue,t.EffectiveStartPeriod FROM Published.TemporalFiscalYearPivotByEncoreMonthlyPayments t WHERE EffectiveEndPeriod='999912') AS talsbf \r\n\t\t\t\t\t\tON talsbf.hashValue = alsbf.hashValue\r\n\t\t\t\t\t\tWHERE alsbf.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\tAND talsbf.EffectiveStartPeriod IS NULL\r\n\t\t\t\t\t\t-- we are joining with active data only\r\n\r\n\r\n\r\n\t\t\t\t\t\t--PRINT 'UPDATE 1 / Updating data change / EffectiveEndPeriod'\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is data change, just set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByEncoreMonthlyPayments\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT previousPeriods.Seqid \r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(SELECT talrdfcp.FiscalYear FROM Published.TemporalFiscalYearPivotByEncoreMonthlyPayments AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod=@PublishedBillingPeriod) AS processingPeriod\r\n\t\t\t\t\t\t\tINNER JOIN \r\n\t\t\t\t\t\t\t(SELECT talrdfcp.FiscalYear,talrdfcp.Seqid,talrdfcp.EffectiveEndPeriod FROM Published.TemporalFiscalYearPivotByEncoreMonthlyPayments AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod<@PublishedBillingPeriod) AS previousPeriods\r\n\t\t\t\t\t\t\tON previousPeriods.FiscalYear = processingPeriod.FiscalYear\r\n\t\t\t\t\t\t\tWHERE previousPeriods.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t)\r\n\r\n\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t--PRINT 'UPDATE 2 / this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod'\r\n\t\t\t\t\t\t-- this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByEncoreMonthlyPayments\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT talrdfcp.Seqid FROM \r\n\t\t\t\t\t\t\tPublished.TemporalFiscalYearPivotByEncoreMonthlyPayments AS talrdfcp\r\n\t\t\t\t\t\t\tLEFT JOIN \r\n\t\t\t\t\t\t\tPublished.FiscalYearPivotByEncoreMonthlyPayments AS alrdfcp\r\n\t\t\t\t\t\t\tON alrdfcp.hashValue = talrdfcp.hashValue \r\n\t\t\t\t\t\t\tWHERE alrdfcp.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\t\tAND  talrdfcp.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t\tAND alrdfcp.FiscalYear IS NULL\r\n\t\t\t\t\t\t)\r\n\r\n\r\n\t\t\t\t\t\t--PRINT 'UPDATE 3 / this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source'\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByEncoreMonthlyPayments\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT t.Seqid\r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT Seqid,HashValue FROM Published.TemporalFiscalYearPivotByEncoreMonthlyPayments\r\n\t\t\t\t\t\t\t\tWHERE EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) t\r\n\t\t\t\t\t\t\tLEFT JOIN\r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT ammlrdfcp.HashValue,ammlrdfcp.PublishedBillingPeriod FROM Published.FiscalYearPivotByEncoreMonthlyPayments AS ammlrdfcp\r\n\t\t\t\t\t\t\t\tWHERE ammlrdfcp.PublishedBillingPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) p \r\n\t\t\t\t\t\t\tON p.hashValue = t.hashValue\r\n\t\t\t\t\t\t\tWHERE p.PublishedBillingPeriod IS NULL\r\n\t\t\t\t\t\t)\r\n\t\t\t\t\t\t--PROCESS ENDS-------------------------\r\n\t\t\t--\tCOMMIT TRANSACTION\r\n\t\t\t--END TRY\r\n\t\t\t\r\n\r\n\r\n\t\t\t--BEGIN CATCH \r\n\t\t\t--  RAISERROR('The Process Failed', 16, 1)\r\n\t\t\t--  ROLLBACK TRANSACTION\r\n\t\t\t--  RETURN\r\n\t\t\t--END CATCH \t\t\t          \r\n         \t\t\t\r\n\t\t\tPRINT 'process finished ' \r\n    END"
+        }
+      ]
+    }
+  ]
+}

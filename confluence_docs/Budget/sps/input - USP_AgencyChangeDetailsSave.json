@@ -1,0 +1,1020 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "input",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_AgencyChangeDetailsSave",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_AgencyChangeDetailsSave",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to handle the insertion and updating of agency change details within a SQL Server database. It processes a set of records provided as a table-valued parameter and updates or inserts them into the "
+        },
+        {
+          "type": "text",
+          "text": "input.agencychangedetail",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. Additionally, it updates the "
+        },
+        {
+          "type": "text",
+          "text": "ModifiedDate",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "ModifiedBy",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " fields in the "
+        },
+        {
+          "type": "text",
+          "text": "input.AgencyChange",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and changes the status of related records in the "
+        },
+        {
+          "type": "text",
+          "text": "budget.Scenario",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to 'REQUIRERECALC' if they are currently 'CALCULATED'."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the use of a cursor for row-by-row processing, conditional logic for determining whether to update or insert records, and the involvement of multiple tables. The procedure also includes updates to related tables, which adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@details AS input.UDT_AgencyChangeDetail READONLY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A table-valued parameter that contains the details of agency changes. This parameter is expected to be a user-defined table type that includes columns corresponding to the fields in the "
+                },
+                {
+                  "type": "text",
+                  "text": "input.agencychangedetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy AS VARCHAR(25) = 'SYSTEM'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional parameter that specifies who is performing the action. It defaults to 'SYSTEM' if not provided."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of row count messages, which can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Several variables are declared to hold data from the cursor and to manage the insertion of new records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Entity ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the next available "
+                },
+                {
+                  "type": "text",
+                  "text": "agencychangedetailentityid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " by selecting the maximum current ID and adding one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor is declared and opened to iterate over the records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "@details",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table-valued parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Row Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each row, the procedure checks if "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AgencyChangeDetailEntityId",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is greater than -1."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If true, it updates the existing record in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.agencychangedetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If false, it inserts a new record using the calculated "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AgencyChangeDetailEntityIdMaxPlusOne",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all rows."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Related Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.AgencyChange",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated with the current date and the action performer."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "budget.Scenario",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to set the status to 'REQUIRERECALC' for records related to the processed "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AgencyChangeID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " that are currently 'CALCULATED'."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes rows one at a time. Consider using set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction handling, which could lead to concurrency issues if multiple instances of the procedure are run simultaneously."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "agencychangedetailentityid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "AgencyChangeID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to improve the performance of update and insert operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without explicit transaction management, there is a risk of data inconsistency if the procedure is executed concurrently by multiple users."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which could lead to unhandled exceptions and partial data updates in case of failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor may not scale well with large datasets, potentially leading to long execution times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "agencychangedetailentityid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is unique and correctly managed, which may not hold true if there are concurrent inserts or updates outside this procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [input].[USP_AgencyChangeDetailsSave]\r\n(\r\n\t@details AS input.UDT_AgencyChangeDetail READONLY\r\n\t,@actionBy AS VARCHAR(25) = 'SYSTEM'\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @AgencyChangeDetailEntityIdMaxPlusOne AS INT, @AgencyChangeDetailEntityId AS INT, @AgencyChangeID AS INT\r\n\t\t,@AgencyCode AS VARCHAR(6), @FacilityNo AS VARCHAR(10), @FacilityName AS VARCHAR(100), @IsNewAddition AS BIT = 0\r\n\t\t,@EntireYear AS BIT = 0, @ActionDescription AS VARCHAR(100), @AddRemoveFacility AS VARCHAR(100), @EffectiveDate AS DATETIME\r\n\t\t,@Notes AS VARCHAR(200), @BudgetGroupID AS INT, @BillingPeriod AS INT, @DemandUsage AS DECIMAL(18, 5) = 0.0\r\n\t\t,@EnergyUsage AS DECIMAL(18, 5) = 0.0, @EnergyUsagePeakPercentage AS DECIMAL(18, 5) = 0.0, @EnergyUsageReactivePower AS DECIMAL(18, 5) = 0.0\r\n\t\t,@StreetLightingFacilityPoints AS DECIMAL(18, 5) = 0.0;\r\n\r\n\tSELECT @AgencyChangeDetailEntityIdMaxPlusOne = Max(agencychangedetailentityid) + 1 FROM input.agencychangedetail;\r\n\r\n\tDECLARE @detailCursor CURSOR;    \r\n    SET @detailCursor =  CURSOR FOR SELECT AgencyChangeDetailEntityId,\r\n\t\tagencychangeid,\r\n\t\tagencycode, \r\n\t\tfacilityno, \r\n\t\tfacilityname,\r\n\t\tisnewaddition,\r\n\t\tentireyear,\r\n\t\tactionDescription,\r\n\t\taddRemoveFacility,\r\n\t\teffectivedate,\r\n\t\tnotes,  \r\n\t\tbudgetgroupid, \r\n\t\tbillingperiod, \r\n\t\tdemandusage, \r\n\t\tenergyusage, \r\n\t\tenergyusagepeakpercentage, \r\n\t\tenergyusagereactivepower, \r\n\t\tstreetlightingfacilitypoints \r\n\tFROM @details;\r\n\r\n\tOPEN @detailCursor; \r\n\tFETCH NEXT FROM @detailCursor INTO @AgencyChangeDetailEntityId\r\n\t\t,@AgencyChangeID\r\n\t\t,@AgencyCode\r\n\t\t,@FacilityNo\r\n\t\t,@FacilityName\r\n\t\t,@IsNewAddition\r\n\t\t,@EntireYear\r\n\t\t,@ActionDescription\r\n\t\t,@AddRemoveFacility\r\n\t\t,@EffectiveDate\r\n\t    ,@Notes\r\n\t\t,@BudgetGroupID\r\n\t\t,@BillingPeriod\r\n\t\t,@DemandUsage\r\n\t\t,@EnergyUsage\r\n\t\t,@EnergyUsagePeakPercentage\r\n\t\t,@EnergyUsageReactivePower\r\n\t\t,@StreetLightingFacilityPoints;\r\n\r\n\tWHILE (@@FETCH_STATUS = 0)\r\n\tBEGIN\r\n\t\tIF (@AgencyChangeDetailEntityId > -1)\r\n\t\tBEGIN\r\n\t\t\tUPDATE input.agencychangedetail\r\n\t\t\tSET AgencyCode = @AgencyCode\r\n\t\t\t\t,FacilityNo = @FacilityNo\r\n\t\t\t\t,FacilityName = @FacilityName\r\n\t\t\t\t,IsNewAddition = @IsNewAddition\r\n\t\t\t\t,EntireYear = @EntireYear\r\n\t\t\t\t,ActionDescription = @ActionDescription\r\n\t\t\t\t,AddRemoveFacility = @AddRemoveFacility\r\n\t\t\t\t,EffectiveDate = @EffectiveDate\r\n\t            ,Notes = @Notes\r\n\t\t\t\t,BudgetGroupID = @BudgetGroupID\r\n\t\t\t\t,DemandUsage = @DemandUsage\r\n\t\t\t\t,EnergyUsage = @EnergyUsage\r\n\t\t\t\t,EnergyUsagePeakPercentage = @EnergyUsagePeakPercentage\r\n\t\t\t\t,EnergyUsageReactivePower = @EnergyUsageReactivePower\r\n\t\t\t\t,StreetLightingFacilityPoints = @StreetLightingFacilityPoints\r\n\t\t\tWHERE AgencyChangeDetailEntityId = @AgencyChangeDetailEntityId\r\n\t\t\t\tAND BillingPeriod = @BillingPeriod;\r\n\t\tEND;\r\n\t\tELSE\r\n\t\tBEGIN\r\n\t\t\tINSERT INTO input.agencychangedetail(agencychangedetailentityid\r\n\t\t\t\t,agencychangeid\r\n\t\t\t\t,agencycode\r\n\t\t\t\t,facilityno\r\n\t\t\t\t,facilityname\r\n\t\t\t\t,budgetgroupid\r\n\t\t\t\t,isnewaddition\r\n\t\t\t\t,entireyear\r\n\t\t\t\t,actionDescription\r\n\t\t\t\t,addRemoveFacility\r\n\t\t\t\t,effectivedate\r\n\t\t\t\t,notes\r\n\t\t\t\t,billingperiod\r\n\t\t\t\t,demandusage\r\n\t\t\t\t,energyusage\r\n\t\t\t\t,energyusagepeakpercentage\r\n\t\t\t\t,energyusagereactivepower\r\n\t\t\t\t,streetlightingfacilitypoints)\r\n\t\t\tVALUES (@AgencyChangeDetailEntityIdMaxPlusOne\r\n\t\t\t\t,@AgencyChangeID\r\n\t\t\t\t,@AgencyCode\r\n\t\t\t\t,@FacilityNo\r\n\t\t\t\t,@FacilityName\r\n\t\t\t\t,@BudgetGroupID\r\n\t\t\t\t,@IsNewAddition\r\n\t\t\t\t,@EntireYear\r\n\t\t\t\t,@ActionDescription\r\n\t\t\t\t,@AddRemoveFacility\r\n\t\t\t\t,@EffectiveDate\r\n\t\t\t\t,@Notes\r\n\t\t\t\t,@BillingPeriod\r\n\t\t\t\t,@DemandUsage\r\n\t\t\t\t,@EnergyUsage\r\n\t\t\t\t,@EnergyUsagePeakPercentage\r\n\t\t\t\t,@EnergyUsageReactivePower\r\n\t\t\t\t,@StreetLightingFacilityPoints);\r\n\t\t END;\r\n\r\n\t\tFETCH NEXT FROM  @detailCursor INTO @AgencyChangeDetailEntityId\r\n\t\t    ,@AgencyChangeID\r\n\t\t    ,@AgencyCode\r\n\t\t\t,@FacilityNo\r\n\t\t\t,@FacilityName\r\n\t\t\t,@IsNewAddition\r\n\t\t\t,@EntireYear\r\n\t\t\t,@ActionDescription\r\n\t\t\t,@AddRemoveFacility\r\n\t\t\t,@EffectiveDate\r\n\t        ,@Notes\r\n\t\t\t,@BudgetGroupID\r\n\t\t\t,@BillingPeriod\r\n\t\t\t,@DemandUsage\r\n\t\t\t,@EnergyUsage\r\n\t\t\t,@EnergyUsagePeakPercentage\r\n\t\t\t,@EnergyUsageReactivePower\r\n\t\t\t,@StreetLightingFacilityPoints;\r\n\tEND;\r\n\tCLOSE @detailCursor;\r\n\tDEALLOCATE @detailCursor;\r\n\r\n\tUPDATE input.AgencyChange\r\n\tSET ModifiedDate = GETDATE(), ModifiedBy = @actionBy\r\n\tWHERE ID = @AgencyChangeID;\r\n\r\n\tUPDATE budget.Scenario\r\n\tSET [Status] = 'REQUIRERECALC'\r\n\tWHERE AgencyChangeID = @AgencyChangeID AND [Status] IN ('CALCULATED');\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

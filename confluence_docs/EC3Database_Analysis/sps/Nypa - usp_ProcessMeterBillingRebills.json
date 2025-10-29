@@ -1,0 +1,983 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Nypa",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessMeterBillingRebills",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ProcessMeterBillingRebills",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process billing adjustments for electric meters managed by the New York Power Authority (NYPA). It updates existing billing records based on adjustments specified in the "
+        },
+        {
+          "type": "text",
+          "text": "MeterBillingAdjustmentElectric",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. The procedure handles three types of adjustments: consumption only, demand only, and both consumption and demand. It updates the "
+        },
+        {
+          "type": "text",
+          "text": "MeterBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "MeterBillingElectric",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables with new data from the utility company and marks the adjustments as processed for the current period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level is medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Multiple table updates with complex joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of various variables and parameters to control the flow and logic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Handling of different adjustment types and ensuring data integrity across multiple tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure involves multiple steps and conditions to ensure correct processing of billing adjustments."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is intended to capture the ID of the user executing the procedure, although it is hardcoded to "
+                },
+                {
+                  "type": "text",
+                  "text": "1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This output parameter is used to return the execution status of the procedure, where "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates success and "
+                },
+                {
+                  "type": "text",
+                  "text": "1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration and Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by declaring and initializing various variables used throughout the process. These include flags, counters, and default values for different types of adjustments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Main Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Update `MeterBilling` Table",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": The procedure updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table with new data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBillingAdjustmentElectric",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". It sets fields such as "
+                        },
+                        {
+                          "type": "text",
+                          "text": "FireAuditTrigger",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "LastPeriodModified",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "FromDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ToDate",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and others. The update is conditional on the current processing period being 'Y' and the adjustment not being processed in the current period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Update `MeterBillingElectric` Table",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Similar to the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " update, this step updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBillingElectric",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table with relevant fields from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBillingAdjustmentElectric",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Mark Adjustments as Processed",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Finally, the procedure updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MeterBillingAdjustmentElectric",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table to mark the adjustments as processed for the current period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Counters and Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After each update, the procedure captures the number of affected rows using "
+                },
+                {
+                  "type": "text",
+                  "text": "@@rowcount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and prints these counts for logging purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved, especially those used in joins and where clauses, are properly indexed to optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates multiple tables, which could lead to locking issues in a high-concurrency environment. Consider using transaction isolation levels or row versioning to mitigate this."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the volume of data is large, consider processing in batches to reduce the impact on system resources and improve performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded User ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "AuthenticatedUserID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is hardcoded to "
+                },
+                {
+                  "type": "text",
+                  "text": "1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the updates, which may not reflect the actual user executing the procedure. This could lead to incorrect audit trails."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling mechanisms such as TRY...CATCH blocks, which could help manage exceptions and ensure graceful failure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that all necessary records exist and are correctly linked across tables. Missing or incorrect data could lead to incomplete updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The updates could cause locking issues, especially if the tables are large or frequently accessed by other processes. Consider evaluating the locking behavior and optimizing accordingly."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Nypa].[usp_ProcessMeterBillingRebills] @AuthenticatedUserID int , @StatusCode int  OUTPUT\n\r\n AS --**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Process the NYPA Meter billing adjustments bills using a set operation.\r\n--*                         \r\n--*                         Update the existing billing electric records adjusted by MeterBillingAdjustmentTypeElectric.\r\n--*                         There are only three posibilities for the MeterBillingAdjustmentTypeElectric:\r\n--*                         AdjustmentTypeConsumptionOnly = 1, AdjustmentTypeDemandOnly = 2 & AdjustmentTypeBothConsumptionAndDemand = 3\r\n--*            \r\n--*            \t\tThe  MeterBilling and MeterBillingElectric are updated with the information provided by the utility company (NYPA).  \r\n--*            \t\tThe MeterBillingAdjustmentElectric flag  ProcessedInTheCurrentPeriod is set to 'Y'es.\r\n--*            \t\tThe UploadNYPAMeterBillingTemporary  flag IsUploadProcessed  is set to 'Y'es.\r\n--*            \r\n--*            \r\n--*               \r\n--* Exec:        usp_ProcessMeterBillingByAdjustmentType\r\n--*\r\n--* Parameter(s):         \r\n--*                            @AuthenticatedUserID int,  \r\n--*                            @MeterBillingAdjustmentTypeElectric  int,  \r\n--*                            StatusCode  int output       -  Execution Return Status \r\n--*\r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*             1 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   10/26/2005\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 03/16/2015 PAH  Added AMRindicator to MeterBillingElectric\r\n--* 01/10/2008 PAH  Change UploadNYPAMeterBillingTemporary to MeterBillingAdjustmentElectric\r\n--* 11/07/2006 PAH  First Version  \r\n--* 12/12/2006 PAH  First Version  \r\n--***************************************************************************************\r\nBegin \r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\ndeclare @RC int\r\ndeclare @InvoiceTrackingSeqid int\r\ndeclare @InvoiceUtilityCompanyCoverSheetSeqid int\r\ndeclare @NYPAMeterBillingGroup  int\r\ndeclare @BillingCycle varchar(1)\r\ndeclare @BillingPeriod varchar(6)\r\ndeclare @ExhangeCodeNull varchar(2)\r\ndeclare @AdjustmentTypeConsumptionOnly varchar(1)\r\ndeclare @AdjustmentTypeDemandOnly varchar(1)\r\ndeclare @AdjustmentTypeBothConsumptionAndDemand varchar(1)\r\n--\r\n\r\n--declare @MeterBillingAdjustmentTypeElectric varchar(1) \r\ndeclare @FromDateParm varchar(1) \r\ndeclare @ToDateParm varchar(1) \r\ndeclare @Yes varchar(1) \r\ndeclare @No varchar(1) \r\ndeclare @CreateOriginalBillForRevisionPeriod varchar(1) \r\ndeclare @VoucherAmount money\r\ndeclare @CoverSheetRecordTypeForTotalAmount varchar(4)\r\ndeclare @InvoicedBill varchar(1)\r\ndeclare @BillingSequenceNumber int\r\ndeclare @VoucherCreated varchar(2)\r\ndeclare @OriginalBillDeliveryMinimumFromDate varchar(8)\r\ndeclare @OriginalBillDeliveryMaximumToDate varchar(8)\r\ndeclare @PostMarkDate varchar(8)\r\ndeclare @DatePaymentDue varchar(8)\r\ndeclare @DateAcceptanceIntoOEC varchar(8)\r\n--\r\ndeclare @MaximumRowStateValue varchar(8)\r\n--\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\n--set @VoucherCreated = 'VC'\r\n\r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\ndeclare @FindOriginalMeterBillingRecord int\r\ndeclare @FindRevisedMeterBillingRecord int\r\ndeclare @MissingOriginalMeterBillingRecord int\r\ndeclare @FindMeterBillingRecordForRevision int\r\ndeclare @MissingMeterBillingRecordForRevision int\r\ndeclare @AddMissingMeterBillingRecordForRevision int\r\ndeclare @UploadHasNotBeenProcessed varchar(1)\r\ndeclare @HasBeenProcessed varchar(1)\r\n--\r\ndeclare @MeterBillingRebillUpdateCount int\r\ndeclare @MeterBillingElectricRebillUpdateCount int\r\ndeclare @MeterBillingElectricRebillAndBackBillUpdateCount int\r\ndeclare @MeterBillingTransactionRebillAndBackBillUpdateCount int\r\n--\r\nDECLARE @errCurrentAccountNumber NVARCHAR(15)\r\nDECLARE @errOriginalAccountNumber NVARCHAR(15)\r\nDECLARE @errCurrentMeterNumber NVARCHAR(12)\r\nDECLARE @errOriginalMeterNumber NVARCHAR(12)\r\n--\r\nDECLARE @ExchangeErrorMessage NVARCHAR(4000);\r\nDECLARE @ErrorMessage NVARCHAR(4000);\r\nDECLARE @ErrorSeverity INT;\r\nDECLARE @ErrorState INT;\r\nDECLARE @ErrorNumber INT;\r\nDECLARE @ErrorLine INT;\r\nDECLARE @ErrorProcedure NVARCHAR(126);\r\n--\r\ndeclare @CommitTransaction varchar(1)  \r\n--\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\nset @MissingOriginalMeterBillingRecord = 0\r\nset @MissingOriginalMeterBillingRecord = 0\r\nset @FindOriginalMeterBillingRecord = 0\r\nset @CreateOriginalBillForRevisionPeriod = 'O'\r\n--\r\nset @AdjustmentTypeConsumptionOnly = 1\r\nset @AdjustmentTypeDemandOnly = 2\r\nset @AdjustmentTypeBothConsumptionAndDemand = 3\r\nset @MaximumRowStateValue = 2\r\nset @UploadHasNotBeenProcessed = 'N'\r\nset @Yes = 'Y'\r\nset @No = 'N'\r\n--************************************************************************************** \r\n--\tMain Processing\r\n--**************************************************************************************\r\n--\r\n\t\tset @CommitTransaction = 'Y'\r\n\t\tset @StatusCode = 0\r\n\t\t--\r\n\t\tUPDATE  Billing.MeterBilling\r\n\t\tSET\t\tFireAuditTrigger ='Y',\r\n\t\t\t\tLastPeriodModified =  Billing.MeterBillingAdjustmentElectric.BillingPeriod,\r\n\t\t\t\tFromDate = Billing.MeterBillingAdjustmentElectric.FromDate,            \r\n\t\t\t\tToDate = Billing.MeterBillingAdjustmentElectric.ToDate,            \r\n\t\t\t\tUploadFileSeqid  = Billing.MeterBillingAdjustmentElectric.MeterBillingAdjustmentElectricSeqid,\r\n\t\t\t\tMeterType =Billing.MeterBillingAdjustmentElectric.MeterType,  \r\n\t\t\t\tMeterDials =Billing.MeterBillingAdjustmentElectric.NumberOfDials, \r\n\t\t\t\tMeterConstant =Billing.MeterBillingAdjustmentElectric.ConstantMeterMultiplier, \r\n\t\t\t\tTension =Billing.MeterBillingAdjustmentElectric.MeterTensionCode,\r\n\t\t\t\tEstimatedReading = Billing.MeterBillingAdjustmentElectric.ESTOrACT , \r\n\t\t\t\tConsecutivePeriodsEstimatedReading =Billing.MeterBillingAdjustmentElectric.ConsecutivePeriodsEstimatedReading, \r\n\t\t\t\tBillingPeriodDays =Billing.MeterBillingAdjustmentElectric.BillingPeriodDays, \r\n\t\t\t\tConsumption = [dbo].[SumConsumption] (Billing.MeterBillingAdjustmentElectric.Consumption,Billing.MeterBillingAdjustmentElectric.ConsumptionHoursOffPeak,Billing.MeterBillingAdjustmentElectric.ConsumptionHoursShoulder), \r\n\t\t\t\tDemand = IsNull(Billing.MeterBillingAdjustmentElectric.Demand,0), -- Nypa Demand Billing, all others use this function to determine the demand [dbo].[MaxDemand] (Billing.MeterBillingAdjustmentElectric.Demand,Billing.MeterBillingAdjustmentElectric.DemandOffPeak,Billing.MeterBillingAdjustmentElectric.DemandShoulder),\r\n\t\t\t\tAdjustmentRecordSeqid =Billing.MeterBillingAdjustmentElectric.MeterBillingAdjustmentElectricSeqid, \r\n\t\t\t\tAuthenticatedUserID =1, --@AuthenticatedUserID, \r\n\t\t\t\tLastUpdate =getDate(),\r\n\t\t\t\tBilledDemand = Billing.MeterBillingAdjustmentElectric.BilledDemand,\r\n\t\t\t\tMeterLocation=Billing.MeterBillingAdjustmentElectric.MeterLocation,\r\n\t\t\t\tIsSpannedPeriodBill = Billing.MeterBillingAdjustmentElectric.IsSpannedPeriodBill,\r\n\t\t\t\tProductionAndDeliveryTariff = Billing.MeterBillingAdjustmentElectric.ProductionAndDeliveryTariff,\r\n\t\t\t\tAMRIndicator = Billing.MeterBillingAdjustmentElectric.AMRIndicator\r\n\t\tFROM \r\n\t\t\t\tBilling.MeterBilling INNER JOIN\r\n\t\t\t\tBilling.MeterBillingAdjustmentElectric ON Billing.MeterBilling.BillingPeriod = Billing.MeterBillingAdjustmentElectric.BillingPeriodRevision AND \r\n\t\t\t\tBilling.MeterBilling.BillingPeriodRevision = Billing.MeterBillingAdjustmentElectric.BillingPeriodRevision AND \r\n\t\t\t\tBilling.MeterBilling.AccountUtilityCompanySeqid = Billing.MeterBillingAdjustmentElectric.AccountUtilityCompanySeqid AND \r\n\t\t\t\tBilling.MeterBilling.MeterBillingSeqid = Billing.MeterBillingAdjustmentElectric.AdjustedMeterBilling INNER JOIN\r\n\t\t\t\tBilling.ApplicationTimeFrame ON Billing.MeterBillingAdjustmentElectric.BillingPeriod = Billing.ApplicationTimeFrame.BillingPeriod\r\n\t\tWHERE    \r\n\t\t\t\t(Billing.ApplicationTimeFrame.CurrentProcessingPeriod = 'Y') AND \r\n\t\t\t\t(Billing.MeterBillingAdjustmentElectric.ProcessedInTheCurrentPeriod = 'N')\r\n\t\t--\r\n\t\tset @MeterBillingRebillUpdateCount = @@rowcount\r\n\t\tprint '@MeterBillingRebillUpdateCount: '+str(@MeterBillingRebillUpdateCount)\r\n\t\t--\r\n\t\tUPDATE  Billing.MeterBillingElectric\r\n\t\tSET\t\t\r\n\t\t\t\tLastPeriodModified = Billing.MeterBillingAdjustmentElectric.BillingPeriod,            \r\n\t\t\t\tMeterBillingAdjustmentElectricRowId = Billing.MeterBillingAdjustmentElectric.MeterBillingAdjustmentElectricSeqid, \t\t\t\t\t\t\t\t\r\n\t\t\t\tMeterBillingRowState = 2,\r\n\t\t\t\tDemandReadingCode =Billing.MeterBillingAdjustmentElectric.ReadingCodeDemand, \r\n\t\t\t\tConsumptionReadingCode =Billing.MeterBillingAdjustmentElectric.ReadingCodeConsumption, \r\n\t\t\t\tReadingTypes =Billing.MeterBillingAdjustmentElectric.ReadingTypes, \r\n\t\t\t\tRecordTypeConsumption =Billing.MeterBillingAdjustmentElectric.RecordTypeConsumption, \r\n\t\t\t\tRecordTypeDemand =Billing.MeterBillingAdjustmentElectric.RecordTypeDemand, \r\n\t\t\t\tBillingPeriodDays = Billing.MeterBillingAdjustmentElectric.BillingPeriodDays,\r\n\t\t\t\tFromDate =Billing.MeterBillingAdjustmentElectric.FromDate, \r\n\t\t\t\tToDate =Billing.MeterBillingAdjustmentElectric.ToDate, \r\n\t\t\t\tConstantMeterMultiplier =Billing.MeterBillingAdjustmentElectric.ConstantMeterMultiplier, \r\n\t\t\t\tStreetLightingFacilityPoints = Billing.MeterBillingAdjustmentElectric.StreetLightingFacilityPoints, \r\n\t\t\t\tConsumption =IsNull(Billing.MeterBillingAdjustmentElectric.Consumption,0),\r\n\t\t\t\tConsumptionToReadingDate =Billing.MeterBillingAdjustmentElectric.ConsumptionToReadingDate, \r\n\t\t\t\tConsumptionFromReadingDate =Billing.MeterBillingAdjustmentElectric.ConsumptionFromReadingDate, \r\n\t\t\t\tConsumptionToReading =Billing.MeterBillingAdjustmentElectric.ConsumptionToReading,  \r\n\t\t\t\tConsumptionFromReading =Billing.MeterBillingAdjustmentElectric.ConsumptionFromReading, \r\n\t\t\t\tConsumptionHoursOffPeak =IsNull(Billing.MeterBillingAdjustmentElectric.ConsumptionHoursOffPeak,0),\r\n\t\t\t\tConsumptionHoursShoulder =IsNull(Billing.MeterBillingAdjustmentElectric.ConsumptionHoursShoulder,0),\r\n\t\t\t\tDemand =IsNull(Billing.MeterBillingAdjustmentElectric.Demand,0),\r\n\t\t\t\tDemandToReadingDate =Billing.MeterBillingAdjustmentElectric.DemandToReadingDate, \r\n\t\t\t\tDemandFromReadingDate =Billing.MeterBillingAdjustmentElectric.DemandFromReadingDate, \r\n\t\t\t\tDemandToReading =Billing.MeterBillingAdjustmentElectric.DemandToReading, \r\n\t\t\t\tDemandFromReading =Billing.MeterBillingAdjustmentElectric.DemandFromReading, \r\n\t\t\t\tDemandOffPeak =IsNull(Billing.MeterBillingAdjustmentElectric.DemandOffPeak,0),\r\n\t\t\t\tDemandShoulder =IsNull(Billing.MeterBillingAdjustmentElectric.DemandShoulder,0), \r\n\t\t\t\tRatchetDemand =NULL, --Billing.MeterBillingAdjustmentElectric.RatchetDemand,   DOES NOT EXIST CURRENTLY\r\n\t\t\t\tRatchetDemandOffPeak  =NULL, -- Billing.MeterBillingAdjustmentElectric.RatchetDemandOffPeak,   DOES NOT EXIST CURRENTLY\r\n\t\t\t\tRatchetDemandShoulder  =NULL, --Billing.MeterBillingAdjustmentElectric.RatchetDemandShoulder,   DOES NOT EXIST CURRENTLY\r\n\t\t\t\tAuthenticatedUserID =1, --@AuthenticatedUserID, \r\n\t\t\t\tProductionAndDeliveryTariff = Billing.MeterBillingElectric.ProductionAndDeliveryTariff,\r\n\t\t\t\t--  Notes =, \r\n\t\t\t\t--DateAdded =, \r\n\t\t\t\t--FireAuditTrigger ='Y',\r\n\t\t\t\tLastUpdate = getdate(),\r\n\t\t\t\tContractNumber = Billing.MeterBillingAdjustmentElectric.ContractNumber,\r\n\t\t\t\tAMRIndicator = Billing.MeterBillingAdjustmentElectric.AMRIndicator\r\n\t\tFROM \r\n\t\t\t\tBilling.MeterBilling INNER JOIN\r\n\t\t\t\tBilling.MeterBillingAdjustmentElectric ON Billing.MeterBilling.BillingPeriodRevision = Billing.MeterBillingAdjustmentElectric.BillingPeriodRevision AND \r\n\t\t\t\tBilling.MeterBilling.AccountUtilityCompanySeqid = Billing.MeterBillingAdjustmentElectric.AccountUtilityCompanySeqid AND \r\n\t\t\t\tBilling.MeterBilling.MeterBillingSeqid = Billing.MeterBillingAdjustmentElectric.AdjustedMeterBilling INNER JOIN\r\n\t\t\t\tBilling.ApplicationTimeFrame ON Billing.MeterBillingAdjustmentElectric.BillingPeriod = Billing.ApplicationTimeFrame.BillingPeriod INNER JOIN\r\n\t\t\t\tBilling.MeterBillingElectric ON Billing.MeterBilling.MeterBillingSeqid = Billing.MeterBillingElectric.MeterBillingRowId AND \r\n\t\t\t\tBilling.MeterBillingAdjustmentElectric.AdjustedMeterBillingElectric = Billing.MeterBillingElectric.MeterBillingElectricSeqid\r\n\t\tWHERE    \r\n\t\t\t\t(Billing.ApplicationTimeFrame.CurrentProcessingPeriod = 'Y') AND \r\n\t\t\t\t(Billing.MeterBillingAdjustmentElectric.ProcessedInTheCurrentPeriod = 'N')\r\n\t\t--\r\n\t\tset @MeterBillingElectricRebillUpdateCount = @@rowcount\r\n\t\tprint '@MeterBillingElectricRebillUpdateCount: '+str(@MeterBillingElectricRebillUpdateCount)\r\n\t\t--\r\n\t\t--\tThe Meter Billing Adjustment Type Electric has been processed at this point.  All meter bills should be have an associated\r\n\t\t--\twith a Meter Billing Adjustment electric record.  The final step is to update the various sequence ids into the respective \r\n\t\t--\ttables.\r\n\t\t--\r\n\t\tUPDATE  Billing.MeterBillingAdjustmentElectric\r\n\t\tSET     ProcessedInTheCurrentPeriod = 'Y',\r\n\t\t\t\tAuthenticatedUserID =1, --@AuthenticatedUserID, \r\n\t\t\t\tLastUpdate = getdate()\r\n\t\tFROM \r\n\t\t\t\tBilling.MeterBilling INNER JOIN\r\n\t\t\t\tBilling.MeterBillingElectric ON Billing.MeterBilling.MeterBillingSeqid = Billing.MeterBillingElectric.MeterBillingRowId INNER JOIN\r\n\t\t\t\tBilling.MeterBillingAdjustmentElectric INNER JOIN\r\n\t\t\t\tBilling.ApplicationTimeFrame ON Billing.MeterBillingAdjustmentElectric.BillingPeriod = Billing.ApplicationTimeFrame.BillingPeriod ON \r\n\t\t\t\tBilling.MeterBillingElectric.MeterBillingAdjustmentElectricRowId = Billing.MeterBillingAdjustmentElectric.MeterBillingAdjustmentElectricSeqid AND \r\n\t\t\t\tBilling.MeterBilling.MeterBillingSeqid = Billing.MeterBillingAdjustmentElectric.AdjustedMeterBilling AND \r\n\t\t\t\tBilling.MeterBillingElectric.MeterBillingElectricSeqid = Billing.MeterBillingAdjustmentElectric.AdjustedMeterBillingElectric\r\n\t\tWHERE   \r\n\t\t\t\t (Billing.MeterBillingAdjustmentElectric.BillingPeriod <> Billing.MeterBillingAdjustmentElectric.BillingPeriodRevision) AND \r\n\t\t\t\t (Billing.ApplicationTimeFrame.CurrentProcessingPeriod = 'Y') AND \r\n\t\t\t\t (Billing.MeterBillingAdjustmentElectric.ProcessedInTheCurrentPeriod = 'N')\r\n\t\t--\r\n\t\tset @MeterBillingTransactionRebillAndBackBillUpdateCount = @@rowcount\r\n\t\tprint '@MeterBillingTransactionRebillAndBackBillUpdateCount: '+str(@MeterBillingTransactionRebillAndBackBillUpdateCount)\r\n\t\t--\r\nEnd"
+        }
+      ]
+    }
+  ]
+}

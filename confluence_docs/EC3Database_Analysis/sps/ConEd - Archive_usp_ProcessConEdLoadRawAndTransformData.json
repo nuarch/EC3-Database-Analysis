@@ -1,0 +1,977 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Archive_usp_ProcessConEdLoadRawAndTransformData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "Archive_usp_ProcessConEdLoadRawAndTransformData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and transform raw data related to ConEdison utility billing. It involves executing an SSIS package to load raw data, transforming this data into formatted tables, handling specific billing scenarios such as net-zero transactions, spanned bills, and rate-specific refunds, and finally updating or inserting records into various summary tables. The procedure is comprehensive and involves multiple steps to ensure data integrity and accurate billing adjustments."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is high due to several factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves executing an external SSIS package using "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which requires elevated permissions and careful handling."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure performs multiple data transformations and inserts across several tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes conditional logic for handling specific billing scenarios, such as net-zero transactions and spanned bills."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure interacts with several other stored procedures and functions, indicating a complex workflow with dependencies."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is intended to return the status of the procedure execution. However, it is not utilized within the procedure, which might be an oversight or a placeholder for future use."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SSIS Package Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting up and executing an SSIS package to load raw data. This is done using "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which is enabled and disabled within the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It truncates existing data in formatted tables ("
+                },
+                {
+                  "type": "text",
+                  "text": "UploadConEdisonAccount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadConEdisonMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadConEdisonCancellation",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") to prepare for new data insertion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Transformation and Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts transformed data from preload tables into formatted tables. This involves converting dates, handling overpunch formats, and calculating fiscal years."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Identifies and removes unique net-zero transactions using a cursor-based approach."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Corrects meter data for consistency in date ranges."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Handling Specific Billing Scenarios",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processes 0-1 period rebills and spanned bills, inserting them into summary tables."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Identifies and processes refunds for specific gas rates (036 and 040), adjusting related records accordingly."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cancellation Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Loads and processes cancellation data, handling both single-period and spanned cancellations."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates or inserts cancellation records into adjustment tables, ensuring that billing period revisions are consistent."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Adjustments",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Merges rebills and cancellations into adjustment tables, ensuring data consistency and integrity."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of `xp_cmdshell`",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This can be a performance bottleneck and a security risk. It should be used judiciously and only when necessary."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncation and Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Frequent truncation and insertion operations can be resource-intensive, especially on large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of cursors for handling net-zero transactions can lead to performance degradation. Consider set-based operations as an alternative."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Queries",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves complex queries with multiple joins and aggregations, which can impact performance if not optimized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security Risks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Enabling "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " poses a significant security risk as it allows execution of shell commands. Proper security measures and permissions should be in place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency Issues",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple truncation and insertion operations, which could lead to concurrency issues in a multi-user environment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Unused Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is not utilized, which might indicate incomplete implementation or oversight."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External Procedures",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on other stored procedures and functions, which could lead to issues if those dependencies are modified or removed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ConEd].[Archive_usp_ProcessConEdLoadRawAndTransformData] (@Status int output)\nAS\r\n\r\nDECLARE @ssispath VARCHAR(1000)\r\nDECLARE @cmd VARCHAR(1000)\r\n/**********************************************\r\nUpload ConEdison Raw Data\t\r\n**********************************************/\r\n\r\n--SET @ssispath = '\\\\dcasec3sql1\\z$\\SSISpackage\\SSiSDataUpload\\ConEdison.dtsx'\r\nSET @ssispath = '\\\\MSDCASNETAPP01M\\shr_ec3_archive1$\\SSISpackage\\SSiSDataUpload\\ConEdison.dtsx'\r\nSET @cmd = 'dtexec /f \"' + @ssispath + '\"' -- set ssis path\r\nSET @cmd = @cmd + ' /SET \\Package.Variables[User::DatabaseName].Properties[Value];\"' + DB_NAME() + '\"'\r\nSET @cmd = @cmd + ' /SET \\Package.Variables[User::ServerName].Properties[Value];\"' + @@SERVERNAME + '\"' \r\n\r\nEXEC sp_configure 'show advanced options', 1\r\nRECONFIGURE\r\nEXEC sp_configure 'xp_cmdshell', 1\r\nRECONFIGURE\r\n\r\nEXEC xp_cmdshell @cmd\r\n\r\nEXEC sp_configure 'show advanced options', 1\r\nRECONFIGURE\r\nEXEC sp_configure 'xp_cmdshell', 0\r\nRECONFIGURE\r\n/************************* End Preload Data *********************/\r\n\r\n\r\n\r\n-------- Load Formated Tables\r\n\r\n--\tInitialize formatted tables prior to insertion from the flat files \r\n--\r\nTruncate table  ConEd.UploadConEdisonAccount\r\nTruncate table  ConEd.UploadConEdisonMeter\r\nTruncate table  ConEd.UploadConEdisonCancellation\r\n--\r\n\r\nINSERT INTO ConEd.[UploadConEdisonAccount]\r\n           ([BillingPeriod]\r\n           ,[BillingPeriodRevision]\r\n           ,[FirstPeriodCanceled]\r\n           ,[DeltaNumberOfPeriods]\r\n           ,[RecordType]\r\n           ,[AccountNumber]\r\n           ,[FacilityName]\r\n           ,[ServiceAddress]\r\n           ,[FromDate]\r\n           ,[ToDate]\r\n           ,[BillingPeriodDays]\r\n           ,[CCF]\r\n           ,[BilledAmount]\r\n           ,[PreviousBalance]\r\n           ,[Therms]\r\n           ,[ThermFactor]\r\n           ,[TariffCode]\r\n           ,[Dials]\r\n           ,[FiscalYear]\r\n           ,[PostingDate]\r\n           ,[AuthenticatedUserID]\r\n           ,[DateAdded]\r\n           ,[LastUpdate])\r\nSELECT\r\nBillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, \r\nFacilityName, ServiceAddress, [dbo].[JulianDateToYYYYMMDD] (FromDate) as FromDate, [dbo].[JulianDateToYYYYMMDD] (ToDateJul) as ToDate, BillingPeriodDays, \r\ndbo.ConvertOverpunch8ToInt32(CCF) AS CCF, dbo.ConvertOverpunch9ToMoney(BilledAmount) AS BilledAmount, dbo.ConvertOverpunch9ToMoney(PreviousBalance) AS PreviousBalance, \r\ndbo.ConvertOverpunch8ToInt32(Therms) as Therms, dbo.ConvertOverpunch4ToDecimal(ThermFactor) AS ThermFactor, TariffCode, Dials, \r\n[dbo].[CalculateFiscalYear] (dbo.JulDatetoYYYYMM(ToDateJul)) as calcFiscalYear, [dbo].[JulianDateToYYYYMMDD] (PostingDate) as PostingDate, \r\n1, getdate(),getdate()\r\nFROM ConEd.UploadConEdisonAccountPreload\r\n\r\n\r\nINSERT INTO ConEd.[UploadConEdisonCancellation]\r\n           ([BillingPeriod]\r\n           ,[BillingPeriodRevision]\r\n           ,[FirstPeriodCanceled]\r\n           ,[DeltaNumberOfPeriods]\r\n           ,[RecordType]\r\n           ,[AccountNumber]\r\n           ,[MeterNumber]\r\n           ,[FacilityName]\r\n           ,[ServiceAddress]\r\n           ,[FromDate]\r\n           ,[ToDate]\r\n           ,[BillingPeriodDays]\r\n           ,[CCF]\r\n           ,[BilledAmount]\r\n           ,[Therms]\r\n           ,[ThermFactor]\r\n           ,[TariffCode]\r\n           ,[Dials]\r\n           ,[FiscalYear]\r\n           ,[PostingDate]\r\n           ,[AuthenticatedUserID]\r\n           ,[DateAdded]\r\n           ,[LastUpdate])\r\nSELECT\r\nBillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, RecordType, AccountNumber, MeterNumber,\r\nFacilityName, ServiceAddress, [dbo].[JulianDateToYYYYMMDD] (FromDate) as FromDate, [dbo].[JulianDateToYYYYMMDD] (ToDateJul) as ToDate, BillingPeriodDays, \r\ndbo.ConvertOverpunch8ToInt32(CCF) AS CCF, dbo.ConvertOverpunch9ToMoney(BilledAmount) AS BilledAmount,\r\ndbo.ConvertOverpunch8ToInt32(Therms) as Therms, dbo.ConvertOverpunch4ToDecimal(ThermFactor) AS ThermFactor, TariffCode, Dials, \r\n[dbo].[CalculateFiscalYear] (dbo.JulDatetoYYYYMM(ToDateJul)) as calcFiscalYear, [dbo].[JulianDateToYYYYMMDD] (PostingDate) as PostingDate, \r\n1, getdate(),getdate()\r\nFROM ConEd.UploadConEdisonCancellationPreload\r\n\r\n\r\nINSERT INTO ConEd.[UploadConEdisonMeter]\r\n           ([BillingPeriod]\r\n           ,[BillingPeriodRevision]\r\n           ,[FirstPeriodCanceled]\r\n           ,[DeltaNumberOfPeriods]\r\n           ,[AccountNumber]\r\n           ,[MeterNumber]\r\n           ,[FromDate]\r\n           ,[ToDate]\r\n           ,[RecordType]\r\n           ,[FromReading]\r\n           ,[ToReading]\r\n           ,[MeterConstant]\r\n           ,[Dials]\r\n           ,[FacilityName]\r\n           ,[ReadingCode]\r\n           ,[CCF]\r\n           ,[CycleBillingDays]\r\n           ,[ThermFactor]\r\n           ,[ServiceAddress]\r\n           ,[FiscalYear]\r\n           ,[PostingDate]\r\n           ,[AuthenticatedUserID]\r\n           ,[DateAdded]\r\n           ,[LastUpdate])\r\nSELECT\r\nBillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, DeltaNumberOfPeriods, AccountNumber, MeterNumber,\r\n[dbo].[JulianDateToYYYYMMDD] (FromDate) as FromDate, [dbo].[JulianDateToYYYYMMDD] (ToDate) as ToDate, RecordType,\r\n[dbo].[ConvertOverpunch6ToInt32] (FromReading) as FromReading, [dbo].[ConvertOverpunch6ToInt32] (ToReading) as ToReading, \r\nMeterConstant, Dials, FacilityName, ReadingCode, dbo.ConvertOverpunch8ToInt32(CCF) as CCF, cast(CycleBillingDays as int),\r\ndbo.ConvertOverpunch4ToDecimal(ThermFactor) as ThermFactor, ServiceAddress,\r\n[dbo].[CalculateFiscalYear] (dbo.JulDatetoYYYYMM(ToDate)) as calcFiscalYear,\r\n[dbo].[JulianDateToYYYYMMDD] (BillCreationDate),\r\n1, getdate(),getdate()\r\nFROM ConEd.UploadConEdisonMeterPreload\r\n--\r\n--\tIdentify Unique  NetZero  Transactions And Remove By Cursor from the account and cancellation tables\r\n--\r\nEXEC\t[ConEd].[usp_IdentifyUniqueNetZeroTransactionsAndRemoveByCursor] @AuthenticatedUserID = 1\r\n--\r\n--\tIdentify and correct the meter data as to consistent from and todates in the meter table\r\n--\r\nexec\t[ConEd].[usp_IdentifyAndCorrectMeterDataFromAndToDate] @AuthenticatedUserID = 1\r\n--\r\n--\r\n---Loading 0-1 Period Rebills (Temporarily here)\r\ntruncate table ConEd.UploadConEdisonAccountSummary\r\n--\r\nINSERT INTO ConEd.[UploadConEdisonAccountSummary]\t\t\t\r\n           ([AdjustedAccount]\t\t\t\r\n           ,[AccountUtilityCompanySeqid]\t\t\t\r\n           ,[NumberOfTransactions]\t\t\t\r\n           ,[NumberOfRebillTransactions]\t\t\t\r\n           ,[NumberOfCancelTransactions]\t\t\t\r\n           ,[OriginalAccountNumber]\t\t\t\r\n           ,[BillingPeriod]\t\t\t\r\n           ,[BillingPeriodRevision]\t\t\t\r\n           ,[FirstCanceledBillingPeriod]\t\t\t\r\n           ,[EstimatedOrActualBilling]\t\t\t\r\n           ,[InitialCancelFromDate]\t\t\t\r\n           ,[CurrentBillingToDate]\t\t\t\r\n           ,[NumberOfBillingPeriods]\t\t\t\r\n           ,[TotalBillingDaysRebilled]\t\t\t\r\n           ,[TotalRebilledAmount]\t\t\t\r\n           ,[TotalCanceledAmount]\t\t\t\r\n           ,[AverageRebillCostOfGasCharge]\t\t\t\r\n           ,[AverageRebillThermsFactor]\t\t\t\r\n           ,[BillingDays]\t\t\t\r\n           ,[BillingDate]\t\t\t\r\n           ,[ToDate]\t\t\t\r\n           ,[FromDate]\t\t\t\r\n           ,[MTATaxAmount]\t\t\t\r\n           ,[BillingAction]\t\t\t\r\n           ,[ProcessedInTheCurrentPeriod]\t\t\t\r\n           ,[GasRateCode]\t\t\t\r\n           ,[TotalCCF]\t\t\t\r\n           ,[TotalTherms]\t\t\t\r\n           ,[ThermsFactor]\t\t\t\r\n           ,[CancelFromDate]\t\t\t\r\n           ,[CancelToDate]\t\t\t\r\n           ,[CancelTotalCCF]\t\t\t\r\n           ,[CancelTotalTherms]\t\t\t\r\n           ,[CancelThermsFactor]\t\t\t\r\n           ,[ProcessEffectiveDate]\t\t\t\r\n           ,[Notes]\t\t\t\r\n           ,[AuthenticatedUserID]\t\t\t\r\n           ,[DateAdded]\t\t\t\r\n           ,[LastUpdate]\t\t\t\r\n           ,[DeliveryChargeAmount]\t\t\t\r\n           ,[ThermsChargeAmount]\t\t\t\r\n           ,[DiscountedAmount]\t\t\t\r\n           ,[DiscountPercentage]\t\t\t\r\n           ,[CustomerMinimumCharge]\t\t\t\r\n           ,[CostOfGasCharge]\t\t\t\r\n           ,[SpecialCharge]\t\t\t\r\n           ,[SomeCharge]\t\t\t\r\n           ,[CancelDeliveryChargeAmount]\t\t\t\r\n           ,[CancelThermsChargeAmount]\t\t\t\r\n           ,[CancelDiscountedAmount]\t\t\t\r\n           ,[CancelDiscountPercentage]\t\t\t\r\n           ,[CancelCustomerMinimumCharge]\t\t\t\r\n           ,[CancelCostOfGasCharge]\t\t\t\r\n           ,[CancelSpecialCharge]\t\t\t\r\n           ,[CancelSomeCharge]\r\n\t\t   ,[FacilityName]\r\n\t\t   ,[ServiceAddress])\t\t\t\r\nSELECT \t\t\t\r\nNULL\t,\t--\t           (<AdjustedAccount, seqid,>\r\n9\t,\t--\t           ,<AccountUtilityCompanySeqid, seqid,>\r\n1\t,\t   -- ,[NumberOfTransactions]\t\r\n1, -- ,[NumberOfRebillTransactions]\t\t\t\r\n0\t\t  , -- ,[NumberOfCancelTransactions]\t\r\nUploadConEdisonAccountPreload.AccountNumber,\t--\t           ,<OriginalAccountNumber, acctnum,>\r\nUploadConEdisonAccountPreload.BillingPeriod,\t--\t           ,<BillingPeriod, BillingPeriod,>\t\r\nUploadConEdisonAccountPreload.BillingPeriodRevision\t,\t--\t           ,<BillingPeriodRevision, BillingPeriodRevision,>\r\nUploadConEdisonAccountPreload.FirstPeriodCanceled\t,\t--\t           ,<FirstCanceledBillingPeriod, yyyymm,>\r\n[dbo].[DetermineConEdisonActualOrEstimatedBilling] (UploadConEdisonAccountPreload.AccountNumber,UploadConEdisonAccountPreload.BillingPeriodRevision)\t,\t--\t          ,<EstimatedOrActualBilling, varchar(3),>\r\nNULL\t,\t--\t           ,<InitialCancelFromDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CurrentBillingToDate, yyyymmdd,>\r\nDeltaNumberOfPeriods,\t--\t           ,<NumberOfBillingPeriods, int,>\t\r\ndbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.FromDate),[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.ToDateJul))\t,\t--\t           ,<TotalBillingDaysRebilled, int,>\r\ndbo.ConvertOverpunch9ToMoney(UploadConEdisonAccountPreload.BilledAmount)\t,\t--\t           ,<TotalRebilledAmount, money,>\r\n0\t,\t--\t           ,<TotalCanceledAmount, money,>\r\ndbo.ConvertOverpunch9ToMoney(UploadConEdisonAccountPreload.CommodityCharge)\t,\t--\t           ,<AverageRebillCostOfGasCharge, money,>\r\ndbo.ConvertOverpunch4ToDecimal(UploadConEdisonAccountPreload.ThermFactor)\t,\t--\t           ,<AverageRebillThermsFactor, ThermsFactor,>\r\ndbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.FromDate),[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.ToDateJul))\t,\t--\t           ,<BillingDays, int,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.PostingDate)\t,\t--\t           ,<BillingDate, int,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.ToDateJul)\t,\t--\t           ,<ToDate, yyyymmdd,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonAccountPreload.FromDate)\t,\t--\t           ,<FromDate, yyyymmdd,>\r\n0\t,\t--\t           ,<MTATaxAmount, money,>\r\nCASE WHEN UploadConEdisonAccountPreload.BillingPeriod=UploadConEdisonAccountPreload.BillingPeriodRevision THEN 'O' ELSE 'A' END, -- ,<BillingAction, BillingAction,>\r\n'N'\t,\t--\t  !!!         ,<ProcessedInTheCurrentPeriod, yesno,>\r\nUploadConEdisonAccountPreload.TariffCode\t,\t--\t           ,<GasRateCode, varchar(3),>\r\ndbo.ConvertOverpunch8ToInt32(UploadConEdisonAccountPreload.CCF)\t,\t--\t           ,<TotalCCF, EnergyUnit,>\r\ndbo.ConvertOverpunch8ToInt32(UploadConEdisonAccountPreload.Therms)\t,\t--\t           ,<TotalTherms, EnergyUnit,>\r\ndbo.ConvertOverpunch4ToDecimal(UploadConEdisonAccountPreload.ThermFactor)\t,\t--\t           ,<ThermsFactor, ThermsFactor,>\r\nNULL\t,\t--\t           ,<CancelFromDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CancelToDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CancelTotalCCF, EnergyUnit,>\r\nNULL\t,\t--\t           ,<CancelTotalTherms, EnergyUnit,>\r\nNULL\t,\t--\t           ,<CancelThermsFactor, ThermsFactor,>\r\n[dbo].ConvertDateToYYYYMMDD (GETDATE())\t,\t--\t           ,<ProcessEffectiveDate, varchar(8),>\r\nNULL,\t\t\t\r\n1,\t\t\t\r\nGETDATE(),\t\t\t\r\nGETDATE(),\t\t\t\r\n0\t,\t--\t           ,<DeliveryChargeAmount, BillingAmt,>\r\n0\t,\t--\t           ,<ThermsChargeAmount, BillingAmt,>\r\n0\t,\t--\t           ,<DiscountedAmount, BillingAmt,>\r\n0\t,\t--\t           ,<DiscountPercentage, DiscountPercentage,>\r\n0\t,\t--\t           ,<CustomerMinimumCharge, BillingAmt,>\r\ndbo.ConvertOverpunch9ToMoney(UploadConEdisonAccountPreload.CommodityCharge)\t,\t--\t           ,<CostOfGasCharge, BillingAmt,>\r\n0\t,\t--\t           ,<SpecialCharge, BillingAmt,>\r\n0\t,\t--\t           ,<SomeCharge, money,>\r\nNULL\t,\t--\t           ,<CancelDeliveryChargeAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelThermsChargeAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelDiscountedAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelDiscountPercentage, DiscountPercentage,>\r\nNULL\t,\t--\t           ,<CancelCustomerMinimumCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelCostOfGasCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelSpecialCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelSomeCharge, money,>\r\nFacilityName,ServiceAddress\r\nFROM ConEd.UploadConEdisonAccountPreload\t\t\t\r\nWHERE UploadConEdisonAccountPreload.DeltaNumberOfPeriods<=1\t\r\n\r\n\r\n---Loading >1 Period Bills (Spanned Bills) (Temporarily here)\t\t\r\n\r\ntruncate table ConEd.UploadConEdisonAccountTempSummarySpanned\r\nINSERT INTO UploadConEdisonAccountTempSummarySpanned\r\n(title, AccountNumber, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, FromDate, ToDate, BilledAmount, AveragePreviousBalance, Therms, \r\nThermFactor, CCF, TariffCode, DeltaNumberOfPeriods, BillingPeriodDays, FacilityName, ServiceAddress, PostingDate)\r\nSELECT    \r\n'SpannedAccountbilling' AS title, AccountNumber, UploadConEdisonAccount.BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled as FirstPeriodCanceled, \r\nFromDate, ToDate, BilledAmount AS BilledAmount, PreviousBalance AS AveragePreviousBalance, Therms AS Therms, \r\nThermFactor AS ThermFactor, CCF AS CCF, TariffCode AS TariffCode, DeltaNumberOfPeriods AS DeltaNumberOfPeriods, \r\nBillingPeriodDays AS BillingPeriodDays, FacilityName AS FacilityName, ServiceAddress AS ServiceAddress,PostingDate AS PostingDate\r\nFROM ConEd.UploadConEdisonAccount\r\nWHERE (DeltaNumberOfPeriods > 1)\r\n\r\n---Parsing >1 Period Bills (Spanned Bills) (Temporarily here)\r\n\r\nEXECUTE ConEd.usp_ParseSpannedBilledUploadConEdisonAccountInfo 1\r\n\r\n--- Merging Rebills (Temporarily here)\r\n--\r\n--\tMake sure that the max BillingPeriodRevision is less than or equal to the current BillingPeriod\r\n--\r\nUPDATE   ConEd.UploadConEdisonAccountSummary\r\nSET              BillingPeriodRevision =case when BillingPeriodRevision> BillingPeriod then BillingPeriod else BillingPeriodRevision end \r\nWHERE (BillingPeriod < BillingPeriodRevision)\r\n--\r\ntruncate table ConEd.UploadConEdisonAccountBillingAdjustmentGas\r\nINSERT INTO ConEd.[UploadConEdisonAccountBillingAdjustmentGas]\r\n           ([AdjustedAccount]\r\n           ,[AccountUtilityCompanySeqid]\r\n           ,[NumberOfTransactions]\r\n           ,[NumberOfRebillTransactions]\r\n           ,[NumberOfCancelTransactions]\r\n           ,[OriginalAccountNumber]\r\n           ,[BillingPeriod]\r\n           ,[BillingPeriodRevision]\r\n           ,[FirstCanceledBillingPeriod]\r\n           ,[EstimatedOrActualBilling]\r\n           ,[InitialCancelFromDate]\r\n           ,[CurrentBillingToDate]\r\n           ,[NumberOfBillingPeriods]\r\n           ,[TotalBillingDaysRebilled]\r\n           ,[TotalRebilledAmount]\r\n           ,[TotalCanceledAmount]\r\n           ,[AverageRebillCostOfGasCharge]\r\n           ,[AverageRebillThermsFactor]\r\n           ,[BillingDays]\r\n           ,[BillingDate]\r\n           ,[ToDate]\r\n           ,[FromDate]\r\n           ,[BillingAction]\r\n           ,[ProcessedInTheCurrentPeriod]\r\n           ,[GasRateCode]\r\n           ,[TotalCCF]\r\n           ,[TotalTherms]\r\n           ,[ThermsFactor]\r\n           ,[CancelFromDate]\r\n           ,[CancelToDate]\r\n           ,[CancelTotalCCF]\t\t\t\r\n           ,[CancelTotalTherms]\t\t\t\r\n           ,[CancelThermsFactor]\t\t\t\r\n           ,[ProcessEffectiveDate]\r\n           ,[DerivedFromSpannedBill]\r\n           ,[SpannedBillingPeriodRevision]\r\n           ,[SpannedFirstCanceledBillingPeriod]\r\n           ,[SpannedBilledAmount]\r\n           ,[SpannedCCF]\r\n           ,[SpannedThermFactor]\r\n           ,[SpannedTherm]\r\n           ,[SpannedMonthlyPercentage]\r\n           ,[SpannedTotalPercentage]\t\t\t\r\n           ,[Notes]\t\t\t\r\n           ,[AuthenticatedUserID]\t\t\t\r\n           ,[DateAdded]\t\t\t\r\n           ,[LastUpdate]\r\n\t\t   ,[FacilityName]\r\n\t\t   ,[ServiceAddress]\r\n\t\t   )\t\t\t\r\nSELECT \t\t\t\r\nNULL\t,\t--\t           (<AdjustedAccount, seqid,>\r\n9\t,\t--\t           ,<AccountUtilityCompanySeqid, seqid,>\r\ncount(*)\t,\t   -- ,[NumberOfTransactions]\t\r\ncount(*) , -- ,[NumberOfRebillTransactions]\t\t\t\r\n0\t\t  , -- ,[NumberOfCancelTransactions]\t\r\nUploadConEdisonAccountSummary.OriginalAccountNumber\t,\t--\t           ,<OriginalAccountNumber, acctnum,>\r\nMAX(UploadConEdisonAccountSummary.BillingPeriod),\t--\t           ,<BillingPeriod, BillingPeriod,>\t\r\nUploadConEdisonAccountSummary.BillingPeriodRevision,\t--\t           ,<BillingPeriodRevision, BillingPeriodRevision,>\r\n[dbo].[CalculateNextBillingPeriod]([dbo].DetermineConEdisonBillingPeriodProjected(MIN(UploadConEdisonAccountSummary.FromDate),MIN(UploadConEdisonAccountSummary.GasRateCode),9),'M')\t,\t--\t           ,<FirstCanceledBillingPeriod, yyyymm,>\r\n[dbo].[DetermineConEdisonActualOrEstimatedBilling] (UploadConEdisonAccountSummary.OriginalAccountNumber,UploadConEdisonAccountSummary.BillingPeriodRevision)\t,\t--\t           ,<EstimatedOrActualBilling, varchar(3),>\r\nNULL\t,\t--\t           ,<InitialCancelFromDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CurrentBillingToDate, yyyymmdd,>\r\n[dbo].[CalculateDeltaBillingPeriods] ([dbo].[CalculateNextBillingPeriod]([dbo].DetermineConEdisonBillingPeriodProjected(MIN(UploadConEdisonAccountSummary.FromDate),MIN(UploadConEdisonAccountSummary.GasRateCode),9),'M'),[dbo].DetermineConEdisonBillingPeriodProjected(MAX(UploadConEdisonAccountSummary.ToDate),MAX(UploadConEdisonAccountSummary.GasRateCode),9),'M'),\t--\t           ,<NumberOfBillingPeriods, int,>\t\r\ndbo.CalculateNumberOfBillingDays(MIN(UploadConEdisonAccountSummary.FromDate),MAX(UploadConEdisonAccountSummary.ToDate))\t,\t--\t           ,<TotalBillingDaysRebilled, int,>\r\nSUM(UploadConEdisonAccountSummary.TotalRebilledAmount)\t,\t--\t           ,<TotalRebilledAmount, money,>\r\n0\t,\t--\t           ,<TotalCanceledAmount, money,>\r\nAVG(UploadConEdisonAccountSummary.CostOfGasCharge)\t,\t--\t           ,<AverageRebillCostOfGasCharge, money,>\r\nAVG(UploadConEdisonAccountSummary.ThermsFactor)\t,\t--\t           ,<AverageRebillThermsFactor, ThermsFactor,>\r\ndbo.CalculateNumberOfBillingDays(MIN(UploadConEdisonAccountSummary.FromDate),MAX(UploadConEdisonAccountSummary.ToDate))\t,\t--\t           ,<BillingDays, int,>\r\nMAX(UploadConEdisonAccountSummary.BillingDate)\t,\t--\t           ,<BillingDate, int,>\r\nMAX(UploadConEdisonAccountSummary.ToDate)\t,\t--\t           ,<ToDate, yyyymmdd,>\r\nMIN(UploadConEdisonAccountSummary.FromDate)\t,\t--\t           ,<FromDate, yyyymmdd,>\r\nCASE WHEN MAX(UploadConEdisonAccountSummary.BillingPeriod)=MIN(UploadConEdisonAccountSummary.BillingPeriodRevision) THEN 'O' ELSE 'A' END\t,\t--\t          ,<BillingAction, BillingAction,>\r\n'N'\t,\t--\t  !!!         ,<ProcessedInTheCurrentPeriod, yesno,>\r\nMAX(UploadConEdisonAccountSummary.GasRateCode)\t,\t--\t           ,<GasRateCode, varchar(3),>\r\nSUM(UploadConEdisonAccountSummary.TotalCCF)\t,\t--\t           ,<TotalCCF, EnergyUnit,>\r\nSUM(UploadConEdisonAccountSummary.TotalTherms)\t,\t--\t           ,<TotalTherms, EnergyUnit,>\r\nSUM(UploadConEdisonAccountSummary.ThermsFactor)\t,\t--\t           ,<ThermsFactor, ThermsFactor,>\r\nNULL\t,\t--\t           ,<CancelFromDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CancelToDate, yyyymmdd,>\r\nNULL\t,\t--\t           ,<CancelTotalCCF, EnergyUnit,>\r\nNULL\t,\t--\t           ,<CancelTotalTherms, EnergyUnit,>\r\nNULL\t,\t--\t           ,<CancelThermsFactor, ThermsFactor,>\r\n[dbo].ConvertDateToYYYYMMDD (GETDATE()),\t--\t           ,<ProcessEffectiveDate, varchar(8),>\r\nMAX(UploadConEdisonAccountSummary.DerivedFromSpannedBill),\r\nMAX(UploadConEdisonAccountSummary.SpannedBillingPeriodRevision),\r\nMAX(UploadConEdisonAccountSummary.SpannedFirstCanceledBillingPeriod),\r\nMAX(UploadConEdisonAccountSummary.SpannedBilledAmount),\r\nMAX(UploadConEdisonAccountSummary.SpannedCCF),\r\nMAX(UploadConEdisonAccountSummary.SpannedThermFactor),\r\nMAX(UploadConEdisonAccountSummary.SpannedTherm),\r\nMAX(UploadConEdisonAccountSummary.SpannedMonthlyPercentage),\r\nMAX(UploadConEdisonAccountSummary.SpannedTotalPercentage),\r\nMAX(UploadConEdisonAccountSummary.Notes),\t\t\t\r\nMAX(UploadConEdisonAccountSummary.AuthenticatedUserID),\t\t\t\r\nGETDATE(),\t\t\t\r\nGETDATE(),\r\nmax(FacilityName),\r\nmax(ServiceAddress)\r\nFROM ConEd.UploadConEdisonAccountSummary\t\t\t\r\nGROUP BY UploadConEdisonAccountSummary.OriginalAccountNumber, UploadConEdisonAccountSummary.BillingPeriodRevision\t\r\n--\r\n-- ********************************************************************\r\n--\tHandle Rate 036 or 040 refunds\r\n-- ********************************************************************\r\ntruncate table ConEd.UploadConEdisonRate036Refunds\r\n--\r\n--\tFind all rate 036 account cancellations that are canceled for the current period.  Save their basic information that will be\r\n--\tused by the stored procedure (ConEd.usp_IdentifyRefundsForGasRate036).  It will net the following attributes:\r\n--\t\t\t\t\r\n--\t\t\t\tDeltaNumberOfPeriods will generally be 13.  The current month billing plus 12 refund months.\r\n--\t\t\t\tRefundCCF will probably be zero\r\n--\t\t\t\tRefundTherms will be negative and have a relationship as to the amount of money being refunded.\r\n--\t\t\t\tRefundBilledAmount is negative dollars representing the total amount \r\n--\r\ndeclare @NumberOfConEdisonRate036Refunds int\r\n--\r\nselect @NumberOfConEdisonRate036Refunds = count(*) \r\nselect count(*) \r\nFROM ConEd.UploadConEdisonCancellation\r\nWHERE (BillingPeriodRevision = BillingPeriod) AND (TariffCode in ('036','040')) and (DeltaNumberOfPeriods =12 OR DeltaNumberOfPeriods =13)\r\n--\r\nif (@NumberOfConEdisonRate036Refunds > 0)\r\nbegin\r\n\tINSERT INTO ConEd.UploadConEdisonRate036Refunds\r\n\t(AccountNumber, TariffCode, DeltaNumberOfPeriods, BillingPeriodRevision, BillingPeriod, FromDate, ToDate, RefundCCF, RefundTherms, RefundBilledAmount)\r\n\tSELECT AccountNumber, TariffCode, DeltaNumberOfPeriods, BillingPeriodRevision, BillingPeriod, FromDate, ToDate, CCF, Therms, BilledAmount\r\n\tFROM ConEd.UploadConEdisonCancellation\r\n\tWHERE (BillingPeriodRevision = BillingPeriod) AND (TariffCode in ('036','040'))  and (DeltaNumberOfPeriods =12 OR DeltaNumberOfPeriods =13)\r\n\r\n\tselect 'ConEd.UploadConEdisonRate036Refunds' as description,* FROM ConEd.UploadConEdisonRate036Refunds\r\n--\r\n--\t\tThe identified account(s) are stored in th ConEd.UploadConEdisonRate036Refunds table.  \r\n--\t\tThe ConEd.UploadConEdisonCancellationPreload and ConEd.UploadConEdisonCancellation have their Therms and CCF set to zero in EBCDIC and ascii \r\n--\t\tformat respectively.  This way forces the stored procedure (ConEd.usp_IdentifyRefundsForGasRate036) to process them as refunds.\r\n--\r\n--\t\tThis was a critical correction factor \"(DeltaNumberOfPeriods = 12)\". This isolates the annualized refund for gas rates 036 & 040.  (9/11/2009 pah)\r\n--\r\n\r\n\t--UPDATE ConEd.UploadConEdisonCancellationPreload\r\n\t--SET\t\t\t Therms = '0000000{', CCF = '0000000{'\r\n\t--WHERE\t\t(BillingPeriodRevision = BillingPeriodRevision) AND \r\n\t--\t\t\t(TariffCode IN ('036', '040')) AND \r\n\t--\t\t\t((DeltaNumberOfPeriods =12 OR DeltaNumberOfPeriods =13))\r\n\t\t\t\t\r\n\tUPDATE    ConEd.UploadConEdisonCancellation\r\n\tSET              Therms = 0, CCF = 0\r\n\tWHERE (BillingPeriodRevision = BillingPeriod) AND \r\n\t\t\t  (TariffCode in ('036','040'))\r\n\t\t\t  AND \r\n\t\t\t\t((DeltaNumberOfPeriods =12 OR DeltaNumberOfPeriods =13))\r\nend\r\n--\r\n-- ********************************************************************\r\n--\r\n------------ Now Cancels ------------------\r\n\r\n---Loading 0-1 Period Cancels (Temporarily here)\r\n\r\ntruncate table ConEd.UploadConEdisonCancellationSummary\r\nINSERT INTO ConEd.[UploadConEdisonCancellationSummary]\t\t\t\r\n           ([AdjustedAccount]\t\t\t\r\n           ,[AccountUtilityCompanySeqid]\t\t\t\r\n           ,[NumberOfTransactions]\t\t\t\r\n           ,[NumberOfRebillTransactions]\t\t\t\r\n           ,[NumberOfCancelTransactions]\t\t\t\r\n           ,[OriginalAccountNumber]\t\t\t\r\n           ,[BillingPeriod]\t\t\t\r\n           ,[BillingPeriodRevision]\t\t\t\r\n           ,[FirstCanceledBillingPeriod]\t\t\t\r\n           ,[EstimatedOrActualBilling]\t\t\t\r\n           ,[InitialCancelFromDate]\t\t\t\r\n           ,[CurrentBillingToDate]\t\t\t\r\n           ,[NumberOfBillingPeriods]\t\t\t\r\n           ,[TotalBillingDaysRebilled]\t\t\t\r\n           ,[TotalRebilledAmount]\t\t\t\r\n           ,[TotalCanceledAmount]\t\t\t\r\n           ,[AverageRebillCostOfGasCharge]\t\t\t\r\n           ,[AverageRebillThermsFactor]\t\t\t\r\n           ,[BillingDays]\t\t\t\r\n           ,[BillingDate]\t\t\t\r\n           ,[ToDate]\t\t\t\r\n           ,[FromDate]\t\t\t\r\n           ,[MTATaxAmount]\t\t\t\r\n           ,[BillingAction]\t\t\t\r\n           ,[ProcessedInTheCurrentPeriod]\t\t\t\r\n           ,[GasRateCode]\t\t\t\r\n           ,[TotalCCF]\t\t\t\r\n           ,[TotalTherms]\t\t\t\r\n           ,[ThermsFactor]\t\t\t\r\n           ,[CancelFromDate]\t\t\t\r\n           ,[CancelToDate]\t\t\t\r\n           ,[CancelTotalCCF]\t\t\t\r\n           ,[CancelTotalTherms]\t\t\t\r\n           ,[CancelThermsFactor]\r\n           ,[CancelBillingDays]\t\t\t\r\n           ,[ProcessEffectiveDate]\t\t\t\r\n           ,[Notes]\t\t\t\r\n           ,[AuthenticatedUserID]\t\t\t\r\n           ,[DateAdded]\t\t\t\r\n           ,[LastUpdate]\t\t\t\r\n           ,[DeliveryChargeAmount]\t\t\t\r\n           ,[ThermsChargeAmount]\t\t\t\r\n           ,[DiscountedAmount]\t\t\t\r\n           ,[DiscountPercentage]\t\t\t\r\n           ,[CustomerMinimumCharge]\t\t\t\r\n           ,[CostOfGasCharge]\t\t\t\r\n           ,[SpecialCharge]\t\t\t\r\n           ,[SomeCharge]\t\t\t\r\n           ,[CancelDeliveryChargeAmount]\t\t\t\r\n           ,[CancelThermsChargeAmount]\t\t\t\r\n           ,[CancelDiscountedAmount]\t\t\t\r\n           ,[CancelDiscountPercentage]\t\t\t\r\n           ,[CancelCustomerMinimumCharge]\t\t\t\r\n           ,[CancelCostOfGasCharge]\t\t\t\r\n           ,[CancelSpecialCharge]\t\t\t\r\n           ,[CancelSomeCharge]\r\n\t\t   ,[FacilityName]\r\n           ,[ServiceAddress])\t\t\t\r\nSELECT \t\t\t\r\nNULL\t,\t--\t           (<AdjustedAccount, seqid,>\r\n9\t,\t--\t           ,<AccountUtilityCompanySeqid, seqid,>\r\n1\t,\t   -- ,[NumberOfTransactions]\t\r\n0, -- ,[NumberOfRebillTransactions]\t\t\t\r\n1\t\t  , -- ,[NumberOfCancelTransactions]\t\r\nUploadConEdisonCancellationPreload.AccountNumber\t,\t--\t           ,<OriginalAccountNumber, acctnum,>\r\nUploadConEdisonCancellationPreload.BillingPeriod,\t--\t           ,<BillingPeriod, BillingPeriod,>\t\r\nUploadConEdisonCancellationPreload.BillingPeriodRevision\t,\t--\t           ,<BillingPeriodRevision, BillingPeriodRevision,>\r\nUploadConEdisonCancellationPreload.FirstPeriodCanceled\t,\t--\t           ,<FirstCanceledBillingPeriod, yyyymm,>\r\n[dbo].[DetermineConEdisonActualOrEstimatedBilling] (UploadConEdisonCancellationPreload.AccountNumber,UploadConEdisonCancellationPreload.BillingPeriodRevision)\t,\t--\t  ,<EstimatedOrActualBilling, varchar(3),>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.FromDate)\t,\t--\t           ,<InitialCancelFromDate, yyyymmdd,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.ToDateJul)\t,\t--\t           ,<CurrentBillingToDate, yyyymmdd,>\r\nDeltaNumberOfPeriods,\t--\t           ,<NumberOfBillingPeriods, int,>\t\r\ndbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.FromDate),[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.ToDateJul))\t,\t--\t           ,<TotalBillingDaysRebilled, int,>\r\n0\t,\t--\t           ,<TotalRebilledAmount, money,>\r\ndbo.ConvertOverpunch9ToMoney(UploadConEdisonCancellationPreload.BilledAmount)\t,\t--\t           ,<TotalCanceledAmount, money,>\r\n0\t,\t--\t           ,<AverageRebillCostOfGasCharge, money,>\r\n1.0\t,\t--\t           ,<AverageRebillThermsFactor, ThermsFactor,>\r\n0\t,\t--\t           ,<BillingDays, int,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.PostingDate)\t,\t--\t           ,<BillingDate, int,>\r\nnull\t,\t--\t           ,<ToDate, yyyymmdd,>\r\nnull\t,\t--\t           ,<FromDate, yyyymmdd,>\r\n0\t,\t--\t           ,<MTATaxAmount, money,>\r\nCASE WHEN UploadConEdisonCancellationPreload.BillingPeriod=UploadConEdisonCancellationPreload.BillingPeriodRevision THEN 'O' ELSE 'A' END, -- ,<BillingAction, BillingAction,>\r\n'N'\t,\t--\t  !!!         ,<ProcessedInTheCurrentPeriod, yesno,>\r\nUploadConEdisonCancellationPreload.TariffCode\t,\t--\t           ,<GasRateCode, varchar(3),>\r\n0\t,\t--\t           ,<TotalCCF, EnergyUnit,>\r\n0\t,\t--\t           ,<TotalTherms, EnergyUnit,>\r\n1.0\t,\t--\t           ,<ThermsFactor, ThermsFactor,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.FromDate)\t,\t--\t           ,<CancelFromDate, yyyymmdd,>\r\n[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.ToDateJul)\t,\t--\t           ,<CancelToDate, yyyymmdd,>\r\ndbo.ConvertOverpunch8ToInt32(UploadConEdisonCancellationPreload.CCF)\t,\t--\t           ,<CancelTotalCCF, EnergyUnit,>\r\ndbo.ConvertOverpunch8ToInt32(UploadConEdisonCancellationPreload.Therms)\t,\t--\t           ,<CancelTotalTherms, EnergyUnit,>\r\ndbo.ConvertOverpunch4ToDecimal(UploadConEdisonCancellationPreload.ThermFactor)\t,\t--\t           ,<CancelThermsFactor, ThermsFactor,>\r\ndbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.FromDate),[dbo].[JulianDateToYYYYMMDD] (UploadConEdisonCancellationPreload.ToDateJul))\t,\t--\t           ,<CancelBillingDays>\r\n[dbo].ConvertDateToYYYYMMDD (GETDATE())\t,\t--\t           ,<ProcessEffectiveDate, varchar(8),>\r\nNULL,\t\t\t\r\n1,\t\t\t\r\nGETDATE(),\t\t\t\r\nGETDATE(),\t\t\t\r\n0\t,\t--\t           ,<DeliveryChargeAmount, BillingAmt,>\r\n0\t,\t--\t           ,<ThermsChargeAmount, BillingAmt,>\r\n0\t,\t--\t           ,<DiscountedAmount, BillingAmt,>\r\n0\t,\t--\t           ,<DiscountPercentage, DiscountPercentage,>\r\n0\t,\t--\t           ,<CustomerMinimumCharge, BillingAmt,>\r\ndbo.ConvertOverpunch9ToMoney(UploadConEdisonCancellationPreload.CommodityCharge)\t,\t--\t           ,<CostOfGasCharge, BillingAmt,>\r\n0\t,\t--\t           ,<SpecialCharge, BillingAmt,>\r\n0\t,\t--\t           ,<SomeCharge, money,>\r\nNULL\t,\t--\t           ,<CancelDeliveryChargeAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelThermsChargeAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelDiscountedAmount, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelDiscountPercentage, DiscountPercentage,>\r\nNULL\t,\t--\t           ,<CancelCustomerMinimumCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelCostOfGasCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelSpecialCharge, BillingAmt,>\r\nNULL\t,\t--\t           ,<CancelSomeCharge, money,>\r\nFacilityName,\r\nServiceAddress\r\nFROM ConEd.UploadConEdisonCancellationPreload\t\t\t\r\nWHERE UploadConEdisonCancellationPreload.DeltaNumberOfPeriods<=1\t\r\n\r\n\r\n---Loading >1 Period Cancels (Spanned Cancels) (Temporarily here)\r\n\r\ntruncate table ConEd.UploadConEdisonCancellationTempSummarySpanned\r\nINSERT INTO ConEd.UploadConEdisonCancellationTempSummarySpanned\r\n                      (title, AccountNumber, MeterNumber, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, CancelFromDate, CancelToDate, CancelBilledAmount, \r\n                      CancelTherms, CancelThermFactor, CancelCCF, CancelTariffCode, CancelBillingPeriodDays, FacilityName, ServiceAddress, DeltaNumberOfPeriods, \r\n                      Dials, PostingDate)\r\nSELECT  'SpannedCancellation' AS title,   AccountNumber, MeterNumber AS MeterNumber, BillingPeriod, BillingPeriodRevision,  FirstPeriodCanceled as FirstPeriodCanceled, FromDate as CancelFromDate, \r\nToDate as CancelToDate, BilledAmount as CancelBilledAmount, \r\n                      Therms as CancelTherms, [dbo].[CalculateGasThermFactor] (CCF,Therms) as CancelThermFactor, CCF as CancelCCF, TariffCode as CancelTariffCode, \r\n DATEDIFF(day,  [dbo].[ConvertYYYYMMDDToDatetime] (FromDate),[dbo].[ConvertYYYYMMDDToDatetime] (ToDate)) as CancelBillingPeriodDays, FacilityName as FacilityName, \r\n                      ServiceAddress as ServiceAddress, DeltaNumberOfPeriods AS DeltaNumberOfPeriods, Dials AS Dials,PostingDate\r\n--into UploadConEdisonCancellationTempSummarySpanned\r\nFROM ConEd.UploadConEdisonCancellation\r\nWHERE (DeltaNumberOfPeriods > 1)\r\n---Parsing >1 Period Cancels (Spanned Cancels) (Temporarily here)\r\n--truncate table UploadConEdisonCancellationSummary\r\n\r\n--\r\n--\tApply the Rate 036 refunds to the current period accountsummary before working with the cancellations\r\n--\r\nif (@NumberOfConEdisonRate036Refunds > 0)\r\nBegin\r\n\tEXECUTE ConEd.usp_IdentifyRefundsForGasRate036 1\r\nEnd\r\n--\r\nEXECUTE ConEd.usp_ParseSpannedBilledUploadConEdisonCancellationInfo 1\r\n\r\n\r\n--- Merging Cancels (Temporarily here)\r\n--\r\n--\tMake sure that the max BillingPeriodRevision is less than or equal to the current BillingPeriod\r\n--\r\nUPDATE  ConEd.UploadConEdisonCancellationSummary\r\nSET              BillingPeriodRevision =case when BillingPeriodRevision> BillingPeriod then BillingPeriod else BillingPeriodRevision end \r\nWHERE (BillingPeriod < BillingPeriodRevision)\r\n--\r\n\r\n\r\n\r\n-- update adjustment record found in cancellation\r\n\r\nUPDATE  UploadAdjustmentGas\r\nSET     UploadAdjustmentGas.[NumberOfTransactions] = UploadAdjustmentGas.[NumberOfTransactions]\r\n        + CancelSummary.[NumberOfTransactions],\r\n        UploadAdjustmentGas.[NumberOfCancelTransactions] = CancelSummary.[NumberOfTransactions],\r\n        UploadAdjustmentGas.[TotalCanceledAmount] = CancelSummary.[TotalCanceledAmount],\r\n        UploadAdjustmentGas.[CancelFromDate] = CancelSummary.[CancelFromDate],\r\n        UploadAdjustmentGas.[CancelToDate] = CancelSummary.[CancelToDate],\r\n        UploadAdjustmentGas.[CancelTotalCCF] = CancelSummary.[CancelTotalCCF],\r\n        UploadAdjustmentGas.[CancelTotalTherms] = CancelSummary.[CancelTotalTherms],\r\n        UploadAdjustmentGas.[CancelThermsFactor] = CancelSummary.[CancelThermsFactor],\r\n        UploadAdjustmentGas.[CancelBillingDays] = CancelSummary.[CancelBillingDays],\r\n        UploadAdjustmentGas.[Notes] = CAST(( CASE UploadAdjustmentGas.[Notes]\r\n                                               WHEN NULL THEN ''\r\n                                               ELSE 'Rebill: '\r\n                                                    + UploadAdjustmentGas.[Notes]\r\n                                                    + ' '\r\n                                             END )\r\n        + ( CASE CancelSummary.[Notes]\r\n              WHEN NULL THEN ''\r\n              ELSE 'Cancel: ' + CancelSummary.[Notes]\r\n            END ) AS VARCHAR(300))\r\nFROM ConEd.UploadConEdisonAccountBillingAdjustmentGas AS UploadAdjustmentGas\r\n        INNER JOIN ( SELECT UploadConEdisonCancellationSummary.OriginalAccountNumber,\r\n                            UploadConEdisonCancellationSummary.BillingPeriodRevision,\r\n                            COUNT(*) AS NumberOfTransactions,        -- ,[NumberOfTransactions] \r\n                            0 AS NumberOfRebilledTransactions, -- ,[NumberOfRebillTransactions]             \r\n                            COUNT(*) AS NumberOfCancelTransactions, -- ,[NumberOfCancelTransactions]\r\n                            SUM(TotalCanceledAmount) AS TotalCanceledAmount,\r\n                            MIN(UploadConEdisonCancellationSummary.CancelFromDate) AS CancelFromDate,     --               ,<CancelFromDate, yyyymmdd,>\r\n                            MAX(UploadConEdisonCancellationSummary.CancelToDate) AS CancelToDate,     --               ,<CancelToDate, yyyymmdd,>\r\n                            SUM(UploadConEdisonCancellationSummary.CancelTotalCCF) AS CancelTotalCCF,     --               ,<CancelTotalCCF, EnergyUnit,>\r\n                            SUM(UploadConEdisonCancellationSummary.CancelTotalTherms) CancelTotalTherms,     --               ,<CancelTotalTherms, EnergyUnit,>\r\n                            MIN(UploadConEdisonCancellationSummary.CancelThermsFactor) CancelThermsFactor,     --               ,<CancelThermsFactor, ThermsFactor,>\r\n                            dbo.CalculateNumberOfBillingDays(MIN(UploadConEdisonCancellationSummary.CancelFromDate),\r\n                                                             MAX(UploadConEdisonCancellationSummary.CancelToDate)) AS CancelBillingDays,   --               ,<CancelBillingDays, int,>\r\n                            MAX(UploadConEdisonCancellationSummary.Notes) AS notes\r\n                     FROM ConEd.UploadConEdisonCancellationSummary\r\n                     GROUP BY UploadConEdisonCancellationSummary.OriginalAccountNumber,\r\n                            UploadConEdisonCancellationSummary.BillingPeriodRevision\r\n                   ) AS CancelSummary \r\n\t\t\tON UploadAdjustmentGas.OriginalAccountNumber = CancelSummary.OriginalAccountNumber\r\n                AND UploadAdjustmentGas.BillingPeriodRevision = cancelSummary.BillingPeriodRevision\r\n\r\n\r\n\r\n\r\n-- insert cancelation record not found in current adjustment.\r\n\r\nINSERT  INTO ConEd.[UploadConEdisonAccountBillingAdjustmentGas]\r\n        (\r\n          [AdjustedAccount],\r\n          [AccountUtilityCompanySeqid],\r\n          [NumberOfTransactions],\r\n          [NumberOfRebillTransactions],\r\n          [NumberOfCancelTransactions],\r\n          [OriginalAccountNumber],\r\n          [BillingPeriod],\r\n          [BillingPeriodRevision],\r\n          [FirstCanceledBillingPeriod],\r\n          [EstimatedOrActualBilling],\r\n          [InitialCancelFromDate],\r\n          [CurrentBillingToDate],\r\n          [NumberOfBillingPeriods],\r\n          [TotalBillingDaysRebilled],\r\n          [TotalRebilledAmount],\r\n          [TotalCanceledAmount],\r\n          [AverageRebillCostOfGasCharge],\r\n          [AverageRebillThermsFactor],\r\n          [BillingDays],\r\n          [BillingDate],\r\n          [ToDate],\r\n          [FromDate],\r\n          [BillingAction],\r\n          [ProcessedInTheCurrentPeriod],\r\n          [GasRateCode],\r\n          [TotalCCF],\r\n          [TotalTherms],\r\n          [ThermsFactor],\r\n          [CancelFromDate],\r\n          [CancelToDate],\r\n          [CancelTotalCCF],\r\n          [CancelTotalTherms],\r\n          [CancelThermsFactor],\r\n          [CancelBillingDays],\r\n          [ProcessEffectiveDate],\r\n          [DerivedFromSpannedBill],\r\n          [SpannedBillingPeriodRevision],\r\n          [SpannedFirstCanceledBillingPeriod],\r\n          [SpannedBilledAmount],\r\n          [SpannedCCF],\r\n          [SpannedThermFactor],\r\n          [SpannedTherm],\r\n          [SpannedMonthlyPercentage],\r\n          [SpannedTotalPercentage],\r\n          [Notes],\r\n          [AuthenticatedUserID],\r\n          [DateAdded],\r\n          [LastUpdate],\r\n          [FacilityName],\r\n          [ServiceAddress]\r\n\r\n               \r\n        )\r\n        SELECT  NULL,     --               (<AdjustedAccount, seqid,>\r\n                9,     --               ,<AccountUtilityCompanySeqid, seqid,>\r\n                COUNT(*),        -- ,[NumberOfTransactions] \r\n                0, -- ,[NumberOfRebillTransactions]                  \r\n                COUNT(*), -- ,[NumberOfCancelTransactions]      \r\n                UploadConEdisonCancellationSummary.OriginalAccountNumber,     --                 ,<OriginalAccountNumber, acctnum,>\r\n                MAX(UploadConEdisonCancellationSummary.BillingPeriod),      --               ,<BillingPeriod, BillingPeriod,>    \r\n                UploadConEdisonCancellationSummary.BillingPeriodRevision,   --               ,<BillingPeriodRevision, BillingPeriodRevision,>\r\n                [dbo].[CalculateNextBillingPeriod]([dbo].DetermineConEdisonBillingPeriodProjected(MIN(UploadConEdisonCancellationSummary.CancelFromDate), MIN(UploadConEdisonCancellationSummary.GasRateCode), 9),\r\n                                                   'M'),     --               ,<FirstCanceledBillingPeriod, yyyymm,>\r\n                [dbo].[DetermineConEdisonActualOrEstimatedBilling](UploadConEdisonCancellationSummary.OriginalAccountNumber, UploadConEdisonCancellationSummary.BillingPeriodRevision),      --               ,<EstimatedOrActualBilling, varchar(3),>\r\n                MIN(UploadConEdisonCancellationSummary.InitialCancelFromDate),      --               ,<InitialCancelFromDate, yyyymmdd,>\r\n                MAX(UploadConEdisonCancellationSummary.CurrentBillingToDate),      --               ,<CurrentBillingToDate, yyyymmdd,>\r\n                [dbo].[CalculateDeltaBillingPeriods]([dbo].[CalculateNextBillingPeriod]([dbo].DetermineConEdisonBillingPeriodProjected(MIN(UploadConEdisonCancellationSummary.CancelFromDate), MIN(UploadConEdisonCancellationSummary.GasRateCode), 9), 'M'),\r\n                                                     [dbo].DetermineConEdisonBillingPeriodProjected(MAX(UploadConEdisonCancellationSummary.CancelToDate), MAX(UploadConEdisonCancellationSummary.GasRateCode), 9),\r\n                                                     'M'),    --               ,<NumberOfBillingPeriods, int,>     \r\n                dbo.CalculateNumberOfBillingDays(MIN(UploadConEdisonCancellationSummary.FromDate),\r\n                                                 MAX(UploadConEdisonCancellationSummary.ToDate)),     --                 ,<TotalBillingDaysRebilled, int,>\r\n                SUM(UploadConEdisonCancellationSummary.TotalRebilledAmount),     --                 ,<TotalRebilledAmount, money,>\r\n                SUM(UploadConEdisonCancellationSummary.TotalCanceledAmount),     --                 ,<TotalCanceledAmount, money,>\r\n                AVG(UploadConEdisonCancellationSummary.CostOfGasCharge),     --                 ,<AverageRebillCostOfGasCharge, money,>\r\n                AVG(UploadConEdisonCancellationSummary.ThermsFactor),     --               ,<AverageRebillThermsFactor, ThermsFactor,>\r\n                0,     --               ,<BillingDays, int,>\r\n                MAX(UploadConEdisonCancellationSummary.BillingDate),     --               ,<BillingDate, int,>\r\n                MAX(UploadConEdisonCancellationSummary.ToDate),     --               ,<ToDate, yyyymmdd,>\r\n                MIN(UploadConEdisonCancellationSummary.FromDate),     --               ,<FromDate, yyyymmdd,>\r\n                CASE WHEN MAX(UploadConEdisonCancellationSummary.BillingPeriod) = MIN(UploadConEdisonCancellationSummary.BillingPeriodRevision)\r\n                     THEN 'O'\r\n                     ELSE 'A'\r\n                END,     --                ,<BillingAction, BillingAction,>\r\n                'N',     --      !!!         ,<ProcessedInTheCurrentPeriod, yesno,>\r\n                MAX(UploadConEdisonCancellationSummary.GasRateCode),  -- PAH      ,<GasRateCode, varchar(3),>\r\n                SUM(UploadConEdisonCancellationSummary.TotalCCF),     --               ,<TotalCCF, EnergyUnit,>\r\n                SUM(UploadConEdisonCancellationSummary.TotalTherms),     --               ,<TotalTherms, EnergyUnit,>\r\n                MIN(UploadConEdisonCancellationSummary.ThermsFactor),     --               ,<ThermsFactor, ThermsFactor,>\r\n                MIN(UploadConEdisonCancellationSummary.CancelFromDate),     --                 ,<CancelFromDate, yyyymmdd,>\r\n                MAX(UploadConEdisonCancellationSummary.CancelToDate),     --               ,<CancelToDate, yyyymmdd,>\r\n                SUM(UploadConEdisonCancellationSummary.CancelTotalCCF),     --                 ,<CancelTotalCCF, EnergyUnit,>\r\n                SUM(UploadConEdisonCancellationSummary.CancelTotalTherms),     --                 ,<CancelTotalTherms, EnergyUnit,>\r\n                MIN(UploadConEdisonCancellationSummary.CancelThermsFactor),     --                 ,<CancelThermsFactor, ThermsFactor,>\r\n                dbo.CalculateNumberOfBillingDays(MIN(UploadConEdisonCancellationSummary.CancelFromDate),\r\n                                                 MAX(UploadConEdisonCancellationSummary.CancelToDate)),     --               ,<CancelBillingDays, int,>\r\n                [dbo].ConvertDateToYYYYMMDD(GETDATE()),  --               ,<ProcessEffectiveDate, varchar(8),>\r\n                MAX(UploadConEdisonCancellationSummary.DerivedFromSpannedBill),\r\n                MAX(UploadConEdisonCancellationSummary.SpannedBillingPeriodRevision),\r\n                MAX(UploadConEdisonCancellationSummary.SpannedFirstCanceledBillingPeriod),\r\n                CASE WHEN MAX(UploadConEdisonCancellationSummary.SpannedBilledAmount) > 0\r\n                     THEN MAX(UploadConEdisonCancellationSummary.SpannedBilledAmount)\r\n                     ELSE MIN(UploadConEdisonCancellationSummary.SpannedBilledAmount)\r\n                END AS SpannedBilledAmount,\r\n                CASE WHEN MAX(UploadConEdisonCancellationSummary.SpannedCCF) > 0\r\n                     THEN MAX(UploadConEdisonCancellationSummary.SpannedCCF)\r\n                     ELSE MIN(UploadConEdisonCancellationSummary.SpannedCCF)\r\n                END AS SpannedCCF,\r\n                MAX(UploadConEdisonCancellationSummary.SpannedThermFactor),\r\n                CASE WHEN MAX(UploadConEdisonCancellationSummary.SpannedTherm) > 0\r\n                     THEN MAX(UploadConEdisonCancellationSummary.SpannedTherm)\r\n                     ELSE MIN(UploadConEdisonCancellationSummary.SpannedTherm)\r\n                END AS SpannedTherm,\r\n                MIN(UploadConEdisonCancellationSummary.SpannedMonthlyPercentage),\r\n                MIN(UploadConEdisonCancellationSummary.SpannedTotalPercentage),\r\n                MAX(UploadConEdisonCancellationSummary.Notes),\r\n                MAX(UploadConEdisonCancellationSummary.AuthenticatedUserID),\r\n                GETDATE(),\r\n                GETDATE(),\r\n                MIN(FacilityName),\r\n                MIN(ServiceAddress)\r\n        FROM ConEd.UploadConEdisonCancellationSummary\r\n        WHERE   UploadConEdisonCancellationSummarySeqid \r\n        NOT IN (\r\n                SELECT  UploadConEdisonCancellationSummarySeqid\r\n                FROM ConEd.UploadConEdisonCancellationSummary AS cancelSum\r\n                        INNER JOIN ConEd.[UploadConEdisonAccountBillingAdjustmentGas]\r\n                       AS adj ON cancelSum.BillingPeriodRevision = adj.BillingPeriodRevision\r\n                                  AND cancelSum.OriginalAccountNumber = adj.OriginalAccountNumber \r\n        )\r\n        GROUP BY UploadConEdisonCancellationSummary.OriginalAccountNumber,\r\n                UploadConEdisonCancellationSummary.BillingPeriodRevision"
+        }
+      ]
+    }
+  ]
+}

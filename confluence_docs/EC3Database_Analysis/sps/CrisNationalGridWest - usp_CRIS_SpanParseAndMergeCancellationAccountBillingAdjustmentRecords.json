@@ -1,0 +1,979 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_SpanParseAndMergeCancellationAccountBillingAdjustmentRecords",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_SpanParseAndMergeCancellationAccountBillingAdjustmentRecords",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and merge cancellation account billing adjustment records into a target table for further processing. It handles billing data related to cancellations, specifically focusing on gas charges and associated adjustments. The procedure involves preparing temporary tables, extracting cancellation records, processing spanned and unspanned records, and updating the final adjustment records with calculated values."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This procedure is complex due to several factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple steps, including data extraction, transformation, and loading (ETL) processes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It interacts with several tables and performs operations like truncation, insertion, and updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes a nested stored procedure call, which adds to the complexity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The logic involves aggregating and calculating various billing components, which requires a deep understanding of the business rules."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure does not explicitly take any input parameters. However, it internally uses the "
+        },
+        {
+          "type": "text",
+          "text": "@BillingPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " variable, which is derived from the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.ApplicationTimeFrame",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to determine the current processing period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Preparation of Cancellation Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Truncates temporary tables "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadCrisAccountBillingCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGasTempCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to ensure they are empty before processing."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Extraction of Cancellation Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadCrisAccountBillingCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " where the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TransactionCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is 'BC' (indicating a cancellation) and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ExcludeAndReview",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is 'N'."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Processing Spanned Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calls another stored procedure "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_CRIS_PreProcessParsingSpannedAccountInfoCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to handle spanned records, which are then moved to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGasTempCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Handling Unspanned Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Moves records that are not spanned from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadCrisAccountBillingCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGasTempCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Updating Cancellation Columns",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table with aggregated and calculated values from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingAdjustmentCrisGasTempCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". This includes updating various charge amounts and billing metrics."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncation and Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Frequent truncation and insertion operations can be resource-intensive, especially if the tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The aggregation of billing data can be computationally expensive, particularly if the dataset is large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Proper indexing on the tables involved, especially on columns used in joins and where clauses, can significantly improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may lock tables during truncation and updates, potentially affecting concurrent transactions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Truncating tables without backup or logging could lead to data loss if the procedure is executed unintentionally."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling mechanisms, which could lead to unhandled exceptions and incomplete transactions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade due to the complexity of operations and lack of optimization."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External Procedures",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The reliance on another stored procedure ("
+                },
+                {
+                  "type": "text",
+                  "text": "usp_CRIS_PreProcessParsingSpannedAccountInfoCancellation",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") introduces a dependency that could affect the overall process if changes are made to the external procedure without proper testing."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n--\r\n-- Description:\tMerge cancellation account billing adjustment record into account billing adjustment\r\n-- =============================================\r\n-- Create date:\t\t\t07/08/2011 (DHO)\r\n-- Update History:\r\n--\t\t\t\t\t\t08/30/2011 (PAH)\r\n--\t\t\t\t\t\r\n--\t\t\tThe OriginalBilledAmount,RevisedBilledAmount and NetPaidAdjustment calculations have changed for FY2012.  The Arrears and MiscellaneousChargeAmount\r\n--\t\t\twill added to the OriginalBilledAmount(Current period) or RevisedBilledAmount(Adjustments).  The\r\n--\t\t\t\t1. OriginalBilledAmount = Upload.GasChargeAmount + Upload.AccountArrears + Upload.MiscellaneousChargeAmount\r\n--\t\t\t\t2. RevisedBilledAmount  = Upload.GasChargeAmount + AccountBillingCrisGas.AccountArrears + AccountBillingCrisGas.MiscellaneousChargeAmount\r\n--\t\t\t\t3. NetPaidAdjustment = Upload.CurrentAccountBalance - Upload.SpannedGasChargeAmount-Upload.AccountArrears-Upload.MiscellaneousChargeAmount\r\n--\r\n--\t\t\t Added detail columns that aggregate  to the Gas Charge Amount\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelCommodityChargeAmount = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelCommodityChargeAmount ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelDeliveryChargeAmount = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelDeliveryChargeAmount ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelMTACommodityTax = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelMTACommodityTax ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelMTADeliveryTax = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelMTADeliveryTax ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelSalesTax = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelSalesTax ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelSystemBenefitsCharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelSystemBenefitsCharge ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelRetailDecouplingMechanismCharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelRetailDecouplingMechanismCharge ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelDeliveryRateSurcharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelDeliveryRateSurcharge ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelRealTimeNormalizationCharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelRealTimeNormalizationCharge ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelLatePaymentCharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelLatePaymentCharge ,\r\n--\t\t\t\tUploadAccountBillingAdjustmentCrisGas.CancelPaperBillCharge = Summarized CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation Transactions.CancelPaperBillCharge\r\n--\r\n--\t\t\t Added two tables to the update cancellation columns in adjustment table join\t\t\r\n--\t\t\t\t1. Billing.AccountBillingCrisGas\r\n--\t\t\t\t2. Billing.AccountBilling\r\n--\t\t\t\t\r\n--\t\t\t u.NetChangeDollars= u.RevisedBilledAmount + c.GasChargeAmount -(AccountBillingCrisGas.AccountArrears+AccountBillingCrisGas.MiscellaneousChargeAmount),\r\n--\t\t\t u.CancelBilledAmount= c.GasChargeAmount -(AccountBillingCrisGas.AccountArrears+AccountBillingCrisGas.MiscellaneousChargeAmount),\r\n--\t\t\t u.OriginalBilledAmount= AccountBilling.OriginalBilledAmount * -1 instead of c.GasChargeAmount * -1,\r\n--\r\n-- =============================================\r\nCREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_SpanParseAndMergeCancellationAccountBillingAdjustmentRecords]\r\nAS\r\nBEGIN\r\n\t\r\n\t/*\r\nBC records are processed after the BI records are processed and moved to \"Adjustment\" table. \r\n\r\npseudo:\r\n1. prepare cancellation tables\r\n2. extract cancellation record and store data into AccountBilingCancellation\r\n3. process spanned records in AccountBillingCancellation and move final record(s) to UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n4. move unspanned record from AccountBillingCancellation to UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n5. update the cancellation column in CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas\r\n*/\r\n\r\nDECLARE \r\n@BillingPeriod BillingPeriod,\r\n@errMessage VARCHAR(MAX)\r\n\r\n\r\nSELECT @BillingPeriod = MAX(BillingPeriod) FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y'\r\n/*\r\n1. Prepare cancellation tables\r\n*/\r\nTRUNCATE TABLE CrisNationalGridWest.[UploadCrisAccountBillingCancellation]\r\nTRUNCATE TABLE CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n\r\n/*\r\n2. extract BC (cancellation record)\r\n*/\r\nINSERT INTO CrisNationalGridWest.[UploadCrisAccountBillingCancellation]\r\n       (\t\tUtilityCompanySeqid ,\r\n\t\t        AccountInvoiceBillingGroup ,\r\n\t\t        BillingPeriod ,\r\n\t\t        BillingPeriodRevision ,\r\n\t\t        CalculatedBillingPeriodRevision ,\r\n\t\t        FirstBillingPeriodCanceled ,\r\n\t\t        IsSpannedBilling ,\r\n\t\t        NumberOfBillingPeriod ,\r\n\t\t        IsCurrentPeriodExchange ,\r\n\t\t        AccountNumber ,\r\n\t\t        MeterReadWorkDay ,\r\n\t\t        UtilityServiceAccountName ,\r\n\t\t        UtilityServiceAddress ,\r\n\t\t        Borough ,\r\n\t\t        Zipcode ,\r\n\t\t        State ,\r\n\t\t        ActivityCode ,\r\n\t\t        ActivityDate ,\r\n\t\t        ActivityTime ,\r\n\t\t        ActivityDateTime ,\r\n\t\t        TransactionCode ,\r\n\t\t        SpecialLedgerAccountNUmber ,\r\n\t\t        GasRateCode ,\r\n\t\t        BillFrequency ,\r\n\t\t        EstimatedOrActualBillingCode ,\r\n\t\t        GasChargeAmount ,\r\n\t\t        FromDate ,\r\n\t\t        ToDate ,\r\n\t\t        BillRenderDate ,\r\n\t\t        BillingDays ,\r\n\t\t        BilledCCF ,\r\n\t\t        ThermFactor ,\r\n\t\t        BilledTherms ,\r\n\t\t        NumberOfMeters ,\r\n\t\t        BillType ,\r\n\t\t        CommodityChargeAmount ,\r\n\t\t        DeliveryChargeAmount ,\r\n\t\t        MTACommodityTax ,\r\n\t\t        MTADeliveryTax ,\r\n\t\t        SalesTax ,\r\n\t\t        SystemBenefitsCharge ,\r\n\t\t        RetailDecouplingMechanismCharge ,\r\n\t\t        DeliveryRateSurcharge ,\r\n\t\t        RealTimeNormalizationCharge ,\r\n\t\t        LatePaymentCharge ,\r\n\t\t        PaperBillCharge ,\r\n\t\t        CommodityCostFactor ,\r\n\t\t        MTACommodityFactor ,\r\n\t\t        MTADeliveryFactor ,\r\n\t\t        SalesTaxFactor ,\r\n\t\t        SystemBenefitChargeFactor ,\r\n\t\t        RetailDecouplingMechanismFactor ,\r\n\t\t        DeliveryRateSurchargeFactor ,\r\n\t\t        RealTimeNormalizationFactor ,\r\n\t\t        LatePaymentFactor ,\r\n\t\t        CurrentAccountBalance ,\r\n\t\t        AccountArrears ,\r\n\t\t        TerminationBalance ,\r\n\t\t        TotalPaymentsPosted ,\r\n\t\t        DateLastPayment ,\r\n\t\t        MiscellaneousChargeAmount ,\r\n\t\t        MiscellaneousChargeType ,\r\n\t\t        ExcludeAndReview ,\r\n\t\t        FireAuditTrigger ,\r\n\t\t        Notes ,\r\n\t\t        AuthenticatedUserID ,\r\n\t\t        DateAdded ,\r\n\t\t        LastUpdate,\r\n\t\t        FirstNewCRISBillingPeriodRevision\r\n)\r\n select \r\n\t\t        UtilityCompanySeqid ,\r\n\t\t        AccountInvoiceBillingGroup ,\r\n\t\t        BillingPeriod ,\r\n\t\t        BillingPeriodRevision ,\r\n\t\t        CalculatedBillingPeriodRevision ,\r\n\t\t        FirstBillingPeriodCanceled ,\r\n\t\t        IsSpannedBilling ,\r\n\t\t        NumberOfBillingPeriod ,\r\n\t\t        IsCurrentPeriodExchange ,\r\n\t\t        AccountNumber ,\r\n\t\t        MeterReadWorkDay ,\r\n\t\t        UtilityServiceAccountName ,\r\n\t\t        UtilityServiceAddress ,\r\n\t\t        Borough ,\r\n\t\t        Zipcode ,\r\n\t\t        State ,\r\n\t\t        ActivityCode ,\r\n\t\t        ActivityDate ,\r\n\t\t        ActivityTime ,\r\n\t\t        ActivityDateTime ,\r\n\t\t        TransactionCode ,\r\n\t\t        SpecialLedgerAccountNUmber ,\r\n\t\t        GasRateCode ,\r\n\t\t        BillFrequency ,\r\n\t\t        EstimatedOrActualBillingCode ,\r\n\t\t        GasChargeAmount ,\r\n\t\t        BillingFromDate ,\r\n\t\t        BillingToDate ,\r\n\t\t        BillRenderDate ,\r\n\t\t        BillingDays ,\r\n\t\t        BilledCCF ,\r\n\t\t        ThermFactor ,\r\n\t\t        BilledTherms ,\r\n\t\t        NumberOfMeters ,\r\n\t\t        BillType ,\r\n\t\t        CommodityChargeAmount ,\r\n\t\t        DeliveryChargeAmount ,\r\n\t\t        MTACommodityTax ,\r\n\t\t        MTADeliveryTax ,\r\n\t\t        SalesTax ,\r\n\t\t        SystemBenefitsCharge ,\r\n\t\t        RetailDecouplingMechanismCharge ,\r\n\t\t        DeliveryRateSurcharge ,\r\n\t\t        RealTimeNormalizationCharge ,\r\n\t\t        LatePaymentCharge ,\r\n\t\t        PaperBillCharge ,\r\n\t\t        CommodityCostFactor ,\r\n\t\t        MTACommodityFactor ,\r\n\t\t        MTADeliveryFactor ,\r\n\t\t        SalesTaxFactor ,\r\n\t\t        SystemBenefitChargeFactor ,\r\n\t\t        RetailDecouplingMechanismFactor ,\r\n\t\t        DeliveryRateSurchargeFactor ,\r\n\t\t        RealTimeNormalizationFactor ,\r\n\t\t        LatePaymentFactor ,\r\n\t\t        CurrentAccountBalance ,\r\n\t\t        AccountArrears ,\r\n\t\t        TerminationBalance ,\r\n\t\t        TotalPaymentsPosted ,\r\n\t\t        DateLastPayment ,\r\n\t\t        MiscellaneousChargeAmount ,\r\n\t\t        MiscellaneousChargeType ,\r\n\t\t        ExcludeAndReview ,\r\n\t\t        FireAuditTrigger ,\r\n\t\t        Notes ,\r\n\t\t        AuthenticatedUserID ,\r\n\t\t        DateAdded ,\r\n\t\t        LastUpdate,\r\n\t\t        FirstNewCRISBillingPeriodRevision\r\n from CrisNationalGridWest.UploadAccountBillingDetail\r\n where ExcludeAndReview = 'N' and \r\n TransactionCode = 'BC'\r\n\r\n/*\r\n3. process spanned records and move spanned record into CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n*/\r\nEXEC [CrisNationalGridWest].[usp_CRIS_PreProcessParsingSpannedAccountInfoCancellation] '1', @BillingPeriod\r\n\r\n/*\r\n4. move unspanned records to UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n*/\r\nINSERT INTO CrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n\t\t(\r\n\t\t\tUtilityCompanySeqid, AccountInvoiceBillingGroup, BillingPeriod, BillingPeriodRevision, FirstBillingPeriodCanceled, IsSpannedBilling, \r\n\t\t\tNumberOfBillingPeriod, IsCurrentPeriodExchange, AccountNumber, MeterReadWorkDay, AccountBillingStatus, PreviousAccountBillingStatus, \r\n\t\t\tAccountBillingStatusCodePeriod, UtilityServiceAccountName, UtilityServiceAddress, Borough, Zipcode, State, ActivityCode, ActivityDateTime, \r\n\t\t\tSpecialLedgerAccountNUmber, GasRateCode, BillFrequency, EstimatedOrActualBillingCode, GasChargeAmount, FromDate, ToDate, BillRenderDate, \r\n\t\t\tBillingDays, BilledCCF, ThermFactor, BilledTherms, NumberOfMeters, BillType, CommodityChargeAmount, DeliveryChargeAmount, MTACommodityTax,\r\n\t\t\tMTADeliveryTax, SalesTax, SystemBenefitsCharge, RetailDecouplingMechanismCharge, DeliveryRateSurcharge, RealTimeNormalizationCharge, \r\n\t\t\tLatePaymentCharge, PaperBillCharge, CommodityCostFactor, MTACommodityFactor, MTADeliveryFactor, SalesTaxFactor, SystemBenefitChargeFactor, \r\n\t\t\tRetailDecouplingMechanismFactor, DeliveryRateSurchargeFactor, RealTimeNormalizationFactor, LatePaymentFactor, AccountArrears, \r\n\t\t\tTerminationBalance, TotalPaymentsPosted, CurrentAccountBalance, DateLastPayment, MiscellaneousChargeAmount, MiscellaneousChargeType, \r\n\t\t\tNotes, AuthenticatedUserID, DateAdded, LastUpdate,FirstNewCRISBillingPeriodRevision,TransactionCode,GasChargeSummedPieces\r\n\t\t)\r\nselect \r\n\t\t\tUtilityCompanySeqid, AccountInvoiceBillingGroup, BillingPeriod, BillingPeriodRevision, \r\n\t\t\tFirstBillingPeriodCanceled, IsSpannedBilling, NumberOfBillingPeriod, IsCurrentPeriodExchange, AccountNumber, MeterReadWorkDay, \r\n\t\t\t'AC' as AccountBillingStatus, '46' as PreviousAccountBillingStatus, \r\n\t\t\tBillingPeriod as AccountBillingStatusCodePeriod, \r\n\t\t\tUtilityServiceAccountName, UtilityServiceAddress, Borough, \r\n\t\t\tZipcode, State, ActivityCode, ActivityDateTime, SpecialLedgerAccountNUmber, GasRateCode, BillFrequency, EstimatedOrActualBillingCode, \r\n\t\t\tGasChargeAmount, FromDate, ToDate, BillRenderDate, BillingDays, BilledCCF, ThermFactor, BilledTherms, NumberOfMeters, BillType, \r\n\t\t\tCommodityChargeAmount, DeliveryChargeAmount, MTACommodityTax, MTADeliveryTax, SalesTax, SystemBenefitsCharge, \r\n\t\t\tRetailDecouplingMechanismCharge, DeliveryRateSurcharge, RealTimeNormalizationCharge, LatePaymentCharge, PaperBillCharge, \r\n\t\t\tCommodityCostFactor, MTACommodityFactor, MTADeliveryFactor, SalesTaxFactor, SystemBenefitChargeFactor, RetailDecouplingMechanismFactor, \r\n\t\t\tDeliveryRateSurchargeFactor, RealTimeNormalizationFactor, LatePaymentFactor, AccountArrears, TerminationBalance, \r\n\t\t\tTotalPaymentsPosted, CurrentAccountBalance, DateLastPayment, MiscellaneousChargeAmount, MiscellaneousChargeType, Notes, \r\n\t\t\tAuthenticatedUserID, DateAdded, LastUpdate,FirstNewCRISBillingPeriodRevision,TransactionCode,\r\n\t\t\tGasChargeAmount -- as GasChargeSummedPieces for no span\r\nfrom \r\n\t\tCrisNationalGridWest.UploadCrisAccountBillingCancellation\r\nWHERE IsSpannedBilling = 'N'\r\n\r\n/*\r\n5. update cancellation columns in adjustment table\r\n*/\r\n\r\nUPDATE u\r\n\tSET \r\n\tu.NetChangeDollars= u.RevisedBilledAmount + c.GasChargeAmount -(abcg.AccountArrears+abcg.MiscellaneousChargeAmount),\r\n\tu.CancelBilledAmount= c.GasChargeAmount, -- -(abcg.AccountArrears+abcg.MiscellaneousChargeAmount),\r\n\tu.CancelTherms= c.BilledTherms,\r\n\tu.NetChangeTherms= u.RevisedTherms + c.BilledTherms,\r\n\tu.OriginalBilledAmount= ab.OriginalBilledAmount, -- * -1,  --c.GasChargeAmount * -1,\r\n\tu.CancelCCF= c.BilledCCF,\r\n\tu.NetChangeCCF= u.RevisedCCF + c.BilledCCF,\r\n\tu.CancelFromDate = c.CancelFromdate,\r\n\tu.CancelToDate = c.CancelTodate,\r\n\tu.CancelCommodityChargeAmount = c.CancelCommodityChargeAmount ,\r\n\tu.CancelDeliveryChargeAmount = c.CancelDeliveryChargeAmount ,\r\n\tu.CancelMTACommodityTax = c.CancelMTACommodityTax ,\r\n\tu.CancelMTADeliveryTax = c.CancelMTADeliveryTax ,\r\n\tu.CancelSalesTax = c.CancelSalesTax ,\r\n\tu.CancelSystemBenefitsCharge = c.CancelSystemBenefitsCharge ,\r\n\tu.CancelRetailDecouplingMechanismCharge = c.CancelRetailDecouplingMechanismCharge ,\r\n\tu.CancelDeliveryRateSurcharge = c.CancelDeliveryRateSurcharge ,\r\n\tu.CancelRealTimeNormalizationCharge = c.CancelRealTimeNormalizationCharge ,\r\n\tu.CancelLatePaymentCharge = c.CancelLatePaymentCharge ,\r\n\tu.CancelPaperBillCharge = c.CancelPaperBillCharge\r\nFROM \r\n(\r\n\tSELECT \r\n\t\t\tAccountNumber, BillingPeriodRevision, MIN(FromDate) AS CancelFromdate, MIN(ToDate) AS CancelTodate, SUM(GasChargeAmount) \r\n\t\t\tAS GasChargeAmount, SUM(BilledTherms) AS BilledTherms, SUM(BilledCCF) AS BilledCCF, SUM(CommodityChargeAmount) \r\n\t\t\tAS CancelCommodityChargeAmount, SUM(DeliveryChargeAmount) AS CancelDeliveryChargeAmount, SUM(MTACommodityTax) AS CancelMTACommodityTax, \r\n\t\t\tSUM(MTADeliveryTax) AS CancelMTADeliveryTax, SUM(SalesTax) AS CancelSalesTax, SUM(SystemBenefitsCharge) AS CancelSystemBenefitsCharge, \r\n\t\t\tSUM(RetailDecouplingMechanismCharge) AS CancelRetailDecouplingMechanismCharge, SUM(DeliveryRateSurcharge) AS CancelDeliveryRateSurcharge, \r\n\t\t\tSUM(RealTimeNormalizationCharge) AS CancelRealTimeNormalizationCharge, SUM(LatePaymentCharge) AS CancelLatePaymentCharge, SUM(PaperBillCharge) \r\n\t\t\tAS CancelPaperBillCharge\r\n\tFROM \r\n\t\t\tCrisNationalGridWest.UploadAccountBillingAdjustmentCrisGasTempCancellation\r\n\tGROUP BY \r\n\t\t\tAccountNumber, BillingPeriodRevision\r\n) AS c INNER JOIN\r\n\tCrisNationalGridWest.UploadAccountBillingAdjustmentCrisGas AS u ON c.AccountNumber = u.AccountNumber AND \r\n\tc.BillingPeriodRevision = u.BillingPeriodRevision INNER JOIN\r\n\tBilling.AccountBillingCrisGas AS abcg ON u.AccountBillingCrisGasSeqid = abcg.AccountBillingCrisGasSeqid INNER JOIN\r\n\tBilling.AccountBilling as ab ON abcg.AccountBillingSeqid = ab.AccountBillingSeqid\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

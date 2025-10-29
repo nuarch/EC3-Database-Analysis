@@ -1,0 +1,809 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNetMeteringAttributeFromEFile",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNetMeteringAttributeFromEFile",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to update the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountProgramAttributeType",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table with net metering attributes for accounts that have a net metering flag in the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountBillingElectric",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It checks if the net metering attribute is already present and inserts it if not. The procedure is part of a monthly processing routine and includes error handling to manage cases where expected net metering codes are missing."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves conditional logic, joins, and error handling, which adds a moderate level of complexity. It performs a check for existing records, inserts new records based on specific conditions, and handles exceptions, making it more complex than a simple insert operation."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to filter records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingElectric",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table based on the billing period. It is an output parameter, suggesting that it might be modified or used to return a value, although the current procedure does not modify it."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Check for Existing Net Metering Flags",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure first checks if there are any non-null, non-empty "
+                },
+                {
+                  "type": "text",
+                  "text": "NetMeteredAccountFlag",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " values in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingElectric",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table for the specified billing period. It ensures these flags are valid by checking against the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.NetMeteredAccountFlag",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert Net Metering Attributes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If valid net metering flags exist, the procedure inserts new records into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountProgramAttributeType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. It uses a "
+                },
+                {
+                  "type": "text",
+                  "text": "LEFT JOIN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to ensure that only accounts without an existing net metering attribute (ProgramAttributeTypeSeqid = 11) are considered for insertion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If no valid net metering flags are found, the procedure prints an error message and raises an exception with a specific error code and message."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Exception Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure includes a "
+                },
+                {
+                  "type": "text",
+                  "text": "TRY...CATCH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " block to handle any runtime errors, printing the error message if an exception occurs."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on joins and conditions that could benefit from proper indexing on columns like "
+                },
+                {
+                  "type": "text",
+                  "text": "NetMeteredAccountFlag",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueAccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT DISTINCT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and joins could be resource-intensive if the tables involved are large. Consideration should be given to optimizing these queries or processing in smaller batches if performance issues arise."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction handling, which could lead to concurrency issues if multiple instances are run simultaneously."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "NetMeteredAccountFlag",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " values are correctly maintained and that the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.NetMeteredAccountFlag",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table contains all valid flags. Any discrepancies could lead to incorrect data being inserted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error handling mechanism is basic and may not provide sufficient detail for troubleshooting. Enhancing the error logging could improve maintainability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure could degrade, especially if the tables involved are not properly indexed or if the procedure is run frequently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output Parameter Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is defined as an output parameter but is not modified within the procedure. This could lead to confusion or errors if the calling code expects a modified value."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE     PROCEDURE [Billing].[usp_InsertNetMeteringAttributeFromEFile]\n    (\r\n     @BillingPeriod INT OUTPUT\r\n    )\r\nAS \r\n\r\n--**************************************************************************************\r\n--* Description:\tThis SP looks up the net metering flag from the input file and adds to attributes if netmetering attribute is not available in there\r\n--* AUTHOR:       Zafer Durmaz\r\n--* Created On:   2019-03-25\r\n--**************************************************************************************\r\n--* Change Log\r\n--* \r\n--* 07/27/2016 zd  First Version \r\n--***************************************************************************************\r\n\r\nBEGIN TRY  \r\n\tif exists (\r\n\t\t\t\tSELECT mbe.NetMeteredAccountFlag \r\n\t\t\t\tFROM Billing.AccountBillingElectric AS mbe\r\n\t\t\t\tWHERE mbe.NetMeteredAccountFlag IS NOT NULL\r\n\t\t\t\tAND REPLACE(mbe.NetMeteredAccountFlag,' ','') <>''\r\n\t\t\t\tAND mbe.NetMeteredAccountFlag IN (SELECT NetMeteredAccountFlag FROM Billing.NetMeteredAccountFlag)\r\n\t\t\t\tAND mbe.BillingPeriod = @BillingPeriod\r\n\t\t\t   )\r\n-- insert the netmetering records\r\nINSERT INTO Billing.AccountProgramAttributeType\r\n        ( AccountUniqueSeqID\r\n        , ProgramAttributeTypeSeqid\r\n        , AttributeTypeOptionSeqid\r\n        , AttributeStatusSeqid\r\n        , AttributeStatusOptionSeqid\r\n        , AttributeUpdatedOn\r\n        , Notes\r\n        , AuthenticatedUserID\r\n        , DateAdded\r\n        , LastUpdate\r\n        )\r\nSELECT DISTINCT\r\nabe.UniqueAccountSeqid\r\n,11 -- Netmetered\r\n,NULL\r\n,NULL\r\n,34 -- Yes for NetMetering\r\n,NULL\r\n,'NetMetering attribute is added by system as part of monthly processing.'\r\n,1\r\n,GETDATE()\r\n,GETDATE()\r\nFROM Billing.AccountBillingElectric AS abe\r\nleft JOIN Billing.AccountProgramAttributeType apat ON abe.UniqueAccountSeqId = apat.AccountUniqueSeqID AND apat.ProgramAttributeTypeSeqid = 11\r\nWHERE abe.NetMeteredAccountFlag IS NOT NULL\r\nAND REPLACE(abe.NetMeteredAccountFlag,' ','') <>''\r\nAND abe.BillingPeriod = @BillingPeriod\r\nAND apat.AccountUniqueSeqID IS NULL\r\n\r\nELSE   \r\nBEGIN   \r\n\tPrint 'Error missing netmetering code';  \r\n\tThrow 60000,'Error missing netmetering code. There is a new Netmetering code in input file',5  \r\nEND   \r\n  \r\nEND TRY  \r\nBEGIN CATCH  \r\nPrint 'Error Occur that is:'  \r\nPrint Error_Message()  \r\nEND CATCH"
+        }
+      ]
+    }
+  ]
+}

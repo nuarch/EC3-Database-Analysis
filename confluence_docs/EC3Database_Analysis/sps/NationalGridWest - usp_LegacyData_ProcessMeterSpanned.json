@@ -1,0 +1,999 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "NationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LegacyData_ProcessMeterSpanned",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LegacyData_ProcessMeterSpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and adjust billing data for meters that span multiple billing periods. It operates within the "
+        },
+        {
+          "type": "text",
+          "text": "NationalGridWest",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema and involves several steps: moving data to a temporary table, parsing spanned meter information, setting gas rate codes, merging summary data into an adjustment table, updating billing discrepancies, and annotating records with discrepancies."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data insertion, execution of another stored procedure, updates, and complex calculations. It interacts with several tables and uses a mix of SQL operations, making it moderately complex."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in the format "
+                },
+                {
+                  "type": "text",
+                  "text": "YYYYMM",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An identifier for the authenticated user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingCycle varchar(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing cycle, possibly indicating a specific cycle within a month."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets a utility code to 2, which might be used for internal logic or categorization."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Movement",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Inserts records from "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " into "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterTempSummarySpanned",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where "
+                },
+                {
+                  "type": "text",
+                  "text": "DeltaNumberOfPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is greater than 1, indicating spanned periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls another stored procedure "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_LegacyData_ParseSpannedMeterInfo",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to further process spanned meter data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Gas Rate Code Setting",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to set a default gas rate code and then updates it based on a commodity tariff rate from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.Account",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Merging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Inserts aggregated and calculated data into "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", using a combination of aggregation functions and a custom function "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateDeltaBillingPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to determine the number of billing periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Discrepancy Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates "
+                },
+                {
+                  "type": "text",
+                  "text": "RevisedBilledCCF",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterToReading",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "Ccf",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " fields in the adjustment table based on discrepancies found in "
+                },
+                {
+                  "type": "text",
+                  "text": "uvw_NG_GasUsageDiscrepanciesBetweenAccountAndMeterReportedBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Annotation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "Notes",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " field in the adjustment table to include details about discrepancies in therms and CCF."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that tables involved in joins and where clauses, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "uvw_NG_GasUsageDiscrepanciesBetweenAccountAndMeterReportedBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are properly indexed to optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the data volume is large, consider processing in batches to avoid locking and reduce transaction log growth."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateDeltaBillingPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "DetermineBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " functions within a select statement can be resource-intensive if not optimized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in the source tables is accurate and consistent. Any discrepancies in the source data could propagate through the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple updates and inserts, which could lead to locking issues if executed concurrently by multiple users."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete transactions in case of failures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade if not optimized for large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the procedure is executed with appropriate permissions to prevent unauthorized data access or modifications."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [NationalGridWest].[usp_LegacyData_ProcessMeterSpanned] \r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@BillingCycle varchar(1)\r\nAS\r\nBEGIN\r\n\r\ndeclare @UtilityCode int\r\nset @UtilityCode = 2\r\n\r\n/**************************\r\n1. Move data into the upload spanned table\r\n***************************/\r\nINSERT INTO NationalGridWest.UploadLegacyKeyspanWestMeterTempSummarySpanned \r\n(\r\n\ttitle,\r\n\tAccountNumber,\r\n\tMeterNumber,\r\n\tBillingPeriod,\r\n\tBillingPeriodRevision,\r\n\tFirstPeriodCanceled,\r\n\tFromDate,\r\n\tToDate,\r\n\tThermFactor,\r\n\tCCF,\r\n\tDeltaNumberOfPeriods,\r\n\tReadingCode,\r\n\tFromReading,\r\n\tToReading,\r\n\tMeterConstant,\r\n\tTripNumber,\r\n\tDials,\r\n\tFacilityName,\r\n\tServiceAddress,\r\n\ttherms\r\n)\r\nSELECT \r\n\t'SpannedMeterbilling' AS title, \r\n\tAccountNumber,\r\n\tMeterNumber,\r\n\tBillingPeriod,\r\n\tBillingPeriodRevision,\r\n\tFirstPeriodCanceled,\r\n\tFromDate,\r\n\tToDate,\r\n\tThermFactor,\r\n\tCCF,\r\n\tDeltaNumberOfPeriods,\r\n\tReadingCode,\r\n\tFromReading,\r\n\tToReading,\r\n\tMeterConstant,\r\n\tsubstring(AccountNumber, 12, 2),  -- Trip Number\r\n\tDials,\r\n\tFacilityName,\r\n\tServiceAddress,\r\n\ttherms\r\nFROM NationalGridWest.UploadLegacyKeyspanWestMeter\r\nWHERE (DeltaNumberOfPeriods > 1)\r\n\r\n\r\n/**************************\r\n2. Parse spanned meter info\r\n***************************/\r\nexec NationalGridWest.usp_LegacyData_ParseSpannedMeterInfo @BillingPeriod, @authenticatedID, @BillingCycle\r\n\r\n/*******************************\r\n3. Set gas rate code\r\n*********************************/\r\n-- set default gas rate code\r\nUPDATE NationalGridWest.UploadLegacyKeyspanWestMeterSummary\r\nSET GasRateCode = '020'\r\n\r\n-- set gas rate code = commodity tariff rate in EC3\r\nUPDATE  s\r\nSET s.GasRateCode = a.CommodityTariffRate \r\nFROM NationalGridWest.UploadLegacyKeyspanWestMeterSummary AS s, Billing.Account AS a\r\nWHERE s.OriginalAccountNumber = a.OriginalAccountNumber\r\n\r\n/**************************\r\n4. Merge summary data and store into adjustment\r\n***************************/\r\n\t\t\r\n  INSERT    INTO [NationalGridWest].[UploadLegacyKeyspanWestMeterBillingAdjustmentGas]\r\n            (\r\n              AccountUtilityCompanySeqid,\r\n              OriginalAccountNumber,\r\n              OriginalMeterNumber,\r\n              BillingPeriod,\r\n              BillingPeriodRevision,\r\n              FirstCancelPeriod,\r\n              NumberOfTransactions,\r\n              NumberOfRebillTransactions,\r\n              NumberOfCancelTransactions,\r\n              BillingAction,\r\n              InitialCancelFromDate,\r\n              CurrentBillingToDate,\r\n              GasRateCode,\r\n              FromDate,\r\n              ToDate,\r\n              FromReadingDate,\r\n              ToReadingDate,\r\n              MeterFromReading,\r\n              MeterToReading,\r\n              Ccf,\r\n              Therms,\r\n              ThermsFactor,\r\n              MeterConstant,\r\n              TotalBillingDaysRebilled,\r\n              NumberOfBillingPeriods,\r\n              BillingDays,\r\n              BillingDate,\r\n              ReadingCode,\r\n              NumberOfDials,\r\n              MeterType,\r\n              ProcessedInTheCurrentPeriod,\r\n              ProcessEffectiveDate,\r\n              DerivedFromSpannedBill,\r\n              SpannedBillingPeriodRevision,\r\n              SpannedFirstCanceledBillingPeriod,\r\n              SpannedCCF,\r\n              SpannedThermFactor,\r\n              SpannedTherm,\r\n              SpannedMonthlyPercentage,\r\n              SpannedTotalPercentage,\r\n              EstimatedOrActualBilling,\r\n              AuthenticatedUserID,\r\n              Notes,\r\n              InitialPostingDate,\r\n              FacilityName,\r\n              ServiceAddress\r\n            )\r\n            SELECT  MIN(AccountUtilityCompanySeqid) AS AccountUtilityCompanySeqid,\r\n                    OriginalAccountNumber,\r\n                    OriginalMeterNumber,\r\n                    MIN(BillingPeriod) AS BillingPeriod,\r\n                    BillingPeriodRevision,\r\n                    MIN(FirstCancelPeriod) AS FirstCancelPeriod,\r\n                    COUNT(NumberOfTransactions) AS NumberOfTransactions,\r\n                    COUNT(NumberOfRebillTransactions) AS NumberOfRebillTransactions,\r\n                    MIN(0) AS NumberOfCancelTransactions,\r\n                    MIN(BillingAction) AS BillingAction,\r\n                    MIN(InitialCancelFromDate) AS InitialCancelFromDate,\r\n                    MAX(CurrentBillingToDate) AS CurrentBillingToDate,\r\n                    MIN(GasRateCode) AS GasRateCode,\r\n                    MIN(FromDate) AS FromDate,\r\n                    MAX(ToDate) AS ToDate,\r\n                    MIN(FromDate) AS FromReadingDate,\r\n                    MAX(ToDate) AS ToReadingDate,\r\n                    MAX(MeterFromReading) AS MeterFromReading,\r\n                    MAX(MeterToReading) AS MeterToReading,\r\n                    SUM(Ccf) AS Ccf,\r\n                    SUM(Therms) AS Therms,\r\n                    MIN(ThermsFactor) AS ThermsFactor,\r\n                    MIN(MeterConstant) AS MeterConstant,\r\n                    SUM(TotalBillingDaysRebilled) AS TotalBillingDaysRebilled,\r\n                    --SUM(NumberOfBillingPeriods) AS NumberOfBillingPeriods,\r\n                    [dbo].[CalculateDeltaBillingPeriods]\r\n\t\t\t\t\t(\r\n\t\t\t\t\t\tNationalGridWest.DetermineBillingPeriod(@BillingCycle, Min(FromDate), 'F', substring(max(OriginalAccountNumber),12,2)),\r\n\t\t\t\t\t\tNationalGridWest.DetermineBillingPeriod(@BillingCycle, Min(ToDate), 'T', substring(max(OriginalAccountNumber),12,2)),\r\n\t\t\t\t\t\t@BillingCycle                                                                                                                                                         \r\n\t\t\t\t\t) as 'NumberOfBillingPeriods',\r\n                    SUM(BillingDays) AS BillingDays,\r\n                    MIN(BillingDate) AS BillingDate,\r\n                    MIN(ReadingCode) AS ReadingCode,\r\n                    MIN(NumberOfDials) AS NumberOfDials,\r\n                    MIN(MeterType) AS MeterType,\r\n                    MIN(ProcessedInTheCurrentPeriod) AS ProcessedInTheCurrentPeriod,\r\n                    MIN(ProcessEffectiveDate) AS ProcessEffectiveDate,\r\n                    MIN(DerivedFromSpannedBill) AS DerivedFromSpannedBill,\r\n                    MIN(SpannedBillingPeriodRevision) AS SpannedBillingPeriodRevision,\r\n                    MIN(SpannedFirstCanceledBillingPeriod) AS SpannedFirstCanceledBillingPeriod,\r\n                    MIN(SpannedCCF) AS SpannedCCF,\r\n                    MIN(SpannedThermFactor) AS SpannedThermFactor,\r\n                    MIN(SpannedTherm) AS SpannedTherm,\r\n                    MIN(SpannedMonthlyPercentage) AS SpannedMonthlyPercentage,\r\n                    MIN(SpannedTotalPercentage) AS SpannedTotalPercentage,\r\n                    MAX(EstimatedOrActualBilling) AS EstimatedOrActualBilling,\r\n                    MIN(AuthenticatedUserID) AS AuthenticatedUserID,\r\n                    MIN(Notes) AS Notes,\r\n                    MIN(InitialPostingDate) AS InitialPostingDate,\r\n                    MIN(FacilityName) AS FacilityName,\r\n                    MIN(ServiceAddress) AS ServiceAddress\r\n            FROM NationalGridWest.UploadLegacyKeyspanWestMeterSummary\r\n            GROUP BY OriginalAccountNumber,\r\n                    OriginalMeterNumber,\r\n                    BillingPeriodRevision\r\n\r\n/**************************\r\n4. update revisedBilledCCF, meterToReading and CCF\r\n***************************/\r\n\r\nUPDATE  NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas\r\nSET     \r\n\t\tRevisedBilledCCF = \r\n\t\t\t\tNGV.MeterCcf \r\n\t\t\t\t+ NGV.netCCF,\r\n        MeterToReading \r\n\t\t\t= NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.MeterFromReading\r\n\t\t\t+ NGV.MeterCcf\r\n\t\t\t+ NGV.netCCF,\r\n        Ccf = \r\n\t\t\tNGV.MeterCcf\r\n\t\t\t+ NGV.netCCF\r\nFROM NationalGridWest.uvw_NG_GasUsageDiscrepanciesBetweenAccountAndMeterReportedBilling NGV\r\n        INNER JOIN \r\n        NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas\r\n        ON \r\n        NGV.OriginalAccountNumber \r\n        = NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.OriginalAccountNumber\r\n        AND \r\n        NGV.BillingPeriodRevision \r\n        = NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.BillingPeriodRevision\r\nWHERE   ( NGV.netCCF <> 0 )\r\n        AND ( NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.NumberOfRebillTransactions > 1 )\r\n\r\n\r\n/**************************\r\n5. update note of all meters that have discrepancy\r\n***************************/\r\n\r\n--SELECT * FROM NationalGridWest.uvw_GasUsageDiscrepanciesBetweenAccountAndMeterReportedBilling\r\n\r\nUPDATE  NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas\r\nSET     Notes = 'Account and Meter Billing Discrepancies  '\r\n        + case when netTherms <> 0\r\n               then 'Net Therms(' + cast(netTherms as varchar(10)) + ') '\r\n                    + case when netCCF <> 0\r\n                           then ')  CCF(' + cast(netCCF as varchar(10))\r\n                                + ')  '\r\n                           else ''\r\n                      end + ':           Reported: Therms('\r\n                    + cast(AccountTotalTherms as varchar(10))\r\n                    + ')           CCF('\r\n                    + cast(AccountTotalCcf as varchar(10))\r\n                    + ')           ThermsFactor('\r\n                    + cast(AccountTotalThermsFactor as varchar(10)) + ')  '\r\n               else ''\r\n          end --+\r\nFROM \r\n\tNationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas\r\n    INNER JOIN \r\n    NationalGridWest.uvw_NG_GasUsageDiscrepanciesBetweenAccountAndMeterReportedBilling NGVW\r\n    ON \r\n    NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.BillingPeriod = NGVW.BillingPeriod\r\n    AND NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.BillingPeriodRevision = NGVW.BillingPeriodRevision\r\n    aND NationalGridWest.UploadLegacyKeyspanWestMeterBillingAdjustmentGas.OriginalAccountNumber = NGVW.OriginalAccountNumber\r\n\r\n\r\n\r\n\r\nEND --  end procedure"
+        }
+      ]
+    }
+  ]
+}

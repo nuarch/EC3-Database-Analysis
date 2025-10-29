@@ -1,0 +1,785 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ViewThreeFiscalYearsByDollarsAndUsage",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ViewThreeFiscalYearsByDollarsAndUsage",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a summary report of billing data over three fiscal years. It aggregates data by month for each fiscal year, providing totals for billed amounts, energy usage (kWh), and demand usage (KW) for each account. The procedure retrieves the current fiscal year from the "
+        },
+        {
+          "type": "text",
+          "text": "Published.MonthlyPublishedSummaryData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and calculates the two previous fiscal years. It then queries the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to produce monthly summaries for each of these fiscal years."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple UNION ALL operations to combine results for different fiscal years and types of data (dollars, kWh, KW). It uses dynamic fiscal year calculations and aggregates data across multiple dimensions (accounts, months, and fiscal years), which adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It calculates the necessary fiscal years internally based on the data available in the "
+        },
+        {
+          "type": "text",
+          "text": "Published.MonthlyPublishedSummaryData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Fiscal Year Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure starts by determining the current fiscal year using the maximum "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. It extracts the year part and casts it to an integer."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Previous Fiscal Years",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the two previous fiscal years by simple arithmetic subtraction."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": For each fiscal year (current, previous, and two years prior), the procedure performs the following:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OriginalBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountEnergyUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountDemandUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " by month."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Uses a series of CASE statements within SUM functions to conditionally sum values for each month."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Groups results by "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OriginalAccountNumber",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and constructs a description string indicating the fiscal year and data type (dollars, kWh, KW)."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Compilation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results for each fiscal year and data type are combined using UNION ALL to produce a comprehensive report."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure sets the transaction isolation level to READ UNCOMMITTED, which can improve performance by allowing dirty reads but may result in reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Performance can be significantly impacted by the presence or absence of appropriate indexes on the "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns. Proper indexing can reduce the time taken for grouping and filtering operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure's performance will degrade with large volumes of data due to the multiple UNION ALL operations and the repeated aggregation logic for each fiscal year and data type."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of READ UNCOMMITTED isolation level can lead to reading uncommitted or inconsistent data, which might not be suitable for all business scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data grows, the repeated aggregation and UNION ALL operations could become a bottleneck, leading to longer execution times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes a specific format for "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and fiscal year calculations, which might not adapt well to changes in data format or business rules."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Lack of Input Parameters",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks flexibility as it does not allow users to specify fiscal years or other filtering criteria, which could limit its usability in different contexts."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Billing].[usp_ViewThreeFiscalYearsByDollarsAndUsage]\nAS\r\nBEGIN\r\n    SET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n    DECLARE @CurrentFY AS INT, @PreviousFY AS INT,  @Previous2FY AS INT;\r\n\r\n    SELECT  @CurrentFY = CAST(SUBSTRING(MAX(PublishedBillingPeriod), 0, 5) AS INT) FROM Published.MonthlyPublishedSummaryData;\r\n\tPRINT @CurrentFY\r\n\tSELECT @PreviousFY = @CurrentFY - 1, @Previous2FY = @CurrentFY - 2;\r\n\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@Previous2FY AS VARCHAR(4)) + ' - $$$' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN OriginalBilledAmount END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN OriginalBilledAmount END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN OriginalBilledAmount END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN OriginalBilledAmount END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN OriginalBilledAmount END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN OriginalBilledAmount END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN OriginalBilledAmount END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN OriginalBilledAmount END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN OriginalBilledAmount END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN OriginalBilledAmount END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN OriginalBilledAmount END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN OriginalBilledAmount END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @Previous2FY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@Previous2FY AS VARCHAR(4)) + ' - kWh' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountEnergyUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountEnergyUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountEnergyUsage END) AS 'March' \r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountEnergyUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountEnergyUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountEnergyUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountEnergyUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountEnergyUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountEnergyUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountEnergyUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountEnergyUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountEnergyUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @Previous2FY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@Previous2FY AS VARCHAR(4)) + ' - KW ' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountDemandUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountDemandUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountDemandUsage END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountDemandUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountDemandUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountDemandUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountDemandUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountDemandUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountDemandUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountDemandUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountDemandUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountDemandUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @Previous2FY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' +CAST(@PreviousFY AS VARCHAR(4)) + '- $$$' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN OriginalBilledAmount END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN OriginalBilledAmount END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN OriginalBilledAmount END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN OriginalBilledAmount END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN OriginalBilledAmount END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN OriginalBilledAmount END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN OriginalBilledAmount END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN OriginalBilledAmount END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN OriginalBilledAmount END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN OriginalBilledAmount END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN OriginalBilledAmount END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN OriginalBilledAmount END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @PreviousFY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@PreviousFY AS VARCHAR(4)) + '- kWh' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountEnergyUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountEnergyUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountEnergyUsage END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountEnergyUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountEnergyUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountEnergyUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountEnergyUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountEnergyUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountEnergyUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountEnergyUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountEnergyUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountEnergyUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @PreviousFY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@PreviousFY AS VARCHAR(4)) + '- KW ' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountDemandUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountDemandUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountDemandUsage END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountDemandUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountDemandUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountDemandUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountDemandUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountDemandUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountDemandUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountDemandUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountDemandUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountDemandUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @PreviousFY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@CurrentFY AS VARCHAR(4)) + ' - $$$' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN OriginalBilledAmount END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN OriginalBilledAmount END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN OriginalBilledAmount END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN OriginalBilledAmount END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN OriginalBilledAmount END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN OriginalBilledAmount END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN OriginalBilledAmount END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN OriginalBilledAmount END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN OriginalBilledAmount END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN OriginalBilledAmount END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN OriginalBilledAmount END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN OriginalBilledAmount END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @CurrentFY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@CurrentFY AS VARCHAR(4)) + ' - kWh' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountEnergyUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountEnergyUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountEnergyUsage END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountEnergyUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountEnergyUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountEnergyUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountEnergyUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountEnergyUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountEnergyUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountEnergyUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountEnergyUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountEnergyUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @CurrentFY)\r\n    GROUP BY OriginalAccountNumber\r\n    UNION ALL\r\n    SELECT OriginalAccountNumber, CAST('FY' + CAST(@CurrentFY AS VARCHAR(4)) + ' - KW ' AS varchar(12)) AS Description2\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 1 THEN AccountDemandUsage END) AS 'January'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 2 THEN AccountDemandUsage END) AS 'February'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 3 THEN AccountDemandUsage END) AS 'March'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 4 THEN AccountDemandUsage END) AS 'April'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 5 THEN AccountDemandUsage END) AS 'May'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 6 THEN AccountDemandUsage END) AS 'June'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 7 THEN AccountDemandUsage END) AS 'July'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 8 THEN AccountDemandUsage END) AS 'August'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 9 THEN AccountDemandUsage END) AS 'September'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 10 THEN AccountDemandUsage END) AS 'October'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 11 THEN AccountDemandUsage END) AS 'November'\r\n        ,SUM(CASE WHEN CAST(substring(BillingPeriod, 5, 2) AS int) = 12 THEN AccountDemandUsage END) AS 'December'\r\n    FROM Billing.AccountBilling\r\n    WHERE (SUBSTRING(BillingPeriod, 1, 4) = @CurrentFY)\r\n    GROUP BY OriginalAccountNumber;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

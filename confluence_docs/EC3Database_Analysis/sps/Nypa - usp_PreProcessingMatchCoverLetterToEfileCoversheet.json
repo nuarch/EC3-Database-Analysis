@@ -1,0 +1,1078 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Nypa",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_PreProcessingMatchCoverLetterToEfileCoversheet",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_PreProcessingMatchCoverLetterToEfileCoversheet",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage and update records in the "
+        },
+        {
+          "type": "text",
+          "text": "Nypa.UploadNYPACoverSheet",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It processes billing information related to New York Power Authority (NYPA) accounts, specifically handling various charges and credits. The procedure calculates and inserts records for different types of charges, such as CIC charges, CUNY and DCAS wind charges, and shore power credits. It also updates a summary record with the total of these charges."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple SQL operations, including DELETE, SELECT, INSERT, and UPDATE statements. It also includes conditional logic to set status flags based on comparisons of calculated and input values. The complexity arises from the need to handle multiple types of charges and ensure data consistency across different billing periods."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@TotalCicMonthlyPaymentAmount money",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The total monthly payment amount for CIC charges."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@DcasWindCharges money",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The total amount for DCAS wind charges."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CunyWindCharges money",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The total amount for CUNY wind charges."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Shorepowercredit MONEY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The amount for shore power credits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserId int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the authenticated user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter used to indicate the status of the procedure execution (0 for success, non-zero for various failure conditions)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure initializes several local variables and sets the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " output parameter to 0, indicating success."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It deletes existing records from "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPACoverSheet",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where the "
+                },
+                {
+                  "type": "text",
+                  "text": "CoverSheetRecordType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is '19', '20', or '21'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the current billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.ApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table where "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentProcessingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is 'Y'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the sum of "
+                },
+                {
+                  "type": "text",
+                  "text": "MonthlyPaymentAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPAEncoreMonthlyBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and assigns it to "
+                },
+                {
+                  "type": "text",
+                  "text": "@SumMonthlyPaymentAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". It also constructs a description for the cover sheet."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Status Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if the application time frame billing period matches the retrieved billing period and if the total CIC monthly payment amount matches the sum calculated. If discrepancies are found, it updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter accordingly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It inserts records into "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPACoverSheet",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for CIC charges, CUNY wind charges, DCAS wind charges, and shore power credits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Summary Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the revised customer total by summing the "
+                },
+                {
+                  "type": "text",
+                  "text": "TotalDollars",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for records with "
+                },
+                {
+                  "type": "text",
+                  "text": "CoverSheetRecordType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " between '18' and '98'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Summary Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It updates the record with "
+                },
+                {
+                  "type": "text",
+                  "text": "CoverSheetRecordType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " '99' to reflect the revised customer total."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It selects and orders the records from "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPACoverSheet",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for review."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPACoverSheet",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is properly indexed on columns used in WHERE clauses and ORDER BY statements to optimize performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure processes multiple records in a single execution, which is efficient for batch operations but may need optimization for very large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Consider potential locking issues due to DELETE and UPDATE operations on the same table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Consistency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPAEncoreMonthlyBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.ApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is accurate and up-to-date. Any discrepancies could lead to incorrect status flags or data insertion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling mechanisms, which could lead to unhandled exceptions and incomplete transactions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of hardcoded values for "
+                },
+                {
+                  "type": "text",
+                  "text": "CoverSheetRecordType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and other fields may reduce flexibility and increase maintenance overhead if business rules change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The DELETE and UPDATE operations could lead to locking issues in a high-concurrency environment, potentially impacting performance and data availability."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Nypa].[usp_PreProcessingMatchCoverLetterToEfileCoversheet] @TotalCicMonthlyPaymentAmount money , @DcasWindCharges money , @CunyWindCharges money ,@Shorepowercredit MONEY, @AuthenticatedUserId int , @Status int  OUTPUT\n   \r\n AS --**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Correct all of the account and meters that are in error and do not create an\r\n--*\t\t\t\t  Exchange (46) record where the CreateExchangeRecord is equal to \"N\"o.\r\n--*               \r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t        0  Success\r\n--*                 1 Failures\r\n--*\r\n--* AUTHOR:      Peter Heller\r\n--* Created On:   10/2/2009\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 03/25/2009 PAH  Corrected Schema name  for store proc or table\r\n--* 06/30/2016 ZD\tShorepower updates, shore power credits insertion MiscellaneousCharges set to N\r\n--***************************************************************************************\r\n--\r\n-- This proceedure will insert NYPA missing accounts and meters as a 46 exchange.\r\n--\r\ndeclare @NypaCoverSheetDescription  varchar(35)\r\ndeclare @ApplicationTimeFrameBillingPeriod  varchar(6)\r\ndeclare @BillingPeriod  varchar(6)\r\ndeclare @CicLoanCount varchar(4)\r\ndeclare @SumMonthlyPaymentAmount money\r\ndeclare @RevisedCustomerTotal money\r\n--\r\nset @Status = 0\r\n--\r\nDELETE FROM Nypa.UploadNYPACoverSheet WHERE (CoverSheetRecordType IN ('19', '20', '21'))\r\n--\r\nSELECT @ApplicationTimeFrameBillingPeriod = BillingPeriod from Billing.ApplicationTimeFrame where (CurrentProcessingPeriod = 'Y')\r\n--\r\nSELECT    \r\n\t\t@BillingPeriod = BillingPeriod, \r\n\t\t@NypaCoverSheetDescription = cast(DATENAME(month, BillingPeriod+'01') + ' '+DATENAME(year, BillingPeriod+'01')+' - SENY CIC Charges' as varchar(35)),\r\n\t\t@SumMonthlyPaymentAmount=sum(MonthlyPaymentAmount)\r\nFROM \r\n\t\tNypa.UploadNYPAEncoreMonthlyBilling\r\ngroup by BillingPeriod, DATENAME(month, BillingPeriod+'01')+','+DATENAME(year, BillingPeriod+'01')\r\n\r\nIF (@@ROWCOUNT =0) SET @NypaCoverSheetDescription = cast(DATENAME(month, @ApplicationTimeFrameBillingPeriod+'01') + ' '+DATENAME(year, @ApplicationTimeFrameBillingPeriod+'01')+' - SENY CIC Charges' as varchar(35))\r\n--\r\nif (@ApplicationTimeFrameBillingPeriod<>@BillingPeriod) set @Status = 1\r\nif (@TotalCicMonthlyPaymentAmount<>@SumMonthlyPaymentAmount) set @Status = @Status + 2\r\n\r\n--\r\nINSERT INTO Nypa.UploadNYPACoverSheet\r\n(MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID)\r\nVALUES     ('N',7,1,@ApplicationTimeFrameBillingPeriod ,'19',@NypaCoverSheetDescription,@TotalCicMonthlyPaymentAmount,@AuthenticatedUserId)\r\n\r\nINSERT INTO Nypa.UploadNYPACoverSheet\r\n(MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID)\r\nVALUES     ('Y',7,1,@ApplicationTimeFrameBillingPeriod ,'20','CUNY Horizon Wind Charges',@CunyWindCharges,@AuthenticatedUserId)\r\n\r\nINSERT INTO Nypa.UploadNYPACoverSheet\r\n(MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID)\r\nVALUES     ('Y',7,1,@ApplicationTimeFrameBillingPeriod ,'21','DCAS Horizon Wind Charges',@DcasWindCharges,@AuthenticatedUserId)\r\n\r\nINSERT INTO Nypa.UploadNYPACoverSheet\r\n(MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID)\r\nVALUES     ('N',7,1,@ApplicationTimeFrameBillingPeriod ,'90','Shore Power Credit',@Shorepowercredit,@AuthenticatedUserId)\r\n\r\n\r\n\r\nSELECT MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID  FROM Nypa.UploadNYPACoverSheet\r\n\r\nSELECT @RevisedCustomerTotal = sum(TotalDollars)\r\nFROM Nypa.UploadNYPACoverSheet\r\nwhere 17 < cast(CoverSheetRecordType as int) and cast(CoverSheetRecordType as int) < 99\r\n\r\n\r\nUPDATE    Nypa.UploadNYPACoverSheet\r\nSET              TotalDollars =@RevisedCustomerTotal,MiscellaneousCharges='N', AuthenticatedUserID =@AuthenticatedUserId\r\nWHERE (CoverSheetRecordType = '99')\r\n\r\nSELECT MiscellaneousCharges,CoverSheetUtilityCompany, CoverSheetAccountBillingGroup, BillingPeriod, CoverSheetRecordType, CoverSheetRecordDesc, TotalDollars,AuthenticatedUserID  FROM Nypa.UploadNYPACoverSheet\r\norder by cast(CoverSheetRecordType as int)"
+        }
+      ]
+    }
+  ]
+}

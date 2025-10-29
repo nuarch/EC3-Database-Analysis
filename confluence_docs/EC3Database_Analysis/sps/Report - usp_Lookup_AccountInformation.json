@@ -1,0 +1,1200 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Lookup_AccountInformation",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Lookup_AccountInformation",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve account information from a billing system based on various filtering criteria. It logs the usage of the report, filters accounts based on the input parameters, and returns a paginated list of accounts along with associated meter numbers. The procedure also outputs the total count of filtered accounts."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple joins, dynamic filtering, and the use of table variables for intermediate data storage. It also includes a logging mechanism, making it moderately complex."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OriginalAccountNumber acctnum = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters accounts by their original account number."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Agency VARCHAR(20) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters accounts by agency code or name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OecFacilityNumber OECBuildingNumber = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters by facility number."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CityPlanningBIN CityPlanningBIN = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters by city planning BIN."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@FacilityAddress addr = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters by facility address."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@FacilityName FacilityName = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters by facility name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@MeterNumber MeterNumber = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters by meter number."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StartIndex INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the starting index for pagination."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EndIndex INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the ending index for pagination."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BBL VARCHAR(10) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Not used in the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsActive yesnoWithDefaultYes = 'Y'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filters accounts based on their active status."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Email emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used for logging and filtering agencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@TotalCount INT OUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Outputs the total number of filtered accounts."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Published Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Retrieves the latest published billing period from "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Log Report Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls "
+                },
+                {
+                  "type": "text",
+                  "text": "Audit.usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to log the usage of the report with details like the report name, requested by, and billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Filter Agencies",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Uses a table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@SelectedAgencies",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to store agencies associated with the provided email. Filters agencies based on the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Agency",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Filter Accounts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Uses another table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@FilteredAccount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to store accounts that match the filtering criteria. Joins with "
+                },
+                {
+                  "type": "text",
+                  "text": "billing.Account",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "billing.Facility",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.UtilityCompany",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables to gather necessary account details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Apply Filters",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Applies filters based on account status, original account number, facility number, city planning BIN, facility address, facility name, and meter number."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Pagination",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Selects accounts within the specified range ("
+                },
+                {
+                  "type": "text",
+                  "text": "@StartIndex",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to "
+                },
+                {
+                  "type": "text",
+                  "text": "@EndIndex",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") and retrieves associated meter numbers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output Total Count",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets "
+                },
+                {
+                  "type": "text",
+                  "text": "@TotalCount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to the total number of filtered accounts."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Variables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using table variables can be efficient for small to medium datasets but may not perform well with large datasets due to lack of statistics."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "COALESCE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "ISNULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for dynamic filtering can lead to suboptimal query plans if not indexed properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Multiple joins, especially with large tables, can impact performance. Ensure that appropriate indexes are in place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Pagination",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "RowID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for pagination is straightforward but may require optimization if the dataset is large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of table variables and dynamic filtering may not scale well with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The filtering logic using "
+                },
+                {
+                  "type": "text",
+                  "text": "LIKE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with wildcards can prevent the use of indexes, leading to full table scans."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Unused Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@BBL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is declared but not used, which could lead to confusion or errors if expected to be functional."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the procedure is executed concurrently by multiple users, it could lead to contention on shared resources, especially if the underlying tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which could lead to unhandled exceptions and unclear error messages."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "--**************************************************************************************\n\t\t--* Description:  \r\n\t\t--*\r\n\t\t--* AUTHOR:        dho    \r\n\t\t--* Created On :  \r\n\t\t--**************************************************************************************\r\n\t\t--* Date       Tech Description of Change\r\n\t\t--* ---------- ---\t-------------------------------------------------------------\r\n\t\t--* 2015-11-13  ZD  Added Report log SP block\r\n\t\t--**************************************************************************************\r\n\r\nCREATE PROCEDURE [Report].[usp_Lookup_AccountInformation]\r\n\t@OriginalAccountNumber acctnum = NULL\r\n\t, @Agency VARCHAR(20) = NULL\r\n\t, @OecFacilityNumber OECBuildingNumber = NULL\r\n\t, @CityPlanningBIN CityPlanningBIN = NULL\r\n\t, @FacilityAddress addr = NULL\r\n\t, @FacilityName FacilityName = NULL\r\n    , @MeterNumber MeterNumber = NULL  \r\n\t, @StartIndex INT\r\n\t, @EndIndex INT\r\n\t, @BBL VARCHAR(10) = NULL\r\n\t, @IsActive yesnoWithDefaultYes  = 'Y'\r\n\t, @Email emailaddr\r\n\t, @TotalCount INT OUT\r\n\t \r\nAS\r\nBEGIN\r\n\tDECLARE @PublishedBillingPeriod BillingPeriod\r\n\tSELECT @PublishedBillingPeriod = MAX(publishedbillingPeriod) FROM Published.MonthlyPublishedSummaryData\r\n\r\n--------------------------------------------------------------------------\r\n-- This block is added to track report log -------------------------------\r\n DECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID)\r\nEXEC [Audit].usp_AddReportUsageLog\r\n\t@ReportName\t\t\t\t\t= @spname,\r\n    @StoredProcName\t\t\t\t= @spname,\r\n    @RequestedBy\t\t\t\t= @Email, -- emailaddr\r\n    \r\n    @prmPublishedBillingPeriod\t= @PublishedBillingPeriod,\r\n    @prmBillingPeriod\t\t\t= NULL,\r\n    @prmAgency_ies\t\t\t\t= @Agency, -- varchar(max)\r\n    @prmFacilityNumber_s\t\t= @OecFacilityNumber , -- varchar(max)\r\n    @prmStartingBillingPeriod\t= NULL,\r\n    @prmEndingBillingPeriod\t\t= NULL\r\n\r\n--------------------------------------------------------------------------\r\n\r\nDECLARE @SelectedAgencies TABLE\r\n\t(\r\n\t\tAgencyDivisionSeqID seqid,\r\n\t\tAgencyCodeOEC AgencyCodeOEC,\r\n\t    AgencyName ldesc\r\n\t)\r\n\t\r\nINSERT INTO @SelectedAgencies\r\nSELECT DISTINCT agency.AgencyDivisionSeqID, agency.AgencyCodeOEC, agency.AgencyName\r\nfrom dbo.uftn_TableGetActiveAgenciesByEmailAddress(@Email) AS agency\r\nWHERE \r\nISNULL(agency.AgencyCodeOEC, '') LIKE COALESCE('%' + @Agency + '%', ISNULL(agency.AgencyCodeOEC, ''))\r\nOR\r\nISNULL(agency.AgencyName, '') LIKE COALESCE('%' + @Agency + '%', ISNULL(agency.AgencyName, ''))\r\n\r\n-- use table variable instead of CTE for better performance\r\nDECLARE @FilteredAccount TABLE\r\n(\r\n\tRowID INT IDENTITY,\r\n\tAccountSeqID INT,\r\n\tFacilitySeqId INT,\r\n\tAgencyDivisionSeqId INT,\r\n    OriginalAccountNumber acctnum,\r\n\tAccountAddress LongAddress,\r\n\tUtilityCompany sdesc\r\n)\r\n\r\nINSERT INTO @FilteredAccount\r\n        (\r\n\t\t\tAccountSeqID,\t \r\n\t\t\tFacilitySeqId,\r\n\t\t\tAgencyDivisionSeqId,\r\n\t\t\tOriginalAccountNumber,\r\n\t\t\tAccountAddress,\r\n\t\t\tUtilityCompany\r\n        )\r\n          SELECT DISTINCT\r\n\t\t\t\t\taccount.AccountSeqID,\r\n\t\t\t\t\taccount.FacilityAccount,\r\n\t\t\t\t\taccount.AgencyAccount,        \r\n\t\t\t\t\taccount.OriginalAccountNumber,\r\n\t\t\t\t\taccount.UtilityServiceAddress,\r\n\t\t\t\t\tutility.ShortDesc\t\t\r\n\t\t\tFROM @SelectedAgencies AS agency\r\n\t\t\t\t\tINNER JOIN billing.Account AS account \r\n\t\t\t\t\t\tON account.AgencyAccount = agency.AgencyDivisionSeqid\r\n\t\t\t\t\tINNER JOIN billing.Facility AS facility \r\n\t\t\t\t\t\tON account.FacilityAccount = facility.FacilitySeqid\r\n\t\t\t\t\tINNER JOIN Billing.UtilityCompany AS utility\r\n\t\t\t\t\t\tON account.UtilityAccountProvider = utility.UtilityCompanySeqid\r\n\t\t\t\t\tLEFT JOIN Billing.AccountExchangeMeterTrack am\r\n\t\t\t\t\t\tON account.AccountSeqid = am.OriginalAccountSeqid\r\n\t\t\t\t\tLEFT JOIN billing.Meter AS m\r\n\t\t\t\t\t\t ON am.OriginalMeterSeqid = m.MeterSeqid\r\n\t\t\tWHERE \r\n\t\t\t\t(\r\n\t\t\t\t\t(account.AccountStatus IN ('AC', '46', 'UA') AND @IsActive = 'Y')\r\n\t\t\t\t\tOR\r\n\t\t\t\t\t(account.AccountStatus NOT IN ('AC', '46', 'UA') AND @IsActive = 'N')\r\n\t\t\t\t)                 \r\n\t\t\t\tAND\r\n\t\t\t\tISNULL(account.OriginalAccountNumber, '') LIKE COALESCE('%' + @OriginalAccountNumber + '%', ISNULL(account.OriginalAccountNumber, ''))\r\n\t\t\t\tAND \r\n\t\t\t\tISNULL(facility.OecFacilityNumber, '') LIKE COALESCE('%' + @OecFacilityNumber + '%', ISNULL(facility.OecFacilityNumber, ''))\r\n\t\t\t\tAND \r\n\t\t\t\tISNULL(facility.CityPlanningBIN, '') LIKE COALESCE('%' + @CityPlanningBIN + '%', ISNULL(facility.CityPlanningBIN, ''))\r\n\t\t\t\tAND\r\n\t\t\t\tISNULL(facility.Address1, '') LIKE COALESCE('%' + @FacilityAddress + '%', ISNULL(facility.Address1, ''))\r\n\t\t\t\tAND\r\n\t\t\t\tISNULL(facility.FacilityName, '') LIKE COALESCE('%' + @FacilityName + '%', ISNULL(facility.FacilityName, ''))\r\n\t\t\t\tAND \r\n\t\t\t\tISNULL(m.OriginalMeterNumber, '') LIKE COALESCE('%' + @MeterNumber + '%', ISNULL(m.OriginalMeterNumber, ''))\r\n\t\t\t\t\r\n\t\tORDER BY account.OriginalAccountNumber\r\n\r\nSELECT a.*, \r\n\t\tISNULL(( STUFF(( SELECT ', ' + m.OriginalMeterNumber\r\n                         FROM Billing.AccountExchangeMeterTrack am\r\n\t\t\t\t\t\t\t\tINNER JOIN billing.Meter AS m\r\n\t\t\t\t\t\t\t\tON am.OriginalMeterSeqid = m.MeterSeqid\r\n                         WHERE  am.OriginalAccountSeqid = a.AccountSeqID\r\n                       FOR\r\n                         XML PATH('')\r\n                       ), 1, 1, '') ), '') AS MeterNumbers  \r\nFROM @FilteredAccount AS a\t\r\nWHERE RowID BETWEEN @StartIndex AND @EndIndex\r\n\r\nSELECT @TotalCount = MAX(RowID) FROM @FilteredAccount\r\n\t\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1152 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_UpdateUniqueSeqIDs",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[Billing].[usp_UpdateUniqueSeqIDs]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to update unique sequence IDs for accounts in a billing system. It processes accounts that do not have a unique sequence ID ("
+        },
+        {
+          "type": "text",
+          "text": "UniqueSeqId",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ") assigned and updates or inserts these IDs into a mapping table. The procedure uses a temporary table to manage and process account data, updating records based on specific conditions and inserting the results into the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.UniqueAccountMapping",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. If there are accounts that cannot be processed automatically, it raises an error and outputs a list of such accounts for manual inspection."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple conditional updates and inserts, uses temporary tables, and includes error handling. The complexity arises from the various conditions under which accounts are processed and the need to handle exceptions manually."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is an output parameter used to indicate the status of the procedure execution. It is set to "
+                },
+                {
+                  "type": "text",
+                  "text": "1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if there are accounts that need manual processing, otherwise, it remains unchanged."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Creation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@UniqueAccountTEMP",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is created to store account data that needs processing. This table includes fields for sequence IDs, account numbers, processing status, and other account-related information."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accounts without a "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are selected from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.Account",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table and inserted into the temporary table. These accounts are identified by joining with the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.UniqueAccountMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table to find records where "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is "
+                },
+                {
+                  "type": "text",
+                  "text": "NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Record Count Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "recordCountINaccount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " field in the temporary table to reflect the number of records for each "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Unique ID Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the temporary table using existing mappings from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.UniqueAccountMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table for accounts with more than one record."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Processing Status Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accounts with a "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are marked as processed ("
+                },
+                {
+                  "type": "text",
+                  "text": "isPorcessed = 'Y'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ")."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Direct Insert for Single Status Accounts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accounts with a single status (where "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentAccountNumber = OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "recordCountINaccount = 1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") are directly assigned their "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " as "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and marked as processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Handling Two Status Accounts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accounts with two statuses are processed based on their "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountStatus",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". If the status is not 'AX', they are directly assigned their "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " as "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueSeqId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". If the status is 'AX', they are marked for further processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Manual Review for Complex Cases",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accounts with more than two records are flagged for manual review and not processed automatically."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If there are unprocessed accounts, an error is raised with a message listing these accounts. The "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is set to "
+                },
+                {
+                  "type": "text",
+                  "text": "1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If all accounts are processed successfully, the data is inserted into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.UniqueAccountMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table can be efficient for managing intermediate data, but it may consume memory and resources, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Subqueries",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses multiple joins and subqueries, which can impact performance. Indexing on the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.Account",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.UniqueAccountMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables can help optimize these operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The multiple conditional updates and checks can increase execution time, particularly if the dataset is large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Manual Processing Requirement",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure requires manual intervention for accounts that cannot be processed automatically, which can be error-prone and time-consuming."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure raises an error if there are unprocessed accounts, which could interrupt automated workflows if not handled properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are correctly populated and consistent, which is critical for accurate processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run concurrently, there could be race conditions or data integrity issues unless proper locking mechanisms are in place."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Typographical Error",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The column "
+                },
+                {
+                  "type": "text",
+                  "text": "isPorcessed",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " appears to be misspelled, which could lead to confusion or errors in other parts of the system that reference this column."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Billing].[usp_UpdateUniqueSeqIDs] @StatusCode INT  OUTPUT\n AS \r\n \r\n BEGIN\r\n\t\t--**************************************************************************************\r\n\t\t--* Description:\tUpdates UniqueIDs\r\n\t\t--*\r\n\t\t--* AUTHOR:       Zafer Durmaz\t\r\n\t\t--* Created On:   2015-12-01\r\n\t\t--**************************************************************************************\r\n\t\t--* Date       Tech Description of Change\r\n\t\t--* ---------- ---\t-------------------------------------------------------------\r\n\t\t--* 04/22/2010 zd  First Version \r\n\t\t--***************************************************************************************\r\n\r\n\r\n-- Create temp table to process initial unique ids\r\nDECLARE @UniqueAccountTEMP TABLE\r\n(\r\n\t[UniqueSeqId] [INT] NULL,\r\n\t[AccountSeqid] [dbo].[seqid] NOT NULL,\r\n\t[CurrentAccountNumber] [dbo].[acctnum] NOT NULL,\r\n\t[OriginalAccountNumber] [dbo].[acctnum] NOT NULL,\r\n\t[isPorcessed] [VARCHAR](1) NULL,\r\n\t[isCurrentAccount] [VARCHAR](1) NULL,\r\n\t[NumofRecords] [INT] NULL,\r\n\t[AccountEffectiveTurnOn] [dbo].[yyyymmdd] NULL,\r\n\t[AccountEffectiveTurnOff] [dbo].[yyyymmdd] NULL,\r\n\t[FacilityAccount] [dbo].[seqid] NULL,\r\n\t[AccountStatus] [dbo].[AccountPreviousStatus] NULL,\r\n\t[UtilityServiceAccountName] [dbo].[UtilityServiceAccountName] NULL,\r\n\t[UtilityServiceAddress] [dbo].[addr] NULL,\r\n\t--[minBillingPeriod] BillingPeriod NULL,\r\n\t--[maxBillingPeriod] BillingPeriod NULL,\r\n\t[recordCountINaccount] [INT] NULL,\r\n\t--[recordCountINaccountBilling] [INT] NULL,\r\n\tnote VARCHAR(250) NULL  \r\n) \r\n\r\n-- all accounts with no uniqueseqid and related account (with currentaccountnumber)\r\nINSERT  INTO @UniqueAccountTEMP\r\n        ( UniqueSeqId\r\n        , AccountSeqid\r\n        , CurrentAccountNumber\r\n        , OriginalAccountNumber\r\n        , isPorcessed\r\n        , isCurrentAccount\r\n        --, NumofRecords\r\n        , AccountEffectiveTurnOn\r\n        , AccountEffectiveTurnOff\r\n        , FacilityAccount\r\n        , AccountStatus\r\n        , UtilityServiceAccountName\r\n        , UtilityServiceAddress\r\n        )\r\n        SELECT  0 AS UniqueSeqId\r\n        ,       a.AccountSeqid\r\n        ,       a.CurrentAccountNumber\r\n        ,       a.OriginalAccountNumber\r\n        ,       'N' AS isPorcessed\r\n        ,       'N' AS isCurrentAccount\r\n        --,       0 AS NumofRecords\r\n        ,       a.AccountEffectiveTurnOn\r\n        ,       a.AccountEffectiveTurnOff\r\n        ,       a.FacilityAccount\r\n        ,       a.AccountStatus\r\n        ,       a.UtilityServiceAccountName\r\n        ,       a.UtilityServiceAddress\r\n        FROM Billing.Account AS a\r\n\t\tWHERE a.CurrentAccountNumber \r\n\t\t\tIN (SELECT aa.CurrentAccountNumber FROM Billing.Account AS aa LEFT JOIN Billing.UniqueAccountMapping AS uam ON uam.AccountSeqid = aa.AccountSeqid WHERE   uam.UniqueSeqId IS NULL )\r\n\r\n--SELECT * FROM @UniqueAccountTEMP AS uat\r\n\r\n----------------------------------------------------------------------------------------------\r\n-- update recordsCountINaccount\r\n\r\nUPDATE uat \r\nSET recordCountINaccount = cnt.accountcount\r\nFROM\r\n(\r\n\tSELECT CurrentAccountNumber , COUNT(*) accountcount\r\n\tFROM @UniqueAccountTEMP AS a\r\n\tGROUP BY CurrentAccountNumber\r\n) cnt , @UniqueAccountTEMP uat\r\nWHERE cnt.CurrentAccountNumber = uat.CurrentAccountNumber\r\n\r\n--SELECT * FROM @UniqueAccountTEMP AS uat\r\n\r\n----------------------------------------------------------------------------------------------\r\n-- update uniq id from map table\r\nUPDATE uat \r\nSET UniqueSeqId = uam.UniqueSeqId\r\nFROM Billing.UniqueAccountMapping AS uam , @UniqueAccountTEMP uat\r\nWHERE uat.AccountSeqid=uam.AccountSeqid\r\nAND uat.CurrentAccountNumber IN (SELECT aa.CurrentAccountNumber FROM Billing.Account AS aa LEFT JOIN Billing.UniqueAccountMapping AS uam ON uam.AccountSeqid = aa.AccountSeqid WHERE   uam.UniqueSeqId IS NULL )\r\nAND recordCountINaccount > 1\r\n\r\n----------------------------------------------------------------------------------------------\r\n-- update isprocessed ='Y' for all accounts with uniqseqid\r\nUPDATE uat\r\nSET \r\nisPorcessed = 'Y'\r\nFROM @UniqueAccountTEMP uat, Billing.UniqueAccountMapping AS uam\r\nWHERE uat.UniqueSeqId = uam.UniqueSeqId\r\n\r\n--SELECT * FROM @UniqueAccountTEMP AS uat\r\n----------------------------------------------------------------------------------------------\r\n\r\n-- UPDATE the accountseqID to the uniqueseqid straight\r\n-- these are the accounts with single status \r\n-- all accounts with single line of records ( CurrentAccountNumber=OriginalAccountNumber )\r\n\r\nUPDATE uat\r\nSET \r\nUniqueSeqId = AccountSeqid , \r\nisCurrentAccount = 'Y', \r\nisPorcessed = 'Y',\r\nNOTe = '#1# Accounts with single status / Direct insert / CurrentAccountNumber = OriginalAccountNumber'\r\nFROM @UniqueAccountTEMP uat\r\nWHERE CurrentAccountNumber = OriginalAccountNumber \r\nAND recordCountINaccount = 1\r\nAND isPorcessed = 'N'\r\n\r\n----------------------------------------------------------------------------------------------\r\n\r\n-- UPDATE the accountseqID to the uniqueseqid straight\r\n-- these are the accounts with 2 statuses but the status of record without uniqueseqid is not AX\r\n\r\nUPDATE uat\r\nSET \r\nUniqueSeqId = AccountSeqid , \r\nisCurrentAccount = 'Y', \r\nisPorcessed = 'Y',\r\nNOTe = '#2# Accounts with 2 statuses - status of new data is not AX'\r\nFROM @UniqueAccountTEMP AS uat\r\nWHERE CurrentAccountNumber = OriginalAccountNumber \r\nAND recordCountINaccount = 2\r\nAND AccountStatus <> 'AX'\r\nAND isPorcessed = 'N'\r\n----------------------------------------------------------------------------------------------\r\n-- UPDATE the accountseqID to the uniqueseqid straight\r\n-- these are the accounts with 2 statuses but the status of record without uniqueseqid is not AX\r\n\r\nUPDATE uat\r\nSET \r\n--we do not need to update this here because we already made an update for this before, when we do the update for uniqqseqid , \r\nisCurrentAccount = 'Y', \r\nisPorcessed = 'Y',\r\nNOTe = '#3# Accounts with 2 statuses / status of new data is AX / update uniqid with relatives id'\r\nFROM @UniqueAccountTEMP AS uat\r\nWHERE CurrentAccountNumber = OriginalAccountNumber \r\nAND recordCountINaccount = 2\r\nAND AccountStatus = 'AX'\r\nAND isPorcessed = 'N'\r\n----------------------------------------------------------------------------------------------\r\n-- this is the data to be processed manually, \r\n\r\nUPDATE uat\r\nSET \r\n--UniqueSeqId = AccountSeqid , \r\nisCurrentAccount = NULL , \r\nisPorcessed = 'N',\r\nNOTe = '#4# This account has to be reviewd and inserted to map table manually'\r\nFROM @UniqueAccountTEMP uat\r\nWHERE CurrentAccountNumber = OriginalAccountNumber \r\nAND recordCountINaccount > 2\r\nAND isPorcessed = 'N'\r\n\r\n-------------------------------------------------------------------------------------------------------\r\n\t\r\nDECLARE @StringAccountList VARCHAR(500)\r\n\r\nSELECT @StringAccountList = STUFF( (SELECT ' , ' + CurrentAccountNumber FROM @UniqueAccountTEMP AS uat WHERE uat.isPorcessed='N' FOR XML PATH('') ), 1, 1, '')\r\n\r\n\r\n-- Final step, inserting the data to map table if there is no issues\r\n-- if there are issues and need to add mapping data manually, use can use below code\r\n--\tINSERT INTO dbo.UniqueAccountMAP(UniqueSeqId, AccountSeqid, isCurrentAccount)\r\n--\tVALUES (@AccountSeqID,@UniqueSeqID,@isCurrentAccount)\r\n\r\nDECLARE @msg VARCHAR(600) = 'we can not process some account(s), please inspect these accounts manually: '+@StringAccountList\r\nIF ( EXISTS ( SELECT * FROM @UniqueAccountTEMP AS uat WHERE uat.isPorcessed='N' ))\r\n\tBEGIN\r\n\t\tRAISERROR (@msg, 12, 1 ) \r\n\t\tSET @StatusCode = 1\r\n\t\tRETURN\r\n\tEND\r\nELSE\r\n\tBEGIN \r\n\t\tINSERT INTO Billing.UniqueAccountMapping (UniqueSeqId,AccountSeqid,isCurrentAccount)\r\n\t\tSELECT UniqueSeqId,AccountSeqid,isCurrentAccount FROM @UniqueAccountTEMP\r\n\tEND \r\n\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

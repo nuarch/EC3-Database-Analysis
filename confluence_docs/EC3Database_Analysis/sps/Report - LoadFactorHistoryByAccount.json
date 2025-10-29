@@ -1,0 +1,1044 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "LoadFactorHistoryByAccount",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "LoadFactorHistoryByAccount",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve historical load factor data for a specific account over a defined period. It calculates and returns energy usage, demand usage, and load factor data for each fiscal year within a three-year range, pivoted by month. The data is sourced from the "
+        },
+        {
+          "type": "text",
+          "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and is filtered based on the account's unique identifier and the fiscal year range."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple SQL operations, including data retrieval, aggregation, and pivoting, which contribute to its medium complexity. The use of dynamic calculations and multiple nested queries also adds to the complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AccountSeqid AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the sequence ID of the account for which the load factor history is being retrieved. It is used to identify the unique account within the database."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization and Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by setting "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NOCOUNT ON",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to prevent the message indicating the number of rows affected by a SQL statement."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The transaction isolation level is set to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "READ UNCOMMITTED",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to allow dirty reads, which can improve performance by avoiding locks."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration and Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Several variables are declared to store intermediate values, such as the unique account ID, the current and beginning fiscal years, and the number of years of data to retrieve."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The unique account ID is retrieved from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table using the provided "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@AccountSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The most recent published billing period is determined from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.MonthlyPublishedSummaryData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The current fiscal year is calculated using a user-defined function "
+                        },
+                        {
+                          "type": "text",
+                          "text": "dbo.CalculateFiscalYear",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The beginning fiscal year is calculated by subtracting the number of years of data from the current fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval and Transformation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure constructs a query to retrieve and pivot data from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Three separate data sets are created:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "bulletList",
+                      "content": [
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Energy Usage",
+                                  "marks": [
+                                    {
+                                      "type": "strong"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ": Aggregates energy usage data by month."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Demand Usage",
+                                  "marks": [
+                                    {
+                                      "type": "strong"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ": Aggregates demand usage data by month, with a transformation of the "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "EnergyUnit",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " field."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Load Factor",
+                                  "marks": [
+                                    {
+                                      "type": "strong"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": ": Calculates the load factor by dividing energy usage by the product of demand usage, billing period days, and 24 (hours in a day)."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Each data set is pivoted to display monthly data across columns and is combined using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UNION",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The final result set is ordered by account number, fiscal year, and a display index to ensure the data is presented in a structured manner."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking overhead but may result in reading uncommitted or dirty data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Pivot Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Pivoting large datasets can be resource-intensive and may impact performance, especially if the underlying tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of the "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo.CalculateFiscalYear",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function could introduce overhead if not optimized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " isolation level can lead to inconsistencies if the data is being modified concurrently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Division by Zero",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The calculation of the load factor includes a division operation that uses "
+                },
+                {
+                  "type": "text",
+                  "text": "NULLIF",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent division by zero, but care should be taken to ensure this logic is correct."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is accurate and complete. Any discrepancies in this data could affect the results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance of the pivot operations and the overall procedure may degrade, necessitating optimization or indexing strategies."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[LoadFactorHistoryByAccount]\n(\r\n\t@AccountSeqid AS INT\r\n)\r\nAS\r\nBEGIN\t\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n    DECLARE @PublishedBillingPeriod AS BillingPeriod, @CurrentFiscalYear AS VARCHAR(4), @BeginningFiscalYear AS VARCHAR(4)\r\n\t\t,@NumberOfYearOfData AS INT, @UniqueAccountSeqid AS INT;\r\n\r\n\tSELECT @UniqueAccountSeqid = UniqueAccountSeqid FROM Billing.Account WHERE AccountSeqid = @AccountSeqid;\r\n\tSELECT @PublishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData;\r\n    SELECT @NumberOfYearOfData = 3, @CurrentFiscalYear = dbo.CalculateFiscalYear(@PublishedBillingPeriod);\r\n    SET @BeginningFiscalYear = CAST(CAST(@CurrentFiscalYear AS INT) - @NumberOfYearOfData + 1 AS VARCHAR(4));\r\n\r\n    SELECT ROW_NUMBER() OVER(ORDER BY CurrentAccountNumber) AS RowId,\r\n        FiscalYear,\r\n        DataType,\r\n        July,\r\n        August,\r\n        September,\r\n        October,\r\n        November,\r\n        December,\r\n        January,\r\n        February,\r\n        March,\r\n        April,\r\n        May,\r\n        June\r\n    FROM (SELECT '1' AS displayIndex,\r\n\t\t\tAccountSeqid,\r\n\t\t\tCurrentAccountNumber,\r\n\t\t\tUtilityServiceAddress,\r\n\t\t\tFiscalYear,\r\n\t\t\tEnergyUnit DataType,\r\n\t\t\tJuly,\r\n\t\t\tAugust,\r\n\t\t\tSeptember,\r\n\t\t\tOctober,\r\n\t\t\tNovember,\r\n\t\t\tDecember,\r\n\t\t\tJanuary,\r\n\t\t\tFebruary,\r\n\t\t\tMarch,\r\n\t\t\tApril,\r\n\t\t\tMay,\r\n\t\t\tJune\r\n        FROM (SELECT FiscalYear,\r\n\t\t\t\tBillingMonth,\r\n\t\t\t\tUniqueAccountSeqid AS AccountSeqid,\r\n\t\t\t\tCurrentAccountNumber,\r\n\t\t\t\tUtilityServiceAddress,\r\n\t\t\t\tAccountEnergyUsage,\r\n\t\t\t\tEnergyUnit\r\n            FROM Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n            WHERE UniqueAccountSeqid = @UniqueAccountSeqid\r\n\t\t\t\tAND EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\t\t\tAND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\tAND FiscalYear BETWEEN @BeginningFiscalYear AND @CurrentFiscalYear\r\n\t\t\t\tAND (EnergySource = 1 OR EnergySource = 6)) AS SourceTable\r\n\t\t\tPIVOT (SUM(AccountEnergyUsage) FOR BillingMonth IN (July, August, September, October, November, December\r\n\t\t\t\t,January, February, March, April, May, June)) AS P\r\n\t\tUNION\r\n        SELECT '2' AS displayIndex,\r\n\t\t\tAccountSeqid,\r\n\t\t\tCurrentAccountNumber,\r\n\t\t\tUtilityServiceAddress,\r\n            FiscalYear,\r\n            CASE WHEN EnergyUnit = 'KWH' THEN 'KW' WHEN EnergyUnit = 'MLBS' THEN 'MLBS/Hour' ELSE EnergyUnit END DataType,\r\n            July,\r\n            August,\r\n            September,\r\n            October,\r\n            November,\r\n            December,\r\n            January,\r\n            February,\r\n            March,\r\n            April,\r\n            May,\r\n            June\r\n        FROM (SELECT FiscalYear,\r\n                BillingMonth,\r\n\t\t\t\tUniqueAccountSeqid AS AccountSeqid,\r\n                CurrentAccountNumber,\r\n\t\t\t\tUtilityServiceAddress,\r\n                AccountDemandUsage,\r\n\t\t\t\tEnergyUnit\r\n            FROM Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n            WHERE UniqueAccountSeqid = @UniqueAccountSeqid\r\n\t\t\t\tAND EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\t\t\tAND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\tAND FiscalYear BETWEEN @BeginningFiscalYear AND @CurrentFiscalYear\r\n\t\t\t\tAND (EnergySource = 1 OR EnergySource = 6)) AS SourceTable\r\n\t\t\tPIVOT (SUM(AccountDemandUsage) FOR BillingMonth IN (July, August, September, October, November, December\r\n\t\t\t\t,January, February, March, April, May, June)) AS P\r\n\t\tUNION\r\n        SELECT '3' AS displayIndex,\r\n\t\t\tAccountSeqid,\r\n\t\t\tCurrentAccountNumber,\r\n\t\t\tUtilityServiceAddress,\r\n            FiscalYear,\r\n            'LoadFactor' DataType,\r\n            July,\r\n            August,\r\n            September,\r\n            October,\r\n            November,\r\n            December,\r\n            January,\r\n            February,\r\n            March,\r\n            April,\r\n            May,\r\n            June\r\n        FROM (SELECT FiscalYear,\r\n\t\t\t\tBillingMonth,\r\n\t\t\t\tUniqueAccountSeqid AS AccountSeqid,\r\n\t\t\t\tCurrentAccountNumber,\r\n\t\t\t\tUtilityServiceAddress,\r\n\t\t\t\tAccountEnergyUsage / NULLIF((AccountDemandUsage * BillingPeriodDays * 24), 0) AS LoadFactor\r\n            FROM Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n            WHERE UniqueAccountSeqid = @UniqueAccountSeqid\r\n\t\t\t\tAND EffectiveStartPeriod <= @PublishedBillingPeriod\r\n\t\t\t\tAND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\tAND FiscalYear BETWEEN @BeginningFiscalYear AND @CurrentFiscalYear\r\n\t\t\t\tAND (EnergySource = 1 OR EnergySource = 6)) AS SourceTable\r\n\t\t\tPIVOT (SUM(LoadFactor) FOR BillingMonth IN (July, August, September, October, November, December\r\n\t\t\t\t,January, February, March, April, May, June)) AS P\r\n\t\t) AS R\r\n\tORDER BY R.CurrentAccountNumber, R.FiscalYear, R.displayIndex;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

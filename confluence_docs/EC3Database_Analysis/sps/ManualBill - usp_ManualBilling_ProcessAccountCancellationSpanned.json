@@ -1,0 +1,1003 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ManualBilling_ProcessAccountCancellationSpanned",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ManualBilling_ProcessAccountCancellationSpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process account cancellations that span multiple billing periods. It moves data from the "
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingCancellation",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to the "
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingCancellationSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table through an intermediary table, "
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingCancellationTempSummarySpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure handles the distribution of billing amounts and energy usage across multiple periods, ensuring that the data is accurately represented in the summary table. It uses a cursor to iterate over records that span more than one billing period, calculates the distribution of amounts and usage, and inserts the processed data into the summary table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is high due to the following reasons:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple table interactions and data transformations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over records, which adds complexity and potential performance overhead."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes complex calculations for distributing billing amounts and energy usage across multiple periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves several custom functions and procedures for calculations and date determinations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in "
+                },
+                {
+                  "type": "text",
+                  "text": "yyyymm",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " format."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the authenticated user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@utilityCompany dbo.seqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The sequence ID of the utility company."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter used to indicate the status of the procedure execution (set to 9 initially and 0 upon successful completion)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to 9, indicating the start of the process."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It inserts records from "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadManualBillingCancellation",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " into "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadManualBillingCancellationTempSummarySpanned",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where "
+                },
+                {
+                  "type": "text",
+                  "text": "DeltaNumberOfPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is greater than 1, indicating spanned records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration and Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A cursor "
+                        },
+                        {
+                          "type": "text",
+                          "text": "SpannedBillCursor",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is declared to iterate over records in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingCancellationTempSummarySpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each record, it fetches necessary details and calculates the distribution of billing amounts and energy usage across the spanned periods."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It uses custom functions to calculate percentages and determine dates for each period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Distribution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure calculates the distribution of amounts and usage for "
+                        },
+                        {
+                          "type": "text",
+                          "text": "n-1",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " periods and inserts the results into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingCancellationSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It processes the last period separately to ensure accurate distribution and avoid rounding errors."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Finalization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After processing all records, the cursor is closed and deallocated, and the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Status",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is set to 0, indicating successful completion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes records one at a time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple calculations and function calls, which can be resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Scans",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Depending on the indexes available, the procedure may result in table scans, affecting performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of cursors and multiple table interactions may lead to concurrency issues if the tables are accessed by other processes simultaneously."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance may degrade due to the cursor and complex calculations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on accurate calculations and date determinations; any errors in these functions could lead to incorrect data distribution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ManualBill].[usp_ManualBilling_ProcessAccountCancellationSpanned]\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@utilityCompany dbo.seqid,\r\n\t@Status int  OUTPUT      \r\n   \r\n AS \r\n begin\r\n --********************************************************************************\r\n --\tAuthor: MOHAMMED BELARREM\r\n -- Description: Copy spanned cancelation records from UploadManualBillingAccountCancelation to UploadManualBillingAccountCancelationSummary\r\n --\t\t\t\t\tthru UploadManualBillingCancellationTempSummarySpanned \r\n --\tLog: \r\n --\t\tCreation 02/10/2009\r\n --\t\tUpdate   02/11/2009\tUpdated the tables and needes to reflect changes \r\n --\t\tUpdate   12/29/2009\tUpdated the tables and needes to reflect changes, I've reduced the tables to essential data \r\n --\t\tUpdate   01/07/2010\tUpdated the quieres to be IBG independant \r\n --\t\tUpdate\t 01/13/2010\tUpdated the tables with accountseqid\r\n --\t\tUpdate\t 12/17/2010\tUpdated the pasrsing initial load query to join by accountseqid\r\n --\t\t\t\t\t\t\tsince some of the utilities recylce accounts.\r\n --\t\t\t\t\t\t\tcentral hudson accounts caused a bug because 2 of the accounts when they recycled the acccounts and the previous number was \r\n --\t\t\t\t\t\t\tbimonthly so the query picked up B as cycle and produced wrong results \r\n --    update    12/17/2018 VY updated for UniqueAccountSeqID\r\n --********************************************************************************\r\n\t \r\n\t\t/*****************************************************\r\n\t\tDeclarations\r\n\t\t******************************************************/\r\n\t\t-- cursor\r\n\t\tdeclare @UploadCancellationTempSummarySpannedSeqid dbo.seqid\r\n\t\t\r\n\t\t-- spanned record information\r\n\t\tdeclare @IBGSeqid\t\t\t\t\t\t\tdbo.seqid\t\r\n\t\tdeclare @AccountmanualBillingHeaderSeqid\tdbo.seqid\r\n\t\tdeclare @AccountSeqid\t\t\t\t\t\tdbo.seqid\t\r\n\t\tdeclare @OriginalAccountNumber\t\t\t\tdbo.acctnum\t\t\t\r\n\t\tdeclare @BillingPeriodRevision\t\t\t\tdbo.yyyymm\t\t\t\r\n\t\tdeclare @FirstBillingPeriodCanceled\t\t\tdbo.yyyymm\t\t\t\t\t\t\r\n\t\tdeclare @DeltaNumberOfPeriods\t\t\t\tdbo.Accumulator\t\t\t\r\n\t\tdeclare @CancelFromDate\t\t\t\t\t\tdbo.yyyymmdd\t\t\t\t\t\t\r\n\t\tdeclare @CancelToDate\t\t\t\t\t\tdbo.yyyymmdd\t\t\r\n\t\tdeclare @CancelBillingPeriodDays\t\t\tdbo.BillingPeriodDays\t\t\t\r\n\t\tdeclare @CancelNetBilledAmount\t\t\t\tdbo.BillingAmt\t\t\t\r\n\t\tdeclare @EnergySource\t\t\t\t\t\tdbo.EnergySource\t\t\t\r\n\t\tdeclare @CancelEnergyUsage\t\t\t\t\tdbo.EnergyUnit\t\t\t\r\n\t\tdeclare @CancelDemandUsage\t\t\t\t\tdbo.Kilowatts\t\t\t\r\n\t\tdeclare @BillingCycle\t\t\t\t\t\tdbo.MonthlyBillingCycle\t\r\n\t\tdeclare @TripNumber\t\t\t\t\t\t\tdbo.TripNumber\r\n\t\tdeclare @NumberOfPeriodsMinusOne\t\t\tint\r\n\t\tdeclare @TotalXXXSpannedBilledPercentage\tdbo.DiscountPercentage\r\n\t\tdeclare @ApplyMonthlyPercentage\t\t\t\tdbo.DiscountPercentage\r\n\t\t\r\n\t\tdeclare @CalculatedBillingPeriodRevision\t\tdbo.yyyymm\r\n\t\tdeclare @CalculatedFromDate\t\t\t\t\t\tdbo.yyyymmdd\r\n\t\tdeclare @CalculatedToDate\t\t\t\t\t\tdbo.yyyymmdd\r\n\t\tdeclare @idx\t\t\t\t\t\t\t\t\tint\r\n\t\tdeclare @CancelNetBilledAmountMonthlySum\t\tdbo.BillingAmt\r\n\t\tdeclare @CancelEnergyMonthlySum\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @CancelDemandMonthlySum\t\t\t\t\tdbo.Kilowatts\r\n\t\tdeclare @CancelNetBilledAmountMonthly\t\t\tdbo.BillingAmt\r\n\t\tdeclare @CancelEnergyMonthly\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @CancelDemandMonthly\t\t\t\t\tdbo.Kilowatts\r\n\t\tdeclare @CancelNetBilledAmountLastPeriod\t\tdbo.BillingAmt\r\n\t\tdeclare @CancelEnergyLastPeriod\t\t\t\t\tdbo.EnergyUnit\r\n\t\tdeclare @CancelDemandLastPeriod\t\t\t\t\tdbo.Kilowatts\r\n\t\t\r\n\t\tdeclare @Notes\tdbo.notes\r\n\t\r\n \t\t-- \r\n \t\tset @Status = 9\r\n\r\n\t\t/**************************\r\n\t\t1. Move data into the upload spanned table\r\n\t\t***************************/\r\n\t\tINSERT INTO [ManualBill].[UploadManualBillingCancellationTempSummarySpanned]\r\n\t\t\t   ([title]\r\n\t\t\t   ,[UtilityCompanySeqid]\r\n\t\t\t   ,[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t   ,[AccountmanualBillingHeaderSeqid]\r\n\t\t\t   ,AccountSeqid\r\n\t\t\t   ,UniqueAccountSeqID /* added on 12/17/2018*/\r\n\t\t\t   ,[OriginalAccountNumber]\r\n\t\t\t   ,[BillingPeriod]\r\n\t\t\t   ,[BillingPeriodRevision]\r\n\t\t\t   ,[FirstBillingPeriodCanceled]\r\n\t\t\t   ,[DeltaNumberOfPeriods]\r\n\t\t\t   ,[CancelFromDate]\r\n\t\t\t   ,[CancelToDate]\r\n\t\t\t   ,[CancelBillingPeriodDays]\r\n\t\t\t   ,[CancelNetBilledAmount]\r\n\t\t\t   ,[CancelEnergy]\r\n\t\t\t   ,[CancelDemand]\r\n\t\t\t   ,[EnergySource]\r\n\t\t\t   )\r\n\t\tselect \r\n\t\t\t    'SpannedCancellation' \t\t\t\t---\t[title]\r\n\t\t\t   ,UtilityCompanySeqid\t\t\t\t\t---\t[UtilityCompanySeqid]\r\n\t\t\t   ,InvoiceAccountBillingGroupSeqid\t\t---\t[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t   ,AccountManualBillingHeaderSeqid\t\t---\t[AccountmanualBillingHeaderSeqid]\r\n\t\t\t   ,AccountSeqid\t\t\t\t\t\t--- [AccountSeqid]\r\n\t\t\t   ,UniqueAccountSeqid                  --- [UniqueAccountSeqid] /* added on 12/17/2018*/\r\n\t\t\t   ,OriginalAccountNumber\t\t\t\t---\t[OriginalAccountNumber]\r\n\t\t\t   ,BillingPeriod\t\t\t\t\t\t---\t[BillingPeriod]\r\n\t\t\t   ,BillingPeriodRevision\t\t\t\t---\t[BillingPeriodRevision]\r\n\t\t\t   ,FirstBillingPeriodCanceled\t\t\t---\t[FirstBillingPeriodCanceled]\r\n\t\t\t   ,DeltaNumberOfPeriods\t\t\t\t---\t[DeltaNumberOfPeriods]\r\n\t\t\t   ,FromDate\t\t\t\t\t\t\t---\t[CancelFromDate]\r\n\t\t\t   ,ToDate\t\t\t\t\t\t\t\t---\t[CancelToDate]\r\n\t\t\t   ,BillingPeriodDays\t\t\t\t\t---\t[CancelBillingPeriodDays]\r\n\t\t\t   ,NetBilledAmount\t\t\t\t\t\t---\t[CancelNetBilledAmount]\r\n\t\t\t   ,EnergyUsage\t\t\t\t\t\t\t---\t[CancelEnergy]\r\n\t\t\t   ,DemandUsage\t\t\t\t\t\t\t---\t[CancelDemand]\r\n\t\t\t   ,EnergySource\t\t\t\t\t\t---\t[EnergySource]\r\n\t\tFROM ManualBill.UploadManualBillingCancellation\r\n\t\tWHERE  ( DeltaNumberOfPeriods > 1 )\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\r\n\t\r\n\t\t\r\n\r\n\t\t/*******************************\r\n\t\t2. Parse spanned billed upload account cancellation info\r\n\t\t*********************************/\r\n\t\t--\tDECLARE a cursor to get all account bills that span more than one period.( should be all records in UploadManualBillingCancellationTempSummarySpanned )\r\n\t\tDECLARE SpannedBillCursor CURSOR FOR\r\n\t\tSELECT UploadManualBillingCancellationTempSummarySpannedSeqid FROM ManualBill.UploadManualBillingCancellationTempSummarySpanned\r\n\t\t\r\n\r\n\t\tOPEN SpannedBillCursor;\r\n\r\n\t\tFETCH NEXT FROM SpannedBillCursor INTO @UploadCancellationTempSummarySpannedSeqid\r\n\t\t--\r\n\t\t-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n\t\t--\r\n\t\tWHILE @@FETCH_STATUS = 0\r\n\t\tBEGIN -- begin processing for fetched record\r\n\t\t\t\t\t\r\n\t\t\t\t--\r\n\t\t\t\t-- 2.1. Process n-1 spanned periods\r\n\t\t\t\t--\r\n\t\t\t\r\n\t\t\t\tselect \r\n\t\t\t\t\t\t@AccountmanualBillingHeaderSeqid\t= Spanned.AccountmanualBillingHeaderSeqid \r\n\t\t\t\t\t   ,@IBGSeqid\t\t\t\t\t\t\t= Spanned.InvoiceAccountBillingGroupSeqid\r\n\t\t\t\t\t   ,@AccountSeqid\t\t\t\t\t\t= Spanned.AccountSeqid\t\r\n\t\t\t\t\t   ,@OriginalAccountNumber\t\t\t\t= Spanned.OriginalAccountNumber \r\n\t\t\t\t\t   ,@BillingPeriodRevision\t\t\t\t= Spanned.BillingPeriodRevision \r\n\t\t\t\t\t   ,@FirstBillingPeriodCanceled\t\t\t= Spanned.FirstBillingPeriodCanceled \t\r\n\t\t\t\t\t   ,@DeltaNumberOfPeriods\t\t\t\t= Spanned.DeltaNumberOfPeriods \r\n\t\t\t\t\t   ,@CancelFromDate \t\t\t\t\t= Spanned.CancelFromDate \r\n\t\t\t\t\t   ,@CancelToDate \t\t\t\t\t\t= Spanned.CancelToDate \r\n\t\t\t\t\t   ,@CancelBillingPeriodDays \t\t\t= Spanned.CancelBillingPeriodDays \r\n\t\t\t\t\t   ,@CancelNetBilledAmount \t\t\t\t= Spanned.CancelNetBilledAmount \r\n\t\t\t\t\t   ,@CancelEnergyUsage\t\t\t\t\t= Spanned.CancelEnergy \r\n\t\t\t\t\t   ,@CancelDemandUsage\t\t\t\t\t= Spanned.CancelDemand \r\n\t\t\t\t\t   ,@EnergySource \t\t\t\t\t\t= Spanned.EnergySource \r\n\t\t\t\t\t   ,@BillingCycle\t\t\t\t\t\t= Billing.Account.BillingCycle\r\n\t\t\t\t\t   ,@TripNumber\t\t\t\t\t\t\t= Billing.Account.TripNumber\r\n\t\t\t\tfrom ManualBill.UploadManualBillingCancellationTempSummarySpanned as Spanned inner join Billing.Account on\r\n\t\t\t\t\t--spanned.OriginalAccountNumber = Billing.Account.OriginalAccountNumber AND Billing.Account.AccountSeqid = Spanned.AccountSeqid /* Comment out on 1/18/2019 */\r\n\t\t\t\t\tBilling.Account.UniqueAccountSeqid = Spanned.UniqueAccountSeqid  and Billing.Account.IsCurrentRecord = 'Y' /* added on 1/18/2019 */\r\n\t\t\t\twhere ( UploadManualBillingCancellationTempSummarySpannedSeqid = @UploadCancellationTempSummarySpannedSeqid )\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t/*\r\n\t\t\t\t\t Distribute over spanned based on given percentage\r\n\t\t\t\t*/\r\n\r\n\t\t\t\t-- 2.1 periodAggregate the average City wide monthly energy usage percentage for the spanned row billing periods \r\n\t\t\t\tselect @TotalXXXSpannedBilledPercentage =[ManualBill].[CalculateTotalXXXSpannedBilledPercentage] (@BillingCycle,@DeltaNumberOfPeriods,@FirstBillingPeriodCanceled,@BillingPeriodRevision,@EnergySource )\r\n\t\t\t\t\t\r\n\t\t\t\t-- 2.2 Determine the number of periods minus 1 to pro-rate the money and usage.  The last period will derive the money and usage\r\n\t\t\t\t--\tby row totals - (the n-1 aggregates of money and usage)\r\n\t\t\t\tset @NumberOfPeriodsMinusOne = @DeltaNumberOfPeriods-1\r\n\r\n\r\n\t\t\t\t--\r\n\t\t\t\t--\t2.3 Initialize the counters for the n-1 parses\r\n\t\t\t\t--\r\n\t\t\t\tset @CalculatedBillingPeriodRevision\t= @FirstBillingPeriodCanceled \r\n\t\t\t\tset @CalculatedFromDate\t\t\t\t\t= @CancelFromDate \r\n\t\t\t\tset @CalculatedToDate\t\t\t\t\t= @CancelToDate \r\n\t\t\t\tset @idx\t\t\t\t\t\t\t\t= 0 \r\n\t\t\t\tset @CancelNetBilledAmountMonthlySum\t= 0.00 \r\n\t\t\t\tset @CancelEnergyMonthlySum\t\t\t\t= 0  \r\n\t\t\t\tset @CancelDemandMonthlySum\t\t\t\t= 0  \r\n\t\t\t\t--\r\n\t\t\t\t\r\n\t\t\t\t--- 2.4 distribute / parse\r\n\t\t\t\twhile (@NumberOfPeriodsMinusOne > @idx)\r\n\t\t\t\tBegin \r\n\r\n\t\t\t\t\t\t-- 2.4.1 set value for required variables\r\n\r\n\t\t\t\t\t\t-- The @ApplyMonthlyPercentage holds the weigthed average for the particular month\r\n\t\t\t\t\t\tselect @ApplyMonthlyPercentage = [ManualBill].[CalculateApplyMonthlyPercentageXXXSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalXXXSpannedBilledPercentage, @EnergySource)\r\n\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\t-- Apply the Monthly Percentage to the CCF,Therms and Billed Amount \r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\tset @CancelNetBilledAmountMonthly\t= ROUND(@CancelNetBilledAmount * @ApplyMonthlyPercentage,2)\r\n\t\t\t\t\t\tset @CancelEnergyMonthly\t\t\t= ROUND(@CancelEnergyUsage * @ApplyMonthlyPercentage,0)\r\n\t\t/*REVISE*/\t\tset @CancelDemandMonthly\t\t\t= ROUND(@CancelDemandUsage * @ApplyMonthlyPercentage,2)\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\t-- Accululate the weigthed average units.\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\tset @CancelNetBilledAmountMonthlySum\t= @CancelNetBilledAmountMonthlySum + @CancelNetBilledAmountMonthly\r\n\t\t\t\t\t\tset @CancelEnergyMonthlySum\t\t\t\t= @CancelEnergyMonthlySum + @CancelEnergyMonthly\r\n\t\t\t\t\t\tset @CancelDemandMonthlySum\t\t\t\t= @CancelDemandMonthlySum + @CancelDemandMonthly\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t--  \r\n\t\t\t\t\t\t--\tThe Billing Period Projected \"ToDate\" is derived from the table \"dbo.BillingPeriodProjected\" using the utility company seqid and the\r\n\t\t\t\t\t\t--\tRevisedBillingPeriod and using the \"EndofPeriodTodate\" as the derived \"Todate\" for the account.\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.DeterminActualDate(@OriginalAccountNumber, 'T', @CalculatedBillingPeriodRevision, @BillingCycle)\r\n\r\n\t\t\t\t\t\tif(@CalculatedToDate is null)\r\n\t\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.DetermineProjectedToOrFromDate(@utilityCompany, @IBGSeqid, @CalculatedBillingPeriodRevision, 'T', @tripNumber,  @BillingCycle\t) \r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t-- if both above methods fail prorate\r\n\t\t\t\t\t\tif(@CalculatedToDate is null)\r\n\t\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.ProRateToOrFromDate('T', @BillingCycle, @CancelFromDate, @CancelToDate, @idx, @DeltaNumberOfPeriods  )\r\n\r\n\t\t\t\t\t\t-- 2.4.2\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t\t\t\t\t\t--\tIt will note in EC3 that the transaction was derived.\r\n\t\t\t\t\t\tselect @Notes = SUBSTRING( cast(@DeltaNumberOfPeriods as varchar(6))+ ' First: '+@FirstBillingPeriodCanceled +' ( '+@CancelFromDate+') Last: '+ \r\n\t\t\t\t\t\t@BillingPeriodRevision +' ( '+@CancelFromDate+'). '+' period: '+@CalculatedBillingPeriodRevision+ ' Month %: '+cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t\t\t\t\t\t' - Total %: '+cast(@TotalXXXSpannedBilledPercentage as varchar(10)), 1, 300)\r\n\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\t-- 2.4.3  INSERT the data into the summary table\r\n\t\t\t\t\t\t--\t\t\r\n\t\t\t\t\t\tINSERT INTO ManualBill.[UploadManualBillingCancellationSummary]\r\n\t\t\t\t\t\t\t   ([UtilityCompanySeqid]\r\n\t\t\t\t\t\t\t   ,[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t\t\t\t\t   ,[AccountManualBillingHeaderSeqid]\r\n\t\t\t\t\t\t\t   ,[AccountSeqid]\r\n\t\t\t\t\t\t\t   ,[UniqueAccountSeqid] /* added on 12/17/2018 */\r\n\t\t\t\t\t\t\t   ,[OriginalAccountNumber]\r\n\t\t\t\t\t\t\t   ,[NumberOfTransactions]\r\n\t\t\t\t\t\t\t   ,[NumberOfRebillTransactions]\r\n\t\t\t\t\t\t\t   ,[NumberOfCancelTransactions]\r\n\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t   ,[BillingPeriodRevision]\r\n\t\t\t\t\t\t\t   ,[ActualOrEstimated]\r\n\t\t\t\t\t\t\t   ,[CancelFromDate]\r\n\t\t\t\t\t\t\t   ,[CancelToDate]\r\n\t\t\t\t\t\t\t   ,[CancelBillingDays]\r\n\t\t\t\t\t\t\t   ,[CancelNetBilledAmount]\r\n\t\t\t\t\t\t\t   ,[CancelEnergyUsage]\r\n\t\t\t\t\t\t\t   ,[CancelDemandUsage]\r\n\t\t\t\t\t\t\t   ,[EnergySource]\r\n\t\t\t\t\t\t\t   ,[DerivedFromSpannedBill]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelFromDate]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelToDate]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelBillingDays]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelBillingPeriodRevision]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelFirstBillingPeriodCanceled]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelNetBilledAmount]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelEnergy]\r\n\t\t\t\t\t\t\t   ,[SpannedCancelDemand]\r\n\t\t\t\t\t\t\t   ,[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t   ,[SpannedTotalPercentage]\r\n\t\t\t\t\t\t\t   ,[Notes]\r\n\t\t\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t\t\t   ,[LastUpdate])\r\n\r\n\t\t\t\t\t\tselect \r\n\t\t\t\t\t\t\t\t@utilityCompany\t\t\t\t\t\t\t\t---\t[UtilityCompanySeqid]\r\n\t\t\t\t\t\t\t   ,InvoiceAccountBillingGroupSeqid\t\t\t\t---\t[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t\t\t\t\t   ,AccountmanualBillingHeaderSeqid\t\t\t\t---\t[AccountManualBillingHeaderSeqid]\r\n\t\t\t\t\t\t\t   ,AccountSeqid\t\t\t\t\t\t\t\t--- [AccountSeqid]\r\n\t\t\t\t\t\t\t   ,UniqueAccountSeqId                          --- [UniqueAccountSeqid] /* added on 12/17/2018 */\r\n\t\t\t\t\t\t\t   ,OriginalAccountNumber\t\t\t\t\t\t---\t[OriginalAccountNumber]\r\n\t\t\t\t\t\t\t   ,1\t\t\t\t\t\t\t\t\t\t\t---\t[NumberOfTransactions]\r\n\t\t\t\t\t\t\t   ,0\t\t\t\t\t\t\t\t\t\t\t---\t[NumberOfRebillTransactions]\r\n\t\t\t\t\t\t\t   ,1\t\t\t\t\t\t\t\t\t\t\t---\t[NumberOfCancelTransactions]\r\n\t\t\t\t\t\t\t   ,BillingPeriod\t\t\t\t\t\t\t\t---\t[BillingPeriod]\r\n\t\t\t\t\t\t\t   ,@CalculatedBillingPeriodRevision\t\t\t---\t[BillingPeriodRevision]\r\n\t\t\t/*REVISE*/\t\t   ,null\t\t\t\t\t\t\t\t\t\t---\t[ActualOrEstimated]\r\n\t\t\t\t\t\t\t   ,@CalculatedFromDate\t\t\t\t\t\t\t---\t[CancelFromDate]\r\n\t\t\t\t\t\t\t   ,@CalculatedToDate\t\t\t\t\t\t\t---\t[CancelToDate]\r\n\t\t\t\t\t\t\t   ,dbo.CalculateNumberOfBillingDays(@CalculatedFromDate, @CalculatedToDate)\t\t\t\t\t\t\t---\t[CancelBillingDays]\r\n\t\t\t\t\t\t\t   ,@CancelNetBilledAmountMonthly\t\t\t\t---\t[CanceledNetBilledAmount]\r\n\t\t\t\t\t\t\t   ,@CancelEnergyMonthly\t\t\t\t\t\t---\t[CancelEnergyUsage]\r\n\t\t\t\t\t\t\t   ,@CancelDemandMonthly\t\t\t\t\t\t---\t[CancelDemandUsage]\r\n\t\t\t\t\t\t\t   ,@EnergySource\t\t\t\t\t\t\t\t---\t[EnergySource]\r\n\t\t\t\t\t\t\t   ,'Y'\t\t\t\t\t\t\t\t\t\t\t---\t[DerivedFromSpannedBill]\r\n\t\t\t\t\t\t\t   ,@CancelFromDate\t\t\t\t\t\t\t\t---\t[SpannedCancelFromDate]\r\n\t\t\t\t\t\t\t   ,@CancelToDate\t\t\t\t\t\t\t\t---\t[SpannedCancelToDate]\r\n\t\t\t\t\t\t\t   ,@CancelBillingPeriodDays\t\t\t\t\t---\t[SpannedCancelBillingDays]\r\n\t\t\t\t\t\t\t   ,@BillingPeriodRevision\t\t\t\t\t\t---\t[SpannedCancelBillingPeriodRevision]\r\n\t\t\t\t\t\t\t   ,@FirstBillingPeriodCanceled\t\t\t\t\t---\t[SpannedCancelFirstBillingPeriodCanceled]\r\n\t\t\t\t\t\t\t   ,@CancelNetBilledAmount\t\t\t\t\t\t---\t[SpannedCancelNetBilledAmount]\r\n\t\t\t\t\t\t\t   ,@CancelEnergyUsage\t\t\t\t\t\t\t---\t[SpannedCancelEnergy]\r\n\t\t\t\t\t\t\t   ,@CancelDemandUsage\t\t\t\t\t\t\t---\t[SpannedCancelDemand]\r\n\t\t\t\t\t\t\t   ,@ApplyMonthlyPercentage\t\t\t\t\t\t---\t[SpannedMonthlyPercentage]\r\n\t\t\t\t\t\t\t   ,@TotalXXXSpannedBilledPercentage\t\t\t---\t[SpannedTotalPercentage]\r\n\t\t\t\t\t\t\t   ,@Notes\t\t\t\t\t\t\t\t\t\t---\t[Notes]\r\n\t\t\t\t\t\t\t   ,@authenticatedID\t\t\t\t\t\t\t---\t[AuthenticatedUserID]\r\n\t\t\t\t\t\t\t   ,getdate()\t\t\t\t\t\t\t\t\t---\t[DateAdded]\r\n\t\t\t\t\t\t\t   ,getdate()\t\t\t\t\t\t\t\t\t---\t[LastUpdate]\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tfrom ManualBill.UploadManualBillingCancellationTempSummarySpanned \r\n\t\t\t\t\t\twhere ( UploadManualBillingCancellationTempSummarySpannedSeqid = @UploadCancellationTempSummarySpannedSeqid )\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\r\n\t\t\t\t\t\t--\r\n\t\t\t\t\t\t--\tCalculate the next the Revised Billing Period row.\r\n\t\t\t\t\t\tselect @CalculatedBillingPeriodRevision = [dbo].[CalculateNextBillingPeriod]  (@CalculatedBillingPeriodRevision,@BillingCycle)\r\n\t\t\t\t\t\t--\tThis will derive the new Revised Billing Period row's \"FromDate\"\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.DeterminActualDate(@OriginalAccountNumber, 'T', @CalculatedBillingPeriodRevision, @BillingCycle)\r\n\r\n\t\t\t\t\t\tif(@CalculatedToDate is null)\r\n\t\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.DetermineProjectedToOrFromDate(@utilityCompany, @IBGSeqid, @CalculatedBillingPeriodRevision, 'T', @tripNumber,  @BillingCycle\t) \r\n\r\n\t\t\t\t\t\t\t-- if both above methods fail prorate\r\n\t\t\t\t\t\tif(@CalculatedToDate is null)\r\n\t\t\t\t\t\t\tselect @CalculatedToDate = ManualBill.ProRateToOrFromDate('T', @BillingCycle, @CancelFromDate, @CancelToDate, @idx, @DeltaNumberOfPeriods  )\r\n\r\n\r\n\r\n\t\t\t\t\t\tset @idx = @idx + 1\r\n\t\t\t\tend -- end distribute/parse\r\n\r\n\r\n\t\t\t\t--\r\n\t\t\t\t-- 2.2. Process the last spanned period\r\n\t\t\t\t--\r\n\r\n\r\n\t\t\t\t--\tUse the (Nth -1) periods @CalculatedToDate as the \"FromDate\" and the acutal \"ToDate\" from the spanned record as the \"ToDate\"\r\n\t\t\t\t--\r\n\t\t\t\tselect @CalculatedFromDate = ManualBill.DeterminActualDate(@OriginalAccountNumber, 'F', @CalculatedBillingPeriodRevision, @BillingCycle)\r\n\r\n\t\t\t\tif(@CalculatedFromDate is null)\r\n\t\t\t\t\tselect @CalculatedFromDate = ManualBill.DetermineProjectedToOrFromDate(@utilityCompany, @IBGSeqid, @CalculatedBillingPeriodRevision, 'F', @tripNumber,  @BillingCycle\t) \r\n\r\n\t\t\t\t\t-- if both above methods fail prorate\r\n\t\t\t\tif(@CalculatedFromDate is null)\r\n\t\t\t\t\tselect @CalculatedFromDate = ManualBill.ProRateToOrFromDate('F', @BillingCycle, @CancelFromDate, @CancelToDate, @idx, @DeltaNumberOfPeriods  )\r\n\r\n\r\n\t\t\t\tselect @CalculatedToDate = @CancelToDate\r\n\t\t\t\t--\r\n\t\t\t\t--\t@ApplyMonthlyPercentage is used for the notes purposes only\r\n\t\t\t\t--\r\n\t\t\t\tselect @ApplyMonthlyPercentage = [ManualBill].[CalculateApplyMonthlyPercentageXXXSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalXXXSpannedBilledPercentage, @EnergySource)\r\n\t\t\t\t--\r\n\t\t\t\t--\tDerive the net changes to avoid rounding errors\r\n\t\t\t\t--\r\n\t\t\t\tset @CancelNetBilledAmountLastPeriod\t= @CancelNetBilledAmount - @CancelNetBilledAmountMonthlySum\r\n\t\t\t\tset @CancelEnergyLastPeriod\t\t\t= @CancelEnergyUsage - @CancelEnergyMonthlySum\r\n\t\t\t\tset @CancelDemandLastPeriod\t\t\t= @CancelDemandUsage - @CancelDemandMonthlySum\r\n\r\n\t\t\t\t--\r\n\t\t\t\t--\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t\t\t\t--\tIt will note in EC3 that the transaction was derived.\r\n\t\t\t\t--\r\n\t\t\t\tselect @Notes = SUBSTRING(cast(@DeltaNumberOfPeriods as varchar(6))+' First: ' + @FirstBillingPeriodCanceled + ' ( ' + @CancelFromDate + ') Last: ' + \r\n\t\t\t\t@BillingPeriodRevision +' ( ' + @CancelFromDate + '). ' + ' period: ' + @CalculatedBillingPeriodRevision + ' Month %: ' + cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t\t\t\t' - Total %: ' + cast(@TotalXXXSpannedBilledPercentage as varchar(10)), 1, 300)\t\r\n\r\n\r\n\r\n\r\n\r\n\t\t\t\tINSERT INTO [ManualBill].[UploadManualBillingCancellationSummary]\r\n\t\t\t\t\t   ([UtilityCompanySeqid]\r\n\t\t\t\t\t   ,[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t\t\t   ,[AccountManualBillingHeaderSeqid]\r\n\t\t\t\t\t   ,[AccountSeqid]\r\n\t\t\t\t\t   ,[UniqueAccountSeqid] /* added on 12/17/2018 */\r\n\t\t\t\t\t   ,[OriginalAccountNumber]\r\n\t\t\t\t\t   ,[NumberOfTransactions]\r\n\t\t\t\t\t   ,[NumberOfRebillTransactions]\r\n\t\t\t\t\t   ,[NumberOfCancelTransactions]\r\n\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t   ,[BillingPeriodRevision]\r\n\t\t\t\t\t   ,[ActualOrEstimated]\r\n\t\t\t\t\t   ,[CancelFromDate]\r\n\t\t\t\t\t   ,[CancelToDate]\r\n\t\t\t\t\t   ,[CancelBillingDays]\r\n\t\t\t\t\t   ,[CancelNetBilledAmount]\r\n\t\t\t\t\t   ,[CancelEnergyUsage]\r\n\t\t\t\t\t   ,[CancelDemandUsage]\r\n\t\t\t\t\t   ,[EnergySource]\r\n\t\t\t\t\t   ,[DerivedFromSpannedBill]\r\n\t\t\t\t\t   ,[SpannedCancelFromDate]\r\n\t\t\t\t\t   ,[SpannedCancelToDate]\r\n\t\t\t\t\t   ,[SpannedCancelBillingDays]\r\n\t\t\t\t\t   ,[SpannedCancelBillingPeriodRevision]\r\n\t\t\t\t\t   ,[SpannedCancelFirstBillingPeriodCanceled]\r\n\t\t\t\t\t   ,[SpannedCancelNetBilledAmount]\r\n\t\t\t\t\t   ,[SpannedCancelEnergy]\r\n\t\t\t\t\t   ,[SpannedCancelDemand]\r\n\t\t\t\t\t   ,[SpannedMonthlyPercentage]\r\n\t\t\t\t\t   ,[SpannedTotalPercentage]\r\n\t\t\t\t\t   ,[Notes]\r\n\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t   ,[LastUpdate])\r\n\r\n\t\t\t\tselect \r\n\t\t\t\t\t\t@utilityCompany\t\t\t\t\t\t---\t[UtilityCompanySeqid]\r\n\t\t\t\t\t   ,InvoiceAccountBillingGroupSeqid\t\t---\t[InvoiceAccountBillingGroupSeqid]\r\n\t\t\t\t\t   ,AccountmanualBillingHeaderSeqid\t\t---\t[AccountManualBillingHeaderSeqid]\r\n\t\t\t\t\t   ,AccountSeqid\t\t\t\t\t\t--- [AccountSeqid]\r\n\t\t\t\t\t   ,UniqueAccountSeqid                  --- [UniqueAccountSeqid] /* added on 12/17/2018 */\r\n\t\t\t\t\t   ,OriginalAccountNumber\t\t\t\t---\t[OriginalAccountNumber]\r\n\t\t\t\t\t   ,1\t\t\t\t\t\t\t\t\t---\t[NumberOfTransactions]\r\n\t\t\t\t\t   ,0\t\t\t\t\t\t\t\t\t---\t[NumberOfRebillTransactions]\r\n\t\t\t\t\t   ,1\t\t\t\t\t\t\t\t\t---\t[NumberOfCancelTransactions]\r\n\t\t\t\t\t   ,BillingPeriod\t\t\t\t\t\t---\t[BillingPeriod]\r\n\t\t\t\t\t   ,@CalculatedBillingPeriodRevision\t---\t[BillingPeriodRevision]\r\n\t/*REVISE*/\t\t   ,null\t\t\t\t\t\t\t\t---\t[ActualOrEstimated]\r\n\t\t\t\t\t   ,@CalculatedFromDate\t\t\t\t\t---\t[CancelFromDate]\r\n\t\t\t\t\t   ,@CalculatedToDate\t\t\t\t\t---\t[CancelToDate]\r\n\t\t\t\t\t   ,dbo.CalculateNumberOfBillingDays(@CalculatedFromDate, @CalculatedToDate)\t\t\t\t\t\t\t---\t[CancelBillingDays]\r\n\t\t\t\t\t   ,@CancelNetBilledAmountLastPeriod\t---\t[CanceledNetBilledAmount]\r\n\t\t\t\t\t   ,@CancelEnergyLastPeriod\t\t\t\t---\t[CancelEnergyUsage]\r\n\t\t\t\t\t   ,@CancelDemandLastPeriod\t\t\t\t---\t[CancelDemandUsage]\r\n\t\t\t\t\t   ,@EnergySource\t\t\t\t\t\t---\t[EnergySource]\r\n\t\t\t\t\t   ,'Y'\t\t\t\t\t\t\t\t\t---\t[DerivedFromSpannedBill]\r\n\t\t\t\t\t   ,@CancelFromDate\t\t\t\t\t\t---\t[SpannedCancelFromDate]\r\n\t\t\t\t\t   ,@CancelToDate\t\t\t\t\t\t---\t[SpannedCancelToDate]\r\n\t\t\t\t\t   ,@CancelBillingPeriodDays\t\t\t---\t[SpannedCancelBillingDays]\r\n\t\t\t\t\t   ,@BillingPeriodRevision\t\t\t\t---\t[SpannedCancelBillingPeriodRevision]\r\n\t\t\t\t\t   ,@FirstBillingPeriodCanceled\t\t\t---\t[SpannedCancelFirstCanceledBillingPeriod]\r\n\t\t\t\t\t   ,@CancelNetBilledAmount\t\t\t\t---\t[SpannedCancelNetBilledAmount]\r\n\t\t\t\t\t   ,@CancelEnergyUsage\t\t\t\t\t---\t[SpannedCancelEnergy]\r\n\t\t\t\t\t   ,@CancelDemandUsage\t\t\t\t\t---\t[SpannedCancelDemand]\r\n\t\t\t\t\t   ,@ApplyMonthlyPercentage\t\t\t\t---\t[SpannedMonthlyPercentage]\r\n\t\t\t\t\t   ,@TotalXXXSpannedBilledPercentage\t---\t[SpannedTotalPercentage]\r\n\t\t\t\t\t   ,@Notes\t\t\t\t\t\t\t\t---\t[Notes]\r\n\t\t\t\t\t   ,@authenticatedID\t\t\t\t\t---\t[AuthenticatedUserID]\r\n\t\t\t\t\t   ,getdate()\t\t\t\t\t\t\t---\t[DateAdded]\r\n\t\t\t\t\t   ,getdate()\t\t\t\t\t\t\t---\t[LastUpdate]\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\tfrom ManualBill.UploadManualBillingCancellationTempSummarySpanned \r\n\t\t\t\twhere ( UploadManualBillingCancellationTempSummarySpannedSeqid = @UploadCancellationTempSummarySpannedSeqid )\r\n\r\n\r\n\r\n\t\t \r\n\t\t\t\t--\tProcess the next row\r\n\t\t\t\t--\r\n\t\t\t\tFETCH NEXT FROM SpannedBillCursor INTO @UploadCancellationTempSummarySpannedSeqid\r\n\t\tEnd -- end processing for fetched record\r\n\r\n\t\tCLOSE SpannedBillCursor; -- close cursor\r\n\t\tDEALLOCATE SpannedBillCursor;\r\n\r\n \r\n\t\tset @Status = 0\r\n \r\n \r\n end"
+        }
+      ]
+    }
+  ]
+}

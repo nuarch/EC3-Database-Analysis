@@ -1,0 +1,977 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Nypa",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessAccountBillingSaveTransactions",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ProcessAccountBillingSaveTransactions",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process account billing transactions related to adjustments and cancellations for a utility company. It inserts new billing adjustment records into the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountBillingAdjustmentElectric",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table based on data from the "
+        },
+        {
+          "type": "text",
+          "text": "Nypa.UploadNYPAAccountBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. The procedure also updates the "
+        },
+        {
+          "type": "text",
+          "text": "TotalNetAdjustedAmount",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " in the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.AccountBillingAdjustmentElectric",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to reflect the total rebilled amount for the current billing period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is high due to the following reasons:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves a large number of columns and data points, indicating a complex data structure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure includes conditional logic for calculating billing period days."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It performs both insert and update operations, which require careful handling of data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure interacts with multiple tables and relies on a function ("
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateNumberOfBillingDays",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") for its operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to track the user who is executing the procedure. It is inserted into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingAdjustmentElectric",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table to maintain an audit trail."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This output parameter is used to indicate the success or failure of the procedure execution. A value of "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates success, while "
+                },
+                {
+                  "type": "text",
+                  "text": "9",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " would indicate failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure inserts records into the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingAdjustmentElectric",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. It selects distinct records from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPAAccountBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, mapping numerous fields directly and calculating others, such as billing period days using the "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateNumberOfBillingDays",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After the insert, the procedure updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "TotalNetAdjustedAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingAdjustmentElectric",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table to match the "
+                },
+                {
+                  "type": "text",
+                  "text": "TotalReBilledAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for records where the "
+                },
+                {
+                  "type": "text",
+                  "text": "TotalNetAdjustedAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is zero and the billing period matches the current processing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Count",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It tracks the number of rows affected by the insert and update operations using "
+                },
+                {
+                  "type": "text",
+                  "text": "@@ROWCOUNT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and prints these counts for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Status Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure sets the "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to indicate successful execution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Large Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure handles a significant amount of data, which could impact performance, especially during the insert operation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of the "
+                },
+                {
+                  "type": "text",
+                  "text": "CalculateNumberOfBillingDays",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function within the select statement could be a performance bottleneck if the function is complex or inefficient."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Proper indexing on the tables involved, especially on columns used in joins and where clauses, can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not explicitly handle concurrency, which could lead to issues if multiple instances are executed simultaneously."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that data in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Nypa.UploadNYPAAccountBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is accurate and complete. Any discrepancies could lead to incorrect billing adjustments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling mechanisms. Any runtime errors could cause the procedure to fail without providing detailed feedback."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure may degrade, especially if the underlying tables are not optimized for large-scale operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Maintenance",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The complexity and size of the procedure make it challenging to maintain and update, particularly if business requirements change or new fields are added."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Overall, while the procedure is comprehensive in handling billing adjustments, careful attention to performance optimization and error handling is necessary to ensure reliable and efficient execution."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "/*****************************************************************************************************************************************************************************************************/\n/*                                                                                                                                                                                                   */\r\n/*****************************************************************************************************************************************************************************************************/\r\nCREATE Procedure [Nypa].[usp_ProcessAccountBillingSaveTransactions] @AuthenticatedUserID int , @StatusCode int  output   \r\n\r\n as --**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  Process the Account billing save cancel RebillAdjustments.  The sequential processing steps needed to\r\n--* \r\n--                     Step 01)      Insert the new Cover sheet billing types\r\n--\r\n-- Update the Account billing records with the correct account statuses of the existing accounts and the\r\n-- current cycle exchange actions.  The exchange code will be set to null.\r\n-- \r\n-- Determine the active accounts that the utility company did not send a bill for the cycle and add them to the \r\n-- to the \"UploadNYPAAccountBilling\" table.  At this point, we should have a collection of all of the accounts \r\n-- that were billed and all of the accounts that should have been billed.\r\n-- \r\n--*               \r\n--* Exec:  \t\t usp_ProcessAccountBillingSaveCanceRebillAdjustments\r\n--*\r\n--* Parameter(s):         \r\n--*\t\t\t       AuthenticatedUserID int Output\r\n--*\t\t\t       NumberOfAdjustmentsAdded int Output\r\n--*                            StatusCode  int output       -  Execution Return Status \r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*                   9 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   10/26/2005\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 10/26/2005 PAH  First Version  \r\n--* 03/27/2006 PAH  Revised to \r\n--* 02/20/2015 Zafer Added New 8 (Standby and CancelStandby) fields \r\n--* 08/23/2018\tZD  Added Netmetering columns\r\n--* 02/06/2019  ZD-VY added UniqueAccountSeqId in the insert \r\n--***************************************************************************************\r\nbegin \r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--\r\ndeclare @NumberOfTransactionsUpdated int\r\ndeclare @NumberOfTransactionsAdded int\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\n--\r\n--************************************************************************************** \r\n--\tMain Processing\r\n--**************************************************************************************\r\n--\r\n-- UploadNYPAAccountBillingSeqid\r\ninsert  into Billing.AccountBillingAdjustmentElectric\r\n        ( AdjustedAccount ,\r\n          AdjustedAccountBill ,\r\n          AdjustedAccountBillElectric ,\r\n          UploadFileSeqid ,\r\n          OriginalAccountNumber ,\r\n          AccountStatus ,\r\n          AccountPreviousStatus ,\r\n          AccountStatusCodePeriod ,\r\n          BillingPeriod ,\r\n          BillingPeriodRevision ,\r\n          BillingDate ,\r\n          BillingAction ,\r\n          ProcessedInTheCurrentPeriod ,\r\n          ProductionAndDeliveryTariff ,\r\n          CancelProductionAndDeliveryTariff ,\r\n          BillingPeriodDays ,\r\n          CancelBillingPeriodDays ,\r\n          FromDate ,\r\n          ToDate ,\r\n          OriginalBilledAmount ,\r\n          RevisedReBilledAmount ,\r\n          PenaltyBillAmount ,\r\n          PenaltyPaidAmount ,\r\n          TotalReBilledAmount ,\r\n          TotalCanceledAmount ,\r\n          TotalNetAdjustedAmount ,\r\n          PenaltyBillingAmount ,\r\n          CancelPenaltyBillingAmount ,\r\n          CancelPenaltyPaidAmount ,\r\n          AccountAmount ,\r\n          FuelAdjustmentAmount ,\r\n          CommodityChargeAmount ,\r\n          DeliveryChargeAmount ,\r\n          DiscountedAmount ,\r\n          DDDSurchargeAmount ,\r\n          DDDSurchargePercentage ,\r\n          DeliveryConsumption ,\r\n          DeliveryConsumptionOffPeak ,\r\n          DeliveryConsumptionShoulder ,\r\n          DeliveryDemand ,\r\n          DeliveryDemandOffPeak ,\r\n          DeliveryDemandShoulder ,\r\n          DeliveryStreetLightingFacilityPoints ,\r\n          CommodityConsumption ,\r\n          CommodityConsumptionOffPeak ,\r\n          CommodityConsumptionShoulder ,\r\n          CommodityDemand ,\r\n          CommodityDemandOffPeak ,\r\n          CommodityDemandShoulder ,\r\n          CommodityFacilityPoints ,\r\n          GrossReceiptTax ,\r\n          GRTRate ,\r\n          EnergyCostAdjustment ,\r\n          EnergyCostAdjustmentPercentage ,\r\n          CanceledAmount ,\r\n          CancelFuelAdjustmentAmount ,\r\n          CancelCommodityChargeAmount ,\r\n          CancelDeliveryChargeAmount ,\r\n          CancelDiscountedAmount ,\r\n          CancelDDDSurchargeAmount ,\r\n          CancelDDDSurchargePercentage ,\r\n          CancelDeliveryConsumption ,\r\n          CancelDeliveryConsumptionOffPeak ,\r\n          CancelDeliveryConsumptionShoulder ,\r\n          CancelDeliveryDemand ,\r\n          CancelDeliveryDemandOffPeak ,\r\n          CancelDeliveryDemandShoulder ,\r\n          CancelDeliveryStreetLightingFacilityPoints ,\r\n          CancelCommodityConsumption ,\r\n          CancelCommodityConsumptionOffPeak ,\r\n          CancelCommodityConsumptionShoulder ,\r\n          CancelCommodityDemand ,\r\n          CancelCommodityDemandOffPeak ,\r\n          CancelCommodityDemandShoulder ,\r\n          CancelCommodityFacilityPoints ,\r\n          CancelGrossReceiptTax ,\r\n          CancelGRTRate ,\r\n          CancelEnergyCostAdjustment ,\r\n          CancelEnergyCostAdjustmentPercentage ,\r\n          AccountDemandUsage ,\r\n          AccountEnergyUsage ,\r\n          CancelAccountDemandUsage ,\r\n          CancelAccountEnergyUsage ,\r\n          AuthenticatedUserID ,\r\n          InitialPostingDate ,\r\n          DateAdded ,\r\n          LastUpdate ,\r\n          AccountUtilityCompanySeqid ,\r\n          IsTimeOfDayAccount ,\r\n          IsMinimumBilledCharged ,\r\n          MinimumBilledEnergyDollars ,\r\n          MinimumBilledDemandDollars ,\r\n          MaxBilledDemandPeriod ,\r\n          MaxBilledDemandUsage ,\r\n          CancelIsMinimumBilledCharged ,\r\n          CancelMinimumBilledEnergyDollars ,\r\n          CancelMinimumBilledDemandDollars ,\r\n          CancelMaxBilledDemandPeriod ,\r\n          CancelMaxBilledDemandUsage ,\r\n          IsSpannedPeriodBill ,\r\n          DeliveryFacilityPointsAmount ,\r\n          CancelDeliveryFacilityPointsAmount ,\r\n          CustomerLevelAdjustmentAmount ,\r\n          OriginalReactivePowerDollars ,\r\n          RevisedReactivePowerDollars ,\r\n          NetchangeReactivePowerDollars ,\r\n          AccountReactivePowerEnergy ,\r\n          OriginalAccountReactivePowerEnergy ,\r\n          CanceledAccountReactivePowerEnergy ,\r\n          NetChangeAccountReactivePowerEnergy ,\r\n          CommodityAllocationCharge ,\r\n          DeliveryAllocationCharge ,\r\n          CancelReactivePowerDollars ,\r\n          MinimumBilledDemandUsage ,\r\n          CancelMinimumBilledDemandUsage ,\r\n          IsDeliveryMinimumBilledFlag ,\r\n          DeliveryMinimumBilledAmount ,\r\n          DeliveryMinimumBilledDemand ,\r\n          CancelIsDeliveryMinimumBilledFlag ,\r\n          CancelDeliveryMinimumBilledAmount ,\r\n          CancelDeliveryMinimumBilledDemand ,\r\n          ProductionMisc1 ,\r\n          ProductionMisc2 ,\r\n          DeliveryMisc1 ,\r\n          DeliveryMisc2 ,\r\n          CancelProductionMisc1 ,\r\n          CancelProductionMisc2 ,\r\n          CancelDeliveryMisc1 ,\r\n          CancelDeliveryMisc2 ,\r\n          MinimumBilledEnergyUsage ,\r\n          CancelMinimumBilledEnergyUsage ,\r\n          DeliveryMaximumBilledDemand ,\r\n          DeliveryMaximumBilledDemandPeriod ,\r\n          CancelDeliveryMaximumBilledDemand ,\r\n          CancelDeliveryMaximumBilledDemandPeriod,\r\n          ContractNumber,\r\n\t\tStandbyContractDemand ,\r\n        CancelStandbyContractDemand ,\r\n        StandbyContractDemandCharges ,\r\n        CancelStandbyContractDemandCharges ,\r\n        StandbyAsUsedDailyDemand ,\r\n        CancelStandbyAsUsedDailyDemand ,\r\n        StandbyAsUsedDailyDemandCharges ,\r\n        CancelStandbyAsUsedDailyDemandCharges\r\n\t\t\t,CreditCurrentPeriod\r\n\t\t\t,CancelCreditCurrentPeriod\r\n\t\t\t,CreditPrecedingPeriod\r\n\t\t\t,CancelCreditPrecedingPeriod\r\n\t\t\t,CreditToApplySatellites\r\n\t\t\t,CancelCreditToApplySatellites\r\n\t\t\t,CreditFromHost\r\n\t\t\t,CancelCreditFromHost\r\n\t\t\t,CreditsToCarryForward\r\n\t\t\t,CancelCreditsToCarryForward\r\n\t\t\t,CurrentPeriodOffPeakCredit\r\n\t\t\t,CancelCurrentPeriodOffPeakCredit\r\n\t\t\t,CurrentPeriodOnPeakCredit\r\n\t\t\t,CancelCurrentPeriodOnPeakCredit\r\n\t\t\t,NetMeteredAccountFlag\r\n\t\t\t,CancelNetMeteredAccountFlag\r\n\t\t\t,HostNetMeteredAccountNumber\r\n\t\t\t,CancelHostNetMeteredAccountNumber\r\n\t\t\t,PEXCESS\r\n\t\t\t,CancelPEXCESS\r\n\t\t\t, UniqueAccountSeqId\r\n\r\n\t\t)\r\nSELECT DISTINCT\r\n        AccountSeqid ,\r\n        AccountBillingSeqid ,\r\n        AccountBillingElectricSeqid ,\r\n        UploadNYPAAccountBillingSeqid ,\r\n        CurrentAccountNumber ,\r\n        AccountStatus ,\r\n        AccountPreviousStatus ,\r\n        AccountStatusCodePeriod ,\r\n        BillingPeriod ,\r\n        RevisedBillingPeriod ,\r\n        BillingPeriod + '15' AS Expr1 ,\r\n        'A' AS Expr2 ,\r\n        'N' AS Expr3 ,\r\n        ProductionAndDeliveryTariff ,\r\n        ProductionAndDeliveryTariff AS Expr4 ,\r\n        CASE WHEN dbo.CalculateNumberOfBillingDays(Nypa.UploadNYPAAccountBilling.FromDate,\r\n                                                   Nypa.UploadNYPAAccountBilling.ToDate) < 1000\r\n             THEN Nypa.UploadNYPAAccountBilling.BillingPeriodDays\r\n             ELSE dbo.CalculateNumberOfBillingDays(Nypa.UploadNYPAAccountBilling.FromDate,\r\n                                                   Nypa.UploadNYPAAccountBilling.ToDate)\r\n        END AS Expr5 ,\r\n        CASE WHEN dbo.CalculateNumberOfBillingDays(Nypa.UploadNYPAAccountBilling.FromDate,\r\n                                                   Nypa.UploadNYPAAccountBilling.ToDate) < 1000\r\n             THEN Nypa.UploadNYPAAccountBilling.BillingPeriodDays\r\n             ELSE dbo.CalculateNumberOfBillingDays(Nypa.UploadNYPAAccountBilling.FromDate,\r\n                                                   Nypa.UploadNYPAAccountBilling.ToDate)\r\n        END AS Expr6 ,\r\n        FromDate ,\r\n        ToDate ,\r\n        0.00 AS Expr7 ,\r\n        0.00 AS Expr8 ,\r\n        0.00 AS Expr9 ,\r\n        0.00 AS Expr10 ,\r\n        BillingAmount ,\r\n        CancelBillingAmount ,\r\n        NetBillingAmount ,\r\n        PenaltyBillingAmount ,\r\n        CancelPenaltyBillingAmount ,\r\n        CancelPenaltyPaidAmount ,\r\n        AccountAmount ,\r\n        FuelAdjustment ,\r\n        CommodityChargeAmount ,\r\n        DeliveryChargeAmount ,\r\n        DiscountAmount ,\r\n        DDDAmount ,\r\n        DDDRate ,\r\n        DeliveryEnergyAmount ,\r\n        DeliveryEnergyOffPeakAmount ,\r\n        DeliveryEnergyShoulderAmount ,\r\n        DeliveryDemandAmount ,\r\n        DeliveryDemandOffPeakAmount ,\r\n        DeliveryDemandShoulderAmount ,\r\n        DeliveryFacilityPoints ,\r\n        CommodityConsumption ,\r\n        CommodityConsumptionOffPeak ,\r\n        CommodityConsumptionShoulder ,\r\n        CommodityDemand ,\r\n        CommodityDemandOffPeak ,\r\n        CommodityDemandShoulder ,\r\n        CommodityFacilityPoints ,\r\n        GRTAmount ,\r\n        GRTRate ,\r\n        EnergyCostAdjustment ,\r\n        EnergyCostAdjustmentPercentage ,\r\n        CancelAmount ,\r\n        CancelFuelAdjustmentAmount ,\r\n        CancelCommodityChargeAmount ,\r\n        CancelDeliveryCharge ,\r\n        CancelDiscountedAmount ,\r\n        CancelDDDAmount ,\r\n        CancelDDDRate ,\r\n        CancelDeliveryConsumption ,\r\n        CancelDeliveryConsumptionOffPeak ,\r\n        CancelDeliveryConsumptionShoulder ,\r\n        CancelDeliveryDemand ,\r\n        CancelDeliveryDemandOffPeak ,\r\n        CancelDeliveryDemandShoulder ,\r\n        CancelDeliveryStreetLightingFacilityPoints ,\r\n        CancelCommodityConsumption ,\r\n        CancelCommodityConsumptionOffPeak ,\r\n        CancelCommodityConsumptionShoulder ,\r\n        CancelCommodityDemand ,\r\n        CancelCommodityDemandOffPeak ,\r\n        CancelCommodityDemandShoulder ,\r\n        CancelCommodityStreetLightingFacilityPoints ,\r\n        CancelGRTAmount ,\r\n        CancelGRTRate ,\r\n        CancelEnergyCostAdjustment ,\r\n        CancelEnergyCostAdjustmentPercentage ,\r\n        AccountDemandUsage ,\r\n        AccountEnergyUsage ,\r\n        CancelAccountDemandUsage ,\r\n        CancelAccountEnergyUsage ,\r\n        @AuthenticatedUserID AS Expr11 ,\r\n        InitialPostingDate ,\r\n        GETDATE() AS Expr12 ,\r\n        GETDATE() AS Expr13 ,\r\n        UtilityCompanyId ,\r\n        IsTimeOfDayAccount ,\r\n        IsMinimumBilledCharged ,\r\n        MinimumBilledEnergyDollars ,\r\n        MinimumBilledDemandDollars ,\r\n        MaxBilledDemandPeriod ,\r\n        MaxBilledDemandUsage ,\r\n        CancelIsMinimumBilledCharged ,\r\n        CancelMinimumBilledEnergyDollars ,\r\n        CancelMinimumBilledDemandDollars ,\r\n        CancelMaxBilledDemandPeriod ,\r\n        CancelMaxBilledDemandUsage ,\r\n        IsSpannedPeriodBill ,\r\n        DeliveryFacilityPointsAmount ,\r\n        CancelDeliveryFacilityPointsAmount ,\r\n        CustomerLevelAdjustmentAmount ,\r\n        OriginalReactivePowerDollars ,\r\n        RevisedReactivePowerDollars ,\r\n        NetchangeReactivePowerDollars ,\r\n        AccountReactivePowerEnergy ,\r\n        OriginalAccountReactivePowerEnergy ,\r\n        CanceledAccountReactivePowerEnergy ,\r\n        NetChangeAccountReactivePowerEnergy ,\r\n        CommodityAllocationCharge ,\r\n        DeliveryAllocationCharge ,\r\n        CancelReactivePowerDollars ,\r\n        MinimumBilledDemandUsage ,\r\n        CancelMinimumBilledDemandUsage ,\r\n        IsDeliveryMinimumBilledFlag ,\r\n        DeliveryMinimumBilledAmount ,\r\n        DeliveryMinimumBilledDemand ,\r\n        CancelIsDeliveryMinimumBilledFlag ,\r\n        CancelDeliveryMinimumBilledAmount ,\r\n        CancelDeliveryMinimumBilledDemand ,\r\n        ProductionMisc1 ,\r\n        ProductionMisc2 ,\r\n        DeliveryMisc1 ,\r\n        DeliveryMisc2 ,\r\n        CancelProductionMisc1 ,\r\n        CancelProductionMisc2 ,\r\n        CancelDeliveryMisc1 ,\r\n        CancelDeliveryMisc2 ,\r\n        MinimumBilledEnergyUsage ,\r\n        CancelMinimumBilledEnergyUsage ,\r\n        DeliveryMaximumBilledDemand ,\r\n        DeliveryMaximumBilledDemandPeriod ,\r\n        CancelDeliveryMaximumBilledDemand ,\r\n        CancelDeliveryMaximumBilledDemandPeriod ,\r\n        ContractNumber ,\r\n      StandbyContractDemand ,\r\n      CancelStandbyContractDemand ,\r\n      StandbyContractDemandCharges ,\r\n      CancelStandbyContractDemandCharges ,\r\n      StandbyAsUsedDailyDemand ,\r\n      CancelStandbyAsUsedDailyDemand ,\r\n      StandbyAsUsedDailyDemandCharges ,\r\n      CancelStandbyAsUsedDailyDemandCharges\r\n\t\t\t,CreditCurrentPeriod\r\n\t\t\t,CancelCreditCurrentPeriod\r\n\t\t\t,CreditPrecedingPeriod\r\n\t\t\t,CancelCreditPrecedingPeriod\r\n\t\t\t,CreditToApplySatellites\r\n\t\t\t,CancelCreditToApplySatellites\r\n\t\t\t,CreditFromHost\r\n\t\t\t,CancelCreditFromHost\r\n\t\t\t,CreditsToCarryForward\r\n\t\t\t,CancelCreditsToCarryForward\r\n\t\t\t,CurrentPeriodOffPeakCredit\r\n\t\t\t,CancelCurrentPeriodOffPeakCredit\r\n\t\t\t,CurrentPeriodOnPeakCredit\r\n\t\t\t,CancelCurrentPeriodOnPeakCredit\r\n\t\t\t,NetMeteredAccountFlag\r\n\t\t\t,CancelNetMeteredAccountFlag\r\n\t\t\t,HostNetMeteredAccountNumber\r\n\t\t\t,CancelHostNetMeteredAccountNumber\r\n\t\t\t,PEXCESS\r\n\t\t\t,CancelPEXCESS\r\n\t\t\t ,UniqueAccountSeqId\r\nFROM Nypa.UploadNYPAAccountBilling\r\n\r\n--\r\nset @NumberOfTransactionsAdded = @@rowcount\r\nprint '@NumberOfTransactionsAdded: '+str(@NumberOfTransactionsAdded)\r\n--\r\n--\tVerify that this is still needed (PAH 4/4/2009)\r\n--\r\n--\tThe original bills from NYPA only post what was billed in the TotalReBilledAmount column.  The canceled\r\n--\tand net billed are set 0.00.  This update will set the TotalNetAdjustedAmount to equal TotalReBilledAmount.\r\n--\t\r\n--\tThis will allow the the aggregation of the TotalReBilledAmount to reflect the total amount the system should \r\n--\treflect at the billing period point of time.  Where the TotalNetAdjustedAmount should aggregate to the net \r\n--\tbilling for the billing period for all charges (Original and Adjustments).\r\n--\t\r\nupdate\tBilling.AccountBillingAdjustmentElectric\r\nset     TotalNetAdjustedAmount =Billing.AccountBillingAdjustmentElectric.TotalReBilledAmount\r\nFROM \r\n\t\tBilling.AccountBillingAdjustmentElectric inner join\r\n\t\tBilling.ApplicationTimeFrame on Billing.AccountBillingAdjustmentElectric.BillingPeriod = Billing.ApplicationTimeFrame.BillingPeriod\r\nWHERE \r\n\t\t(Billing.AccountBillingAdjustmentElectric.BillingPeriod = AccountBillingAdjustmentElectric.BillingPeriodRevision) and \r\n\t\t(Billing.AccountBillingAdjustmentElectric.TotalNetAdjustedAmount = 0) and \r\n\t\t(Billing.ApplicationTimeFrame.CurrentProcessingPeriod = 'Y')\r\n--\r\nset @NumberOfTransactionsUpdated = @@rowcount\r\nprint '@NumberOfTransactionsUpdated: '+str(@NumberOfTransactionsUpdated)\r\n--\r\nset @StatusCode = 0\r\n\r\nend"
+        }
+      ]
+    }
+  ]
+}

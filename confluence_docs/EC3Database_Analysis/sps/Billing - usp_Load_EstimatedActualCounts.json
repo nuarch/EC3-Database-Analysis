@@ -1,0 +1,862 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Load_EstimatedActualCounts",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Load_EstimatedActualCounts",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to populate the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.EstimatedActualReadingCounts",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table with data related to estimated and actual meter readings and account counts for a specified billing period. It processes data from the "
+        },
+        {
+          "type": "text",
+          "text": "Published.TemporalAccountMeterLevelRawDataForCurrentPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "Published.AccountMeterLevelRawDataForCurrentPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables, categorizing them by utility company and energy type. The procedure also calculates differences between estimated and billed readings to derive actual readings and prepares data for dashboard visualization."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple SQL operations, including "
+        },
+        {
+          "type": "text",
+          "text": "INSERT",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "SELECT",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "JOIN",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "GROUP BY",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", and "
+        },
+        {
+          "type": "text",
+          "text": "UNION",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". It processes data in several steps, each targeting different aspects of the billing data (meters and accounts) and includes calculations for actual readings. The complexity arises from the multiple layers of data aggregation and the need to handle different categories of data (utility company, energy type)."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter specifies the billing period for which the data is being processed. It is used to filter records in the source tables and to tag the inserted records in the target table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to filter data based on the agency associated with the provided email address. It ensures that only data relevant to the active agencies linked to the email address is processed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Estimated Meter Counts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure first inserts estimated meter counts into the target table, categorized by utility company and energy type. It filters records where "
+                },
+                {
+                  "type": "text",
+                  "text": "ConsecutivePeriodsEstimatedReading",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is greater than zero."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billed Meter Counts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It then inserts billed meter counts, again categorized by utility company and energy type, without filtering on "
+                },
+                {
+                  "type": "text",
+                  "text": "ConsecutivePeriodsEstimatedReading",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Actual Meter Counts Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates actual meter counts by subtracting estimated counts from billed counts for each category and inserts the results into the target table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account Counts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure processes account-level data similarly, inserting actual and billed counts categorized by utility company and energy type."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dashboard Data",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It prepares data for dashboard visualization, inserting actual and billed account counts with additional agency information."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Estimated Account Counts Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Finally, it calculates estimated account counts for the dashboard by subtracting actual counts from billed counts."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved, especially those with large datasets, have appropriate indexes on columns used in "
+                },
+                {
+                  "type": "text",
+                  "text": "JOIN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "WHERE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "GROUP BY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " clauses to optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the dataset is large, consider processing data in batches to avoid locking issues and reduce transaction log growth."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may lock resources for extended periods, potentially impacting other operations. Consider using transaction isolation levels or row versioning to mitigate this."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in the source tables is accurate and complete. Any discrepancies in the source data could lead to incorrect counts being inserted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency and Locking",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs multiple insert operations, which could lead to locking issues if the target table is accessed concurrently by other processes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling. Consider adding try-catch blocks to handle exceptions and ensure that the procedure fails gracefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure may degrade. Regular monitoring and optimization may be necessary to maintain performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the procedure is executed with appropriate permissions to prevent unauthorized data access or modification."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Billing].[usp_Load_EstimatedActualCounts]\n(\r\n    @PublishedBillingPeriod AS BillingPeriod,\r\n    @EmailAddress AS emailaddr\r\n)\r\nAS \r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\t-- Estimated\r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount)\r\n\t-- Meter level counts by utility company ESTIMATED\r\n\tSELECT @PublishedBillingPeriod, 'Meters' AS DataType, 'Estimated' AS Reading\r\n\t\t,CASE WHEN TA.UtilityCompanySeqid = 2 THEN 'National Grid West Meters' WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA Meters' WHEN TA.UtilityCompanySeqid = 9 THEN 'Coned Meters' ELSE 'Meters from Other' END AS Header\r\n\t\t,COUNT(*) AS mcount\r\n\tFROM Published.TemporalAccountMeterLevelRawDataForCurrentPeriod AS TA\r\n\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE TA.EffectiveStartPeriod <= @PublishedBillingPeriod AND TA.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\tAND TA.BillingPeriod = @PublishedBillingPeriod AND TA.ConsecutivePeriodsEstimatedReading > 0\r\n\tGROUP BY TA.UtilityCompanySeqid\r\n\tUNION\r\n\t-- Meter level counts by EnergyType ESTIMATED\r\n\tSELECT @PublishedBillingPeriod, 'Meters' AS DataType, 'Estimated' AS Reading\r\n\t\t,CASE WHEN TA.EnergyDeliveryType = 1 THEN 'ELE Meters' WHEN TA.EnergyDeliveryType = 5 THEN 'GAS Meters' WHEN TA.EnergyDeliveryType = 6 THEN 'Steam Meters' ELSE 'Meters from Other Types' END AS Header\r\n\t\t,COUNT(*) AS mcount\r\n\tFROM Published.TemporalAccountMeterLevelRawDataForCurrentPeriod AS TA\r\n\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE TA.EffectiveStartPeriod <= @PublishedBillingPeriod AND TA.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\tAND TA.BillingPeriod = @PublishedBillingPeriod AND TA.ConsecutivePeriodsEstimatedReading > 0\r\n\tGROUP BY TA.EnergyDeliveryType\r\n\tUNION\r\n\t-- Billed\r\n\t-- Meter level counts by utility company Billed\r\n\tSELECT @PublishedBillingPeriod , 'Meters' AS DataType, 'Billed' AS Reading\r\n\t\t,CASE WHEN TA.UtilityCompanySeqid = 2 THEN 'National Grid West Meters' WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA Meters' WHEN TA.UtilityCompanySeqid = 9 THEN 'Coned Meters' ELSE 'Meters from Other' END Header\r\n\t\t,COUNT(*) mcount\r\n\tFROM Published.TemporalAccountMeterLevelRawDataForCurrentPeriod AS TA\r\n\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE TA.EffectiveStartPeriod <= @PublishedBillingPeriod AND TA.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\tAND TA.BillingPeriod = @PublishedBillingPeriod\r\n\tGROUP BY TA.UtilityCompanySeqid\r\n\tUNION\r\n\t-- Meter level counts by EnergyType Billed\r\n\tSELECT @PublishedBillingPeriod, 'Meters' AS DataType, 'Billed' AS Reading\r\n\t\t,CASE WHEN TA.EnergyDeliveryType = 1 THEN 'ELE Meters' WHEN TA.EnergyDeliveryType = 5 THEN 'GAS Meters' WHEN TA.EnergyDeliveryType = 6 THEN 'Steam Meters' ELSE 'Meters from Other Types' END AS Header\r\n\t\t,COUNT(*) AS mcount\r\n\tFROM Published.TemporalAccountMeterLevelRawDataForCurrentPeriod AS TA\r\n\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\tWHERE TA.EffectiveStartPeriod <= @PublishedBillingPeriod AND TA.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\tAND TA.BillingPeriod = @PublishedBillingPeriod --AND TA.ConsecutivePeriodsEstimatedReading > 0\r\n\tGROUP BY TA.EnergyDeliveryType;\r\n\r\n\t-------------\r\n\t-- Actual calculated inser for meters\r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount)\r\n\tSELECT b.BillingPeriod, b.DataType, 'Actual' AS Reading, b.Header, (b.DataCount - e.DataCount)\r\n\tFROM (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Estimated' AND e.DataType = 'Meters') AS e\r\n\t\tINNER JOIN (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Billed' AND e.DataType = 'Meters') AS b\r\n\t\t\t\tON b.BillingPeriod = e.BillingPeriod AND b.DataType = e.DataType AND b.Header = e.Header;\r\n\r\n\t-----------------------------------------------\r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount)\r\n\t-- Account level counts by utility company ACTUAL\r\n\tSELECT @PublishedBillingPeriod , 'Accounts' AS DataType, 'Actual' AS Reading, acctLvl.Header, COUNT(*) AS acount\r\n\tFROM (SELECT CASE WHEN TA.UtilityCompanySeqid = 2 THEN 'National Grid West Accounts' WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA Accounts' WHEN TA.UtilityCompanySeqid = 9 THEN 'Coned Accounts' ELSE 'Accounts from Other' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID, MAX(TA.ConsecutivePeriodsEstimatedReading) er\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.UtilityCompanySeqid, TA.UniqueAccountSeqID\r\n\t\tHAVING MAX(TA.ConsecutivePeriodsEstimatedReading) = 0) AS acctLvl\r\n\tGROUP BY acctLvl.Header\r\n\tUNION\r\n\t-- Account level counts by utility company Billed\r\n\tSELECT @PublishedBillingPeriod , 'Accounts' AS DataType, 'Billed' AS Reading, acctLvl.Header, COUNT(*) AS acount\r\n\tFROM (SELECT CASE WHEN TA.UtilityCompanySeqid = 2 THEN 'National Grid West Accounts' WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA Accounts' WHEN TA.UtilityCompanySeqid = 9 THEN 'Coned Accounts' ELSE 'Accounts from Other' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID, MAX(TA.ConsecutivePeriodsEstimatedReading) AS er\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.UtilityCompanySeqid, TA.UniqueAccountSeqID) AS acctLvl\r\n\tGROUP BY acctLvl.Header\r\n\tUNION\r\n\t-- Account level counts by Energy Type ACTUAL\r\n\tSELECT @PublishedBillingPeriod , 'Accounts' AS DataType, 'Actual' AS Reading, acctLvl.Header, COUNT(*) AS acount\r\n\tFROM (SELECT CASE WHEN TA.EnergyDeliveryType = 1 THEN 'ELE Accounts' WHEN TA.EnergyDeliveryType = 5 THEN 'GAS Accounts' WHEN TA.EnergyDeliveryType = 6 THEN 'Steam Accounts' ELSE 'Accounts from Other Types' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID,MAX(TA.ConsecutivePeriodsEstimatedReading) er\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.EnergyDeliveryType, TA.UniqueAccountSeqID\r\n\t\tHAVING MAX(TA.ConsecutivePeriodsEstimatedReading) = 0) AS acctLvl\r\n\tGROUP BY acctLvl.Header\r\n\tUNION\r\n\t-- Account level counts by Energy Type Billed\r\n\tSELECT @PublishedBillingPeriod , 'Accounts' AS DataType, 'Billed' AS Reading, acctLvl.Header, COUNT(*) AS acount\r\n\tFROM (SELECT CASE WHEN TA.EnergyDeliveryType = 1 THEN 'ELE Accounts' WHEN TA.EnergyDeliveryType = 5 THEN 'GAS Accounts' WHEN TA.EnergyDeliveryType = 6 THEN 'Steam Accounts' ELSE 'Accounts from Other Types' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID,MAX(TA.ConsecutivePeriodsEstimatedReading) er\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.EnergyDeliveryType, TA.UniqueAccountSeqID) AS acctLvl\r\n\tGROUP BY acctLvl.Header;\r\n\r\n\t-- Estimated calculated inser for Accounts\r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount)\r\n\tSELECT b.BillingPeriod, b.DataType, 'Estimated' AS Reading, b.Header, (b.DataCount - e.DataCount)\r\n\tFROM (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Actual' AND e.DataType = 'Accounts') AS e\r\n\t\tINNER JOIN (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Billed' AND e.DataType = 'Accounts') AS b\r\n\t\t\tON b.BillingPeriod = e.BillingPeriod AND b.DataType = e.DataType AND b.Header = e.Header;\r\n\t-----------------------------------------------\r\n\r\n\t-- dashboard chart data \r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount, Agency)\r\n\t-- Account level counts by utility company ACTUAL\r\n\tSELECT @PublishedBillingPeriod , 'Dashboard' AS DataType, 'Actual' AS Reading, acctLvl.Header, COUNT(*) AS acount, acctLvl.AgencyCodeOEC\r\n\tFROM (SELECT CASE WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA' WHEN TA.UtilityCompanySeqid = 2 THEN 'NGrid West' WHEN TA.UtilityCompanySeqid = 9 AND TA.EnergyType = 'GAS' THEN 'Con Edison GAS' ELSE 'Other' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID, MAX(TA.ConsecutivePeriodsEstimatedReading) AS er, TA.AgencyCodeOEC\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.UtilityCompanySeqid, TA.UniqueAccountSeqID, TA.EnergyType, TA.AgencyCodeOEC\r\n\t\tHAVING MAX(TA.ConsecutivePeriodsEstimatedReading) = 0) AS acctLvl\r\n\tGROUP BY acctLvl.Header, acctLvl.AgencyCodeOEC\r\n\tUNION\r\n\t-- Account level counts by utility company Billed\r\n\tSELECT @PublishedBillingPeriod , 'Dashboard' AS DataType, 'Billed' AS Reading, acctLvl.Header, COUNT(*) AS acount, acctLvl.AgencyCodeOEC\r\n\tFROM (SELECT CASE WHEN TA.UtilityCompanySeqid = 7 THEN 'NYPA' WHEN TA.UtilityCompanySeqid = 2 THEN 'NGrid West' WHEN TA.UtilityCompanySeqid = 9 AND TA.EnergyType = 'GAS' THEN 'Con Edison GAS' ELSE 'Other' END AS Header\r\n\t\t\t,TA.UniqueAccountSeqID, MAX(TA.ConsecutivePeriodsEstimatedReading) AS er, TA.AgencyCodeOEC\r\n\t\tFROM Published.AccountMeterLevelRawDataForCurrentPeriod AS TA \r\n\t\t\tINNER JOIN dbo.uftn_TableGetActiveAgenciesByEmailAddress(@EmailAddress) AS A ON TA.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE TA.BillingPeriod = @PublishedBillingPeriod \r\n\t\tGROUP BY TA.UtilityCompanySeqid, TA.UniqueAccountSeqID , TA.EnergyType, TA.AgencyCodeOEC) AS acctLvl\r\n\tGROUP BY acctLvl.Header, acctLvl.AgencyCodeOEC;\r\n\r\n\t-- Estimated calculated inser for Accounts\r\n\tINSERT INTO Billing.EstimatedActualReadingCounts (BillingPeriod, DataType, Reading, Header, DataCount, Agency)\r\n\tSELECT b.BillingPeriod, b.DataType, 'Estimated' AS Reading, b.Header, (b.DataCount - e.DataCount), b.Agency\r\n\tFROM (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Actual' AND e.DataType = 'Dashboard') AS e\r\n\t\tINNER JOIN (SELECT * FROM Billing.EstimatedActualReadingCounts AS e\r\n\t\t\tWHERE e.BillingPeriod = @PublishedBillingPeriod AND e.Reading = 'Billed' AND e.DataType = 'Dashboard') AS b\r\n\t\t\tON b.BillingPeriod = e.BillingPeriod AND b.DataType = e.DataType AND b.Header = e.Header AND b.Agency = e.Agency;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,854 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_VoucherBillsByInvoiceBillingGroup",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_VoucherBillsByInvoiceBillingGroup",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to handle the vouchering process for manual billing within a specified invoice billing group. It generates a voucher number for bills that have not yet been vouchered, applies any available credits to these bills, and updates the relevant records in the database. The procedure is part of a temporary solution until more detailed vouchering specifications are developed."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including checking for existing vouchers, generating new voucher numbers, handling credits, and updating several tables. It uses a cursor to iterate over records, which adds to its complexity. The logic for handling credits and updating multiple tables also contributes to the medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the user executing the procedure, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current billing period in the format 'YYYYMM'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UtilityCompanySeqid int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The sequence ID of the utility company being processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@InvoiceBillingGroup int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The invoice billing group identifier for the account."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that indicates the execution status of the procedure (0 for success, 9 for failure)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to 9 (failure) initially."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Voucher Number Generation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Checks if there is an open voucher for the specified utility company, billing group, and period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If no open voucher exists, generates a new voucher number and inserts a record into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Voucher.InvoiceTracking",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " if there are records to be vouchered."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Vouchering with Credits",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Uses a cursor to iterate over manual billing headers that have credits."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each record, checks if a credit balance record needs to be created for the current billing period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calculates the remaining credit and vouchered amount, inserts a debit transaction, updates the credit balance, and updates the billing header with the vouchered amount and voucher number."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Vouchering without Credits",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates manual billing headers that do not have credits with the voucher sequence ID and marks them as vouchered."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Finalization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to 0 (success) if the procedure completes without errors."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance issues, especially with large datasets, as it processes records row by row."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved, especially those in joins and where clauses, are properly indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Consider batch processing or set-based operations instead of cursors to enhance performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face concurrency issues if multiple users attempt to voucher bills simultaneously, potentially leading to race conditions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks detailed error handling and logging, which could make troubleshooting difficult."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the use of cursors and lack of batch processing may lead to scalability issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that all updates and inserts are atomic and consistent to maintain data integrity, especially when dealing with financial transactions and credits."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE   PROCEDURE [ManualBill].[usp_VoucherBillsByInvoiceBillingGroup] ( @AuthenticatedUserID int, @BillingPeriod varchar(6),@UtilityCompanySeqid int, @InvoiceBillingGroup int, @StatusCode int output)\nas\r\n\r\nBegin \r\n--******************************************************************************************************************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description: Quick and dirty vouchering of manual billing until we get the vouchering specs\r\n--*\t\t\t\t The SP creates a voucher number for the specific invoice billing group, runs thru the manual billing header table and vouchers the bills that hasnt been\r\n--*\t\t\t\t vouchered yet. While doing so, it chips away from any credits that were previously collected for the accounts.\r\n--*               \r\n--*\r\n--* Parameter(s):         \r\n--*                            @AuthenticatedUserID int  - The user submitting the action,\r\n--*                            BillingPeriod varchar(6)  - Current billing period\r\n--*                            UtilityCompanySeqid int   - The sequence id of the Utility Companyto be processed\r\n--*\t\t\t\t\t\t\t   InvoiceBillingGroup int\t - the invoice billin group for the account\r\n--*                            StatusCode  int output    - Execution Return Status \r\n--*\r\n--*\r\n--*\r\n--* Return:\t        0 Success\r\n--*                 9 Failure\r\n--*\r\n--* AUTHOR:       MOHAMMED BELARREM\r\n--* Created On:   06/09/2009\r\n--**************************************************************************************\r\n--* Date       Tech\t\tDescription of Change\r\n--* ---------- ----\t\t-------------------------------------------------------------\r\n--* 06/09/2009 MOH\t\tFirst Version  \r\n--* 07/24/2009 MOH\t\tModified the stored procedure to voucher against credits (if the account has any)\r\n--*\t\t\t\t\t\tthe proper amount is deducted from the credits and a transaction is recorded, the AccountCreditBalance is updated to reflect the state of the account\r\n--* 07/27/2009 MOH\t\tI added the ( ManualPaymentOverrideAmount > 0) condition in the cursor, because it didnt make sence to add transactions to credits if nothing was being paid out if it.\r\n--* 07/28/2009 MOH\t\tI added the ( Credits.OecRemainingCreditBalance < 0 ) condition in the cursor, it skips the records that have $0 credit from previous period. \r\n--* 10/29/2012 MOH\t\tI changed OECInvoiceNumber to DEMInvoiceNumber\r\n--******************************************************************************************************************************************************************************************\r\n\t\r\n\t\tset @StatusCode = 9\r\n\r\n\t\r\n\t\t--************************************************************************************** \r\n\t\t--Declare Variables                                            \r\n\t\t--**************************************************************************************\r\n\t\tdeclare @InvoiceTrackingSeqid dbo.seqid\r\n\t\tdeclare @InvoiceTrackingnumber varchar(11)\r\n\t\tdeclare @OriginalAccountNumber dbo.acctnum\r\n\t\tdeclare @HeaderSeqid dbo.seqid\r\n\t\tdeclare @ManualPaymentOverrideAmount  dbo.BillingAmt \r\n\t\tdeclare @InitialCredit dbo.BillingAmt\r\n\t\tdeclare @RemainingCredit dbo.BillingAmt\r\n\t\tdeclare @VoucheredAmount dbo.BillingAmt\r\n\t\tdeclare @AccountCreditBalanceSeqid dbo.seqid\r\n\t\tdeclare @CreditBillingPeriod dbo.BillingPeriod\r\n\t\t\r\n\t\t--**************************************************************************************  \r\n\t\t--Main Process                                      \r\n\t\t--**************************************************************************************\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\t/***************************************************************************************\r\n\t\t1. Get or create the voucher number and record\r\n\t\t***************************************************************************************/\r\n\t\t\r\n\t\t\r\n\t\t-- check if there is an open voucher\r\n\t\tSELECT   top 1  @InvoiceTrackingSeqid = InvoiceTrackingSeqid\r\n\t\tFROM Voucher.InvoiceTracking\r\n\t\tWHERE (IsInvoiceOpenForAddingBills = 'Y') AND (UtilityAccountProvider = @UtilityCompanySeqid) AND (UtilityCompanyInvoiceNumber = @InvoiceBillingGroup) AND \r\n                  (BillingPeriod = @BillingPeriod)\r\n\t\t\r\n\t\tif ( @InvoiceTrackingSeqid is null )\r\n\t\tBEGIN\r\n\t\t\t\t-- generate a new voucher number and insert a voucher record\r\n\t\t\t\tset @InvoiceTrackingnumber = Voucher.GenerateNewInvoiceTrackingNumber(@InvoiceBillingGroup)\r\n\t\t\t\t\r\n\t\t\t\t-- check if there are records to be vouchered, no need to create a voucher if i wont be used\r\n\t\t\t\tif ( exists (\r\n\t\t\t\t\t\t\t\tSELECT InvoiceTrackingSeqid, VoucherBillingStatus, VoucherBillingStatusPeriod\r\n\t\t\t\t\t\t\t\tFROM ManualBill.AccountManualBillingHeader\r\n\t\t\t\t\t\t\t\tWHERE (AccountUtilityCompanySeqid = @UtilityCompanySeqid) AND (CurrentInvoiceAccountGroup = @InvoiceBillingGroup) AND \r\n\t\t\t\t\t\t\t\t\t\t\t\t\t  (BillingPeriod = @BillingPeriod) AND (InitialPostingDate IS NOT NULL) AND (InvoiceTrackingSeqid IS NULL)\t\t\r\n\t\t\t\t\t\t\t)\r\n\t\t\t\t)\r\n\t\t\t\tbegin\t\r\n\t\t\t\t\t\tINSERT INTO Voucher.InvoiceTracking\r\n\t\t\t\t\t\t\t   ([UtilityAccountProvider]\r\n\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t   ,[CurrentInvoiceTrackingAccountGroup]\r\n\t\t\t\t\t\t\t   ,[DEMInvoiceNumber]\r\n\t\t\t\t\t\t\t   ,FMSVoucherNumber\r\n\t\t\t\t\t\t\t   ,[IsInvoiceOpenForAddingBills]\r\n\t\t\t\t\t\t\t   ,InvoiceTrackingStatus\r\n\t\t\t\t\t\t\t   ,AuthenticatedUserID\r\n\t\t\t\t\t\t\t\t)\r\n\t\t\t\t\t\t VALUES\r\n\t\t\t\t\t\t\t   (\r\n\t\t\t\t\t\t\t\t@UtilityCompanySeqid\t\t---UtilityAccountProvider\r\n\t\t\t\t\t\t\t   ,@BillingPeriod\t\t\t\t---BillingPeriod\r\n\t\t\t\t\t\t\t   ,@InvoiceBillingGroup\t\t---CurrentInvoiceTrackingAccountGroup\r\n\t\t\t\t\t\t\t   ,@InvoiceTrackingnumber\t\t---DEMInvoiceNumber\r\n\t\t\t\t\t\t\t   ,@InvoiceTrackingnumber\t\t---FMSVoucherNumber\r\n\t\t\t\t\t\t\t   ,'N'\t\t\t\t\t\t\t---IsInvoiceOpenForAddingBills\r\n\t\t\t\t\t\t\t   ,'VC'\t\t\t\t\t\t---InvoiceTrackingStatus\r\n\t\t\t\t\t\t\t   ,@AuthenticatedUserID\t\t---AuthenticatedUserID\r\n\t\t\t\t\t\t\t   )\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\tSET @InvoiceTrackingSeqid = SCOPE_IDENTITY();\r\n\t\t\t\tend\r\n\r\n\t\tEND\r\n\t\t\t\t\r\n\t\t\r\n\r\n\r\n\t\t/***************************************************************************************\r\n\t\t2. Voucher data entered header records. Comsume credits if any\r\n\t\t***************************************************************************************/\r\n\r\n\t\t-- 2.1 Voucher bills with credits and create the necessary records and transactions\r\n\t\t\r\n\t\tDECLARE db_cursor CURSOR FOR \r\n\t\t\t\tselect  ManualBill.AccountManualBillingHeader.AccountManualBillingHeaderSeqid, ManualBill.AccountManualBillingHeader.OriginalAccountNumber ,\r\n\t\t\t\t\tManualBill.AccountManualBillingHeader.ManualPaymentOverrideAmount,  Credits.OecRemainingCreditBalance , Credits.AccountCreditBalanceSeqid\r\n\t\t\t\t\t, Credits.BillingPeriod\r\n\t\t\t\tfrom ManualBill.AccountManualBillingHeader \r\n\t\t\t\tinner join \r\n\t\t\t\t( \r\n\t\t\t\t\tselect   AccountCreditBalanceSeqid, OriginalAccountNumberWithCredit, OecRemainingCreditBalance, BillingPeriod\r\n\t\t\t\t\tfrom ManualBill.AccountCreditBalance\r\n\t\t\t\t\twhere BillingPeriod = (select max(BillingPeriod) from ManualBill.AccountCreditBalance as CR where CR.OriginalAccountNumberWithCredit = ManualBill.AccountCreditBalance.OriginalAccountNumberWithCredit)\r\n\t\t\t\t) as Credits\r\n\t\t\t\ton  ManualBill.AccountManualBillingHeader.OriginalAccountNumber = Credits.OriginalAccountNumberWithCredit\r\n\t\t\t\tWHERE   (AccountUtilityCompanySeqid = @UtilityCompanySeqid ) AND (CurrentInvoiceAccountGroup = @InvoiceBillingGroup) AND \r\n\t\t\t\t\t\t(ManualBill.AccountManualBillingHeader.BillingPeriod = @BillingPeriod) AND (InitialPostingDate IS NOT NULL) AND (InvoiceTrackingSeqid IS NULL) and \r\n\t\t\t\t\t\t( ManualPaymentOverrideAmount > 0) and (Credits.OecRemainingCreditBalance < 0 ) \r\n\r\n\t\t\t\t\t\t  \r\n\t\t\t\t\t\t  \r\n--\t\t\t\tselect  ManualBill.AccountManualBillingHeader.AccountManualBillingHeaderSeqid, ManualBill.AccountManualBillingHeader.OriginalAccountNumber ,\r\n--\t\t\t\t\t\tManualBill.AccountManualBillingHeader.ManualPaymentOverrideAmount,  ManualBill.AccountCreditBalance.OecRemainingCreditBalance , ManualBill.AccountCreditBalance.AccountCreditBalanceSeqid\r\n--\t\t\t\tfrom ManualBill.AccountManualBillingHeader \r\n--\t\t\t\t\t inner join \r\n--\t\t\t\t\tManualBill.AccountCreditBalance\r\n--\t\t\t\ton  ManualBill.AccountManualBillingHeader.OriginalAccountNumber = ManualBill.AccountCreditBalance.OriginalAccountNumberWithCredit\r\n--\t\t\t\tand ManualBill.AccountManualBillingHeader.BillingPeriod = ManualBill.AccountCreditBalance.BillingPeriod\r\n--\t\t\t\tWHERE (AccountUtilityCompanySeqid = @UtilityCompanySeqid) AND (CurrentInvoiceAccountGroup = @InvoiceBillingGroup) AND \r\n--\t\t\t\t\t\t  (ManualBill.AccountManualBillingHeader.BillingPeriod = @BillingPeriod) AND (InitialPostingDate IS NOT NULL) AND (InvoiceTrackingSeqid IS NULL) and ( ManualPaymentOverrideAmount > 0)\r\n\r\n\r\n\t\tOPEN db_cursor  \r\n\t\tFETCH NEXT FROM db_cursor INTO @HeaderSeqid, @OriginalAccountNumber, @ManualPaymentOverrideAmount,  @InitialCredit, @AccountCreditBalanceSeqid, @CreditBillingPeriod\r\n\t\t\r\n\t\tWHILE @@FETCH_STATUS = 0  \r\n\t\tBEGIN  \r\n\t\t\t\t-- create a AccountCreditBalance record if it doent exists yet\r\n\t\t\t\t-- that is when  @CreditBillingPeriod < @BillingPeriod\r\n\t\t\t\tif ( @CreditBillingPeriod < @BillingPeriod )\r\n\t\t\t\tBEGIN\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t-- insert a new AccountCreditBalance \r\n\t\t\t\t\t\tINSERT INTO [ManualBill].[AccountCreditBalance]\r\n\t\t\t\t\t\t\t\t   ([OriginalAccountNumberWithCredit]\r\n\t\t\t\t\t\t\t\t   ,[OecRemainingCreditBalance]\r\n\t\t\t\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t\t\t\t   ,[LastUpdate])\r\n\r\n\t\t\t\t\t\tvalues\t\t(@OriginalAccountNumber\r\n\t\t\t\t\t\t\t\t\t,@InitialCredit \r\n\t\t\t\t\t\t\t\t\t,@BillingPeriod\r\n\t\t\t\t\t\t\t\t\t,@AuthenticatedUserID\r\n\t\t\t\t\t\t\t\t\t,getdate()\r\n\t\t\t\t\t\t\t\t\t,getdate() )\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\tset @AccountCreditBalanceSeqid = ( SELECT @@identity)\r\n\r\n\t\t\t\tEND\r\n\t\t\r\n\t\t\r\n\t\t\t\t-- figure out the @RemainingCredit and @VoucheredAmount for each case then the insert and updates are common\r\n\t\t\t\t\r\n \t\t\t\tif (@ManualPaymentOverrideAmount + @InitialCredit  > 0 )\r\n\t\t\t\tbegin\r\n\t\t\t\t\t\tset @RemainingCredit = 0.0\r\n\t\t\t\t\t\tset @VoucheredAmount = @ManualPaymentOverrideAmount + @InitialCredit\r\n\t\t\t\tend\r\n\t\t\t\telse -- (@ManualPaymentOverrideAmount + @InitialCredit <= 0 )\r\n\t\t\t\tBEGIN\r\n\t\t\t\t\t\tset @RemainingCredit = @InitialCredit + @ManualPaymentOverrideAmount\r\n\t\t\t\t\t\tset @VoucheredAmount = 0.0\r\n\t\t\t\tEND\r\n\r\n\r\n\t\t\t\t-- create debit transaction\r\n\t\t\t\t-- update the AccountCreditBalance table with the new balance\r\n\t\t\t\t-- update the header record with the voucheredAmount and the VoucherNumberSeqid\r\n\t\t\t\t\r\n\t\t\t\t-- create debit transaction\r\n\t\t\t\tINSERT INTO [ManualBill].[AccountCreditTransaction]\r\n\t\t\t\t\t   ([AccountManualBillingHeaderSeqid]\r\n\t\t\t\t\t   ,[AccountCreditBalanceSeqid]\r\n\t\t\t\t\t   ,[BillingPeriod]\r\n\t\t\t\t\t   ,[InitialCredit]\r\n\t\t\t\t\t   ,[CurrentCredit]\r\n\t\t\t\t\t   ,[AuthenticatedUserID]\r\n\t\t\t\t\t   ,[DateAdded]\r\n\t\t\t\t\t   ,[LastUpdate])\r\n\t\t\t\tVALUES\r\n\t\t\t\t\t   (@HeaderSeqid\r\n\t\t\t\t\t   ,@AccountCreditBalanceSeqid\r\n\t\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t\t   ,@InitialCredit\t\t\t\t\t\t\t-- value of the credit before it is updated\r\n\t\t\t\t\t   ,@RemainingCredit\t\t\t\t\t\t-- value of the credit after it is updated\r\n\t\t\t\t\t   ,@AuthenticatedUserID\r\n\t\t\t\t\t   ,getdate()\r\n\t\t\t\t\t   ,getdate())\r\n\r\n\r\n\r\n\t\t\t\t-- update the AccountCreditBalance with the new credit\r\n\t\t\t\tupdate ManualBill.AccountCreditBalance\r\n\t\t\t\t\tset\t\t OecRemainingCreditBalance\t= @RemainingCredit\r\n\t\t\t\t\t\t\t,LastUpdate\t\t\t\t\t= getdate()\r\n\t\t\t\t\t\t\t,AuthenticatedUserID\t\t= @AuthenticatedUserID\r\n\t\t\t\twhere AccountCreditBalanceSeqid = @AccountCreditBalanceSeqid\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t-- update the header record with the voucheredAmount and the VoucherNumberSeqid\t\r\n\t\t\t\tUPDATE    ManualBill.AccountManualBillingHeader\r\n\t\t\t\tSET\t\t\tInvoiceTrackingSeqid\t\t = @InvoiceTrackingSeqid\r\n\t\t\t\t\t\t   ,VoucherBillingStatus\t\t = 'VC'\r\n\t\t\t\t\t\t   ,VoucherBillingStatusPeriod\t = @BillingPeriod\r\n\t\t\t\t\t\t   ,VoucheredAmount\t\t\t\t = @VoucheredAmount\r\n\t\t\t\tWHERE ( AccountManualBillingHeaderSeqid = @HeaderSeqid )\r\n\r\n\r\n\r\n\t\t\t\tFETCH NEXT FROM db_cursor INTO @HeaderSeqid, @OriginalAccountNumber, @ManualPaymentOverrideAmount,  @InitialCredit , @AccountCreditBalanceSeqid, @CreditBillingPeriod\r\n\t\tEND  \r\n\r\n\t\tCLOSE db_cursor  \r\n\t\tDEALLOCATE db_cursor\r\n\r\n\r\n\t\t-- 2.2 Voucher bills without credits\t\r\n\t\t\t\r\n\t\t\t\r\n\t\t-- update the manual billing headers with the voucher seqid for the rest of the accounts that didnt have credits\r\n\t\tUPDATE    ManualBill.AccountManualBillingHeader\r\n\t\tSET              InvoiceTrackingSeqid\t\t = @InvoiceTrackingSeqid\r\n\t\t\t\t\t\t, VoucherBillingStatus\t\t = 'VC'\r\n\t\t\t\t\t\t, VoucherBillingStatusPeriod = @BillingPeriod\r\n\t\t\t\t\t\t,VoucheredAmount\t\t\t = ManualPaymentOverrideAmount\r\n\t\tWHERE (AccountUtilityCompanySeqid = @UtilityCompanySeqid) AND (CurrentInvoiceAccountGroup = @InvoiceBillingGroup) AND \r\n                  (BillingPeriod = @BillingPeriod) AND (InitialPostingDate IS NOT NULL) AND (InvoiceTrackingSeqid IS NULL)\r\n\t\t\r\n\r\n\r\n\t\t\r\n\t\tset @StatusCode = 0\r\n\t\t\r\n\r\nend"
+        }
+      ]
+    }
+  ]
+}

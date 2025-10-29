@@ -1,0 +1,920 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Scheduler",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_UpdateReportParameterMapping",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_UpdateReportParameterMapping",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to update the "
+        },
+        {
+          "type": "text",
+          "text": "Scheduler.ReportParameterValueMapping",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table with new or modified parameter mappings provided in XML format. It ensures that the mappings for a specific report, identified by "
+        },
+        {
+          "type": "text",
+          "text": "DistributionReportID",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", are updated, inserted, or deleted based on the input XML data. The procedure handles three main operations: updating existing mappings, inserting new mappings, and deleting obsolete mappings."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves XML parsing, conditional logic, and multiple SQL operations (INSERT, UPDATE, DELETE), which adds to its complexity. The use of XML data handling and temporary table operations requires a moderate understanding of SQL Server's XML capabilities and transaction management."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@XMLReportParameterValueMapping XML",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter contains the XML data representing the parameter mappings. The XML structure includes elements for "
+                },
+                {
+                  "type": "text",
+                  "text": "ParameterName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "MappingParameterValueColumnName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "RecipientEmailColumnName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "DefaultValue",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@DistributionReportID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter specifies the report ID for which the parameter mappings are to be updated. It is used to identify the relevant records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.ReportParameterValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure first checks if the "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " exists in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.DistributionReport",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. If not, the procedure exits immediately."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The XML input is parsed, and the data is inserted into a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@tblParamValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". This table holds the parsed parameter mappings."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Existing Mappings",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates existing records in "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.ReportParameterValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " where the "
+                },
+                {
+                  "type": "text",
+                  "text": "ParameterName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " matches and the "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is the same as the input parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert New Mappings",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": New mappings that do not exist in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.ReportParameterValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table for the given "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are inserted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Delete Obsolete Mappings",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Any mappings in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.ReportParameterValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table that are not present in the input XML for the specified "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are deleted."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Parsing XML can be resource-intensive, especially with large datasets. Ensuring that the XML input is well-formed and optimized is crucial."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Scans",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs operations that may lead to table scans, particularly when checking for existing mappings. Indexing on "
+                },
+                {
+                  "type": "text",
+                  "text": "ParameterName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not explicitly handle concurrency issues. If multiple instances of this procedure are run simultaneously for the same "
+                },
+                {
+                  "type": "text",
+                  "text": "DistributionReportID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", it could lead to race conditions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the XML input is malformed or contains incorrect data, it could lead to incorrect updates or deletions in the "
+                },
+                {
+                  "type": "text",
+                  "text": "Scheduler.ReportParameterValueMapping",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms. Any runtime errors during XML parsing or SQL operations could cause the procedure to fail without logging or notifying the user."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of XML parsing and table operations may degrade. Consideration for batch processing or incremental updates could be beneficial."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the procedure is protected against SQL injection and that the XML input is validated to prevent malicious data from being processed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n/*\r\n\t   /// ParameterMappings/Mapping\r\n        ///     ParameterName\r\n        ///     MappingParameterValueColumnName\r\n        ///     RecipientEmailColumnName\r\n        ///     DefaultValue\r\n*/\r\n-- =============================================\r\nCREATE PROCEDURE [Scheduler].[usp_UpdateReportParameterMapping]\r\n\t@XMLReportParameterValueMapping XML,\r\n\t@DistributionReportID int\r\nAS\r\nBEGIN\r\n\t\r\n\t-- if report cannot be found, exit the function \t\r\n\tIF(NOT EXISTS(\r\n\t\tselect DistributionReportID from Scheduler.DistributionReport WHERE DistributionReportID = @DistributionReportID\r\n\t))\r\n\tbegin\r\n\t\tRETURN\r\n\tEND\r\n\t\r\n\t-- save xml mapping data into temp table\r\n\tdeclare @xmlReportParameterValueMapping_hndl as int\r\n\t\r\n\tdeclare @tblParamValueMapping table\r\n\t(\r\n\t\tParameterName varchar(30),\r\n\t\tMappingParameterValueColumnName varchar(30),\r\n\t\tRecipientEmailColumnName varchar(30),\r\n\t\tDefaultValue varchar(100)\r\n\t)\r\n\t\r\n\r\n\tinsert into \r\n\t\t@tblParamValueMapping (\r\n\t\t\tParameterName,\r\n\t\t\tMappingParameterValueColumnName,\r\n\t\t\tRecipientEmailColumnName,\r\n\t\t\tDefaultValue)\r\n\tSELECT \r\n\t\tCAST(tbl.col.query('data(ParameterName)') AS varchar),\r\n\t\tCAST(tbl.col.query('data(MappingParameterValueColumnName)') AS varchar),\r\n\t\tCAST(tbl.col.query('data(RecipientEmailColumnName)') AS varchar),\r\n\t\tCAST(tbl.col.query('data(DefaultValue)') AS varchar)\t\t\t\r\n\tFROM @XMLReportParameterValueMapping.nodes('//ParameterMappings/Mapping') tbl(col)\r\n\t\t\r\n\t\r\n\r\n\t-- update existing data mapping\r\n\tupdate m\r\n\tset \r\n\t\tm.ParameterName = tm.ParameterName,\r\n\t\tm.MappingParameterValueColumnName = tm.MappingParameterValueColumnName,\r\n\t\tm.RecipientEmailColumnName = tm.RecipientEmailColumnName,\r\n\t\tm.DefaultValue = tm.DefaultValue\r\n\tfrom \r\n\t\tScheduler.ReportParameterValueMapping as m\r\n\t\tinner join @tblParamValueMapping as tM\r\n\t\ton m.ParameterName = tm.ParameterName \r\n\twhere m.DistributionReportID  = @DistributionReportID\r\n\t\r\n\t-- insert new data mapping\r\n\tinsert into Scheduler.ReportParameterValueMapping\r\n\t(\r\n\t\tDistributionReportID,\r\n\t\tParameterName,\r\n\t\tMappingParameterValueColumnName,\r\n\t\tRecipientEmailColumnName,\r\n\t\tDefaultValue\r\n\t)\r\n\t(\r\n\t\tselect \r\n\t\t\t@DistributionReportID,\r\n\t\t\tParameterName,\r\n\t\t\tMappingParameterValueColumnName,\r\n\t\t\tRecipientEmailColumnName,\r\n\t\t\tDefaultValue\r\n\t\tfrom @tblParamValueMapping\r\n\t\twhere ParameterName\r\n\t\tnot in (\r\n\t\t\tselect ParameterName from Scheduler.ReportParameterValueMapping\r\n\t\t\twhere DistributionReportID = @DistributionReportID\r\n\t\t)\r\n\t)\r\n\t\r\n\t-- delete mapping records that are no longer being used\r\n\tDELETE Scheduler.ReportParameterValueMapping\r\n\twhere DistributionReportID  = @DistributionReportID\r\n\tAND ParameterName \r\n\tNOT IN\r\n\t(\r\n\t\tSELECT ParameterName FROM @tblParamValueMapping\r\n\t)\r\n\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

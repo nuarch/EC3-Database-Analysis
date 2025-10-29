@@ -1,0 +1,876 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Temporal",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByAgencyDollarsAndUsage",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByAgencyDollarsAndUsage",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to insert a new billing period into the "
+        },
+        {
+          "type": "text",
+          "text": "Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table from the "
+        },
+        {
+          "type": "text",
+          "text": "Published.FiscalYearPivotByAgencyDollarsAndUsage",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It ensures that only the next sequential period is inserted and performs several checks to maintain data integrity, such as ensuring hash codes are populated and updating effective periods for existing records."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple checks, conditional logic, and complex SQL operations, including joins and updates. The complexity arises from the need to ensure data integrity and the correct sequencing of periods, as well as handling potential data discrepancies between the source and destination tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the billing period that is intended to be inserted into the temporal table. It is used to validate that the correct period is being processed and to filter records during the insertion and update operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure starts by determining the maximum effective start period from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table and calculates the next period using a function "
+                        },
+                        {
+                          "type": "text",
+                          "text": "dbo.CreateNextPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@PublishedBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " matches the calculated next period. If not, an error is raised, and the procedure exits."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It ensures that all records in both the source and destination tables have non-null hash values. If any hash values are null, an error is raised, and the procedure exits."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.FiscalYearPivotByAgencyDollarsAndUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for the specified billing period, ensuring no duplicate hash values exist in the destination table for active records."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EffectiveEndPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for records in the temporal table that match certain criteria, ensuring that the period data is correctly closed out for previous periods and that records are correctly marked as inactive if they do not exist in the current period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Although commented out, the procedure is designed to be wrapped in a transaction with error handling to ensure atomicity and rollback in case of failure."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue2",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveStartPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize join and where clause performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the tables are large, consider processing data in batches to reduce lock contention and improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Implement the transaction management to ensure data consistency, but be mindful of the transaction scope to avoid long-running transactions that can lead to blocking."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies heavily on hash values for data integrity checks. Any discrepancies in hash value calculations could lead to incorrect data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without proper transaction management, concurrent executions of this procedure could lead to race conditions or data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current error handling is minimal. Implementing try-catch blocks with transaction rollback is crucial to handle unexpected errors gracefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of this procedure may degrade if not optimized, particularly due to the large number of columns being processed and updated."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Temporal].[usp_InsertNewPeriodFromPublishedToTemporalFiscalYearPivotByAgencyDollarsAndUsage]\n\t@PublishedBillingPeriod VARCHAR(6)\r\nAS\r\n    BEGIN\t\r\n\tDECLARE @MaxPeriod VARCHAR(6) = (SELECT MAX(EffectiveStartPeriod) FROM Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage )\r\n\tDECLARE @NextPeriod VARCHAR(6) =  [dbo].[CreateNextPeriod](@MaxPeriod, 'M')\r\n        \r\n\t\t\r\n\t\t-- Make sure only next period after the max is being inserted\r\n\t\tIF ( @NextPeriod <> @PublishedBillingPeriod  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: You can only insert this period: %s', 12, 1, @NextPeriod) \r\n\t\t\tRETURN\r\n\t\tEND\r\n\t\t\t\t\r\n\t\t-- make sure the hashcode is populated before starting\r\n\t\tDECLARE @CountNullHashCodeSource int = ( SELECT COUNT(*) FROM [Published].[FiscalYearPivotByAgencyDollarsAndUsage] WHERE HashValue1 IS NULL OR HashValue2 IS NULL )\r\n\t\tDECLARE @CountNullHashCodeDestination INT =  ( SELECT COUNT(*) FROM [Published].[TemporalFiscalYearPivotByAgencyDollarsAndUsage] WHERE HashValue1 IS NULL OR HashValue2 IS NULL )\t\t\r\n\t\tIF ( @CountNullHashCodeSource > 0 OR @CountNullHashCodeDestination > 0  )\r\n\t\tBEGIN\r\n\t\t\tRAISERROR ('ERROR: HashCode is missing from either [Published].[TemporalFiscalYearPivotByAgencyDollarsAndUsage] or [Published].[FiscalYearPivotByAgencyDollarsAndUsage].', 12, 1) \t\t\r\n\t\t\tRETURN\r\n\t\tEND\r\n\t\t\r\n\t\t\t\t--BEGIN TRANSACTION\r\n\t\t\t\t--\tBEGIN TRY \r\n\t\t\t\t\t---Process start---------------------------------------\r\n\t\t\t\t\t\r\n\t\t\t\t\tPRINT 'Inserting initial data from Published.FiscalYearPivotByAgencyDollarsAndUsage to Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage'\r\n\r\n\t\t\t\t\tINSERT INTO Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage\r\n\t\t\t\t\t        ( FiscalYear\r\n\t\t\t\t\t        , CurrentFiscalYear\r\n\t\t\t\t\t        , PriorFiscalYear\r\n\t\t\t\t\t        , BillToAgencyCode\r\n\t\t\t\t\t        , AgencyCodeOEC\r\n\t\t\t\t\t        , AgencyName\r\n\t\t\t\t\t        , CurrentInvoiceAccountBillingGroup\r\n\t\t\t\t\t        , InvoiceAccountBillingGroupDesc\r\n\t\t\t\t\t        , UtilityCompany\r\n\t\t\t\t\t        , EnergyType\r\n\t\t\t\t\t        , JulyOriginalBilledDollars\r\n\t\t\t\t\t        , AugustOriginalBilledDollars\r\n\t\t\t\t\t        , SeptemberOriginalBilledDollars\r\n\t\t\t\t\t        , OctoberOriginalBilledDollars\r\n\t\t\t\t\t        , NovemberOriginalBilledDollars\r\n\t\t\t\t\t        , DecemberOriginalBilledDollars\r\n\t\t\t\t\t        , JanuaryOriginalBilledDollars\r\n\t\t\t\t\t        , FebruaryOriginalBilledDollars\r\n\t\t\t\t\t        , MarchOriginalBilledDollars\r\n\t\t\t\t\t        , AprilOriginalBilledDollars\r\n\t\t\t\t\t        , MayOriginalBilledDollars\r\n\t\t\t\t\t        , JuneOriginalBilledDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalBilledDollars\r\n\t\t\t\t\t        , JulyOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , AugustOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , SeptemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , OctoberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , NovemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , DecemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JanuaryOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , FebruaryOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , MarchOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , AprilOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , MayOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JuneOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JulyOriginalTotalDueDollars\r\n\t\t\t\t\t        , AugustOriginalTotalDueDollars\r\n\t\t\t\t\t        , SeptemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , OctoberOriginalTotalDueDollars\r\n\t\t\t\t\t        , NovemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , DecemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , JanuaryOriginalTotalDueDollars\r\n\t\t\t\t\t        , FebruaryOriginalTotalDueDollars\r\n\t\t\t\t\t        , MarchOriginalTotalDueDollars\r\n\t\t\t\t\t        , AprilOriginalTotalDueDollars\r\n\t\t\t\t\t        , MayOriginalTotalDueDollars\r\n\t\t\t\t\t        , JuneOriginalTotalDueDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalTotalDueDollars\r\n\t\t\t\t\t        , JulyOriginalEnergy\r\n\t\t\t\t\t        , AugustOriginalEnergy\r\n\t\t\t\t\t        , SeptemberOriginalEnergy\r\n\t\t\t\t\t        , OctoberOriginalEnergy\r\n\t\t\t\t\t        , NovemberOriginalEnergy\r\n\t\t\t\t\t        , DecemberOriginalEnergy\r\n\t\t\t\t\t        , JanuaryOriginalEnergy\r\n\t\t\t\t\t        , FebruaryOriginalEnergy\r\n\t\t\t\t\t        , MarchOriginalEnergy\r\n\t\t\t\t\t        , AprilOriginalEnergy\r\n\t\t\t\t\t        , MayOriginalEnergy\r\n\t\t\t\t\t        , JuneOriginalEnergy\r\n\t\t\t\t\t        , FiscalYearToDateOriginalEnergyUsage\r\n\t\t\t\t\t        , JulyOriginalDemand\r\n\t\t\t\t\t        , AugustOriginalDemand\r\n\t\t\t\t\t        , SeptemberOriginalDemand\r\n\t\t\t\t\t        , OctoberOriginalDemand\r\n\t\t\t\t\t        , NovemberOriginalDemand\r\n\t\t\t\t\t        , DecemberOriginalDemand\r\n\t\t\t\t\t        , JanuaryOriginalDemand\r\n\t\t\t\t\t        , FebruaryOriginalDemand\r\n\t\t\t\t\t        , MarchOriginalDemand\r\n\t\t\t\t\t        , AprilOriginalDemand\r\n\t\t\t\t\t        , MayOriginalDemand\r\n\t\t\t\t\t        , JuneOriginalDemand\r\n\t\t\t\t\t        , FiscalYearToDateOriginalDemand\r\n\t\t\t\t\t        , JulyRevisedBilledDollars\r\n\t\t\t\t\t        , AugustRevisedBilledDollars\r\n\t\t\t\t\t        , SeptemberRevisedBilledDollars\r\n\t\t\t\t\t        , OctoberRevisedBilledDollars\r\n\t\t\t\t\t        , NovemberRevisedBilledDollars\r\n\t\t\t\t\t        , DecemberRevisedBilledDollars\r\n\t\t\t\t\t        , JanuaryRevisedBilledDollars\r\n\t\t\t\t\t        , FebruaryRevisedBilledDollars\r\n\t\t\t\t\t        , MarchRevisedBilledDollars\r\n\t\t\t\t\t        , AprilRevisedBilledDollars\r\n\t\t\t\t\t        , MayRevisedBilledDollars\r\n\t\t\t\t\t        , JuneRevisedBilledDollars\r\n\t\t\t\t\t        , FiscalYearToDateRevisedBilledDollars\r\n\t\t\t\t\t        , JulyRevisedEnergy\r\n\t\t\t\t\t        , AugustRevisedEnergy\r\n\t\t\t\t\t        , SeptemberRevisedEnergy\r\n\t\t\t\t\t        , OctoberRevisedEnergy\r\n\t\t\t\t\t        , NovemberRevisedEnergy\r\n\t\t\t\t\t        , DecemberRevisedEnergy\r\n\t\t\t\t\t        , JanuaryRevisedEnergy\r\n\t\t\t\t\t        , FebruaryRevisedEnergy\r\n\t\t\t\t\t        , MarchRevisedEnergy\r\n\t\t\t\t\t        , AprilRevisedEnergy\r\n\t\t\t\t\t        , MayRevisedEnergy\r\n\t\t\t\t\t        , JuneRevisedEnergy\r\n\t\t\t\t\t        , FiscalYearToDateRevisedEnergy\r\n\t\t\t\t\t        , JulyRevisedDemand\r\n\t\t\t\t\t        , AugustRevisedDemand\r\n\t\t\t\t\t        , SeptemberRevisedDemand\r\n\t\t\t\t\t        , OctoberRevisedDemand\r\n\t\t\t\t\t        , NovemberRevisedDemand\r\n\t\t\t\t\t        , DecemberRevisedDemand\r\n\t\t\t\t\t        , JanuaryRevisedDemand\r\n\t\t\t\t\t        , FebruaryRevisedDemand\r\n\t\t\t\t\t        , MarchRevisedDemand\r\n\t\t\t\t\t        , AprilRevisedDemand\r\n\t\t\t\t\t        , MayRevisedDemand\r\n\t\t\t\t\t        , JuneRevisedDemand\r\n\t\t\t\t\t        , FiscalYearToDateRevisedDemand\r\n\t\t\t\t\t        , JulyNetDollarChange\r\n\t\t\t\t\t        , AugustNetDollarChange\r\n\t\t\t\t\t        , SeptemberNetDollarChange\r\n\t\t\t\t\t        , OctoberNetDollarChange\r\n\t\t\t\t\t        , NovemberNetDollarChange\r\n\t\t\t\t\t        , DecemberNetDollarChange\r\n\t\t\t\t\t        , JanuaryNetDollarChange\r\n\t\t\t\t\t        , FebruaryNetDollarChange\r\n\t\t\t\t\t        , MarchNetDollarChange\r\n\t\t\t\t\t        , AprilNetDollarChange\r\n\t\t\t\t\t        , MayNetDollarChange\r\n\t\t\t\t\t        , JuneNetDollarChange\r\n\t\t\t\t\t        , FiscalYearToDateNetDollarChange\r\n\t\t\t\t\t        , JulyEnergyUsageChange\r\n\t\t\t\t\t        , AugustEnergyUsageChange\r\n\t\t\t\t\t        , SeptemberEnergyUsageChange\r\n\t\t\t\t\t        , OctoberEnergyUsageChange\r\n\t\t\t\t\t        , NovemberEnergyUsageChange\r\n\t\t\t\t\t        , DecemberEnergyUsageChange\r\n\t\t\t\t\t        , JanuaryEnergyUsageChange\r\n\t\t\t\t\t        , FebruaryEnergyUsageChange\r\n\t\t\t\t\t        , MarchEnergyUsageChange\r\n\t\t\t\t\t        , AprilEnergyUsageChange\r\n\t\t\t\t\t        , MayEnergyUsageChange\r\n\t\t\t\t\t        , JuneEnergyUsageChange\r\n\t\t\t\t\t        , FiscalYearToDateNetEnergyUsageChange\r\n\t\t\t\t\t        , JulyNetDemandUsageChange\r\n\t\t\t\t\t        , AugustNetDemandUsageChange\r\n\t\t\t\t\t        , SeptemberNetDemandUsageChange\r\n\t\t\t\t\t        , OctoberNetDemandUsageChange\r\n\t\t\t\t\t        , NovemberNetDemandUsageChange\r\n\t\t\t\t\t        , DecemberNetDemandUsageChange\r\n\t\t\t\t\t        , JanuaryNetDemandUsageChange\r\n\t\t\t\t\t        , FebruaryNetDemandUsageChange\r\n\t\t\t\t\t        , MarchNetDemandUsageChange\r\n\t\t\t\t\t        , AprilNetDemandUsageChange\r\n\t\t\t\t\t        , MayNetDemandUsageChange\r\n\t\t\t\t\t        , JuneNetDemandUsageChange\r\n\t\t\t\t\t        , FiscalYearToDateNetDemandUsageChange\r\n\t\t\t\t\t        , Notes\r\n\t\t\t\t\t        , AuthenticatedUserID\r\n\t\t\t\t\t        , DateAdded\r\n\t\t\t\t\t        , LastUpdate\r\n\t\t\t\t\t        , EffectiveStartPeriod\r\n\t\t\t\t\t        , EffectiveEndPeriod\r\n\t\t\t\t\t        , HashValue1\r\n\t\t\t\t\t        , HashValue2\r\n\t\t\t\t\t        )\r\n\t\t\t\t\t       \r\n\t\r\n\t\t\t\t\t  \t\tSELECT \r\n\t\t\t\t\t\t\t\tFiscalYear\r\n\t\t\t\t\t        , CurrentFiscalYear\r\n\t\t\t\t\t        , PriorFiscalYear\r\n\t\t\t\t\t        , BillToAgencyCode\r\n\t\t\t\t\t        , AgencyCodeOEC\r\n\t\t\t\t\t        , AgencyName\r\n\t\t\t\t\t        , CurrentInvoiceAccountBillingGroup\r\n\t\t\t\t\t        , InvoiceAccountBillingGroupDesc\r\n\t\t\t\t\t        , UtilityCompany\r\n\t\t\t\t\t        , EnergyType\r\n\t\t\t\t\t        , JulyOriginalBilledDollars\r\n\t\t\t\t\t        , AugustOriginalBilledDollars\r\n\t\t\t\t\t        , SeptemberOriginalBilledDollars\r\n\t\t\t\t\t        , OctoberOriginalBilledDollars\r\n\t\t\t\t\t        , NovemberOriginalBilledDollars\r\n\t\t\t\t\t        , DecemberOriginalBilledDollars\r\n\t\t\t\t\t        , JanuaryOriginalBilledDollars\r\n\t\t\t\t\t        , FebruaryOriginalBilledDollars\r\n\t\t\t\t\t        , MarchOriginalBilledDollars\r\n\t\t\t\t\t        , AprilOriginalBilledDollars\r\n\t\t\t\t\t        , MayOriginalBilledDollars\r\n\t\t\t\t\t        , JuneOriginalBilledDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalBilledDollars\r\n\t\t\t\t\t        , JulyOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , AugustOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , SeptemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , OctoberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , NovemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , DecemberOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JanuaryOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , FebruaryOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , MarchOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , AprilOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , MayOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JuneOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalPaidAdjustmentDollars\r\n\t\t\t\t\t        , JulyOriginalTotalDueDollars\r\n\t\t\t\t\t        , AugustOriginalTotalDueDollars\r\n\t\t\t\t\t        , SeptemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , OctoberOriginalTotalDueDollars\r\n\t\t\t\t\t        , NovemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , DecemberOriginalTotalDueDollars\r\n\t\t\t\t\t        , JanuaryOriginalTotalDueDollars\r\n\t\t\t\t\t        , FebruaryOriginalTotalDueDollars\r\n\t\t\t\t\t        , MarchOriginalTotalDueDollars\r\n\t\t\t\t\t        , AprilOriginalTotalDueDollars\r\n\t\t\t\t\t        , MayOriginalTotalDueDollars\r\n\t\t\t\t\t        , JuneOriginalTotalDueDollars\r\n\t\t\t\t\t        , FiscalYearToDateOriginalTotalDueDollars\r\n\t\t\t\t\t        , JulyOriginalEnergy\r\n\t\t\t\t\t        , AugustOriginalEnergy\r\n\t\t\t\t\t        , SeptemberOriginalEnergy\r\n\t\t\t\t\t        , OctoberOriginalEnergy\r\n\t\t\t\t\t        , NovemberOriginalEnergy\r\n\t\t\t\t\t        , DecemberOriginalEnergy\r\n\t\t\t\t\t        , JanuaryOriginalEnergy\r\n\t\t\t\t\t        , FebruaryOriginalEnergy\r\n\t\t\t\t\t        , MarchOriginalEnergy\r\n\t\t\t\t\t        , AprilOriginalEnergy\r\n\t\t\t\t\t        , MayOriginalEnergy\r\n\t\t\t\t\t        , JuneOriginalEnergy\r\n\t\t\t\t\t        , FiscalYearToDateOriginalEnergyUsage\r\n\t\t\t\t\t        , JulyOriginalDemand\r\n\t\t\t\t\t        , AugustOriginalDemand\r\n\t\t\t\t\t        , SeptemberOriginalDemand\r\n\t\t\t\t\t        , OctoberOriginalDemand\r\n\t\t\t\t\t        , NovemberOriginalDemand\r\n\t\t\t\t\t        , DecemberOriginalDemand\r\n\t\t\t\t\t        , JanuaryOriginalDemand\r\n\t\t\t\t\t        , FebruaryOriginalDemand\r\n\t\t\t\t\t        , MarchOriginalDemand\r\n\t\t\t\t\t        , AprilOriginalDemand\r\n\t\t\t\t\t        , MayOriginalDemand\r\n\t\t\t\t\t        , JuneOriginalDemand\r\n\t\t\t\t\t        , FiscalYearToDateOriginalDemand\r\n\t\t\t\t\t        , JulyRevisedBilledDollars\r\n\t\t\t\t\t        , AugustRevisedBilledDollars\r\n\t\t\t\t\t        , SeptemberRevisedBilledDollars\r\n\t\t\t\t\t        , OctoberRevisedBilledDollars\r\n\t\t\t\t\t        , NovemberRevisedBilledDollars\r\n\t\t\t\t\t        , DecemberRevisedBilledDollars\r\n\t\t\t\t\t        , JanuaryRevisedBilledDollars\r\n\t\t\t\t\t        , FebruaryRevisedBilledDollars\r\n\t\t\t\t\t        , MarchRevisedBilledDollars\r\n\t\t\t\t\t        , AprilRevisedBilledDollars\r\n\t\t\t\t\t        , MayRevisedBilledDollars\r\n\t\t\t\t\t        , JuneRevisedBilledDollars\r\n\t\t\t\t\t        , FiscalYearToDateRevisedBilledDollars\r\n\t\t\t\t\t        , JulyRevisedEnergy\r\n\t\t\t\t\t        , AugustRevisedEnergy\r\n\t\t\t\t\t        , SeptemberRevisedEnergy\r\n\t\t\t\t\t        , OctoberRevisedEnergy\r\n\t\t\t\t\t        , NovemberRevisedEnergy\r\n\t\t\t\t\t        , DecemberRevisedEnergy\r\n\t\t\t\t\t        , JanuaryRevisedEnergy\r\n\t\t\t\t\t        , FebruaryRevisedEnergy\r\n\t\t\t\t\t        , MarchRevisedEnergy\r\n\t\t\t\t\t        , AprilRevisedEnergy\r\n\t\t\t\t\t        , MayRevisedEnergy\r\n\t\t\t\t\t        , JuneRevisedEnergy\r\n\t\t\t\t\t        , FiscalYearToDateRevisedEnergy\r\n\t\t\t\t\t        , JulyRevisedDemand\r\n\t\t\t\t\t        , AugustRevisedDemand\r\n\t\t\t\t\t        , SeptemberRevisedDemand\r\n\t\t\t\t\t        , OctoberRevisedDemand\r\n\t\t\t\t\t        , NovemberRevisedDemand\r\n\t\t\t\t\t        , DecemberRevisedDemand\r\n\t\t\t\t\t        , JanuaryRevisedDemand\r\n\t\t\t\t\t        , FebruaryRevisedDemand\r\n\t\t\t\t\t        , MarchRevisedDemand\r\n\t\t\t\t\t        , AprilRevisedDemand\r\n\t\t\t\t\t        , MayRevisedDemand\r\n\t\t\t\t\t        , JuneRevisedDemand\r\n\t\t\t\t\t        , FiscalYearToDateRevisedDemand\r\n\t\t\t\t\t        , JulyNetDollarChange\r\n\t\t\t\t\t        , AugustNetDollarChange\r\n\t\t\t\t\t        , SeptemberNetDollarChange\r\n\t\t\t\t\t        , OctoberNetDollarChange\r\n\t\t\t\t\t        , NovemberNetDollarChange\r\n\t\t\t\t\t        , DecemberNetDollarChange\r\n\t\t\t\t\t        , JanuaryNetDollarChange\r\n\t\t\t\t\t        , FebruaryNetDollarChange\r\n\t\t\t\t\t        , MarchNetDollarChange\r\n\t\t\t\t\t        , AprilNetDollarChange\r\n\t\t\t\t\t        , MayNetDollarChange\r\n\t\t\t\t\t        , JuneNetDollarChange\r\n\t\t\t\t\t        , FiscalYearToDateNetDollarChange\r\n\t\t\t\t\t        , JulyEnergyUsageChange\r\n\t\t\t\t\t        , AugustEnergyUsageChange\r\n\t\t\t\t\t        , SeptemberEnergyUsageChange\r\n\t\t\t\t\t        , OctoberEnergyUsageChange\r\n\t\t\t\t\t        , NovemberEnergyUsageChange\r\n\t\t\t\t\t        , DecemberEnergyUsageChange\r\n\t\t\t\t\t        , JanuaryEnergyUsageChange\r\n\t\t\t\t\t        , FebruaryEnergyUsageChange\r\n\t\t\t\t\t        , MarchEnergyUsageChange\r\n\t\t\t\t\t        , AprilEnergyUsageChange\r\n\t\t\t\t\t        , MayEnergyUsageChange\r\n\t\t\t\t\t        , JuneEnergyUsageChange\r\n\t\t\t\t\t        , FiscalYearToDateNetEnergyUsageChange\r\n\t\t\t\t\t        , JulyNetDemandUsageChange\r\n\t\t\t\t\t        , AugustNetDemandUsageChange\r\n\t\t\t\t\t        , SeptemberNetDemandUsageChange\r\n\t\t\t\t\t        , OctoberNetDemandUsageChange\r\n\t\t\t\t\t        , NovemberNetDemandUsageChange\r\n\t\t\t\t\t        , DecemberNetDemandUsageChange\r\n\t\t\t\t\t        , JanuaryNetDemandUsageChange\r\n\t\t\t\t\t        , FebruaryNetDemandUsageChange\r\n\t\t\t\t\t        , MarchNetDemandUsageChange\r\n\t\t\t\t\t        , AprilNetDemandUsageChange\r\n\t\t\t\t\t        , MayNetDemandUsageChange\r\n\t\t\t\t\t        , JuneNetDemandUsageChange\r\n\t\t\t\t\t        , FiscalYearToDateNetDemandUsageChange\r\n\t\t\t\t\t        , Notes\r\n\t\t\t\t\t        , AuthenticatedUserID\r\n\t\t\t\t\t        , DateAdded\r\n\t\t\t\t\t        , LastUpdate\r\n\r\n\t\t\t\t\t\t\t, alsbf.PublishedBillingPeriod\r\n\t\t\t\t\t\t\t, '999912' \r\n\t\t\t\t\t\t\t, alsbf.HashValue1\r\n\t\t\t\t\t\t\t, alsbf.HashValue2\r\n\t\t\r\n\t\t\t\t\t\tFROM Published.FiscalYearPivotByAgencyDollarsAndUsage AS alsbf\r\n\t\t\t\t\t\tleft JOIN \r\n\t\t\t\t\t\t(SELECT t.HashValue1,t.HashValue2,t.EffectiveStartPeriod FROM Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage t WHERE EffectiveEndPeriod='999912') AS talsbf \r\n\t\t\t\t\t\tON talsbf.HashValue1 = alsbf.HashValue1 AND talsbf.HashValue2 = alsbf.HashValue2\r\n\t\t\t\t\t\tWHERE alsbf.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\tAND talsbf.EffectiveStartPeriod IS NULL\r\n\t\t\t\t\t\t-- we are joining with active data only\r\n\r\n\r\n\r\n--SELECT PublishedBillingPeriod,AgencyCodeOEC,OecFacilityNumber,CurrentInvoiceAccountBillingGroup,FiscalYear,OriginalAccountNumber,CurrentAccountNumber,COUNT(*) \r\n--FROM Published.FiscalYearPivotByAgencyDollarsAndUsage \r\n--GROUP BY  PublishedBillingPeriod,AgencyCodeOEC,OecFacilityNumber,CurrentInvoiceAccountBillingGroup,FiscalYear,OriginalAccountNumber,CurrentAccountNumber\r\n--HAVING COUNT(*)>1\r\n\r\n\r\n\t\t\t\t\t\t--PRINT 'UPDATE 1 / Updating data change / EffectiveEndPeriod'\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is data change, just set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT previousPeriods.Seqid\r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(SELECT talrdfcp.Seqid,talrdfcp.AgencyCodeOEC,talrdfcp.CurrentInvoiceAccountBillingGroup,talrdfcp.FiscalYear,talrdfcp.EnergyType,talrdfcp.InvoiceAccountBillingGroupDesc,talrdfcp.EffectiveEndPeriod FROM Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod=@PublishedBillingPeriod) AS processingPeriod\r\n\t\t\t\t\t\t\tINNER JOIN \r\n\t\t\t\t\t\t\t(SELECT talrdfcp.Seqid,talrdfcp.AgencyCodeOEC,talrdfcp.CurrentInvoiceAccountBillingGroup,talrdfcp.FiscalYear,talrdfcp.EnergyType,talrdfcp.InvoiceAccountBillingGroupDesc,talrdfcp.EffectiveEndPeriod FROM Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod<@PublishedBillingPeriod) AS previousPeriods\r\n\t\t\t\t\t\t\tON previousPeriods.AgencyCodeOEC= processingPeriod.AgencyCodeOEC\r\n\t\t\t\t\t\t\tAND previousPeriods.CurrentInvoiceAccountBillingGroup = processingPeriod.CurrentInvoiceAccountBillingGroup\r\n\t\t\t\t\t\t\tAND previousPeriods.FiscalYear = processingPeriod.FiscalYear\r\n\t\t\t\t\t\t\tAND previousPeriods.EnergyType = processingPeriod.EnergyType\r\n\t\t\t\t\t\t\tAND previousPeriods.InvoiceAccountBillingGroupDesc = processingPeriod.InvoiceAccountBillingGroupDesc\r\n\t\t\t\t\t\t\tWHERE previousPeriods.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t)\r\n\r\n\t\t\t\t\t\t--AgencyCodeOEC,OecFacilityNumber,CurrentInvoiceAccountBillingGroup,FiscalYear,OriginalAccountNumber,CurrentAccountNumber\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t--PRINT 'UPDATE 2 / this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod'\r\n\t\t\t\t\t\t-- this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT talrdfcp.Seqid FROM \r\n\t\t\t\t\t\t\tPublished.TemporalFiscalYearPivotByAgencyDollarsAndUsage AS talrdfcp\r\n\t\t\t\t\t\t\tLEFT JOIN \r\n\t\t\t\t\t\t\tPublished.FiscalYearPivotByAgencyDollarsAndUsage AS alrdfcp\r\n\t\t\t\t\t\t\tON alrdfcp.HashValue1 = talrdfcp.HashValue1 AND  alrdfcp.HashValue2 = talrdfcp.HashValue2\r\n\t\t\t\t\t\t\tWHERE alrdfcp.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\t\t\t\t\t\tAND  talrdfcp.EffectiveEndPeriod='999912'\r\n\t\t\t\t\t\t\tAND alrdfcp.FiscalYear IS NULL\r\n\t\t\t\t\t\t)\r\n\r\n\r\n\t\t\t\t\t\t--PRINT 'UPDATE 3 / this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source'\r\n\t\t\t\t\t\t------\r\n\t\t\t\t\t\t-- this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source\r\n\t\t\t\t\t\tUPDATE Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage\r\n\t\t\t\t\t\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\tWHERE Seqid IN \r\n\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\tSELECT t.Seqid\r\n\t\t\t\t\t\t\tFROM \r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT Seqid,HashValue1,HashValue2 FROM Published.TemporalFiscalYearPivotByAgencyDollarsAndUsage\r\n\t\t\t\t\t\t\t\tWHERE EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) t\r\n\t\t\t\t\t\t\tLEFT JOIN\r\n\t\t\t\t\t\t\t(\r\n\t\t\t\t\t\t\t\tSELECT ammlrdfcp.HashValue1,ammlrdfcp.HashValue2,ammlrdfcp.PublishedBillingPeriod FROM Published.FiscalYearPivotByAgencyDollarsAndUsage AS ammlrdfcp\r\n\t\t\t\t\t\t\t\tWHERE ammlrdfcp.PublishedBillingPeriod = @PublishedBillingPeriod\r\n\t\t\t\t\t\t\t) p \r\n\t\t\t\t\t\t\tON p.HashValue1 = t.HashValue1 AND p.HashValue2 = t.HashValue2\r\n\t\t\t\t\t\t\tWHERE p.PublishedBillingPeriod IS NULL\r\n\t\t\t\t\t\t)\r\n\t\t\t\t\t\t--PROCESS ENDS-------------------------\r\n\t\t\t--\tCOMMIT TRANSACTION\r\n\t\t\t--END TRY\r\n\t\t\t\r\n\r\n\r\n\t\t\t--BEGIN CATCH \r\n\t\t\t--  RAISERROR('The Process Failed', 16, 1)\r\n\t\t\t--  ROLLBACK TRANSACTION\r\n\t\t\t--  RETURN\r\n\t\t\t--END CATCH \t\t\t          \r\n         \t\t\t\r\n\t\t\tPRINT 'process finished ' \r\n    END"
+        }
+      ]
+    }
+  ]
+}

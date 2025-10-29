@@ -1,0 +1,882 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_AgencyDashboard_CostPerUnitUsageRetrieveAgencyRolling12Months",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_AgencyDashboard_CostPerUnitUsageRetrieveAgencyRolling12Months",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve cost per unit usage data for a specified agency over the past 12 months. It calculates and returns various metrics such as energy usage, demand usage, billed amount, and cost per unit usage for each billing period within the specified timeframe. The procedure uses a temporary table to manage agency hierarchy and billing periods, and it aggregates data from a published summary table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including dynamic date calculations, temporary table usage, and aggregation of data from a joined subquery. The complexity arises from the need to handle date manipulations, conditional logic for default parameter values, and the aggregation of financial and usage data."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@agencyCode AS VARCHAR(10)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The code representing the agency for which the data is being retrieved. This is a mandatory parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@publishedBillingPeriod AS VARCHAR(6) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which the data is published. If not provided, the procedure defaults to the latest available billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@debugMode AS BIT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A flag that could be used for debugging purposes, although it is not utilized within the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agency Hierarchy Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by retrieving the agency hierarchy using the "
+                },
+                {
+                  "type": "text",
+                  "text": "UDF_GetAgencyHierarchy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function and stores the result in a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "#tmpAgencies",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Determination",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If "
+                },
+                {
+                  "type": "text",
+                  "text": "@publishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not provided, it defaults to the latest billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the start date for the rolling 12-month period based on the "
+                },
+                {
+                  "type": "text",
+                  "text": "@publishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Table Creation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@billingPeriodTable",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is populated with billing periods from the start date to the current billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure aggregates data from the "
+                },
+                {
+                  "type": "text",
+                  "text": "TemporalAccountLevelSummaryByAgency",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, joining it with the agency hierarchy and billing period tables. It calculates metrics such as energy usage, demand usage, billed amount, and cost per unit usage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Set",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The final result set is grouped by agency code, label, and energy type, providing a summary of the calculated metrics for each billing period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of NOLOCK",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses "
+                },
+                {
+                  "type": "text",
+                  "text": "WITH (NOLOCK)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues, which can improve performance but may lead to reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table for agency hierarchy can be resource-intensive, especially if the hierarchy is large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Date Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The conversion and manipulation of date strings can be computationally expensive, particularly in a loop."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The aggregation of data over potentially large datasets can impact performance, especially if indexes are not optimized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Consistency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "NOLOCK",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted or inconsistent data, which may affect the accuracy of the results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Defaults",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If "
+                },
+                {
+                  "type": "text",
+                  "text": "@publishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not provided, the procedure defaults to the latest period, which may not always align with user expectations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance of the procedure may degrade due to the use of temporary tables and complex joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Debug Mode",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@debugMode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is not utilized, which may indicate incomplete implementation or oversight."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or failures in certain scenarios."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[USP_AgencyDashboard_CostPerUnitUsageRetrieveAgencyRolling12Months]\n(\r\n\t@agencyCode AS VARCHAR(10)\r\n\t,@publishedBillingPeriod AS VARCHAR(6) = NULL\r\n\t,@debugMode AS BIT = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n \r\n    -- Get the agency hierarchy\r\n    SELECT AgencyCodeOEC INTO #tmpAgencies FROM [Billing].[UDF_GetAgencyHierarchy](@agencyCode);\r\n    \r\n    DECLARE @startBillingPeriod AS VARCHAR(6);\r\n    \r\n\tIF ISNULL(@publishedBillingPeriod, '') = ''\r\n\tBEGIN\r\n        SELECT @publishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData WITH (NOLOCK);\r\n\tEND;\r\n    \r\n    DECLARE @currentBPDate DATETIME, @startBPDate DATETIME;\r\n    SET @currentBPDate = CONVERT(DATETIME, LEFT(@publishedBillingPeriod, 4) + '-' + RIGHT(@publishedBillingPeriod, 2) + '-01');\r\n    SET @startBPDate = DATEADD(MM, 0 - (12 - 1), @currentBPDate);\r\n    SET @startBillingPeriod = CONVERT(VARCHAR(12), @startBPDate, 112);\r\n    \r\n    DECLARE @billingPeriodTable TABLE (BillingPeriod VARCHAR(6), CurrentPeriod BIT NOT NULL DEFAULT(0));\r\n    \r\n\tWHILE @startBillingPeriod <= @publishedBillingPeriod\r\n    BEGIN\r\n        INSERT INTO @billingPeriodTable (BillingPeriod, CurrentPeriod) VALUES (@startBillingPeriod, 1);\r\n        \r\n\t\tIF RIGHT(@startBillingPeriod, 2) = 12\r\n\t\t\tSET @startBillingPeriod = CONVERT(VARCHAR(4), (CONVERT(INT, LEFT(@startBillingPeriod, 4)) + 1)) + '01';\r\n        ELSE\r\n            SET @startBillingPeriod = CONVERT(VARCHAR(6), CONVERT(INT, @startBillingPeriod) + 1);\r\n    END;\r\n\r\n    SELECT T.AgencyCodeOEC\r\n        ,MAX(T.FiscalYear) AS FiscalYear\r\n        ,MAX(T.BillingPeriod) AS BillingPeriod\r\n        ,T.Label\r\n        ,SUBSTRING(MAX(T.BillingPeriod), 1, 4) AS CalendarYear\r\n        ,LEFT(DATENAME(MM, CONVERT(DATETIME, SUBSTRING(MAX(T.BillingPeriod), 1, 4) + '-' + SUBSTRING(MAX(T.BillingPeriod), 5, 2) + '-01')), 3) AS [MonthName]\r\n        ,LEFT(DATENAME(MM, CONVERT(DATETIME, SUBSTRING(MAX(T.BillingPeriod), 1, 4) + '-' + SUBSTRING(MAX(T.BillingPeriod), 5, 2) + '-01')), 3) + ' ' + SUBSTRING(MAX(T.BillingPeriod), 1, 4) AS MonthYear\r\n        ,T.EnergyType\r\n        ,SUM(T.EnergyUsage) AS EnergyUsage\r\n        ,SUM(T.DemandUsage) AS DemandUsage\r\n        ,SUM(T.BilledAmount) AS BilledAmount\r\n        ,ROUND(ISNULL((CASE WHEN ISNULL(SUM(T.EnergyUsage), 0.00) > 0.00 THEN (ISNULL(SUM(T.BilledAmount), 0.00) / SUM(T.EnergyUsage)) ELSE 0.00 END), 0.00), 2) AS CostPerUnitUsage\r\n        ,SUM(T.BTU) AS BTU\r\n        ,CONVERT(BIT, 1) AS CurrentPeriod\r\n    FROM (SELECT @agencyCode AS AgencyCodeOEC\r\n\t\t\t,[dbo].[CalculateFiscalYear](TBP.BillingPeriod) AS FiscalYear\r\n\t\t\t,TBP.BillingPeriod\r\n\t\t\t,'Cost per unit usage' AS Label\r\n\t\t\t,A1.EnergyType\r\n\t\t\t,ISNULL(A1.EnergyUsage, 0.00) AS EnergyUsage\r\n\t\t\t,ISNULL(A1.DemandUsage, 0.00) AS DemandUsage\r\n\t\t\t,ISNULL(A1.BilledAmount, 0.00) AS BilledAmount\r\n\t\t\t,ISNULL(A1.BTU, 0.00) AS BTU\r\n\t\t\t,TBP.CurrentPeriod\r\n        FROM @billingPeriodTable TBP\r\n            LEFT JOIN (\r\n                SELECT ALSA.BillingPeriod\r\n                    ,ALSA.EnergyType\r\n                    ,SUM(CONVERT(DECIMAL(36, 2), ALSA.EnergyUsage)) AS EnergyUsage\r\n                    ,SUM(CONVERT(DECIMAL(36, 2), ALSA.DemandUsage)) AS DemandUsage\r\n                    ,ROUND(SUM(CONVERT(DECIMAL(36, 2), ALSA.BilledAmount)), 2) AS BilledAmount\r\n                    ,SUM(CONVERT(DECIMAL(36, 2), ALSA.BTU)) AS BTU\r\n                FROM [Published].[TemporalAccountLevelSummaryByAgency] AS ALSA WITH (NOLOCK)\r\n\t\t\t\t\tJOIN #tmpAgencies TA ON TA.AgencyCodeOEC = ALSA.AgencyCodeOEC\r\n                WHERE (ALSA.EffectiveStartPeriod <= @PublishedBillingPeriod AND ALSA.EffectiveEndPeriod > @PublishedBillingPeriod)\r\n                GROUP BY ALSA.BillingPeriod, ALSA.EnergyType\r\n            ) A1 ON A1.BillingPeriod = TBP.BillingPeriod\r\n    ) T\r\n    GROUP BY T.AgencyCodeOEC, T.Label, T.EnergyType;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

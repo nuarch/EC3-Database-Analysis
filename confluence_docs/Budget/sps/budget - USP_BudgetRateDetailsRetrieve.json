@@ -1,0 +1,907 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "budget",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_BudgetRateDetailsRetrieve",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_BudgetRateDetailsRetrieve",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve detailed budget rate information for a specified scenario and optionally for a specific budget group. It aggregates base rates and rate factors to compute budget rates for various billing periods associated with a scenario. The procedure uses a common table expression (CTE) to manage billing periods and budget groups, and it performs calculations to derive budget rates based on base rates and multipliers."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple joins, a common table expression (CTE), and several calculations to derive budget rates. While the logic is straightforward, the use of CTEs and the combination of multiple data sources and calculations increase its complexity beyond a simple query."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@scenarioId AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is mandatory and specifies the scenario for which budget rate details are to be retrieved. It is used to filter data from the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This optional parameter allows filtering the results for a specific budget group. If not provided, it defaults to "
+                },
+                {
+                  "type": "text",
+                  "text": "NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", meaning all budget groups will be considered."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", allowing dirty reads. This is typically used to improve performance by avoiding locks but can lead to reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is set to "
+                },
+                {
+                  "type": "text",
+                  "text": "NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if it is "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", ensuring that the default behavior is to include all budget groups unless a specific ID is provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Common Table Expression (CTE)",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The CTE "
+                },
+                {
+                  "type": "text",
+                  "text": "BGBP",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is used to generate a list of budget groups and billing periods by joining the results of a user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "UDF_GetBillingPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with a view "
+                },
+                {
+                  "type": "text",
+                  "text": "EC3DB.BudgetApp_vwBudgetGroups",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The main query aggregates base rates and rate factors by joining the CTE with the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "input.BaseRateDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "input.RateFactorDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables. It calculates budget rates using base rates and multipliers."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Filtering and Ordering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results are filtered based on the "
+                },
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and ordered by "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupDEM",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While this improves performance by reducing locking overhead, it can lead to reading uncommitted or inconsistent data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and CTE",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of multiple joins and a CTE can be resource-intensive, especially if the underlying tables are large. Indexes on join columns can help improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "ISNULL and NULLIF Functions",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": These functions are used to handle null values and default parameters, which can add some overhead but are necessary for correct logic."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted data, which may not be suitable for all business scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Defaulting",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The logic for setting "
+                },
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to "
+                },
+                {
+                  "type": "text",
+                  "text": "NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if it is "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may not be intuitive and could lead to unexpected results if not documented properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the number of scenarios, budget groups, and billing periods increases, the performance may degrade due to the complexity of joins and calculations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The reliance on external functions and views means that changes to these components could affect the procedure's output, necessitating thorough testing when changes occur."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [budget].[USP_BudgetRateDetailsRetrieve]\n(\r\n\t@scenarioId\tAS INT\r\n\t,@budgetGroupId\tAS INT = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tSET @budgetGroupId = NULLIF(ISNULL(@budgetGroupId, 0), 0);\r\n\r\n\t-- Aggregate the budget rates\r\n\tWITH BGBP AS (SELECT BG.BudgetGroupID\r\n\t\t\t,BG.BudgetGroupID AS BudgetGroupDEM\r\n\t\t\t,BP.BillingPeriod\r\n\t\tFROM dbo.UDF_GetBillingPeriods((SELECT FY FROM budget.Scenario WHERE ID = @scenarioId)) AS BP\r\n\t\t\t,EC3DB.BudgetApp_vwBudgetGroups AS BG)\r\n\tSELECT BASE.BudgetGroupID\r\n\t\t,BASE.BudgetGroupDEM\r\n\t\t,BASE.BillingPeriod\r\n\t\t-- Base Rates\r\n\t\t,BASE.BaseRateID\r\n\t\t,BASE.CommodityConsumption\r\n\t\t,BASE.CommodityConsumptionOffPeak\r\n\t\t,BASE.CommodityDemand\r\n\t\t,BASE.DeliveryConsumption\r\n\t\t,BASE.DeliveryDemand\r\n\t\t,BASE.DeliveryReactivePower\r\n\t\t,BASE.DeliveryFacilityPoints\r\n\t\t,BASE.CustomerCharge\r\n\t\t-- Rate Factors\r\n\t\t,BASE.CommodityAdder\r\n\t\t,BASE.CommodityMultiplier\r\n\t\t,BASE.DeliveryMultiplier\r\n\t\t,BASE.GRTMultiplier\r\n\t\t,BASE.DemandAdjustmentMultiplier\r\n\t\t-- Budget Rates\r\n\t\t,BASE.CommodityConsumption * BASE.CommodityMultiplier * BASE.GRTMultiplier AS BudgetCommodityConsumption\r\n\t\t,BASE.CommodityAdder AS BudgetCommodityConsumptionAdder\r\n\t\t,BASE.CommodityConsumptionOffPeak * BASE.CommodityMultiplier * BASE.DemandAdjustmentMultiplier AS BudgetCommodityConsumptionOffPeak\r\n\t\t,BASE.CommodityDemand * BASE.CommodityMultiplier * BASE.DemandAdjustmentMultiplier AS BudgetCommodityDemand\r\n\t\t,BASE.DeliveryConsumption * BASE.DeliveryMultiplier * BASE.GRTMultiplier AS BudgetDeliveryConsumption\r\n\t\t,BASE.DeliveryDemand * BASE.DeliveryMultiplier * BASE.GRTMultiplier * BASE.DemandAdjustmentMultiplier AS BudgetDeliveryDemand\r\n\t\t,BASE.DeliveryReactivePower * BASE.DeliveryMultiplier * BASE.GRTMultiplier * BASE.DemandAdjustmentMultiplier AS BudgetDeliveryReactivePower\r\n\t\t,BASE.DeliveryFacilityPoints * BASE.DeliveryMultiplier * BASE.GRTMultiplier AS BudgetDeliveryFacilityPoints\r\n\t\t,BASE.CustomerCharge * BASE.DeliveryMultiplier * BASE.GRTMultiplier AS BudgetCustomerCharge\r\n\tFROM (-- Aggregate the base rates and the multipliers with the budget groups and billing periods\r\n\t\tSELECT BGBP.BudgetGroupID, BGBP.BudgetGroupDEM, BGBP.BillingPeriod, ISNULL(BRDTL.BaseRateID, 0) AS BaseRateID\r\n\t\t\t,ISNULL(BRDTL.CommodityConsumption, 0) AS CommodityConsumption\r\n\t\t\t,ISNULL(BRDTL.CommodityConsumptionOffPeak, 0) AS CommodityConsumptionOffPeak\r\n\t\t\t,ISNULL(BRDTL.CommodityDemand, 0) AS CommodityDemand\r\n\t\t\t,ISNULL(BRDTL.DeliveryConsumption, 0) AS DeliveryConsumption\r\n\t\t\t,ISNULL(BRDTL.DeliveryDemand, 0) AS DeliveryDemand\r\n\t\t\t,ISNULL(BRDTL.DeliveryReactivePower, 0) AS DeliveryReactivePower\r\n\t\t\t,ISNULL(BRDTL.DeliveryFacilityPoints, 0) AS DeliveryFacilityPoints\r\n\t\t\t,ISNULL(BRDTL.CustomerCharge, 0) AS CustomerCharge\r\n\t\t\t,ISNULL(RFDTL.CommodityAdder, 0) AS [CommodityAdder]\r\n\t\t\t,ISNULL(RFDTL.CommodityMultiplier, 1) AS [CommodityMultiplier]\r\n\t\t\t,ISNULL(RFDTL.DeliveryMultiplier, 1) AS [DeliveryMultiplier]\r\n\t\t\t,ISNULL(RFDTL.GRTMultiplier, 1) AS [GRTMultiplier]\r\n\t\t\t,ISNULL(RFDTL.DemandAdjustmentMultiplier, 1) AS [DemandAdjustmentMultiplier]\r\n\t\tFROM BGBP\r\n\t\t\tINNER JOIN budget.Scenario AS SCN ON SCN.ID = @scenarioId\r\n\t\t\tLEFT JOIN input.BaseRateDetail AS BRDTL ON BRDTL.BaseRateID = SCN.BaseRateID\r\n\t\t\t\tAND BRDTL.BudgetGroupID = BGBP.BudgetGroupID AND BRDTL.BillingPeriod = BGBP.BillingPeriod\r\n\t\t\tLEFT JOIN input.RateFactorDetail AS RFDTL ON RFDTL.RateFactorID = SCN.RateFactorID\r\n\t\t\t\tAND RFDTL.BudgetGroupID = BGBP.BudgetGroupID AND RFDTL.BillingPeriod = BGBP.BillingPeriod) AS BASE\r\n\tWHERE BASE.BudgetGroupID = ISNULL(@budgetGroupId, BASE.BudgetGroupID)\r\n\tORDER BY BASE.BudgetGroupID, BASE.BudgetGroupDEM, BASE.BillingPeriod;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}
