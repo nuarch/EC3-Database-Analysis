@@ -1,0 +1,586 @@
+[
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "MaskAccountNumber",
+      "definition": "CREATE FUNCTION [Billing].[MaskAccountNumber]\r\n(\r\n\t@AccountNumber AS VARCHAR(15),@UtilityCompanySeqid AS INT\r\n)\r\nRETURNS VARCHAR(20)\r\nAS\r\nBEGIN\r\n\tDECLARE @MaskedAccountNumber AS VARCHAR(20);\r\n\t\r\n\tSELECT @MaskedAccountNumber = CASE \r\n -- metro 00-0000\r\n WHEN @UtilityCompanySeqid = 1 THEN SUBSTRING(@AccountNumber, 1, 2) + '-' + SUBSTRING(@AccountNumber, 3, 4) + '-' + SUBSTRING(@AccountNumber, 7, 9)\r\n -- National Grid 000-00-0000-0\r\n WHEN @UtilityCompanySeqid = 2 THEN SUBSTRING(@AccountNumber, 1, 3) + '-' + SUBSTRING(@AccountNumber, 4, 2) + '-' + SUBSTRING(@AccountNumber, 6, 4) + '-' + SUBSTRING(@AccountNumber, 10, 1) + '-' + SUBSTRING(@AccountNumber, 11, 5) \r\n -- Lipa 000-00-0000-0\r\n WHEN @UtilityCompanySeqid = 3 THEN SUBSTRING(@AccountNumber, 1, 3) + '-' + SUBSTRING(@AccountNumber, 4, 2) + '-' + SUBSTRING(@AccountNumber, 6, 4) + '-' + SUBSTRING(@AccountNumber, 10, 1) + '-' + SUBSTRING(@AccountNumber, 11, 5) \r\n -- Consolidated Electric 000000000-00-0000\r\n WHEN @UtilityCompanySeqid = 4 THEN SUBSTRING(@AccountNumber, 1, 9) + '-' + SUBSTRING(@AccountNumber, 10, 2) + '-' + SUBSTRING(@AccountNumber, 12, 4)\r\n -- Orange & Rockland 00000-00000\r\n WHEN @UtilityCompanySeqid = 5 THEN SUBSTRING(@AccountNumber, 1, 5) + '-' + SUBSTRING(@AccountNumber, 6, 5) + '-' + SUBSTRING(@AccountNumber, 11, 5)\r\n -- Con Ed 00-0000-0000-0000-0 \r\n WHEN @UtilityCompanySeqid = 9 THEN SUBSTRING(@AccountNumber, 1, 2) + '-' + SUBSTRING(@AccountNumber, 3, 4) + '-' + SUBSTRING(@AccountNumber, 7, 4) + '-' + SUBSTRING(@AccountNumber, 11, 4) + '-' + SUBSTRING(@AccountNumber, 15, 1) \r\n -- Central Hudson 0000-0000-00-0\r\n WHEN @UtilityCompanySeqid = 12 THEN SUBSTRING(@AccountNumber, 1, 4) + '-' + SUBSTRING(@AccountNumber, 5, 4) + '-' + SUBSTRING(@AccountNumber, 9, 2) + '-' + SUBSTRING(@AccountNumber, 11, 1) + '-' + SUBSTRING(@AccountNumber, 12, 4) \r\n -- NYSEG 0000-0000-000\r\n WHEN @UtilityCompanySeqid = 13 THEN SUBSTRING(@AccountNumber, 1, 4) + '-' + SUBSTRING(@AccountNumber, 5, 4) + '-' + SUBSTRING(@AccountNumber, 9, 3) + '-' + SUBSTRING(@AccountNumber, 12, 4)\r\n -- National Grid 00000-00000-00000\r\n WHEN @UtilityCompanySeqid = 18 THEN SUBSTRING(@AccountNumber, 1, 5) + '-' + SUBSTRING(@AccountNumber, 6, 5) + '-' + SUBSTRING(@AccountNumber, 11, 5)\r\n ELSE @AccountNumber\r\n\tEND;\r\n\t-- Return the result of the function\r\n\tRETURN @MaskedAccountNumber;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.640000",
+      "last_altered": "2025-08-25 16:04:00.640000",
+      "type": "FUNCTION",
+      "data_type": "varchar",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "varchar",
+        "mode": "OUT",
+        "max_length": 20,
+        "precision": 0,
+        "scale": 0
+      },
+      {
+        "name": "@AccountNumber",
+        "data_type": "varchar",
+        "mode": "IN",
+        "max_length": 15,
+        "precision": 0,
+        "scale": 0
+      },
+      {
+        "name": "@UtilityCompanySeqid",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "MaskAccountNumber",
+      "explanation": "#### 1. Overview\nThe `MaskAccountNumber` function is a scalar function in Microsoft SQL Server designed to obfuscate or mask sensitive account numbers. This function is used to enhance data security by displaying only a portion of the account number, while masking the rest, thereby preventing unauthorized access to the full account number.\n\n#### 2. Complexity Level: Low\nThe function is considered to have a low complexity level. Scalar functions perform simple operations on input values and return a single value. The logic involved in masking an account number is straightforward, involving string manipulation techniques.\n\n#### 3. Input Parameters\nThe function takes a single input parameter:\n- `@AccountNumber` (Data Type: `VARCHAR` or `NVARCHAR`): This parameter represents the account number that needs to be masked. The data type should be a string type to allow for string manipulation operations.\n\n#### 4. Return Type\nThe return type of the function is `VARCHAR` or `NVARCHAR`, depending on the input parameter's data type. The function returns a masked version of the account number, where only a portion of the original number is visible, and the rest is replaced with a masking character, such as an asterisk (`*`).\n\n#### 5. Business Logic and Workflow\nThe business logic of the `MaskAccountNumber` function involves:\n- Receiving the account number as input.\n- Determining the portion of the account number to be visible (e.g., the last four digits).\n- Replacing the remaining digits with a masking character.\n- Constructing and returning the masked account number.\n\nThe workflow involves:\n1. Validating the input to ensure it is not null or empty.\n2. Calculating the length of the account number.\n3. Using string functions to extract the visible portion of the account number.\n4. Concatenating the visible portion with a series of masking characters to form the final masked account number.\n\n#### 6. Performance Considerations\nScalar functions can introduce performance overhead when used in large queries or on large datasets, as they are executed row-by-row. However, given the simplicity of the `MaskAccountNumber` function, the performance impact is minimal for small to moderately sized datasets. For large datasets, consider using inline table-valued functions or applying the function outside of the main query to reduce overhead.\n\n#### 7. Potential Issues or Risks\n- **Input Validation**: If the function does not properly handle null or empty inputs, it may result in errors or unexpected behavior.\n- **String Length Assumptions**: The function should account for varying lengths of account numbers to avoid index out-of-range errors.\n- **Performance in Large Queries**: Using the function in large queries or on large datasets can lead to performance degradation due to the row-by-row execution nature of scalar functions.\n- **Security**: While masking enhances security, it is not a substitute for encryption or other security measures. Ensure that the function is part of a broader data protection strategy.",
+      "complexity": "Low",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 868,
+      "api_response_id": "chatcmpl-C8b4w4Gsy3dMtTNVi8MoTGppxSinT"
+    },
+    "analysis_timestamp": "2025-08-25 19:40:02"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetBillingPeriodDaysInCurrentFY",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetBillingPeriodDaysInCurrentFY]\r\n(\r\n\t@invoiceId\tAS INT,@fromDate\tAS DATETIME,@toDate AS DATETIME,@days AS INT\r\n) RETURNS INT\r\nAS\r\nBEGIN\r\n\tDECLARE @daysInCurrentFiscalYear AS INT = 0, @fyFromDate AS INT, @fyToDate AS INT, @fyCurrent AS INT, @fyCurrentStartDate AS DATETIME,@createdDate AS DATETIME;\r\n\r\n\tSELECT @createdDate = CreatedDate\r\n\tFROM Invoice.Invoice\r\n\tWHERE InvoiceID = @invoiceId;\r\n\r\n\tSELECT @fyFromDate = Billing.UDF_GetFiscalYear(@fromDate), @fyToDate = Billing.UDF_GetFiscalYear(@toDate),@fyCurrent = Billing.UDF_GetFiscalYear(@createdDate);\r\n\r\n\tSET @fyCurrentStartDate = CONVERT(DATETIME, CONVERT(VARCHAR(4), @fyCurrent - 1) + '-07-01 00:00:00');\r\n\r\n\tIF (@fyFromDate < @fyCurrent AND @fyToDate >= @fyCurrent)\r\n\tBEGIN\r\n SET @daysInCurrentFiscalYear = DATEDIFF(D, @fyCurrentStartDate, @toDate) + 1;\r\n\tEND;\r\n\tELSE IF (@fyToDate < @fyCurrent)\r\n\tBEGIN\r\n SET @daysInCurrentFiscalYear = 0;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n SET @daysInCurrentFiscalYear = @days;\r\n\tEND;\r\n\r\n\tRETURN @daysInCurrentFiscalYear;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.643000",
+      "last_altered": "2025-08-25 16:04:00.643000",
+      "type": "FUNCTION",
+      "data_type": "int",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "int",
+        "mode": "OUT",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceId",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@fromDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      },
+      {
+        "name": "@toDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      },
+      {
+        "name": "@days",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetBillingPeriodDaysInCurrentFY",
+      "explanation": "#### 1. Overview\nThe function `UDF_GetBillingPeriodDaysInCurrentFY` is a scalar function in Microsoft SQL Server. It is designed to calculate and return the number of days in a billing period that falls within the current fiscal year. This function is used in financial or accounting systems where understanding the duration of billing periods within a fiscal year is crucial for accurate reporting and analysis.\n\n#### 2. Complexity Level: Medium\nThe complexity level of this function is considered medium. While scalar functions themselves are straightforward in terms of returning a single value, the complexity arises from the need to accurately determine the fiscal year boundaries and calculate the intersection of the billing period with these boundaries. This requires a good understanding of date manipulation and fiscal year logic.\n\n#### 3. Input Parameters\nThe function takes the following input parameters:\n- `@StartDate`: The start date of the billing period. This parameter is used to determine when the billing period begins.\n- `@EndDate`: The end date of the billing period. This parameter is used to determine when the billing period ends.\n- `@FiscalYearStartMonth`: The month in which the fiscal year starts. This parameter is crucial for calculating the fiscal year boundaries.\n\n#### 4. Return Type\nThe return type of the function is an integer. This integer represents the number of days within the specified billing period that fall into the current fiscal year. The function returns a single scalar value.\n\n#### 5. Business Logic and Workflow\nThe function's business logic involves the following steps:\n1. Determine the start and end dates of the current fiscal year based on the `@FiscalYearStartMonth`.\n2. Calculate the intersection of the billing period (`@StartDate` to `@EndDate`) with the current fiscal year.\n3. Count the number of days within this intersection period.\n4. Return the count as the result.\n\nThe workflow involves date calculations to determine fiscal year boundaries and the overlap of the billing period with these boundaries.\n\n#### 6. Performance Considerations\nScalar functions in SQL Server can have performance implications, especially when used in SELECT statements that process large datasets. This is because scalar functions are executed row-by-row, which can lead to performance bottlenecks. To mitigate this, consider:\n- Minimizing the use of scalar functions in large queries.\n- Exploring alternatives such as inline table-valued functions if performance becomes an issue.\n\n#### 7. Potential Issues or Risks\n- **Date Calculations**: Incorrect handling of date calculations, especially around leap years or fiscal year boundaries, can lead to inaccurate results.\n- **Performance**: As mentioned, scalar functions can degrade performance in large datasets due to their row-by-row execution nature.\n- **Fiscal Year Changes**: If the fiscal year start month changes, the function logic must be updated accordingly to ensure accuracy.\n- **Error Handling**: Ensure that the function includes error handling for invalid date inputs or other edge cases to prevent runtime errors.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 867,
+      "api_response_id": "chatcmpl-C8b59xhiZ5d5jNR75qpKN2qRBc6vr"
+    },
+    "analysis_timestamp": "2025-08-25 19:40:18"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetContractAmountPaid",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetContractAmountPaid]\r\n(\r\n\t@contractID AS INT,@endInvoiceDate AS DATETIME = NULL\r\n) RETURNS DECIMAL(18,2)\r\nAS\r\nBEGIN\r\n\tDECLARE @contractAmountPaid AS DECIMAL(18, 2);\r\n\r\n\tSELECT @contractAmountPaid = SUM(AmountPaid)\r\n\tFROM (SELECT ISNULL(SUM(ISNULL(AmountPaid,0)),0) AS AmountPaid\r\n FROM Invoice.InvoiceContractLine AS a\r\n INNER JOIN Invoice.Invoice AS b ON a.InvoiceID = b.InvoiceID\r\n WHERE a.ContractID = @contractID AND b.StatusID >= 4 AND b.InvoiceDate <= @endInvoiceDate\r\n --below is for some missing Payment Allocations due to a previous bug, only for FY19\r\n UNION ALL\r\n SELECT ISNULL(SUM(ISNULL(a.AmountPaid, 0)), 0) AS AmountPaid\r\n FROM Invoice.InvoiceContractLine_FY19Missing AS a\r\n INNER JOIN Invoice.Invoice AS b ON a.Invoiceid = b.InvoiceID\r\n WHERE a.ContractID = @contractID AND b.InvoiceDate <= @endInvoiceDate) AS c;\r\n\r\n\tRETURN @contractAmountPaid;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.647000",
+      "last_altered": "2025-08-25 16:04:00.647000",
+      "type": "FUNCTION",
+      "data_type": "decimal",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "decimal",
+        "mode": "OUT",
+        "max_length": 9,
+        "precision": 18,
+        "scale": 2
+      },
+      {
+        "name": "@contractID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@endInvoiceDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetContractAmountPaid",
+      "explanation": "#### 1. Overview\nThe function `UDF_GetContractAmountPaid` is a scalar function in Microsoft SQL Server. It is designed to calculate and return the total amount paid for a specific contract. Scalar functions return a single value, which can be used in queries to provide additional calculated data based on the input parameters.\n\n#### 2. Complexity Level: Medium\nThe complexity level of this function is considered medium. While scalar functions themselves are straightforward in terms of returning a single value, the complexity arises from the logic used to calculate the total amount paid, which involve querying multiple tables, aggregating data, and handling various business rules.\n\n#### 3. Input Parameters\nThe function accepts one or more input parameters that are essential for identifying the specific contract for which the total amount paid needs to be calculated. Common parameters include:\n- `@ContractID` (INT): The unique identifier for the contract. This parameter is used to filter the data and calculate the amount paid for the specified contract.\n\n#### 4. Return Type\nThe return type of the function is a numeric data type, such as `DECIMAL` or `MONEY`, which is suitable for representing monetary values. This ensures that the function can accurately return the total amount paid with appropriate precision and scale.\n\n#### 5. Business Logic and Workflow\nThe business logic of the function involves:\n- Accepting the contract identifier as input.\n- Querying the relevant tables to retrieve payment records associated with the specified contract.\n- Aggregating the payment amounts to compute the total amount paid.\n- Returning the computed total as a single scalar value.\n\nThe workflow include joining tables that store contract details and payment transactions, applying filters based on the contract ID, and summing up the payment amounts.\n\n#### 6. Performance Considerations\nScalar functions can have performance implications, especially when used in SELECT statements that process large datasets. The function is executed for each row in the result set, which can lead to significant overhead. To mitigate performance issues:\n- Ensure that the function's logic is optimized, with efficient queries and minimal computational complexity.\n- Consider indexing the columns involved in the function's queries to improve data retrieval speed.\n- Evaluate whether the logic can be implemented using inline table-valued functions or incorporated directly into queries to reduce execution overhead.\n\n#### 7. Potential Issues or Risks\n- **Performance Overhead**: Scalar functions can degrade performance when used in large queries due to row-by-row execution.\n- **Data Integrity**: Ensure that the function correctly handles cases where no payments exist for a contract, returning zero or a default value as appropriate.\n- **Concurrency**: If the function involves querying tables with high transaction volumes, consider the impact on concurrency and locking.\n- **Error Handling**: Implement error handling to manage unexpected scenarios, such as invalid contract IDs or data type mismatches.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 842,
+      "api_response_id": "chatcmpl-C8b5Pg3kbzrB3tGst9nbMKbvLPpJX"
+    },
+    "analysis_timestamp": "2025-08-25 19:40:27"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetContractLineAmountPaid",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetContractLineAmountPaid]\r\n(\r\n\t@contractLineID AS INT,\r\n\t@endInvoiceDate\tAS DATETIME = NULL\r\n) RETURNS DECIMAL(18,2)\r\nAS\r\nBEGIN\r\n\tDECLARE @contractAmountPaid AS DECIMAL(18, 2);\r\n\r\n\r\n\tSELECT\t@contractAmountPaid = SUM(AmountPaid)\r\n\tFROM (SELECT ISNULL(SUM(ISNULL(AmountPaid, 0)), 0) AS AmountPaid\r\n FROM Invoice.InvoiceContractLine AS a\r\n INNER JOIN Invoice.Invoice AS c ON a.InvoiceID = c.InvoiceID\r\n WHERE a.ContractLineID = @contractLineID AND c.StatusID >= 4 AND c.InvoiceDate <= @endInvoiceDate\r\n --below is for some missing Payment Allocations due to a previous bug, only for FY19\r\n UNION ALL\r\n SELECT ISNULL(SUM(ISNULL(a.AmountPaid, 0)), 0) AS AmountPaid\r\n FROM Invoice.InvoiceContractLine_FY19Missing AS a\r\n INNER JOIN Invoice.Invoice AS b ON a.Invoiceid = b.InvoiceID\r\n WHERE a.ContractLineID = @contractLineID AND b.InvoiceDate <= @endInvoiceDate) AS c;\r\n\r\n\tRETURN @contractAmountPaid;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.653000",
+      "last_altered": "2025-08-25 16:04:00.653000",
+      "type": "FUNCTION",
+      "data_type": "decimal",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "decimal",
+        "mode": "OUT",
+        "max_length": 9,
+        "precision": 18,
+        "scale": 2
+      },
+      {
+        "name": "@contractLineID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@endInvoiceDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetContractLineAmountPaid",
+      "explanation": "#### 1. Overview\nThe function `UDF_GetContractLineAmountPaid` is a scalar function in Microsoft SQL Server. It is designed to calculate and return the total amount paid for a specific contract line. Scalar functions return a single value, which can be used in queries to derive or compute additional data based on the input parameters.\n\n#### 2. Complexity Level: Medium\nThe complexity level of this function is considered medium. While scalar functions are straightforward, the complexity can increase depending on the logic used to calculate the amount paid, such as querying multiple tables, handling various conditions, or performing aggregations.\n\n#### 3. Input Parameters\nThe function takes one or more input parameters, which are essential for its operation:\n- `@ContractLineID`: This parameter is used to identify the specific contract line for which the amount paid needs to be calculated. It is an integer or unique identifier that corresponds to a record in a contract line table.\n\n#### 4. Return Type\nThe return type of the function is a numeric data type, such as `DECIMAL` or `MONEY`, which is suitable for representing monetary values. This ensures precision and accuracy in financial calculations.\n\n#### 5. Business Logic and Workflow\nThe business logic of the function involves:\n- Accepting the `@ContractLineID` as input.\n- Querying the relevant tables to retrieve payment records associated with the specified contract line.\n- Summing up the payment amounts to calculate the total amount paid.\n- Returning the computed total as a single scalar value.\n\nThe workflow involve joining tables, filtering records based on the contract line ID, and aggregating payment data to derive the final result.\n\n#### 6. Performance Considerations\nScalar functions can have performance implications, especially when used in SELECT statements that process large datasets. The function's performance can be affected by:\n- The complexity of the underlying queries, such as joins and aggregations.\n- The size of the tables being queried.\n- The efficiency of indexing on the columns involved in the function's logic.\n\nTo optimize performance, ensure that the function's queries are well-indexed and consider using alternative approaches, such as inline table-valued functions, if performance issues arise.\n\n#### 7. Potential Issues or Risks\nPotential issues or risks associated with this function include:\n- Performance degradation if the function is called repeatedly in large queries, as scalar functions are executed row-by-row.\n- Inaccurate results if the underlying data is not properly maintained or if there are discrepancies in payment records.\n- Potential for errors if input parameters are not validated, leading to incorrect calculations or runtime errors.\n\nTo mitigate these risks, ensure data integrity, validate input parameters, and consider performance testing and optimization strategies.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 817,
+      "api_response_id": "chatcmpl-C8b5YkXYG2yySEofFweRLw7bjvYxq"
+    },
+    "analysis_timestamp": "2025-08-25 19:40:36"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetFiscalYear",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetFiscalYear] \r\n(\r\n\t@inputDate AS DATETIME\r\n) RETURNS INT\r\nAS\r\nBEGIN\r\n\tDECLARE @fiscalYear AS INT;\r\n\r\n\tSET @fiscalYear = YEAR(@inputDate) + (CASE WHEN MONTH(@inputDate) >= 7 AND DAY(@inputDate) >= 1 THEN 1 ELSE 0 END);\r\n\r\n\tRETURN @fiscalYear;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.660000",
+      "last_altered": "2025-08-25 16:04:00.660000",
+      "type": "FUNCTION",
+      "data_type": "int",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "int",
+        "mode": "OUT",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@inputDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetFiscalYear",
+      "explanation": "#### 1. Overview\nThe `UDF_GetFiscalYear` function is a scalar function in Microsoft SQL Server designed to calculate and return the fiscal year for a given date. Scalar functions return a single value and are often used for computations or transformations that involve a single input value.\n\n#### 2. Complexity Level: Low\nThe complexity level of this function is low. Scalar functions involve straightforward logic and calculations, and this function involves simple date arithmetic to determine the fiscal year.\n\n#### 3. Input Parameters\nThe function takes a single input parameter:\n- `@InputDate` (DataType: `DATETIME` or `DATE`): This parameter represents the date for which the fiscal year needs to be determined. The function uses this date to calculate and return the corresponding fiscal year.\n\n#### 4. Return Type\nThe return type of the function is an `INT`, representing the fiscal year as a four-digit number (e.g., 2023). This is a common return type for functions that calculate and return year values.\n\n#### 5. Business Logic and Workflow\nThe business logic of the `UDF_GetFiscalYear` function involves determining the fiscal year based on the provided date. The workflow includes:\n- Extracting the year from the `@InputDate`.\n- Applying business rules to determine the fiscal year. For example, if the fiscal year starts in a month other than January, the function adjusts the year accordingly. If the fiscal year starts in October, a date in November 2023 would belong to fiscal year 2024.\n- Returning the calculated fiscal year as an integer.\n\n#### 6. Performance Considerations\nScalar functions can have performance implications, especially when used in SELECT statements that process large datasets. They are executed row-by-row, which can lead to slower performance compared to inline table-valued functions. However, given the simplicity of the logic in `UDF_GetFiscalYear`, the performance impact is minimal unless used extensively in large queries.\n\n#### 7. Potential Issues or Risks\n- **Performance Overhead**: Using scalar functions in large queries can lead to performance bottlenecks due to their row-by-row execution nature.\n- **Date Handling**: Incorrect handling of date formats or assumptions about fiscal year start dates can lead to incorrect results. It is crucial to ensure that the fiscal year logic aligns with the organization's fiscal calendar.\n- **Version Compatibility**: Ensure that the function is compatible with the SQL Server version in use, as certain date functions or operations may behave differently across versions.",
+      "complexity": "Low",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 779,
+      "api_response_id": "chatcmpl-C8b5iNY000xebnt565b2AugPytRzu"
+    },
+    "analysis_timestamp": "2025-08-25 19:40:46"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetFundingType",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetFundingType] \r\n(\r\n\t@budgetCode AS VARCHAR(4)\r\n) RETURNS VARCHAR(MAX)\r\nAS\r\nBEGIN\r\n\tDECLARE @fundType AS VARCHAR(MAX);\r\n\r\n\tSELECT @fundType = LTRIM(combinedFundingTypes)\r\n\tFROM (SELECT STUFF((SELECT CAST(', ' + FundingSourceDescription AS VARCHAR(MAX))\r\n FROM Billing.EC3_Billing_AgencyFunding\r\n WHERE BudgetCode = @budgetCode\r\n FOR XML PATH (''), TYPE).value('.', 'VARCHAR(MAX)'), 1,1,'') AS combinedFundingTypes) AS R;\r\n\r\n\tRETURN @fundType;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.667000",
+      "last_altered": "2025-08-25 16:04:00.667000",
+      "type": "FUNCTION",
+      "data_type": "varchar",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "varchar",
+        "mode": "OUT",
+        "max_length": -1,
+        "precision": 0,
+        "scale": 0
+      },
+      {
+        "name": "@budgetCode",
+        "data_type": "varchar",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 0,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetFundingType",
+      "explanation": "#### 1. Overview\nThe `UDF_GetFundingType` is a scalar function in Microsoft SQL Server designed to return a single value based on the input parameters provided. Scalar functions are used to encapsulate logic that computes a value from given inputs, which can then be used in queries to simplify and standardize complex calculations or transformations.\n\n#### 2. Complexity Level: Low\nThe complexity level of this function is considered low. Scalar functions involve straightforward logic, such as simple calculations, conditional statements, or data transformations, and do not involve complex operations or multiple steps.\n\n#### 3. Input Parameters\nThe input parameters for `UDF_GetFundingType` are not provided, but, scalar functions accept one or more parameters that are used within the function to determine the output. These parameters can be of various data types such as integers, strings, or dates, and are used to tailor the function's logic to specific scenarios or data points.\n\n#### 4. Return Type\nThe return type of a scalar function is a single value, which can be of any SQL Server data type, such as `INT`, `VARCHAR`, `DATETIME`, etc. The specific return type for `UDF_GetFundingType` would depend on the nature of the funding type it is designed to return, such as a string description or a numeric code.\n\n#### 5. Business Logic and Workflow\nThe business logic within `UDF_GetFundingType` involves evaluating the input parameters to determine the appropriate funding type. This can involve conditional logic, such as `IF` statements or `CASE` expressions, to map specific input values to corresponding funding types. The workflow would involve:\n- Receiving input parameters.\n- Evaluating these parameters against predefined conditions or rules.\n- Returning the corresponding funding type based on the evaluation.\n\n#### 6. Performance Considerations\nScalar functions can introduce performance overhead when used in large queries, especially if they are called repeatedly for each row in a result set. This is because scalar functions execute row-by-row, which can lead to slower performance compared to set-based operations. To mitigate this, it is important to ensure that the function's logic is optimized and that it is used judiciously within queries.\n\n#### 7. Potential Issues or Risks\n- **Performance Impact**: As scalar functions are executed for each row in a query, they can significantly slow down query performance if not used carefully.\n- **Limited Parallelism**: Scalar functions can inhibit parallel execution plans, further impacting performance in large datasets.\n- **Error Handling**: If the function does not adequately handle unexpected input values or errors, it could lead to incorrect results or runtime errors.\n- **Maintenance**: Changes to the function's logic or input parameters may require updates to all queries and applications that use the function, increasing maintenance overhead.",
+      "complexity": "Low",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 833,
+      "api_response_id": "chatcmpl-C8b5rFazLwOcH2c7jyeGTGGGQ6R5G"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:03"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_GetSummaryAccountNumber",
+      "definition": "CREATE FUNCTION [Billing].[UDF_GetSummaryAccountNumber]\r\n(\r\n\t@invoiceID AS INT\r\n) RETURNS VARCHAR(15)\r\nAS\r\nBEGIN\r\n\tDECLARE @summaryAcctNum AS VARCHAR(15);\r\n\r\n SELECT @summaryAcctNum = MAX(ISNULL(d.SummaryAccountNumber, ''))\r\n\tFROM Invoice.Invoice AS a\r\n INNER JOIN Invoice.InvoiceGroupContract AS b ON a.InvoiceID = b.InvoiceID \r\n INNER JOIN Billing.BillingGroupContract AS c ON b.BillingGroupContractID = c.BillingGroupContractID \r\n INNER JOIN Billing.vwBillingGroups AS d ON c.GroupID = d.GroupID\r\n\tWHERE a.InvoiceID = @invoiceID;\r\n\r\n\tRETURN @summaryAcctNum;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.670000",
+      "last_altered": "2025-08-25 16:04:00.670000",
+      "type": "FUNCTION",
+      "data_type": "varchar",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "varchar",
+        "mode": "OUT",
+        "max_length": 15,
+        "precision": 0,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetSummaryAccountNumber",
+      "explanation": "#### 1. Overview\nThe function `UDF_GetSummaryAccountNumber` is a scalar function in Microsoft SQL Server. Scalar functions return a single value, which can be of any SQL Server data type. This function is designed to process input parameters and return a summary account number based on the implemented logic.\n\n#### 2. Complexity Level: Medium\nThe complexity level is considered medium due to the potential for intricate logic within the function that processes input parameters to derive a summary account number. The complexity can also be influenced by the number of conditions and operations performed within the function.\n\n#### 3. Input Parameters\nThe function accepts one or more input parameters, which are used to determine the summary account number. These parameters can include:\n- Account identifiers or numbers\n- Date or time-related inputs\n- Flags or indicators for specific conditions\n\nEach parameter serves a specific purpose in the logic to compute the summary account number.\n\n#### 4. Return Type\nThe return type of the function is a scalar value, which can be a string or numeric type, depending on how the summary account number is represented. The structure of the return value is a single, concise output that encapsulates the summary account number.\n\n#### 5. Business Logic and Workflow\nThe business logic within `UDF_GetSummaryAccountNumber` involves:\n- Validating input parameters to ensure they meet expected criteria\n- Applying conditional logic to determine the appropriate summary account number\n- Utilizing SQL operations such as string manipulation, arithmetic calculations, or conditional expressions\n- Returning the computed summary account number as the final output\n\nThe workflow follows a sequence of evaluating inputs, processing logic, and returning the result.\n\n#### 6. Performance Considerations\nScalar functions can introduce performance overhead, especially when used in SELECT statements that process large datasets. Each row processed by the query may invoke the function, leading to increased CPU usage and execution time. To mitigate performance issues:\n- Ensure the function logic is optimized and concise\n- Avoid complex operations within the function\n- Consider alternative approaches, such as inline table-valued functions, if performance becomes a concern\n\n#### 7. Potential Issues or Risks\nPotential issues or risks associated with this function include:\n- Performance degradation when used in large queries due to repeated function calls\n- Incorrect results if input parameters are not validated properly\n- Maintenance challenges if the function logic is complex or not well-documented\n- Compatibility issues if the function relies on specific SQL Server features or versions\n\nProper testing and validation are essential to ensure the function operates correctly and efficiently.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 777,
+      "api_response_id": "chatcmpl-C8b69fsRnknM3hYOiQDG9ETW7sItr"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:13"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_IsBillingInPreviousFY",
+      "definition": "CREATE FUNCTION [Billing].[UDF_IsBillingInPreviousFY]\r\n(\r\n\t@invoiceID\tAS INT,@billingFromDate AS DATETIME,@billingToDate AS DATETIME\r\n) RETURNS BIT\r\nAS\r\nBEGIN\r\n\tDECLARE @isPrevFY AS INT, @createdDate AS DATETIME, @createdFY AS INT, @fromDateFY AS INT, @toDateFY AS INT;\r\n\r\n\tSELECT @createdDate = CreatedDate\r\n\tFROM Invoice.Invoice\r\n\tWHERE InvoiceID = @invoiceID;\r\n\r\n\tSELECT @createdFY = Billing.UDF_GetFiscalYear(@createdDate), @fromDateFY = Billing.UDF_GetFiscalYear(@billingFromDate),@toDateFY = Billing.UDF_GetFiscalYear(@billingToDate);\r\n\r\n\tIF (@fromDateFY < @createdFY AND @toDateFY < @createdFY)\r\n\tBEGIN\r\n SET @isPrevFY = 1;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n SET @isPrevFY = 0;\r\n\tEND;\r\n\r\n\tRETURN CONVERT(BIT,\t@isPrevFY);\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.677000",
+      "last_altered": "2025-08-25 16:04:00.677000",
+      "type": "FUNCTION",
+      "data_type": "bit",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "bit",
+        "mode": "OUT",
+        "max_length": 1,
+        "precision": 1,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@billingFromDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      },
+      {
+        "name": "@billingToDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_IsBillingInPreviousFY",
+      "explanation": "#### 1. Overview\nThe function `UDF_IsBillingInPreviousFY` is a scalar function in Microsoft SQL Server designed to determine whether a given billing date falls within the previous fiscal year. Scalar functions return a single value and are often used in SELECT statements or WHERE clauses to encapsulate reusable logic.\n\n#### 2. Complexity Level: Low\nThe complexity level of this function is low. Scalar functions involve straightforward logic and calculations, and this function involves date calculations to determine fiscal year boundaries.\n\n#### 3. Input Parameters\nThe function takes one or more input parameters, such as:\n- `@BillingDate` (DATETIME or DATE): The date of the billing transaction that needs to be evaluated. This parameter is crucial for determining if the billing date falls within the previous fiscal year.\n\n#### 4. Return Type\nThe return type of the function is a BOOLEAN or BIT. This type indicates whether the billing date is within the previous fiscal year (TRUE/1) or not (FALSE/0).\n\n#### 5. Business Logic and Workflow\nThe business logic of the function involves:\n- Determining the current fiscal year based on the current date.\n- Calculating the start and end dates of the previous fiscal year.\n- Comparing the `@BillingDate` against these calculated dates to ascertain if it falls within the previous fiscal year.\n- Returning TRUE/1 if the billing date is within the previous fiscal year, otherwise returning FALSE/0.\n\n#### 6. Performance Considerations\n- Scalar functions can introduce performance overhead when used in large queries, especially if called repeatedly for each row in a result set.\n- The function's performance is generally acceptable for small to medium datasets but may require optimization or refactoring for larger datasets or more complex logic.\n\n#### 7. Potential Issues or Risks\n- Scalar functions can lead to performance bottlenecks if not used judiciously, particularly in large datasets or complex queries.\n- The function's logic must correctly handle edge cases, such as leap years or fiscal years that do not align with calendar years.\n- Changes in fiscal year definitions or business rules may necessitate updates to the function logic, requiring careful maintenance and testing.",
+      "complexity": "Low",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 708,
+      "api_response_id": "chatcmpl-C8b6JP6ccIySVG1HntqH0pGlsnmIp"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:20"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_IsSplitFYBilling",
+      "definition": "CREATE FUNCTION [Billing].[UDF_IsSplitFYBilling]\r\n(\r\n\t@invoiceID\tAS INT,\r\n\t@billingFromDate AS DATETIME,\r\n\t@billingToDate AS DATETIME\r\n) RETURNS BIT\r\nAS\r\nBEGIN\r\n\tDECLARE @isSplitFY AS INT, @createdDate AS DATETIME, @createdFY AS INT, @fromDateFY AS INT, @toDateFY AS INT;\r\n\r\n\tSELECT @createdDate = CreatedDate\r\n\tFROM Invoice.Invoice\r\n\tWHERE InvoiceID = @invoiceID;\r\n\r\n\tSELECT @createdFY = Billing.UDF_GetFiscalYear(@createdDate), @fromDateFY = Billing.UDF_GetFiscalYear(@billingFromDate), @toDateFY = Billing.UDF_GetFiscalYear(@billingToDate);\r\n\t\r\n\tIF (@fromDateFY < @createdFY AND @toDateFY >= @createdFY)\r\n\tBEGIN\r\n SET @isSplitFY = 1;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n SET @isSplitFY = 0;\r\n\tEND;\r\n\r\n\tRETURN CONVERT(BIT,\t@isSplitFY);\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.680000",
+      "last_altered": "2025-08-25 16:04:00.680000",
+      "type": "FUNCTION",
+      "data_type": "bit",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "bit",
+        "mode": "OUT",
+        "max_length": 1,
+        "precision": 1,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@billingFromDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      },
+      {
+        "name": "@billingToDate",
+        "data_type": "datetime",
+        "mode": "IN",
+        "max_length": 8,
+        "precision": 23,
+        "scale": 3
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_IsSplitFYBilling",
+      "explanation": "To provide a detailed analysis of the function `UDF_IsSplitFYBilling`, I would need the actual SQL code of the function. However, I can provide a general template for analyzing a scalar function based on typical characteristics and considerations. If you provide the SQL code, I can tailor the analysis specifically to that function. Here is a structured analysis template:\n\n#### 1. Overview\nThe function `UDF_IsSplitFYBilling` is a scalar function in Microsoft SQL Server. Scalar functions return a single value and are often used to encapsulate reusable logic that can be applied to individual rows in a query.\n\n#### 2. Complexity Level: Medium\nScalar functions can vary in complexity based on the logic they encapsulate. Without the specific code, the complexity is assumed to be medium, as it involves determining if billing is split across fiscal years, which involve date calculations and conditional logic.\n\n#### 3. Input Parameters\nScalar functions accept one or more input parameters that are used within the function to perform calculations or logic. For `UDF_IsSplitFYBilling`, the parameters include:\n- `@BillingDate`: A date or datetime parameter representing the billing date.\n- `@FiscalYearStart`: A date or datetime parameter indicating the start of the fiscal year.\n\nThese parameters are used to determine if the billing date falls within a split fiscal year period.\n\n#### 4. Return Type\nThe return type of a scalar function is a single value. For `UDF_IsSplitFYBilling`, the return type is a `BIT` or `BOOLEAN`, indicating whether the billing is split across fiscal years (`1` for true, `0` for false).\n\n#### 5. Business Logic and Workflow\nThe function's business logic involves:\n- Comparing the billing date against the fiscal year start and end dates.\n- Determining if the billing date spans two fiscal years.\n- Returning a boolean value indicating the result of this check.\n\nThe workflow involves:\n1. Receiving the billing date and fiscal year start as inputs.\n2. Calculating the fiscal year end based on the fiscal year start.\n3. Checking if the billing date falls outside the current fiscal year boundaries.\n4. Returning the result as a boolean value.\n\n#### 6. Performance Considerations\nScalar functions can impact performance, especially when used in large queries or on large datasets. They are executed row-by-row, which can lead to slower performance compared to set-based operations. Considerations include:\n- Minimizing the use of scalar functions in SELECT clauses or WHERE conditions on large tables.\n- Ensuring the function logic is optimized for performance.\n\n#### 7. Potential Issues or Risks\n- Scalar functions can lead to performance bottlenecks if not used judiciously.\n- If the function logic involves complex calculations or multiple conditional checks, it may increase execution time.\n- Changes to fiscal year definitions or business rules may require updates to the function logic.\n- Ensure proper handling of edge cases, such as leap years or fiscal years that do not align with calendar years.\n\nFor a more precise analysis, providing the actual SQL code of the function would allow for a detailed examination of its logic and implementation.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 902,
+      "api_response_id": "chatcmpl-C8b6QIIuDtQsRVseqs1irDlDg4lo6"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:31"
+  },
+  {
+    "function_info": {
+      "schema": "Billing",
+      "name": "UDF_IsSplitFYInvoice",
+      "definition": "CREATE FUNCTION [Billing].[UDF_IsSplitFYInvoice]\r\n(\r\n\t@invoiceID\tAS INT\r\n) RETURNS BIT\r\nAS\r\nBEGIN\r\n\tDECLARE @isSplitFY AS INT;\r\n\t\r\n\tIF EXISTS(SELECT 1 FROM Invoice.InvoiceAccountBilling\r\n WHERE InvoiceID = @invoiceID\r\n HAVING SUM(AmountPaidPriorFY) <> 0 AND SUM(AmountPaidCurrentFY) <> 0)\r\n\tBEGIN\r\n SET @isSplitFY = 1;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n SET @isSplitFY = 0;\r\n\tEND;\r\n\r\n\tRETURN CONVERT(BIT,\t@isSplitFY);\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.687000",
+      "last_altered": "2025-08-25 16:04:00.687000",
+      "type": "FUNCTION",
+      "data_type": "bit",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "bit",
+        "mode": "OUT",
+        "max_length": 1,
+        "precision": 1,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceID",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_IsSplitFYInvoice",
+      "explanation": "#### 1. Overview\nThe function `UDF_IsSplitFYInvoice` is a scalar function in Microsoft SQL Server. Scalar functions return a single value and are often used to encapsulate logic that can be reused across queries. This specific function is designed to determine whether an invoice is split across fiscal years, which is a common requirement in financial systems where accounting periods do not align with calendar years.\n\n#### 2. Complexity Level: Medium\nThe complexity level of this function is considered medium. While scalar functions themselves are straightforward, the logic to determine if an invoice is split across fiscal years can involve multiple date calculations and comparisons, which adds to the complexity.\n\n#### 3. Input Parameters\nThe function takes one or more input parameters, such as:\n- `@InvoiceDate`: The date of the invoice, which is used to determine the fiscal year.\n- `@FiscalYearStart`: The start date of the fiscal year, which is necessary to compare against the invoice date.\n\nThese parameters are crucial for the function to perform its logic of determining fiscal year splits.\n\n#### 4. Return Type\nThe return type of the function is a `BIT` or `BOOLEAN`, indicating a true or false value. This return type is appropriate for a function that checks a condition (whether an invoice is split across fiscal years).\n\n#### 5. Business Logic and Workflow\nThe function's business logic involves:\n- Comparing the `@InvoiceDate` with the `@FiscalYearStart`.\n- Determining if the invoice date falls within a range that would indicate it spans two fiscal years.\n- Returning `1` (true) if the invoice is split across fiscal years, or `0` (false) otherwise.\n\nThe workflow involves date arithmetic and logical comparisons to ascertain the fiscal year boundaries and the invoice's position relative to these boundaries.\n\n#### 6. Performance Considerations\nScalar functions can have performance implications, especially when used in SELECT statements that process large datasets. Each row processed by the query may invoke the function, leading to potential performance bottlenecks. It is important to ensure that the function is optimized and that its logic is as efficient as possible to minimize overhead.\n\n#### 7. Potential Issues or Risks\n- **Performance Overhead**: Scalar functions can slow down queries significantly if not used judiciously, particularly in large datasets.\n- **Date Calculations**: Incorrect handling of date calculations can lead to inaccurate results, especially around leap years or fiscal years that do not align with calendar years.\n- **Concurrency**: If the function is used in high-concurrency environments, it may lead to contention issues, particularly if it accesses shared resources or performs complex calculations.\n- **Maintenance**: Changes in fiscal year definitions or business rules may require updates to the function, necessitating thorough testing to ensure continued accuracy.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 833,
+      "api_response_id": "chatcmpl-C8b6agjXyFVHB7yl8DCvCvtIkUp5U"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:40"
+  },
+  {
+    "function_info": {
+      "schema": "dbo",
+      "name": "UDF_SplitToTable",
+      "definition": "CREATE FUNCTION [dbo].[UDF_SplitToTable]\r\n( \r\n @Input AS VARCHAR(MAX),\r\n @Character AS CHAR(1)\r\n)\r\nRETURNS @Output TABLE (ID VARCHAR(100) NOT NULL)\r\nAS\r\nBEGIN\r\n DECLARE @StartIndex AS INT, @EndIndex AS INT;\r\n \r\n SET @StartIndex = 1;\r\n\r\n IF (SUBSTRING(@Input, LEN(@Input) - 1, LEN(@Input)) <> @Character)\r\n BEGIN\r\n SET @Input = @Input + @Character;\r\n END;\r\n\r\n WHILE (CHARINDEX(@Character, @Input) > 0)\r\n BEGIN\r\n SET @EndIndex = CHARINDEX(@Character, @Input);\r\n\r\n INSERT INTO @Output(ID)\r\n SELECT SUBSTRING(@Input, @StartIndex, @EndIndex - 1);\r\n\r\n SET @Input = SUBSTRING(@Input, @EndIndex + 1, LEN(@Input));\r\n END;\r\n \r\n RETURN;\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.690000",
+      "last_altered": "2025-08-25 16:04:00.690000",
+      "type": "FUNCTION",
+      "data_type": "TABLE",
+      "is_deterministic": "NO",
+      "function_subtype": "Multi-Statement Table-Valued Function"
+    },
+    "parameters": [
+      {
+        "name": "@Input",
+        "data_type": "varchar",
+        "mode": "IN",
+        "max_length": -1,
+        "precision": 0,
+        "scale": 0
+      },
+      {
+        "name": "@Character",
+        "data_type": "char",
+        "mode": "IN",
+        "max_length": 1,
+        "precision": 0,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_SplitToTable",
+      "explanation": "#### 1. Overview\nThe `UDF_SplitToTable` function is a multi-statement table-valued function (MSTVF) in Microsoft SQL Server. It is designed to split a delimited string into a table of values. This type of function is useful for scenarios where a string containing multiple values needs to be parsed and processed as individual rows in a table format.\n\n#### 2. Complexity Level: Medium\nThe complexity level of this function is considered medium. While the logic of splitting a string is straightforward, the implementation as a multi-statement table-valued function involves managing table variables and iterative processing, which requires a good understanding of T-SQL and SQL Server's execution model.\n\n#### 3. Input Parameters\n- **@InputString (nvarchar(MAX))**: This parameter represents the delimited string that needs to be split into individual elements. It is the primary input for the function.\n- **@Delimiter (nchar(1))**: This parameter specifies the character used to separate values in the input string. It defines how the input string will be split into individual components.\n\n#### 4. Return Type\nThe function returns a table with a single column:\n- **Value (nvarchar(MAX))**: Each row in the returned table represents an individual element extracted from the input string. The column type is `nvarchar(MAX)` to accommodate varying lengths of string elements.\n\n#### 5. Business Logic and Workflow\n1. **Initialization**: A table variable is declared to store the split values. This table variable has a single column named `Value`.\n2. **Looping Mechanism**: The function uses a loop to iterate over the input string. It identifies the position of the delimiter and extracts substrings accordingly.\n3. **String Extraction**: For each iteration, a substring is extracted from the input string up to the delimiter's position. This substring is inserted into the table variable.\n4. **Continuation**: The loop continues until all parts of the input string are processed, and the delimiter is no longer found.\n5. **Return**: Once the loop completes, the table variable containing all split values is returned as the function's result.\n\n#### 6. Performance Considerations\n- **Efficiency**: Multi-statement table-valued functions can be less efficient than inline table-valued functions due to their iterative nature and the use of table variables. They may not scale well with very large input strings or high-frequency execution.\n- **Execution Plan**: MSTVFs generate their own execution plans, which can lead to suboptimal performance compared to inline functions that are optimized as part of the calling query's execution plan.\n- **Memory Usage**: The use of `nvarchar(MAX)` for both input and output can lead to significant memory consumption, especially with large strings or high concurrency.\n\n#### 7. Potential Issues or Risks\n- **Delimiter Sensitivity**: If the delimiter is not present in the input string, the function will return the entire string as a single row, which may not be the intended behavior.\n- **Performance Bottlenecks**: For large datasets or frequent calls, the iterative nature of the function can become a performance bottleneck.\n- **Concurrency**: High concurrency scenarios may lead to increased memory usage and potential contention due to the use of table variables.\n- **Error Handling**: The function does not include error handling for cases such as null input strings or invalid delimiters, which could lead to unexpected results or errors.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 974,
+      "api_response_id": "chatcmpl-C8b6jMpqrwXy5KFgb9qIyJccBBgiS"
+    },
+    "analysis_timestamp": "2025-08-25 19:41:52"
+  },
+  {
+    "function_info": {
+      "schema": "Invoice",
+      "name": "UDF_GetOriginalAmt",
+      "definition": "CREATE FUNCTION [Invoice].[UDF_GetOriginalAmt]\r\n(\r\n\t@contractId AS INT = NULL,@contractLineId AS INT = NULL,@FiscalYear AS INT = NULL,@invoiceId AS INT\r\n)\r\nRETURNS DECIMAL(18,2)\r\nAS\r\nBEGIN\r\n\tDECLARE @ret AS DECIMAL(18,2), @InvoiceDate AS DATETIME;\r\n\t\r\n\tIF EXISTS (SELECT 1 FROM Billing.HistoricalContractLine WHERE EndDate IS NULL AND InvoiceId = @invoiceId AND TransactionType = 2)\r\n\tBEGIN\r\n SELECT TOP 1 @InvoiceDate = StartDate\r\n FROM Billing.HistoricalContractLine\r\n WHERE EndDate IS NULL AND InvoiceId = @invoiceId AND TransactionType = 2;\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n SELECT @InvoiceDate = InvoiceDate FROM Invoice.Invoice WHERE InvoiceID = @invoiceId;\r\n\tEND;\r\n\r\n\tIF (@contractLineId IS NOT NULL)\r\n\tBEGIN\r\n SELECT @ret = SUM(ChangeAmount)\r\n FROM Billing.HistoricalContractLine\r\n WHERE TransactionType = 1 AND ContractLineID = @contractLineId AND StartDate < @InvoiceDate;\r\n\tEND;\r\n ELSE\r\n\tBEGIN\r\n SELECT @ret = SUM(ChangeAmount)\r\n FROM Billing.HistoricalContractLine\r\n WHERE TransactionType = 1\r\n AND ContractLineID IN (SELECT ContractLineID FROM Billing.ContractLine WHERE ContractID = @contractId AND FiscalYear = ISNULL(@FiscalYear, FiscalYear))\r\n AND StartDate < @InvoiceDate;\r\n\tEND;\r\n\t\r\n\tRETURN ISNULL(@ret, 0);\r\nEND;\r\n",
+      "created": "2025-08-25 16:04:00.693000",
+      "last_altered": "2025-08-25 16:04:00.693000",
+      "type": "FUNCTION",
+      "data_type": "decimal",
+      "is_deterministic": "YES",
+      "function_subtype": "Scalar Function"
+    },
+    "parameters": [
+      {
+        "name": "",
+        "data_type": "decimal",
+        "mode": "OUT",
+        "max_length": 9,
+        "precision": 18,
+        "scale": 2
+      },
+      {
+        "name": "@contractId",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@contractLineId",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@FiscalYear",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      },
+      {
+        "name": "@invoiceId",
+        "data_type": "int",
+        "mode": "IN",
+        "max_length": 4,
+        "precision": 10,
+        "scale": 0
+      }
+    ],
+    "chatgpt_explanation": {
+      "function_name": "UDF_GetOriginalAmt",
+      "explanation": "#### 1. Overview\nThe function `UDF_GetOriginalAmt` is a scalar function in Microsoft SQL Server. Scalar functions return a single value and are often used to encapsulate logic that can be reused across multiple queries or procedures. This function is designed to calculate or retrieve an \"original amount\" based on the input parameters provided.\n\n#### 2. Complexity Level: Medium\nThe complexity level is considered medium due to the potential for intricate logic within the function that processes input parameters to compute the original amount. The complexity can also arise from any conditional logic, mathematical operations, or database lookups involved in the function.\n\n#### 3. Input Parameters\nThe function accepts one or more input parameters, which are used to determine the original amount. These parameters can include:\n- A numeric value representing a transaction amount or a related financial figure.\n- An identifier such as an ID or code that allows the function to look up additional data from a database table.\n- A date or timestamp that be used to apply time-based logic or retrieve historical data.\n\nEach parameter serves a specific purpose in guiding the function's logic to compute the original amount accurately.\n\n#### 4. Return Type\nThe return type of the function is a numeric data type, such as `DECIMAL`, `FLOAT`, or `MONEY`, depending on the precision and scale required for the original amount. The structure is a single scalar value that represents the computed original amount.\n\n#### 5. Business Logic and Workflow\nThe business logic within `UDF_GetOriginalAmt` involves calculating the original amount based on the input parameters. The workflow include:\n- Validating input parameters to ensure they are within expected ranges or formats.\n- Performing calculations or adjustments to the input amount, such as applying discounts, taxes, or currency conversions.\n- Querying database tables to retrieve additional data needed for the calculation, such as historical rates or transaction details.\n- Applying conditional logic to handle different scenarios or business rules that affect the original amount.\n\n#### 6. Performance Considerations\nScalar functions can impact performance, especially when used in SELECT statements that process large datasets. The function's performance considerations include:\n- The efficiency of any database queries executed within the function.\n- The computational complexity of the logic, particularly if it involves loops or recursive calculations.\n- The potential for the function to be called multiple times in a single query, which can lead to increased execution time.\n\n#### 7. Potential Issues or Risks\nPotential issues or risks associated with `UDF_GetOriginalAmt` include:\n- Performance degradation if the function is used extensively in queries that process large volumes of data.\n- Incorrect results if input parameters are not validated properly or if there are errors in the business logic.\n- Maintenance challenges if the function's logic is complex or not well-documented, making it difficult to update or debug.\n- Dependency on external data sources or tables, which could lead to errors if those sources change or become unavailable.",
+      "complexity": "Medium",
+      "model_used": "gpt-4o-2024-08-06",
+      "tokens_used": 859,
+      "api_response_id": "chatcmpl-C8b6vf3KqiuFwLBOYJET4Cgn7VABR"
+    },
+    "analysis_timestamp": "2025-08-25 19:42:03"
+  }
+]
