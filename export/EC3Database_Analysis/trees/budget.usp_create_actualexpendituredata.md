@@ -1,0 +1,13 @@
+## Execution Tree — budget.usp_create_actualexpendituredata
+
+```mermaid
+graph TD
+    budget_usp_create_actualexpendituredata_1_addbudgetdata[budget.usp_create_actualexpendituredata_1_addbudgetdata]
+    budget_usp_create_actualexpendituredata_2_addactualdata[budget.usp_create_actualexpendituredata_2_addactualdata]
+    budget_usp_create_actualexpendituredata_3_mergerecords[budget.usp_create_actualexpendituredata_3_mergerecords]
+    budget_usp_create_actualexpendituredata_4_calculate[budget.usp_create_actualexpendituredata_4_calculate]
+    budget_usp_create_actualexpendituredata[budget.usp_create_actualexpendituredata] --> budget_usp_create_actualexpendituredata_1_addbudgetdata[budget.usp_create_actualexpendituredata_1_addbudgetdata]
+    budget_usp_create_actualexpendituredata[budget.usp_create_actualexpendituredata] --> budget_usp_create_actualexpendituredata_2_addactualdata[budget.usp_create_actualexpendituredata_2_addactualdata]
+    budget_usp_create_actualexpendituredata[budget.usp_create_actualexpendituredata] --> budget_usp_create_actualexpendituredata_3_mergerecords[budget.usp_create_actualexpendituredata_3_mergerecords]
+    budget_usp_create_actualexpendituredata[budget.usp_create_actualexpendituredata] --> budget_usp_create_actualexpendituredata_4_calculate[budget.usp_create_actualexpendituredata_4_calculate]
+```

@@ -1,0 +1,9 @@
+## Execution Tree — utils.usp_defragdatabase
+
+```mermaid
+graph TD
+    dbo_does[dbo.does]
+    dbo_is[dbo.is]
+    utils_usp_defragdatabase[utils.usp_defragdatabase] --> dbo_does[dbo.does]
+    utils_usp_defragdatabase[utils.usp_defragdatabase] --> dbo_is[dbo.is]
+```

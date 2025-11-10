@@ -1,0 +1,7 @@
+## Execution Tree — report.usp_published_corereportreportagencylevel
+
+```mermaid
+graph TD
+    audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+    report_usp_published_corereportreportagencylevel[report.usp_published_corereportreportagencylevel] --> audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+```

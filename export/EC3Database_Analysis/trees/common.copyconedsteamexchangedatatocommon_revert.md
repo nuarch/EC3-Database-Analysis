@@ -1,0 +1,19 @@
+## Execution Tree — common.copyconedsteamexchangedatatocommon_revert
+
+```mermaid
+graph TD
+    common_usp_processexchange_code27_revert[common.usp_processexchange_code27_revert]
+    common_usp_processexchange_code28_revert[common.usp_processexchange_code28_revert]
+    common_usp_processexchange_code45_revert[common.usp_processexchange_code45_revert]
+    common_usp_processexchange_code46_revert[common.usp_processexchange_code46_revert]
+    common_usp_processexchange_code47_revert[common.usp_processexchange_code47_revert]
+    common_usp_processexchange_codeax_revert[common.usp_processexchange_codeax_revert]
+    common_usp_processexchange_codemisc_revert[common.usp_processexchange_codemisc_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_code27_revert[common.usp_processexchange_code27_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_code28_revert[common.usp_processexchange_code28_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_code45_revert[common.usp_processexchange_code45_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_code46_revert[common.usp_processexchange_code46_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_code47_revert[common.usp_processexchange_code47_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_codeax_revert[common.usp_processexchange_codeax_revert]
+    common_copyconedsteamexchangedatatocommon_revert[common.copyconedsteamexchangedatatocommon_revert] --> common_usp_processexchange_codemisc_revert[common.usp_processexchange_codemisc_revert]
+```

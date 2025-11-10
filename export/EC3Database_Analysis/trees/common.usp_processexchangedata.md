@@ -1,0 +1,19 @@
+## Execution Tree — common.usp_processexchangedata
+
+```mermaid
+graph TD
+    common_usp_processexchange_code27[common.usp_processexchange_code27]
+    common_usp_processexchange_code28[common.usp_processexchange_code28]
+    common_usp_processexchange_code45[common.usp_processexchange_code45]
+    common_usp_processexchange_code46[common.usp_processexchange_code46]
+    common_usp_processexchange_code47[common.usp_processexchange_code47]
+    common_usp_processexchange_codeax[common.usp_processexchange_codeax]
+    common_usp_processexchange_codemisc[common.usp_processexchange_codemisc]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_code27[common.usp_processexchange_code27]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_code28[common.usp_processexchange_code28]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_code45[common.usp_processexchange_code45]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_code46[common.usp_processexchange_code46]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_code47[common.usp_processexchange_code47]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_codeax[common.usp_processexchange_codeax]
+    common_usp_processexchangedata[common.usp_processexchangedata] --> common_usp_processexchange_codemisc[common.usp_processexchange_codemisc]
+```

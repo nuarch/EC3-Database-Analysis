@@ -1,0 +1,7 @@
+## Execution Tree — report.usp_dataexport_tariffchangetracking
+
+```mermaid
+graph TD
+    audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+    report_usp_dataexport_tariffchangetracking[report.usp_dataexport_tariffchangetracking] --> audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+```

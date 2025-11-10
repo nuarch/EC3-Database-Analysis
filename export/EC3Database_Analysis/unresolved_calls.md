@@ -1,0 +1,73 @@
+# Unresolved Procedure Calls (likely cross-DB or missing)
+
+- batch.usp_process_main_checknobackbills:
+  - dbo.finalcheckofbackbillingattheaccountlevel
+- batch.usp_process_main_exchangeinfo:
+  - dbo.below
+- billing.usp_searchaccountsby_excel_export:
+  - billing.usp_searchaccountsby
+  - billing.usp_searchaccountsby_updated
+- common.usp_coned_handleexchangedataissues:
+  - dbo.this
+- coned.archive_usp_processconedloadrawandtransformdata:
+  - coned.usp_identifyandcorrectmeterdatafromandtodate
+  - coned.usp_identifyrefundsforgasrate036
+  - coned.usp_identifyuniquenetzerotransactionsandremovebycursor
+  - coned.usp_parsespannedbilleduploadconedisonaccountinfo
+  - coned.usp_parsespannedbilleduploadconedisoncancellationinfo
+  - dbo.xp_cmdshell
+- coned.usp_upload_1_loadrawdata:
+  - dbo.xp_cmdshell
+- crisnationalgridwest.usp_cris_loadcrisrawdata:
+  - dbo.xp_cmdshell
+- crisnationalgridwest.usp_cris_processmeterpreparedataafterexchanges:
+  - dbo.declare
+- crisnationalgridwest.usp_exportextracteddatatoflatfileformatforeccs:
+  - dbo.master
+- crisnationalgridwest.usp_processexchangeinfo:
+  - crisnationalgridwest.usp_processexchangecode_45
+  - crisnationalgridwest.usp_processexchangecode_46
+  - crisnationalgridwest.usp_processexchangecode_47
+- dbo.sp_cmdshell_run_test:
+  - dbo.xp_cmdshell
+- dbo.usp_execreorgrebuildindex:
+  - dbo.as
+- manualbill.usp_manualbilling_transferdatatoaccountbilling:
+  - common.usp_updateuniqueseqidsforalltables
+- nationalgridwest.usp_legacydata_main_processlegacynationalgriddata:
+  - nationalgridwest.usp_legacydata_preparerawdata
+- nypa.usp_moverawdataintocurrentbillingcyclebatchfile:
+  - dbo.master
+- nypa.usp_nypamoverawdataintocurrentbillingcyclebatchfile:
+  - dbo.master
+- nypa.usp_processaccountbillingrebills:
+  - dbo.the
+- nypa.usp_processexchangeinfo:
+  - nypa.usp_processexchangecode_27
+  - nypa.usp_processexchangecode_28
+  - nypa.usp_processexchangecode_45
+  - nypa.usp_processexchangecode_46
+  - nypa.usp_processexchangecode_47
+- nypa.usp_processnyparawdata:
+  - dbo.xp_cmdshell
+- published.usp_ssis_createdepextractinseptsformat:
+  - dbo.xp_cmdshell
+- published.usp_ssis_createseptscsvextract:
+  - dbo.xp_cmdshell
+- utils.usp_cleanupandshrinkdatabaseexample:
+  - dbo.master
+- utils.usp_defragdatabase:
+  - dbo.does
+  - dbo.is
+- utils.usp_execreorgrebuildindex:
+  - dbo.as
+- utils.usp_grantauthorizationtoschema:
+  - dbo.on
+- utils.usp_grantexecutetofunction:
+  - dbo.on
+- utils.usp_grantexecutetouserdefinedtypes:
+  - dbo.on
+- utils.usp_grantpermissionontableorview:
+  - dbo.on
+- utils.usp_grantpermissionsontablesandviews:
+  - dbo.on

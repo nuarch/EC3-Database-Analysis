@@ -1,0 +1,7 @@
+## Execution Tree — report.usp_lookup_getaccountlistfortariffreport
+
+```mermaid
+graph TD
+    audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+    report_usp_lookup_getaccountlistfortariffreport[report.usp_lookup_getaccountlistfortariffreport] --> audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+```

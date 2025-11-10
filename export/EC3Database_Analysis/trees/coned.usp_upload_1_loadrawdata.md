@@ -1,0 +1,11 @@
+## Execution Tree — coned.usp_upload_1_loadrawdata
+
+```mermaid
+graph TD
+    coned_usp_validation_checkcurrentprocessingperiod[coned.usp_validation_checkcurrentprocessingperiod]
+    coned_usp_validation_checkrawdatatotal[coned.usp_validation_checkrawdatatotal]
+    dbo_xp_cmdshell[dbo.xp_cmdshell]
+    coned_usp_upload_1_loadrawdata[coned.usp_upload_1_loadrawdata] --> coned_usp_validation_checkcurrentprocessingperiod[coned.usp_validation_checkcurrentprocessingperiod]
+    coned_usp_upload_1_loadrawdata[coned.usp_upload_1_loadrawdata] --> coned_usp_validation_checkrawdatatotal[coned.usp_validation_checkrawdatatotal]
+    coned_usp_upload_1_loadrawdata[coned.usp_upload_1_loadrawdata] --> dbo_xp_cmdshell[dbo.xp_cmdshell]
+```

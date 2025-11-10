@@ -1,0 +1,7 @@
+## Execution Tree — dbo.aspnet_personalizationperuser_resetpagesettings
+
+```mermaid
+graph TD
+    dbo_aspnet_personalization_getapplicationid[dbo.aspnet_personalization_getapplicationid]
+    dbo_aspnet_personalizationperuser_resetpagesettings[dbo.aspnet_personalizationperuser_resetpagesettings] --> dbo_aspnet_personalization_getapplicationid[dbo.aspnet_personalization_getapplicationid]
+```

@@ -1,0 +1,7 @@
+## Execution Tree — nypa.usp_processnyparawdata
+
+```mermaid
+graph TD
+    dbo_xp_cmdshell[dbo.xp_cmdshell]
+    nypa_usp_processnyparawdata[nypa.usp_processnyparawdata] --> dbo_xp_cmdshell[dbo.xp_cmdshell]
+```

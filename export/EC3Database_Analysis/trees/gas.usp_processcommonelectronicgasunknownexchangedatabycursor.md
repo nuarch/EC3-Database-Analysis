@@ -1,0 +1,7 @@
+## Execution Tree — gas.usp_processcommonelectronicgasunknownexchangedatabycursor
+
+```mermaid
+graph TD
+    gas_usp_processcommonelectronicgasunknownexchangecode[gas.usp_processcommonelectronicgasunknownexchangecode]
+    gas_usp_processcommonelectronicgasunknownexchangedatabycursor[gas.usp_processcommonelectronicgasunknownexchangedatabycursor] --> gas_usp_processcommonelectronicgasunknownexchangecode[gas.usp_processcommonelectronicgasunknownexchangecode]
+```

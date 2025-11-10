@@ -1,0 +1,7 @@
+## Execution Tree — common.usp_inactiveec3users
+
+```mermaid
+graph TD
+    membership_usp_membership_getalluser[membership.usp_membership_getalluser]
+    common_usp_inactiveec3users[common.usp_inactiveec3users] --> membership_usp_membership_getalluser[membership.usp_membership_getalluser]
+```

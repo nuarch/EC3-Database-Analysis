@@ -1,0 +1,7 @@
+## Execution Tree — report.usp_published_monthlyfacilitydata_export
+
+```mermaid
+graph TD
+    audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+    report_usp_published_monthlyfacilitydata_export[report.usp_published_monthlyfacilitydata_export] --> audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+```

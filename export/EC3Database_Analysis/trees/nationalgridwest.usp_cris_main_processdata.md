@@ -1,0 +1,13 @@
+## Execution Tree — nationalgridwest.usp_cris_main_processdata
+
+```mermaid
+graph TD
+    nationalgridwest_usp_cris_processaccountdata[nationalgridwest.usp_cris_processaccountdata]
+    nationalgridwest_usp_cris_processmeterdata[nationalgridwest.usp_cris_processmeterdata]
+    nationalgridwest_usp_legacydata_preparedatatransfer[nationalgridwest.usp_legacydata_preparedatatransfer]
+    nationalgridwest_usp_legacydata_transferdatatoschematables[nationalgridwest.usp_legacydata_transferdatatoschematables]
+    nationalgridwest_usp_cris_main_processdata[nationalgridwest.usp_cris_main_processdata] --> nationalgridwest_usp_cris_processaccountdata[nationalgridwest.usp_cris_processaccountdata]
+    nationalgridwest_usp_cris_main_processdata[nationalgridwest.usp_cris_main_processdata] --> nationalgridwest_usp_cris_processmeterdata[nationalgridwest.usp_cris_processmeterdata]
+    nationalgridwest_usp_cris_main_processdata[nationalgridwest.usp_cris_main_processdata] --> nationalgridwest_usp_legacydata_preparedatatransfer[nationalgridwest.usp_legacydata_preparedatatransfer]
+    nationalgridwest_usp_cris_main_processdata[nationalgridwest.usp_cris_main_processdata] --> nationalgridwest_usp_legacydata_transferdatatoschematables[nationalgridwest.usp_legacydata_transferdatatoschematables]
+```

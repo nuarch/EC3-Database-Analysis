@@ -1,0 +1,7 @@
+## Execution Tree — nationalgridwest.usp_legacydata_processmeterspanned
+
+```mermaid
+graph TD
+    nationalgridwest_usp_legacydata_parsespannedmeterinfo[nationalgridwest.usp_legacydata_parsespannedmeterinfo]
+    nationalgridwest_usp_legacydata_processmeterspanned[nationalgridwest.usp_legacydata_processmeterspanned] --> nationalgridwest_usp_legacydata_parsespannedmeterinfo[nationalgridwest.usp_legacydata_parsespannedmeterinfo]
+```

@@ -1,0 +1,7 @@
+## Execution Tree — report.usp_getheatingcoolingdegreedays_updated
+
+```mermaid
+graph TD
+    audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+    report_usp_getheatingcoolingdegreedays_updated[report.usp_getheatingcoolingdegreedays_updated] --> audit_usp_addreportusagelog[audit.usp_addreportusagelog]
+```

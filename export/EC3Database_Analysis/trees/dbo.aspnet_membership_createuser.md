@@ -1,0 +1,7 @@
+## Execution Tree — dbo.aspnet_membership_createuser
+
+```mermaid
+graph TD
+    dbo_aspnet_applications_createapplication[dbo.aspnet_applications_createapplication]
+    dbo_aspnet_membership_createuser[dbo.aspnet_membership_createuser] --> dbo_aspnet_applications_createapplication[dbo.aspnet_applications_createapplication]
+```
