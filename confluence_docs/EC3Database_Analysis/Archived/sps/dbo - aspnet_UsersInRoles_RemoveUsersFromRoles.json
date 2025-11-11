@@ -1,0 +1,1148 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "dbo",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "aspnet_UsersInRoles_RemoveUsersFromRoles",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "aspnet_UsersInRoles_RemoveUsersFromRoles",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to remove specified users from specified roles within a given application in a Microsoft SQL Server database. It operates by taking a list of usernames and role names, validating their existence within the application, and then removing the associations between these users and roles in the "
+        },
+        {
+          "type": "text",
+          "text": "aspnet_UsersInRoles",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including string parsing, validation checks, and transactional operations. While the logic is straightforward, the use of temporary tables and transaction management adds a layer of complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ApplicationName nvarchar(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The name of the application for which the users and roles are defined. It is used to scope the operation to a specific application."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UserNames nvarchar(4000)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A comma-separated list of usernames to be removed from roles. The procedure parses this list to identify individual users."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@RoleNames nvarchar(4000)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A comma-separated list of role names from which users are to be removed. The procedure parses this list to identify individual roles."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Application ID Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure starts by retrieving the "
+                },
+                {
+                  "type": "text",
+                  "text": "ApplicationId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for the given "
+                },
+                {
+                  "type": "text",
+                  "text": "@ApplicationName",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". If the application does not exist, it returns with a status code of "
+                },
+                {
+                  "type": "text",
+                  "text": "2",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if a transaction is already in progress. If not, it begins a new transaction and sets a flag to indicate this."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Role Parsing and Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Parses the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@RoleNames",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " string to extract individual role names."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts these names into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@tbNames",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Validates the roles against the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "aspnet_Roles",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table for the specified application. If any role does not exist, it rolls back the transaction and returns "
+                        },
+                        {
+                          "type": "text",
+                          "text": "2",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "User Parsing and Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Parses the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@UserNames",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " string to extract individual usernames."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts these names into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@tbNames",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Validates the users against the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "aspnet_Users",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table for the specified application. If any user does not exist, it rolls back the transaction and returns "
+                        },
+                        {
+                          "type": "text",
+                          "text": "1",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Association Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Checks if all specified user-role associations exist in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "aspnet_UsersInRoles",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table. If any association is missing, it rolls back the transaction and returns "
+                        },
+                        {
+                          "type": "text",
+                          "text": "3",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Deletes the user-role associations from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "aspnet_UsersInRoles",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table for the validated users and roles."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Commits the transaction if it was started by this procedure."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Return Status",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Returns "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " upon successful completion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "String Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses a loop to parse comma-separated strings, which can be inefficient for large lists. Consider using a table-valued parameter or a string-splitting function for better performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of in-memory tables ("
+                },
+                {
+                  "type": "text",
+                  "text": "@tbNames",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "@tbRoles",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "@tbUsers",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") is efficient for small datasets but may impact performance if the lists are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure manages its own transaction, which is necessary for ensuring data integrity but can lead to locking and blocking if the operation takes a long time."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may encounter issues with concurrent modifications to the "
+                },
+                {
+                  "type": "text",
+                  "text": "aspnet_UsersInRoles",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, leading to potential deadlocks or blocking."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses return codes for error handling, which may not provide detailed error information. Consider using "
+                },
+                {
+                  "type": "text",
+                  "text": "TRY...CATCH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " blocks for more robust error handling."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure's reliance on string parsing and temporary tables may not scale well with very large input lists."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Case Sensitivity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses "
+                },
+                {
+                  "type": "text",
+                  "text": "LOWER()",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for case-insensitive comparisons, which assumes that the database collation supports case-insensitive operations. This may not be the case in all environments."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [dbo].[aspnet_UsersInRoles_RemoveUsersFromRoles]\n\t@ApplicationName  nvarchar(256),\r\n\t@UserNames\t\t  nvarchar(4000),\r\n\t@RoleNames\t\t  nvarchar(4000)\r\nAS\r\nBEGIN\r\n\tDECLARE @AppId uniqueidentifier\r\n\tSELECT  @AppId = NULL\r\n\tSELECT  @AppId = ApplicationId FROM aspnet_Applications WHERE LOWER(@ApplicationName) = LoweredApplicationName\r\n\tIF (@AppId IS NULL)\r\n\t\tRETURN(2)\r\n\r\n\r\n\tDECLARE @TranStarted   bit\r\n\tSET @TranStarted = 0\r\n\r\n\tIF( @@TRANCOUNT = 0 )\r\n\tBEGIN\r\n\t\tBEGIN TRANSACTION\r\n\t\tSET @TranStarted = 1\r\n\tEND\r\n\r\n\tDECLARE @tbNames  table(Name nvarchar(256) NOT NULL PRIMARY KEY)\r\n\tDECLARE @tbRoles  table(RoleId uniqueidentifier NOT NULL PRIMARY KEY)\r\n\tDECLARE @tbUsers  table(UserId uniqueidentifier NOT NULL PRIMARY KEY)\r\n\tDECLARE @Num\t  int\r\n\tDECLARE @Pos\t  int\r\n\tDECLARE @NextPos  int\r\n\tDECLARE @Name\t  nvarchar(256)\r\n\tDECLARE @CountAll int\r\n\tDECLARE @CountU\t  int\r\n\tDECLARE @CountR\t  int\r\n\r\n\r\n\tSET @Num = 0\r\n\tSET @Pos = 1\r\n\tWHILE(@Pos <= LEN(@RoleNames))\r\n\tBEGIN\r\n\t\tSELECT @NextPos = CHARINDEX(N',', @RoleNames,  @Pos)\r\n\t\tIF (@NextPos = 0 OR @NextPos IS NULL)\r\n\t\t\tSELECT @NextPos = LEN(@RoleNames) + 1\r\n\t\tSELECT @Name = RTRIM(LTRIM(SUBSTRING(@RoleNames, @Pos, @NextPos - @Pos)))\r\n\t\tSELECT @Pos = @NextPos+1\r\n\r\n\t\tINSERT INTO @tbNames VALUES (@Name)\r\n\t\tSET @Num = @Num + 1\r\n\tEND\r\n\r\n\tINSERT INTO @tbRoles\r\n\t  SELECT RoleId\r\n\t  FROM dbo.aspnet_Roles ar, @tbNames t\r\n\t  WHERE  LOWER(t.Name) = ar.LoweredRoleName AND ar.ApplicationId = @AppId\r\n\tSELECT @CountR = @@ROWCOUNT\r\n\r\n\tIF (@CountR <> @Num)\r\n\tBEGIN\r\n\t\tSELECT TOP 1 N'', Name\r\n\t\tFROM @tbNames\r\n\t\tWHERE  LOWER(Name) NOT IN (SELECT ar.LoweredRoleName FROM dbo.aspnet_Roles ar,  @tbRoles r WHERE r.RoleId = ar.RoleId)\r\n\t\tIF( @TranStarted = 1 )\r\n\t\t\tROLLBACK TRANSACTION\r\n\t\tRETURN(2)\r\n\tEND\r\n\r\n\r\n\tDELETE FROM @tbNames WHERE 1=1\r\n\tSET @Num = 0\r\n\tSET @Pos = 1\r\n\r\n\r\n\tWHILE(@Pos <= LEN(@UserNames))\r\n\tBEGIN\r\n\t\tSELECT @NextPos = CHARINDEX(N',', @UserNames,  @Pos)\r\n\t\tIF (@NextPos = 0 OR @NextPos IS NULL)\r\n\t\t\tSELECT @NextPos = LEN(@UserNames) + 1\r\n\t\tSELECT @Name = RTRIM(LTRIM(SUBSTRING(@UserNames, @Pos, @NextPos - @Pos)))\r\n\t\tSELECT @Pos = @NextPos+1\r\n\r\n\t\tINSERT INTO @tbNames VALUES (@Name)\r\n\t\tSET @Num = @Num + 1\r\n\tEND\r\n\r\n\tINSERT INTO @tbUsers\r\n\t  SELECT UserId\r\n\t  FROM dbo.aspnet_Users ar, @tbNames t\r\n\t  WHERE  LOWER(t.Name) = ar.LoweredUserName AND ar.ApplicationId = @AppId\r\n\r\n\tSELECT @CountU = @@ROWCOUNT\r\n\tIF (@CountU <> @Num)\r\n\tBEGIN\r\n\t\tSELECT TOP 1 Name, N''\r\n\t\tFROM @tbNames\r\n\t\tWHERE  LOWER(Name) NOT IN (SELECT au.LoweredUserName FROM dbo.aspnet_Users au,  @tbUsers u WHERE u.UserId = au.UserId)\r\n\r\n\t\tIF( @TranStarted = 1 )\r\n\t\t\tROLLBACK TRANSACTION\r\n\t\tRETURN(1)\r\n\tEND\r\n\r\n\tSELECT  @CountAll = COUNT(*)\r\n\tFROM\tdbo.aspnet_UsersInRoles ur, @tbUsers u, @tbRoles r\r\n\tWHERE   ur.UserId = u.UserId AND ur.RoleId = r.RoleId\r\n\r\n\tIF (@CountAll <> @CountU * @CountR)\r\n\tBEGIN\r\n\t\tSELECT TOP 1 UserName, RoleName\r\n\t\tFROM\t\t @tbUsers tu, @tbRoles tr, dbo.aspnet_Users u, dbo.aspnet_Roles r\r\n\t\tWHERE\t\t u.UserId = tu.UserId AND r.RoleId = tr.RoleId AND\r\n\t\t\t\t\t tu.UserId NOT IN (SELECT ur.UserId FROM dbo.aspnet_UsersInRoles ur WHERE ur.RoleId = tr.RoleId) AND\r\n\t\t\t\t\t tr.RoleId NOT IN (SELECT ur.RoleId FROM dbo.aspnet_UsersInRoles ur WHERE ur.UserId = tu.UserId)\r\n\t\tIF( @TranStarted = 1 )\r\n\t\t\tROLLBACK TRANSACTION\r\n\t\tRETURN(3)\r\n\tEND\r\n\r\n\tDELETE FROM dbo.aspnet_UsersInRoles\r\n\tWHERE UserId IN (SELECT UserId FROM @tbUsers)\r\n\t  AND RoleId IN (SELECT RoleId FROM @tbRoles)\r\n\tIF( @TranStarted = 1 )\r\n\t\tCOMMIT TRANSACTION\r\n\tRETURN(0)\r\nEND"
+        }
+      ]
+    }
+  ]
+}

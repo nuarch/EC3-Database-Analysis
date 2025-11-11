@@ -1,0 +1,831 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Utils",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GrantPermissionOnTableOrView",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GrantPermissionOnTableOrView",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to grant specific database permissions (SELECT, INSERT, and UPDATE) on all non-dbo tables and views within the database to a specified domain user. It dynamically constructs and executes SQL statements to apply these permissions, iterating over each table and view found in the "
+        },
+        {
+          "type": "text",
+          "text": "INFORMATION_SCHEMA.TABLES",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " view."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves dynamic SQL execution and cursor operations, which adds a moderate level of complexity. It requires understanding of SQL Server security, dynamic SQL, and cursor usage."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ActiveDirectoryDomainName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the domain name of the Active Directory user."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@DomainUserName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the username of the domain user to whom permissions will be granted."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "These parameters are used to construct the full domain user identifier in the format "
+        },
+        {
+          "type": "text",
+          "text": "DomainName\\UserName",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Several variables are declared for constructing SQL statements and managing cursor operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "User Construction",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The full domain user identifier is constructed by concatenating the domain name and username."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor "
+                },
+                {
+                  "type": "text",
+                  "text": "GrantPermissionToTableAndViews",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to iterate over all tables and views that are not in the "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " schema or are views."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The cursor is opened, and each table or view is fetched."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For each fetched item, dynamic SQL statements are constructed to grant SELECT, INSERT, and UPDATE permissions to the specified domain user."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "These SQL statements are executed using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "sp_executesql",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The process repeats until all tables and views have been processed."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after use."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "sp_executesql",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for dynamic SQL execution can be resource-intensive, especially if there are many tables and views."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Cursors can be slow and consume more resources compared to set-based operations. However, in this context, they are necessary for iterating over each table and view."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Schema Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure filters out the "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " schema, which reduces the number of objects processed, potentially improving performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security Risks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Granting broad permissions to a user can pose security risks if not carefully managed. Ensure that the domain user has been properly vetted and that permissions are necessary."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling. If an error occurs during the execution of a dynamic SQL statement, it could halt the procedure without proper logging or notification."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure are run simultaneously, there could be conflicts or unexpected behavior due to concurrent modifications."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Schema Changes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the schema of the database changes (e.g., new tables or views are added), the procedure will need to be re-executed to apply permissions to new objects."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that all non-dbo tables and views require the same permissions, which may not align with specific business rules or security policies."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Utils].[usp_GrantPermissionOnTableOrView] (@ActiveDirectoryDomainName NVARCHAR(256),@DomainUserName NVARCHAR(256))\nas\r\n--**************************************************************************************\r\n--\r\n--\r\n--\t\t\t\t\tALTER AUTHORIZATION ON SCHEMA::[Budget] TO [DCAS\\ec3applogin]\r\n--\r\n--\t\t\t\t\tGRANT INSERT ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\t\t\t\t\tGRANT SELECT ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\t\t\t\t\tGRANT UPDATE ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\r\n--\t\t\t\t\tGRANT EXECUTE ON [Gas].[usp_ProcessGasAccountBilling] TO [DCAS\\ec3applogin]\r\n--\r\n--\r\n--Declare Variables                                            \r\n--**************************************************************************************\r\ndeclare @I int\r\ndeclare @SQLString NVARCHAR(512)\r\ndeclare @View NVARCHAR(512)\r\ndeclare @SchemaQualifiedTriggerName NVARCHAR(256)\r\ndeclare @TABLE_SCHEMA NVARCHAR(256)\r\ndeclare @TABLE_NAME NVARCHAR(256)\r\ndeclare @TABLE_TYPE NVARCHAR(256)\r\ndeclare @DOMAIN_SCHEMA NVARCHAR(256)\r\ndeclare @DOMAIN_NAME NVARCHAR(256) \r\ndeclare @COLUMN_NAME NVARCHAR(256)\r\ndeclare @View_SCHEMA_NAME NVARCHAR(256)\r\ndeclare @View_NAME NVARCHAR(256)\r\ndeclare @IsTable VARCHAR(1)\r\n\r\n\r\n--\r\ndeclare @SqlQuote char(1)\r\n--\r\ndeclare @UserName NVARCHAR(256)\r\n--\r\nset @UserName = @ActiveDirectoryDomainName+'\\\\'+@DomainUserName\r\n--\r\nset @I = 0\r\nset @SqlQuote = char(39)\r\n--\r\n------SELECT name, schema_id, principal_id\r\n------FROM sys.schemas\r\n------WHERE (principal_id = 20) and not schema_id in (46,16405)\r\n------order by name\r\n------\r\n------SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE\r\n------FROM INFORMATION_SCHEMA.TABLES\r\n------where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA <> 'dbo' or  TABLE_TYPE = 'VIEW'\r\n------\r\n------\r\n------SELECT SPECIFIC_CATALOG, SPECIFIC_SCHEMA, SPECIFIC_NAME, ROUTINE_TYPE\r\n------FROM INFORMATION_SCHEMA.ROUTINES\r\n------where ROUTINE_TYPE like 'F%'\r\n\r\n\r\n-- \r\nDECLARE GrantPermissionToTableAndViews CURSOR FOR\r\nSELECT TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE\r\nFROM INFORMATION_SCHEMA.TABLES\r\nwhere TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA <> 'dbo' or  TABLE_TYPE = 'VIEW'\r\n--\r\nOPEN GrantPermissionToTableAndViews;\r\n--\r\nFETCH NEXT FROM GrantPermissionToTableAndViews INTO \r\n\t\t@TABLE_SCHEMA, @TABLE_NAME, @TABLE_TYPE\r\n--\r\n-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n\r\nWHILE @@FETCH_STATUS = 0\r\n   BEGIN\r\n\t--\r\n\t\tset @SQLString = 'GRANT SELECT ON ' +@TABLE_SCHEMA+'.'+@TABLE_NAME+' TO '+ @DomainUserName\r\n\t\tprint cast(@I as varchar(3))+') Grant: '+@SQLString\r\n\t\tEXEC sp_executesql @SQLString;\r\n\t\tset @I = @I+1\r\n\r\n\t\tset @SQLString = 'GRANT INSERT ON ' +@TABLE_SCHEMA+'.'+@TABLE_NAME+' TO '+ @DomainUserName\r\n\t\tprint cast(@I as varchar(3))+') Grant: '+@SQLString\r\n\t\tEXEC sp_executesql @SQLString;\r\n\t\tset @I = @I+1\r\n\r\n\t\tset @SQLString = 'GRANT UPDATE ON ' +@TABLE_SCHEMA+'.'+@TABLE_NAME+' TO '+ @DomainUserName\r\n\t\tprint cast(@I as varchar(3))+') Grant: '+@SQLString\r\n\t\tEXEC sp_executesql @SQLString;\r\n\t\tset @I = @I+1\r\n\r\n\t--\r\nFETCH NEXT FROM GrantPermissionToTableAndViews INTO \r\n\t\t@TABLE_SCHEMA, @TABLE_NAME, @TABLE_TYPE\r\n   END\r\n\r\nCLOSE GrantPermissionToTableAndViews;\r\nDEALLOCATE GrantPermissionToTableAndViews;"
+        }
+      ]
+    }
+  ]
+}

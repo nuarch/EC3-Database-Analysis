@@ -1,0 +1,1051 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessExchange_Code28_Revert",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "[Common].[usp_ProcessExchange_Code28_Revert]",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to revert an account closure process identified by a specific exchange sequence ID ("
+        },
+        {
+          "type": "text",
+          "text": "@ExchangeSeqid",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "). This procedure checks various conditions to ensure the account can be reverted, retrieves historical data from audit tables, and updates the current records in the "
+        },
+        {
+          "type": "text",
+          "text": "Billing",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema to reflect the previous state. It also updates the "
+        },
+        {
+          "type": "text",
+          "text": "Common.ExchangeData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table to mark the exchange as reverted."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple validation checks, conditional logic, and transactional updates across several tables. It uses Common Table Expressions (CTEs) for retrieving historical data, which adds to its complexity. The use of transactions and error handling further increases the complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ExchangeSeqid INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The unique identifier for the exchange record to be reverted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the user performing the operation, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that indicates the success (1) or failure (0) of the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Message VARCHAR(1000) OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that provides a message about the procedure's execution status."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure first checks if the exchange record is flagged as excluded. If so, it exits with a message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It verifies the existence of the exchange record. If not found, it exits with a message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if the exchange has been processed. If not, it exits with a message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It ensures that the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountSeqid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is present in the exchange record. If missing, it exits with a message."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if the account is in a status that allows reversion (status '28')."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction and Reversion Process",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A transaction is initiated to ensure atomicity."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Historical data for the account and meter is retrieved using CTEs from audit tables."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to revert the account status to its previous state."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Meter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to revert the meter status."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.AccountExchangeMeterTrack",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to revert associated records."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The transaction is committed if all updates are successful."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Post-Transaction Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.ExchangeData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is updated to mark the exchange as reverted ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "IsProcessed = 'R'",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ")."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If any error occurs during the transaction, it is rolled back, and an error message is set."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "ExchangeDataSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize the SELECT and UPDATE operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CTE Performance",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of CTEs for retrieving the latest audit records is efficient but should be monitored for performance, especially if the audit tables grow large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is well-defined, but long-running transactions can lead to locks. Ensure that the procedure is optimized to minimize execution time."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple updates within a transaction. Concurrent executions could lead to locking issues, especially if the same records are being processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the audit tables do not have the expected historical data, the reversion process might not restore the correct previous state."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error handling is generic and does not capture specific error messages or codes, which could make troubleshooting difficult."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the CTEs and the overall procedure might degrade. Regular monitoring and optimization may be necessary."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that only authorized users can execute this procedure, as it involves critical updates to account and meter statuses."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Common].[usp_ProcessExchange_Code28_Revert] @ExchangeSeqid INT , @AuthenticatedUserID INT, @StatusCode int OUTPUT, @Message VARCHAR(1000) out\n AS \r\n\r\n--**************************************************************************************\r\n--* Description:\t\"28\" revert an account closure\r\n--*\r\n--* AUTHOR:       Zafer Durmaz\r\n--* Created On:   07/19/2016\r\n--**************************************************************************************\r\n--* Change Log\r\n--* \r\n--* 07/19/2016 zd  First Version \r\n--**************************************************************************************\r\n\r\nBEGIN\r\n\r\n\t\tDECLARE @RecordExchangeCode VARCHAR(2)\r\n\r\n\r\n\t\t-- if the record is flagged as exclude, return and exit\r\n\t\tIF ( 'Y' = ( SELECT Exclude FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid) )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'This exchange is excluded from processing. ExchangeSeqid: ' + CAST( @ExchangeSeqid AS VARCHAR ) \r\n\t\t\tSET @StatusCode = 1\t-- this is not necessary an error\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- do some validation \r\n\r\n\t\t-- CHECK IF the record exists\r\n\t\tIF ( NOT EXISTS ( SELECT ExchangeDataSeqid FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid ))\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'The ExchangeSeqid ' + CAST( @ExchangeSeqid AS VARCHAR ) + ' does not exist. Please verify '\r\n\t\t\tSET @StatusCode = 0\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- check if the record was not processed\r\n\t\tIF ( 'N' = ( SELECT IsProcessed FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid) )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'This exchange code was not processed. It cannot be reverted ExchangeSeqid: ' + CAST( @ExchangeSeqid AS VARCHAR ) \r\n\t\t\tSET @StatusCode = 0\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- the process to add an AccountSeqid\r\n\t\tDECLARE @AccountSeqid INT\r\n        DECLARE @MeterSeqid INT\r\n\t\tDECLARE @UniqueAccountSeqid INT\r\n\t\tDECLARE @UniqueMeterSeqid INT\r\n        DECLARE @AccountNumber VARCHAR(15)\r\n        \r\n\t\tSELECT @AccountSeqid = AccountSeqid,@MeterSeqid=MeterSeqid, @AccountNumber = CurrentAccountNumber FROM Common.ExchangeData WHERE ExchangeDataSeqid = @ExchangeSeqid\r\n\r\n\t\tIF ( @AccountSeqid IS NULL )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'The Exchange ' + CAST( @ExchangeSeqid AS VARCHAR ) + ' is missing an AccountSeqid that are required for a reversal. Please verify '\r\n\t\t\tSET @StatusCode = 0\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\t\t-- check if the Account number is turned off and ready for revert\r\n\t\tIF ( NOT EXISTS ( SELECT * FROM Billing.Account WHERE AccountSeqid = @AccountSeqid AND AccountStatus = '28' AND IsCurrentRecord = 'Y' ) )\r\n\t\tBEGIN\r\n\t\t\tSET @Message = 'The Account number: ' + @AccountNumber + ' is not in the system under 28 status. The exchange cannot be reverted. Please verfiy ' \r\n\t\t\tSET @StatusCode = 0\r\n\t\t\tRETURN\r\n\t\tEND\r\n\r\n\r\n\t\tBEGIN TRY\t\r\n\r\n\t\t\t\tBEGIN TRANSACTION RevertAccountTurnOff\r\n\r\n\t\t\t\t-- get some info for the insert\r\n\t\t\t\tSELECT @UniqueAccountSeqid = UniqueAccountSeqid FROM Billing.Account WHERE AccountSeqid = @AccountSeqid\r\n\t\t\t\tSELECT @UniqueMeterSeqid = UniqueMeterSeqid FROM Billing.Meter WHERE MeterSeqid = @MeterSeqid\r\n\t\t\t\t\r\n\t\t\t\t\r\n\r\n\t\t\t\t-- construct the dataset\r\n\t\t\t\t;WITH cte_PreviousAccountVersion AS\r\n\t\t\t\t(\r\n\t\t\t\t   SELECT *, ROW_NUMBER() OVER (PARTITION BY AccountSeqid ORDER BY AuditDateTime DESC) AS rn\r\n\t\t\t\t   FROM Audit.AuditAccount\r\n\t\t\t\t   WHERE UniqueAccountSeqid = @UniqueAccountSeqid\r\n\t\t\t\t)\t\r\n\r\n\t\t\t\t-- turn on account\r\n\t\t\t\tUPDATE Billing.Account\t\r\n\t\t\t\t\tSet \r\n\t\t\t\t\tAccountPreviousStatus\t = cte_PreviousAccountVersion.AccountPreviousStatus ,\r\n\t\t\t\t\tAccountStatus\t\t\t = cte_PreviousAccountVersion.AccountStatus\r\n\t\t\t\t\t,AccountStatusCodePeriod = cte_PreviousAccountVersion.AccountStatusCodePeriod\r\n\t\t\t\t\t,AccountEffectiveTurnOff = cte_PreviousAccountVersion.AccountEffectiveTurnOff\r\n\t\t\t\t\t,TurnOffDate\t\t\t = cte_PreviousAccountVersion.TurnOffDate\r\n\t\t\t\t\t,FireAuditTrigger\t\t = 'N'\r\n\t\t\t\t\t,AuthenticatedUserID     = cte_PreviousAccountVersion.AuthenticatedUserID\r\n\t\t\t\t\t,LastUpdate\t\t\t\t = GETDATE()\r\n\t\t\t\tFROM cte_PreviousAccountVersion INNER JOIN  Billing.Account ON Account.AccountSeqid = cte_PreviousAccountVersion.AccountSeqid\r\n\t\t\t\tWHERE rn = 1\r\n\r\n\t\t\t\t-----------------------------\r\n\r\n\t\t\t\t-- construct the dataset for meter revert\r\n\t\t\t\t;WITH cte_PreviouMeterVersion AS\r\n\t\t\t\t(\r\n\t\t\t\t   SELECT *, ROW_NUMBER() OVER (PARTITION BY MeterSeqid ORDER BY AuditDateTime DESC) AS rn2\r\n\t\t\t\t   FROM Audit.AuditMeter\r\n\t\t\t\t   WHERE OriginalAccountNumber = @AccountNumber\r\n\t\t\t\t   -- unique meternumbers are not available for most meters in audit table\r\n\t\t\t\t   --WHERE UniqueMeterSeqid = @UniqueMeterSeqid\r\n\t\t\t\t)\t\r\n\r\n\r\n\t\t\t\t-- update / revert associated meters\r\n\t\t\t\tUPDATE Billing.Meter\t\r\n\t\t\t\t\tSet \t\t\t\t\t\r\n\t\t\t\t\t\tMeterStatus\t\t\t\t\t= cte_PreviouMeterVersion.MeterStatus ,\r\n\t\t\t\t\t    MeterPreviousStatus\t\t\t= cte_PreviouMeterVersion.MeterPreviousStatus ,\r\n\t\t\t\t\t    MeterStatusCodePeriod\t\t= cte_PreviouMeterVersion.MeterStatusCodePeriod ,\r\n\t\t\t\t\t    MeterEffectiveOffDate\t\t= cte_PreviouMeterVersion.MeterEffectiveOffDate ,\r\n\t\t\t\t\t\tTurnOffDate\t\t\t\t\t= cte_PreviouMeterVersion.TurnOffDate ,\r\n\t\t\t\t\t\tFireAuditTrigger\t\t\t= 'N' ,\r\n\t\t\t\t\t    AuthenticatedUserID\t\t\t= cte_PreviouMeterVersion.AuthenticatedUserID ,\r\n\t\t\t\t\t    DateAdded\t\t\t\t\t= cte_PreviouMeterVersion.DateAdded ,\r\n\t\t\t\t\t    LastUpdate\t\t\t\t\t= cte_PreviouMeterVersion.LastUpdate \r\n\t\t\t\tFROM cte_PreviouMeterVersion  INNER JOIN  Billing.Meter ON Meter.MeterSeqid = cte_PreviouMeterVersion.MeterSeqid\r\n\t\t\t\tWHERE rn2 = 1\r\n\r\n\r\n\t\t\t\t------------------------------------------------------\r\n\t\t\t\t-- revert exch trac\r\n\t\t\t\t;WITH cte_PreviousAcctExchVersion AS\r\n\t\t\t\t(\r\n\t\t\t\t   SELECT *, ROW_NUMBER() OVER (PARTITION BY OriginalAccountSeqid,OriginalMeterSeqid ORDER BY AuditDateTime DESC) AS rn3\r\n\t\t\t\t   FROM Audit.AuditAccountExchangeMeterTrack\r\n\t\t\t\t   WHERE OriginalAccountSeqid = @AccountSeqid\r\n\t\t\t\t)\t\r\n\t\t\t\t-- update / revert associated meters\r\n\t\t\t\tUPDATE Billing.AccountExchangeMeterTrack\t\r\n\t\t\t\t\tSet \t\t\t\t\t\r\n\t\t\t\t\t\tAccountEffectiveBillingEndDate  = cte_PreviousAcctExchVersion.AccountEffectiveBillingEndDate,\r\n\t\t\t\t\t\tMeterEffectiveBillingEndDate\t= cte_PreviousAcctExchVersion.MeterEffectiveBillingEndDate,\r\n\t\t\t\t\t\tFireAuditTrigger\t\t\t= 'N',\r\n\t\t\t\t\t    AuthenticatedUserID\t\t\t= cte_PreviousAcctExchVersion.AuthenticatedUserID ,\r\n\t\t\t\t\t    DateAdded\t\t\t\t\t= cte_PreviousAcctExchVersion.DateAdded ,\r\n\t\t\t\t\t    LastUpdate\t\t\t\t\t= cte_PreviousAcctExchVersion.LastUpdate \r\n\t\t\t\tFROM cte_PreviousAcctExchVersion INNER JOIN  Billing.AccountExchangeMeterTrack \r\n\t\t\t\tON AccountExchangeMeterTrack.AccountExchangeMeterTrackSeqid = cte_PreviousAcctExchVersion.AccountExchangeMeterTrackSeqid\r\n\t\t\t\tWHERE rn3 = 1\r\n\r\n\r\n\r\n\r\n\t\t\t\tCOMMIT TRAN RevertAccountTurnOff\r\n\r\n\t\t\t\t-- if we make it here and all is well, come back and update the record as processes\r\n\t\t\t\tUPDATE Common.ExchangeData\r\n\t\t\t\tSET IsProcessed = 'R'\r\n\t\t\t\tWHERE ExchangeDataSeqid = @ExchangeSeqid\r\n\r\n\t\t\t\tSET @Message = ''\r\n\t\t\t\tSET @StatusCode = 1\r\n\r\n\r\n\t\tEND TRY\r\n\t\tBEGIN CATCH\r\n\r\n\t\t\t\tROLLBACK TRAN RevertAccountTurnOff\r\n\t\t\t\tSET @Message = 'Error processing exchange  ' + CAST(@ExchangeSeqid AS VARCHAR(10) ) + ' error message: ' \r\n\t\t\t\tSET @StatusCode = 0\r\n\t\tEND CATCH\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

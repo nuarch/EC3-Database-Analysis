@@ -1,0 +1,857 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_DataExport_TariffChangeTracking",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_DataExport_TariffChangeTracking",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report on tariff changes for utility accounts. It logs the usage of the report, retrieves historical tariff change data, and outputs details about accounts where the tariff rate has changed. The procedure focuses on accounts with changes in the current billing period, as determined by the most recent published billing period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including logging, data retrieval using common table expressions (CTEs), and joining several tables to produce the final result set. The use of CTEs and the need to handle historical data contribute to its medium complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to log the email address of the user requesting the report. It is passed to the logging procedure to track who requested the report."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of DONE_IN_PROC messages, which can improve performance. It sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to allow reading uncommitted data, which can reduce locking overhead but may result in reading dirty data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Published Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the most recent published billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Published.MonthlyPublishedSummaryData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure logs the report usage by calling "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", passing details such as the report name, stored procedure name, requester's email, and the published billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "CTE `auaccnt`",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": This CTE identifies the most recent tariff information for each account by ranking records based on the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AvailableUntil",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " date."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "CTE `ChangeHistAll`",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": This CTE identifies accounts where the tariff rate has changed by comparing the most recent tariff information with the current tariff information in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Query",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The main query joins the "
+                },
+                {
+                  "type": "text",
+                  "text": "ChangeHistAll",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " CTE with several tables to gather detailed information about each account with a tariff change. It filters results to include only those changes that occurred in the current billing period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking but may lead to reading uncommitted or dirty data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that appropriate indexes exist on columns used in joins and filters, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "UniqueAccountSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UtilityTariffRateInformationSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", to enhance query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "CTEs",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While CTEs can improve readability, they may not always be the most efficient for large datasets. Consider testing performance and optimizing if necessary."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted changes, which might not reflect the actual data state."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the "
+                },
+                {
+                  "type": "text",
+                  "text": "PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not correctly maintained, the procedure may produce inaccurate results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance of the CTEs and joins may degrade. Regular performance monitoring and optimization may be required."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Email Address Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "@EmailAddress",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is valid and correctly formatted. Additional validation may be necessary to ensure data integrity in the logging process."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_DataExport_TariffChangeTracking]\n(\r\n\t@EmailAddress AS emailaddr\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID), @PublishedBillingPeriod AS VARCHAR(6);\r\n\r\n\tSELECT @PublishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData;\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,\r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = NULL,\r\n\t\t@prmFacilityNumber_s = NULL,\r\n\t\t@prmStartingBillingPeriod = NULL,\r\n\t\t@prmEndingBillingPeriod = NULL;\r\n\t\r\n\t;WITH auaccnt AS (SELECT au.UniqueAccountSeqid\r\n\t\t\t,au.UtilityTariffRateInformationSeqid\r\n\t\t\t,au.AvailableUntil\r\n\t\t\t,DENSE_RANK() OVER(PARTITION BY UniqueAccountSeqid ORDER BY au.AvailableUntil DESC) AS rnk\r\n\t\tFROM (SELECT UniqueAccountSeqid\r\n\t\t\t\t,UtilityTariffRateInformationSeqid\r\n\t\t\t\t,MAX(AuditDateTime) AS AvailableUntil\r\n\t\t\tFROM [Audit].AuditAccount\r\n\t\t\tWHERE IsCurrentRecord = 'Y'\r\n\t\t\tGROUP BY UniqueAccountSeqid, UtilityTariffRateInformationSeqid) AS au)\r\n\t,ChangeHistAll AS (SELECT a.UniqueAccountSeqid\r\n\t\t\t,aa.UtilityTariffRateInformationSeqid AS OldUtilityTariffRateInformationSeqid\r\n\t\t\t,aa.AvailableUntil AS ChangedDate\r\n\t\t\t,a.UtilityTariffRateInformationSeqid\r\n\t\t\t,a.AvailableUntil\r\n\t\tFROM auaccnt AS aa\r\n\t\t\tINNER JOIN (SELECT UniqueAccountSeqid\r\n\t\t\t\t\t,UtilityTariffRateInformationSeqid\r\n\t\t\t\t\t,'9999-12-31' AS AvailableUntil\r\n\t\t\t\tFROM Billing.Account\r\n\t\t\t\tWHERE IsCurrentRecord ='Y') AS a ON a.UniqueAccountSeqid = aa.UniqueAccountSeqid AND aa.rnk = 1\r\n\t\tWHERE aa.UtilityTariffRateInformationSeqid <> a.UtilityTariffRateInformationSeqid)\r\n\r\n\tSELECT DISTINCT A.CurrentAccountNumber\r\n\t\t,AD.AgencyCodeOEC\r\n\t\t,AD.AgencyName\r\n\t\t,F.OecFacilityNumber\r\n\t\t,F.FacilityName\r\n\t\t,uc.ShortDesc AS UtilityCompany\r\n\t\t,OUTRI.DeliveryTariffRate AS PreviousTariff\r\n\t\t,UTRI.DeliveryTariffRate AS CurrentTariff\r\n\t\t,OUTRI.BudgetRateClassDescription AS PreviousTariffDescription\r\n\t\t,UTRI.BudgetRateClassDescription AS CurrentTariffDescription\r\n\t\t,A.IsTimeOfDayAccount\r\n\t\t,@PublishedBillingPeriod AS BillingPeriod\r\n\t\t,FORMAT(tch.ChangedDate, 'M/d/yyyy') AS TariffUpdateDate\r\n\tFROM ChangeHistAll AS tch\r\n\t\tINNER JOIN Billing.Account AS A ON A.UniqueAccountSeqid = tch.UniqueAccountSeqid\r\n\t\tINNER JOIN Billing.UtilityTariffRateInformation AS OUTRI ON OUTRI.UtilityTariffRateInformationSeqid = tch.OldUtilityTariffRateInformationSeqid\r\n\t\tINNER JOIN Billing.UtilityTariffRateInformation AS UTRI ON UTRI.UtilityTariffRateInformationSeqid = tch.UtilityTariffRateInformationSeqid\r\n\t\tINNER JOIN Billing.UtilityCompany AS UC ON UC.UtilityCompanySeqid = A.UtilityAccountProvider\r\n\t\tINNER JOIN Billing.Facility AS F ON F.FacilitySeqid = A.FacilityAccount\r\n\t\tINNER JOIN Billing.AgencyDivision AS AD ON AD.AgencyDivisionSeqid = A.AgencyAccount\r\n\tWHERE YEAR(tch.ChangedDate) = CAST(SUBSTRING(@PublishedBillingPeriod, 1, 4) AS INT)\r\n\t\tAND MONTH(tch.ChangedDate) = CAST(SUBSTRING(@PublishedBillingPeriod, 5, 6) AS INT);\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

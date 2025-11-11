@@ -1,0 +1,1070 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ManualBilling_MoveDataFromSummaryIntoAdjustment",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ManualBilling_MoveDataFromSummaryIntoAdjustment",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage and process billing data within a manual billing system. It consolidates data from two summary tables ("
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingAccountSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingCancellationSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ") into an adjustment table ("
+        },
+        {
+          "type": "text",
+          "text": "UploadManualBillingAccountAdjustment",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "). The procedure updates calculated fields and ensures that all relevant billing information is accurately reflected in the adjustment table. It also handles the creation of original billing records if they do not exist and updates various fields based on the latest billing header information."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure is complex due to its extensive use of multiple SQL operations, including "
+        },
+        {
+          "type": "text",
+          "text": "INSERT",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "text",
+          "text": "UPDATE",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", and "
+        },
+        {
+          "type": "text",
+          "text": "JOIN",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " statements. It involves intricate business logic for handling billing adjustments, cancellations, and original record creation. The procedure also includes numerous conditional checks and calculations, making it challenging to maintain and understand without a deep understanding of the underlying data model and business rules."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period for which the data is being processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the authenticated user executing the procedure, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@utilityCompany dbo.seqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The unique identifier for the utility company associated with the billing data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Status int OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter used to indicate the status of the procedure execution (e.g., success or failure)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the initial status to 9, indicating the start of the process."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Merges data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingAccountSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingAccountAdjustment",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", calculating fields like "
+                        },
+                        {
+                          "type": "text",
+                          "text": "RevisedBilledAmount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "RevisedEnergy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the adjustment table with cancellation data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingCancellationSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts additional cancellation data not covered in the previous update."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Original Record Creation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts original billing records for accounts without existing records for the specified billing period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Updates",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates adjustment records with net paid amounts and other financial details from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadManualBillingHeader",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates fields like "
+                        },
+                        {
+                          "type": "text",
+                          "text": "TotalAmountDue",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CreditedAmountPaid",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and various dates based on the latest header information."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Adjustments",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates fields related to late payments, taxes, and cancellation credits."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates account billing and paper bill information into the adjustment table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates summary invoice status in the header table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Completion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the status to 0, indicating successful completion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Large Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure processes potentially large datasets, which can impact performance. Indexing on key columns like "
+                },
+                {
+                  "type": "text",
+                  "text": "OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriodRevision",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can help optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Joins and Aggregations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of multiple joins and aggregate functions can be resource-intensive. Ensuring efficient query plans and considering query optimization techniques is crucial."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face concurrency issues if multiple instances are executed simultaneously, especially with updates and inserts on the same tables."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on accurate and consistent data across multiple tables. Any discrepancies or data corruption can lead to incorrect adjustments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling mechanisms. Implementing try-catch blocks and logging can help manage and diagnose issues during execution."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of billing data grows, the procedure may face scalability challenges. Regular performance reviews and optimizations are necessary to maintain efficiency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Maintenance",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The complexity and length of the procedure make it difficult to maintain. Clear documentation and modularization of logic can aid in future updates and troubleshooting."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "--**********************************************************************************************************************************************************************************************************\n --\tAuthor: MOHAMMED BELARREM\r\n -- Description: Merge the data in the UploadManualBillingAccountSummary and UploadManualBillingCancellationSummary into the \r\n --\t\t\t\t UploadManualBillingAccountAdjustment and update the calculated fields\r\n --\r\n --\tLog: \r\n --\tCreation 02/10/2009 MOH\r\n --\tUpdate   02/11/2009\tMOH\t\tUpdated the tables and needed to reflect changes \r\n -- Update   06/11/2009 MOH\t\tUpdated RevisedBilledAmount to get data from AmountPaid instead of BilledAmount\r\n -- Update   06/12/2009 MOH\t\trestore \r\n --\tUpdate\t 06/22/2009 MOH\t\tUpdated the query that selects the distinct account number with credits to include the records that satisfy \r\n --\t\t\t\t\t\t\t\twhere ((spannedAmountPaid = 0.00) and (SpannedBilledAmount > 0.00)) or ( BilledAmount <> 0.0 and AmountPaid = 0.0 )\r\n --\t\t\t\t\t\t\t\told where clause was \" where (spannedAmountPaid = 0.00) and (SpannedBilledAmount > 0.00)) \" \r\n --\tUpdate\t 07/30/2009 MOH\t\tChanged the credit updating query to calculate the PaidAdjustmentAmount = AmountPaid - RevisedBilledAmount\r\n --\t\t\t\t\t\t\t\tsince the AmountPaid already reflect the credits\r\n --\tUpdate\t 08/17/2009\tMOH\t\tRemoved the BilledAmount from the query that updates the PaidAdjustmentAmount since it was pulling dupplicate records( because of the way UploadManualBillingAccount is built)\r\n --\t\t\t\t\t\t\t\tand that was causing the PaidAdjustmentAmount to be doubled\r\n --\tUpdate   01/05/2010 MOH\t\tRewrite since the tables changed and now we get header information from the ManualBill.UploadManualBillingHeader\r\n --\r\n -- Update   01/07/2010 MOH\t\tCorrected the queries that update the uploadadjutment table from the account billing and the accountBillingPaperBill to go thru the account\r\n --\t\t\t\t\t\t\t\ttable (via the currentaccountnumber) to make sure we grab the correct billing records \r\n --\t\t\t\t\t\t\t\tUpdated the quieres to be IBG independant \r\n --\tUpdate\t 01/12/2010 MOH\t\tAdded AccountSeqid to the tables and changed AccountStatusXXXXX to AccountBillingStatusXXXXX\r\n --\tUpdate\t 01/15/2010 MOH\t\tModified the create original bill if it doesnt exist\r\n --\tUpdate   03/19/2010 MOH\t\tadded LatePaymentAmount, TotalCancellationCreditTransfer to the adjustment table \r\n --\t\t\t\t\t\t\t\this caries over these charges to the AccountBillingPaperBill to verify the netPaidAdjustment\r\n --\tUpdate   03/22/2010 MOH\t\tAdded PreviousAccountBalance to the adjutment table\r\n --\tUpdate\t 07/01/2011 MOH\t\tAdded the IsSummaryInvoice to upload adjutment table to prep it for processing later\r\n --\t\t\t\t\t\t\t\tAdded ManualPaymentOverrideAmount to the uploadAdjustment table and updates it in the originial bills as what was collected in the header table\r\n --\tUpdate   07/06/2011 MOH\t\tAdded Tax to the adjutment table\r\n --\tUpdate   08/30/2011 MOH\t\tAdded 0 as default for Tax and LatePaymentCharges\r\n --\tUpdate   04/02/2014 MOH\t\tChanged the value of IsTimeOfDayAccount to N instead of null to satisfy check constraint\r\n -- Update   12/17/2018 VY      Added on 12/17/2018 for UniqueAccountSeqID\r\n --**********************************************************************************************************************************************************************************************************\r\nCREATE PROCEDURE [ManualBill].[usp_ManualBilling_MoveDataFromSummaryIntoAdjustment]\r\n(\r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@utilityCompany dbo.seqid,\r\n\t@Status int  OUTPUT      \r\n)   \r\nAS\r\nBEGIN\r\n\tSET @Status = 9;\r\n\t\t\r\n\t/********************************\r\n\tmove data from account summary into adjustment\r\n\t*********************************/\r\n\t\r\n\t-- data is merged even if the the account has diferent bills within the same period\r\n\tINSERT INTO ManualBill.UploadManualBillingAccountAdjustment\r\n\t\t([AccountSeqid]\r\n\t\t,[AccountBillingSeqid]\r\n\t\t,[AccountBillingPaperBillSeqid]\r\n\t\t,[UtilityCompanySeqid]\r\n\t\t,[InvoiceAccountGroupSeqid]\r\n\t\t,[OriginalAccountNumber]\r\n\t\t,[AccountBillingStatus]\r\n\t\t,[AccountBillingpreviousStatus]\r\n\t\t,[AccountBillingStatusPeriod]\r\n\t\t,[NumberOfTransactions]\r\n\t\t,[NumberOfRebillTransactions]\r\n\t\t,[NumberOfCancelTransactions]\r\n\t\t,[BillingPeriod]\r\n\t\t,[BillingPeriodRevision]\r\n\t\t,[BillingAction]\r\n\t\t,[NumberOfBillingPeriods]\r\n\t\t,[EstimatedOrActual]\r\n\t\t,[InitialCancelFromDate]\r\n\t\t,[CurrentBillingToDate]\r\n\t\t,[TotalBillingDaysRebilled]\r\n\t\t,[TotalRebilledAmount]\r\n\t\t,[TotalCanceledAmount]\r\n\t\t,[PaidAdjustmentAmount]\r\n\t\t,[NetPaidAdjustmentAmount]\r\n\t\t,[PriorRevisedBilledAmount]\r\n\t\t,[RevisedBilledAmount]\r\n\t\t,[CanceledBilledAmount]\r\n\t\t,[EnergySource]\r\n\t\t,[ToDate]\r\n\t\t,[FromDate]\r\n\t\t,[PriorRevisedEnergy]\r\n\t\t,[RevisedEnergy]\r\n\t\t,[CanceledEnergy]\r\n\t\t,[PriorRevisedDemand]\r\n\t\t,[RevisedDemand]\r\n\t\t,[CanceledDemand]\r\n\t\t,[PriorRevisedCCF]\r\n\t\t,[RevisedCCF]\r\n\t\t,[CanceledCCF]\r\n\t\t,[BillingDays]\r\n\t\t,[BillingDate]\r\n\t\t,[ProcessedInTheCurrentPeriod]\r\n\t\t,[GasRateCode]\r\n\t\t,[TotalCCF]\r\n\t\t,[TotalEnergy]\r\n\t\t,[ThermsFactor]\r\n\t\t,[TotalDemand]\r\n\t\t,[CancelFromDate]\r\n\t\t,[CancelToDate]\r\n\t\t,[CancelBillingDays]\r\n\t\t,[CancelTotalEnergy]\r\n\t\t,[CancelTotalDemand]\r\n\t\t,[CancelTotalCCF]\r\n\t\t,[CancelThermsFactor]\r\n\t\t,[ProcessEffectiveDate]\r\n\t\t,[DerivedFromSpannedBill]\r\n\t\t,[SpannedBillingPeriodRevision]\r\n\t\t,[SpannedFirstCanceledBillingPeriod]\r\n\t\t,[SpannedBilledAmount]\r\n\t\t,[SpannedCCF]\r\n\t\t,[SpannedThermFactor]\r\n\t\t,[SpannedEnergy]\r\n\t\t,[SpannedDemand]\r\n\t\t,[SpannedMonthlyPercentage]\r\n\t\t,[SpannedTotalPercentage]\r\n\t\t,TotalAmountDue\r\n\t\t,CreditedAmountPaid\r\n\t\t,CreditedAmountDate\r\n\t\t,LatePaymentAmount\r\n\t\t,Tax\r\n\t\t,PreviousAccountBalance\r\n\t\t,TotalCancellationCreditTransfer\r\n\t\t,[BillingCycle]\r\n\t\t,[SalesType]\r\n\t\t,[ManualPaymentOverride]\r\n\t\t,[ManualDataEntry]\r\n\t\t,[IsTimeOfDayAccount]\r\n\t\t,[LastPeriodModified]\r\n\t\t,[FacilityName]\r\n\t\t,[ServiceAddress]\r\n\t\t,[BillCreationDate]\r\n\t\t,[PostMarkDate]\r\n\t\t,[DatePaymentDue]\r\n\t\t,[DateAcceptanceIntoOEC]\r\n\t\t,InitialPostingDate\r\n\t\t,[Notes]\r\n\t\t,[AuthenticatedUserID]\r\n\t\t,[DateAdded]\r\n\t\t,[LastUpdate])\r\n\tSELECT\r\n\t\tmax(AccountSeqid)\t\t\t---\t[AccountSeqid]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingSeqid]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingPaperBillSeqid]\r\n        ,@utilityCompany\t\t\t\t---\t[UtilityCompanySeqid]\r\n        ,max(InvoiceAccountBillingGroupSeqid)\t\t---\t[InvoiceAccountGroupSeqid]\r\n        ,OriginalAccountNumber    \t---\t[OriginalAccountNumber]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingStatus]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingpreviousStatus]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingStatusPeriod]\r\n        ,count(*)\t\t\t\t\t---\t[NumberOfTransactions]\r\n        ,count(*)\t\t\t\t\t---\t[NumberOfRebillTransactions]\r\n        ,0\t\t\t\t\t\t\t---\t[NumberOfCancelTransactions]\r\n        ,MAX(BillingPeriod)\t\t\t---\t[BillingPeriod]\r\n        ,BillingPeriodRevision\t\t---\t[BillingPeriodRevision]\r\n        ,CASE WHEN MAX(BillingPeriod) = BillingPeriodRevision THEN 'O' ELSE 'A' end  ---\t[BillingAction]\r\n/*REVISE*/ ,1\t\t\t\t\t\t\t---\t[NumberOfBillingPeriods]\r\n        ,Max(ActualOrEstimated)\t    ---\t[EstimatedOrActual]\r\n        ,null\t\t\t\t\t\t---\t[InitialCancelFromDate]\r\n        ,null\t\t\t\t\t\t---\t[CurrentBillingToDate]\r\n        ,dbo.CalculateNumberOfBillingDays(MIN(FromDate),MAX(ToDate))  ---\t[TotalBillingDaysRebilled]\r\n/*REVISE*/ ,0\t\t\t\t\t\t\t---\t[TotalRebilledAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalCanceledAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[PaidAdjustmentAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[NetPaidAdjustmentAmount]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedBilledAmount]\r\n        ,sum(NetBilledAmount)\t\t---\t[RevisedBilledAmount]\t\r\n        ,0   \t\t\t\t\t\t---\t[CanceledBilledAmount]\r\n        ,max(EnergySource)\t\t\t---\t[EnergySource]\r\n        ,MAX(ToDate)\t\t\t\t\t---\t[ToDate]\r\n        ,MIN(FromDate)\t\t\t\t---\t[FromDate]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedEnergy]\r\n        ,sum(EnergyUsage)\t\t\t---\t[RevisedEnergy]\r\n        ,null\t\t\t\t\t\t---\t[CanceledEnergy]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedDemand]\r\n/*REVISE*/ ,max(DemandUsage) \t\t\t---\t[RevisedDemand]\r\n        ,null\t\t\t\t\t\t---\t[CanceledDemand]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedCCF]\r\n        ,null\t\t\t\t\t\t---\t[RevisedCCF]\r\n        ,null\t\t\t\t\t\t---\t[CanceledCCF]\r\n        ,dbo.CalculateNumberOfBillingDays(MIN(FromDate),MAX(ToDate)) ---\t[BillingDays]\r\n        ,null\t\t\t\t\t\t---\t[BillingDate]\r\n        ,'N'\t\t\t\t\t\t\t---\t[ProcessedInTheCurrentPeriod]\r\n        ,null\t\t\t\t\t\t---\t[GasRateCode]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalCCF]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalEnergy]\r\n        ,null\t\t\t\t\t\t---\t[ThermsFactor]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalDemand]\r\n        ,null\t\t\t\t\t\t---\t[CancelFromDate]\r\n        ,null\t\t\t\t\t\t---\t[CancelToDate]\r\n        ,null\t\t\t\t\t\t---\t[CancelBillingDays]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalEnergy]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalDemand]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalCCF]\r\n        ,null\t\t\t\t\t\t---\t[CancelThermsFactor]\r\n        ,dbo.ConvertDatetimeToYYYYMMDD(getdate())\t---\t[ProcessEffectiveDate]\r\n        ,max(DerivedFromSpannedBill)\t\t\t\t\t---\t[DerivedFromSpannedBill]\r\n        ,max(SpannedBillingPeriodRevision)\t\t\t---\t[SpannedBillingPeriodRevision]\r\n/*REVISE*/ ,min(SpannedFirstBillingPeriodCanceled)\t\t---\t[SpannedFirstCanceledBillingPeriod]\r\n        ,max(SpannedNetBilledAmount)\t\t\t\t\t---\t[SpannedBilledAmount]\r\n        ,null\t\t\t\t\t\t\t\t\t\t---\t[SpannedCCF]\r\n        ,null\t\t\t\t\t\t\t\t\t\t---\t[SpannedThermFactor]\r\n        ,max(SpannedEnergyUsage)\t\t\t\t\t\t---\t[SpannedEnergy]\r\n        ,max(SpannedDemandUsage)\t\t\t\t\t\t---\t[SpannedDemand]\r\n        ,max(SpannedMonthlyPercentage)\t\t\t\t---\t[SpannedMonthlyPercentage]\r\n        ,max(SpannedTotalPercentage)\t\t\t\t\t---\t[SpannedTotalPercentage]\r\n        ,null\t\t\t\t\t\t--- TotalAmountDue\r\n\t\t,null\t\t\t\t\t\t--- CreditedAmountPaid\r\n\t\t,null\t\t\t\t\t\t--- CreditedAmountDate\r\n        ,0\t\t\t\t\t\t\t--- LatePaymentAmount\r\n        ,0\t\t\t\t\t\t\t--- Tax\r\n\t\t,null\t\t\t\t\t\t--- TotalCancellationCreditTransfer \r\n\t\t,null\t\t\t\t\t\t--- PreviousAccountBalance          \r\n        ,null\t\t\t\t\t\t---\t[BillingCycle]\r\n        ,null\t\t\t\t\t\t---\t[SalesType]\r\n        ,'Y'\t\t\t\t\t\t\t---\t[ManualPaymentOverride]\r\n        ,'Y'\t\t\t\t\t\t\t---\t[ManualDataEntry]\r\n        ,'N'\t\t\t\t\t\t\t---\t[IsTimeOfDayAccount]\r\n        ,null\t\t\t\t\t\t---\t[LastPeriodModified]\r\n        ,null\t\t\t\t\t\t---\t[FacilityName]\r\n        ,null\t\t\t\t\t\t---\t[ServiceAddress]\r\n        ,null\t\t\t\t\t\t---\t[BillCreationDate]\r\n        ,null\t\t\t\t\t\t---\t[PostMarkDate]\r\n        ,null\t\t\t\t\t\t---\t[DatePaymentDue]\r\n        ,null\t\t\t\t\t\t---\t[DateAcceptanceIntoOEC]\r\n        ,null\t\t\t\t\t\t--- InitialPostingDate\r\n        ,null\t\t\t\t\t\t---\t[Notes]\r\n        ,@authenticatedID\t\t\t---\t[AuthenticatedUserID]\r\n        ,getdate()\t\t\t\t\t---\t[DateAdded]\r\n        ,getdate()\t\t\t\t\t---\t[LastUpdate]\r\n\tFROM ManualBill.UploadManualBillingAccountSummary\t\t\r\n\tGROUP BY OriginalAccountNumber, BillingPeriodRevision\r\n\t\t\r\n\t/*****************************************************************************************\r\n\tupdate accountAdjustment with information from CancellationSummary \r\n\t******************************************************************************************/\t\r\n\tUPDATE  ManualBill.UploadManualBillingAccountAdjustment \r\n\tSET\t NumberOfTransactions\t\t= ManualBill.UploadManualBillingAccountAdjustment.NumberOfTransactions + CancelSummary.NumberOfTransactions\r\n\t\t,NumberOfCancelTransactions = CancelSummary.[NumberOfTransactions]\r\n\t\t,TotalCanceledAmount\t\t= CancelSummary.[CancelBilledAmount]\r\n\t\t,CancelFromDate\t\t\t\t= CancelSummary.[CancelFromDate]\r\n\t\t,CancelToDate\t\t\t\t= CancelSummary.[CancelToDate]\r\n\t\t,CanceledEnergy\t\t\t\t= CancelSummary.[CancelEnergy]\r\n\t\t,CanceledDemand\t\t\t\t= CancelSummary.[CancelDemand]\r\n\t\t,CancelBillingDays\t\t\t= CancelSummary.[CancelBillingDays]\r\n\t\t,Notes\t\t\t\t\t\t= CAST(\t(\tCASE ManualBill.UploadManualBillingAccountAdjustment.[Notes]\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tWHEN NULL THEN ''\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tELSE 'Rebill: ' + ManualBill.UploadManualBillingAccountAdjustment.[Notes] + ' '\r\n\t\t\t\t\t\t\t\t\t\t\t\tEND )\r\n\t\t\t\t\t\t\t\t\t\t\t+ ( CASE CancelSummary.[Notes]\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tWHEN NULL THEN ''\r\n\t\t\t\t\t\t\t\t\t\t\t\t\tELSE 'Cancel: ' + CancelSummary.[Notes]\r\n\t\t\t\t\t\t\t\t\t\t\t\tEND \r\n\t\t\t\t\t\t\t\t\t\t   ) AS VARCHAR(300))\r\n\tFROM ManualBill.UploadManualBillingAccountAdjustment \r\n\t\t\tINNER JOIN  \r\n\t\t\t\t\t( SELECT\tOriginalAccountNumber\r\n\t\t\t\t\t\t\t\t,BillingPeriodRevision\r\n\t\t\t\t\t\t\t\t,COUNT(*)\t\t\t\t\t\tAS NumberOfTransactions\r\n\t\t\t\t\t\t\t\t,0\t\t\t\t\t\t\t\tAS NumberOfRebilledTransactions\r\n\t\t\t\t\t\t\t\t,COUNT(*)\t\t\t\t\t\tAS NumberOfCancelTransactions\r\n\t\t\t\t\t\t\t\t,MIN(CancelFromDate)\t\t\tAS CancelFromDate\r\n\t\t\t\t\t\t\t\t,MAX(CancelToDate)\t\t\t\tAS CancelToDate\r\n\t\t\t\t\t\t\t\t,SUM(CancelNetBilledAmount)\t\tAS CancelBilledAmount\r\n\t\t\t\t\t\t\t\t,SUM(CancelEnergyUsage)\t\t\tAS CancelEnergy\r\n\t\t\t\t\t\t\t\t,SUM(CancelDemandUsage)\t\t\tAS CancelDemand\r\n\t\t\t\t\t\t\t\t,dbo.CalculateNumberOfBillingDays(MIN(ManualBill.UploadManualBillingCancellationSummary.CancelFromDate)\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t ,MAX(ManualBill.UploadManualBillingCancellationSummary.CancelToDate)) AS CancelBillingDays\r\n\t\t\t\t\t\t\t\t,MAX(Notes)\t\t\t\t\t\tAS Notes\r\n\t\t\t\t\tFROM ManualBill.UploadManualBillingCancellationSummary\r\n\t\t\t\t\tGROUP BY OriginalAccountNumber, BillingPeriodRevision\r\n\t\t\t\t\t) AS CancelSummary\r\n\t\tON  ManualBill.UploadManualBillingAccountAdjustment.OriginalAccountNumber = CancelSummary.OriginalAccountNumber\r\n\t\tAND ManualBill.UploadManualBillingAccountAdjustment.BillingPeriodRevision = cancelSummary.BillingPeriodRevision\r\n\t\t\t\t\r\n\t/*****************************************************************************************\r\n\tmove data that wasn't included in the update above from cancelation summary into adjustment \r\n\t******************************************************************************************/\t\r\n\tINSERT INTO ManualBill.UploadManualBillingAccountAdjustment\r\n\t   ([AccountSeqid]\r\n       ,[AccountBillingSeqid]\r\n       ,[AccountBillingPaperBillSeqid]\r\n       ,[UtilityCompanySeqid]\r\n       ,[InvoiceAccountGroupSeqid]\r\n       ,[OriginalAccountNumber]\r\n       ,[AccountBillingStatus]\r\n       ,[AccountBillingpreviousStatus]\r\n       ,[AccountBillingStatusPeriod]\r\n       ,[NumberOfTransactions]\r\n       ,[NumberOfRebillTransactions]\r\n       ,[NumberOfCancelTransactions]\r\n       ,[BillingPeriod]\r\n       ,[BillingPeriodRevision]\r\n       ,[BillingAction]\r\n       ,[NumberOfBillingPeriods]\r\n       ,[EstimatedOrActual]\r\n       ,[InitialCancelFromDate]\r\n       ,[CurrentBillingToDate]\r\n       ,[TotalBillingDaysRebilled]\r\n       ,[TotalRebilledAmount]\r\n       ,[TotalCanceledAmount]\r\n       ,[PaidAdjustmentAmount]\r\n       ,[NetPaidAdjustmentAmount]\r\n       ,[PriorRevisedBilledAmount]\r\n       ,[RevisedBilledAmount]\r\n       ,[CanceledBilledAmount]\r\n       ,[EnergySource]\r\n       ,[ToDate]\r\n       ,[FromDate]\r\n       ,[PriorRevisedEnergy]\r\n       ,[RevisedEnergy]\r\n       ,[CanceledEnergy]\r\n       ,[PriorRevisedDemand]\r\n       ,[RevisedDemand]\r\n       ,[CanceledDemand]\r\n       ,[PriorRevisedCCF]\r\n       ,[RevisedCCF]\r\n       ,[CanceledCCF]\r\n       ,[BillingDays]\r\n       ,[BillingDate]\r\n       ,[ProcessedInTheCurrentPeriod]\r\n       ,[GasRateCode]\r\n       ,[TotalCCF]\r\n       ,[TotalEnergy]\r\n       ,[ThermsFactor]\r\n       ,[TotalDemand]\r\n       ,[CancelFromDate]\r\n       ,[CancelToDate]\r\n       ,[CancelBillingDays]\r\n       ,[CancelTotalEnergy]\r\n       ,[CancelTotalDemand]\r\n       ,[CancelTotalCCF]\r\n       ,[CancelThermsFactor]\r\n       ,[ProcessEffectiveDate]\r\n       ,[DerivedFromSpannedBill]\r\n       ,[SpannedBillingPeriodRevision]\r\n       ,[SpannedFirstCanceledBillingPeriod]\r\n       ,[SpannedBilledAmount]\r\n       ,[SpannedCCF]\r\n       ,[SpannedThermFactor]\r\n       ,[SpannedEnergy]\r\n       ,[SpannedDemand]\r\n       ,[SpannedMonthlyPercentage] \r\n       ,[SpannedTotalPercentage]\r\n       ,TotalAmountDue\r\n\t   ,CreditedAmountPaid\r\n\t   ,CreditedAmountDate\r\n\t   ,LatePaymentAmount\r\n\t   ,Tax\r\n\t   ,PreviousAccountBalance\r\n\t   ,TotalCancellationCreditTransfer\r\n       ,[BillingCycle]\r\n       ,[SalesType]\r\n       ,[ManualPaymentOverride]\r\n       ,[ManualDataEntry]\r\n       ,[IsTimeOfDayAccount]\r\n       ,[LastPeriodModified]\r\n       ,[FacilityName]\r\n       ,[ServiceAddress]\r\n       ,[BillCreationDate]\r\n       ,[PostMarkDate]\r\n       ,[DatePaymentDue]\r\n       ,[DateAcceptanceIntoOEC]\r\n       ,InitialPostingDate\r\n       ,[Notes]\r\n       ,[AuthenticatedUserID]\r\n       ,[DateAdded]\r\n       ,[LastUpdate])\r\n\tSELECT\r\n\t\tmax(AccountSeqid)\t\t\t\t---\t[AccountSeqid]\r\n\t\t,null\t\t\t\t\t\t\t---\t[AccountBillingSeqid]\r\n\t\t,null\t\t\t\t\t\t\t---\t[AccountBillingPaperBillSeqid]\r\n\t\t,@utilityCompany\t\t\t\t---\t[UtilityCompanySeqid]\r\n\t\t,min(InvoiceAccountBillingGroupSeqid)\t---\t[InvoiceAccountGroupSeqid]\r\n\t\t,OriginalAccountNumber    \t\t---\t[OriginalAccountNumber]\r\n\t\t,null\t\t\t\t\t\t\t---\t[AccountBillingStatus]\r\n\t\t,null\t\t\t\t\t\t\t---\t[AccountBillingpreviousStatus]\r\n\t\t,null\t\t\t\t\t\t\t---\t[AccountBillingStatusPeriod]\r\n\t\t,count(*)\t\t\t\t\t\t---\t[NumberOfTransactions]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[NumberOfRebillTransactions]\r\n\t\t,count(*)\t\t\t\t\t\t---\t[NumberOfCancelTransactions]\r\n\t\t,MAX(BillingPeriod)\t\t\t\t---\t[BillingPeriod]\r\n\t\t,BillingPeriodRevision\t\t\t---\t[BillingPeriodRevision]\r\n\t\t,CASE WHEN MAX(BillingPeriod) = BillingPeriodRevision THEN 'O' ELSE 'A' end  ---\t[BillingAction]\r\n/*REVISE*/  ,1\t\t\t\t\t\t\t\t---\t[NumberOfBillingPeriods]\r\n\t\t,Max(ActualOrEstimated)\t    \t---\t[EstimatedOrActual]\r\n\t\t,min(SpannedCancelFromDate) \t---\t[InitialCancelFromDate]\r\n\t\t,max(SpannedCancelToDate)\t\t---\t[CurrentBillingToDate]\r\n\t\t,dbo.CalculateNumberOfBillingDays(MIN(CancelFromDate),MAX(CancelToDate))  ---\t[TotalBillingDaysRebilled]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[TotalRebilledAmount]\r\n/*REVISE*/\t,sum(CancelNetBilledAmount)  \t---\t[TotalCanceledAmount]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[PaidAdjustmentAmount]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[NetPaidAdjustmentAmount]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[PriorRevisedBilledAmount]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[RevisedBilledAmount]\r\n\t\t,sum(CancelNetBilledAmount)\t\t---\t[CanceledBilledAmount]\r\n\t\t,AVG(EnergySource)\t\t\t\t---\t[EnergySource]\r\n\t\t,MAX(CancelToDate)\t\t\t\t---\t[ToDate]\r\n\t\t,MIN(CancelFromDate)\t\t\t---\t[FromDate]\r\n\t\t,null\t\t\t\t\t\t\t---\t[PriorRevisedEnergy]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[RevisedEnergy]\r\n\t\t,sum(CancelEnergyUsage)\t\t\t---\t[CanceledEnergy]\r\n\t\t,null\t\t\t\t\t\t\t---\t[PriorRevisedDemand]\r\n\t\t,0\t\t\t\t \t\t\t\t---\t[RevisedDemand]\r\n\t\t,sum(CancelDemandUsage)  \t\t---\t[CanceledDemand]\r\n\t\t,null\t\t\t\t\t\t\t---\t[PriorRevisedCCF]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[RevisedCCF]\r\n\t\t,null\t\t\t\t\t\t\t---\t[CanceledCCF]\r\n\t\t,dbo.CalculateNumberOfBillingDays(MIN(CancelFromDate),MAX(CancelToDate)) ---\t[BillingDays]\r\n\t\t,null\t\t\t\t\t\t\t---\t[BillingDate]\r\n\t\t,'N'\t\t\t\t\t\t\t---\t[ProcessedInTheCurrentPeriod]\r\n\t\t,null\t\t\t\t\t\t\t---\t[GasRateCode]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[TotalCCF]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[TotalEnergy]\r\n\t\t,null\t\t\t\t\t\t\t---\t[ThermsFactor]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[TotalDemand]\r\n\t\t,min(CancelFromDate)\t\t\t---\t[CancelFromDate]\r\n\t\t,max(CancelToDate)\t\t\t\t---\t[CancelToDate]\r\n\t\t,dbo.CalculateNumberOfBillingDays(MIN(CancelFromDate), max(CancelToDate))\t---\t[CancelBillingDays]\r\n/*REVISE*/\t,sum(CancelEnergyUsage)\t\t\t---\t[CancelTotalEnergy]\r\n/*REVISE*/\t,sum(CancelDemandUsage)\t\t\t---\t[CancelTotalDemand]\r\n/*REVISE*/\t,null\t\t\t\t\t\t\t---\t[CancelTotalCCF]\r\n/*REVISE*/\t,null\t\t\t\t\t\t\t---\t[CancelThermsFactor]\r\n\t\t,dbo.ConvertDatetimeToYYYYMMDD(getdate())\t\t---\t[ProcessEffectiveDate]\r\n\t\t,max(DerivedFromSpannedBill)\t\t\t\t\t---\t[DerivedFromSpannedBill]\r\n\t\t,max(SpannedCancelBillingPeriodRevision)\t\t---\t[SpannedBillingPeriodRevision]\r\n\t\t,max(SpannedCancelFirstBillingPeriodCanceled)\t---\t[SpannedFirstCanceledBillingPeriod]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[SpannedBilledAmount]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[SpannedCCF]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[SpannedThermFactor]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[SpannedEnergy]\r\n\t\t,0\t\t\t\t\t\t\t\t---\t[SpannedDemand]\r\n\t\t,min(SpannedMonthlyPercentage)\t---\t[SpannedMonthlyPercentage]\r\n\t\t,min(SpannedTotalPercentage)\t---\t[SpannedTotalPercentage]\r\n\t\t,null\t\t\t\t\t\t\t--- TotalAmountDue\r\n\t\t,null\t\t\t\t\t\t\t--- CreditedAmountPaid\r\n\t\t,null\t\t\t\t\t\t\t--- CreditedAmountDate\r\n\t\t,0\t\t\t\t\t\t\t\t--- LatePaymentAmount\r\n\t\t,0\t\t\t\t\t\t\t\t--- Tax\r\n\t\t,null\t\t\t\t\t\t    --- TotalCancellationCreditTransfer\r\n\t\t,null\t\t\t\t\t\t\t--- PreviousAccountBalance\r\n\t\t,null\t\t\t\t\t\t\t---\t[BillingCycle]\r\n\t\t,null\t\t\t\t\t\t\t---\t[SalesType]\r\n\t\t,'Y'\t\t\t\t\t\t\t---\t[ManualPaymentOverride]\r\n\t\t,'Y'\t\t\t\t\t\t\t---\t[ManualDataEntry]\r\n\t\t,'N'\t\t\t\t\t\t\t---\t[IsTimeOfDayAccount]\r\n\t\t,null\t\t\t\t\t\t\t---\t[LastPeriodModified]\r\n\t\t,null\t\t\t\t\t\t\t---\t[FacilityName]\r\n\t\t,null\t\t\t\t\t\t\t---\t[ServiceAddress]\r\n\t\t,null\t\t\t\t\t\t\t---\t[BillCreationDate]\r\n\t\t,null\t\t\t\t\t\t\t---\t[PostMarkDate]\r\n\t\t,null\t\t\t\t\t\t\t---\t[DatePaymentDue]\r\n\t\t,null\t\t\t\t\t\t\t---\t[DateAcceptanceIntoOEC]\r\n\t\t,null\t\t\t\t\t\t\t--- InitialPostingDate\r\n\t\t,max(Notes)\t\t\t\t\t\t---\t[Notes]\r\n\t\t,@authenticatedID\t\t\t\t---\t[AuthenticatedUserID]\r\n\t\t,getdate()\t\t\t\t\t\t---\t[DateAdded]\r\n\t\t,getdate()\t\t\t\t\t\t---\t[LastUpdate]\r\n    FROM ManualBill.UploadManualBillingCancellationSummary\r\n    WHERE   UploadManualBillingCancellationSummarySeqid \r\n        NOT IN (\r\n                SELECT  Summary.UploadManualBillingCancellationSummarySeqid\r\n\t\t\t\tFROM ManualBill.UploadManualBillingCancellationSummary as Summary INNER JOIN\r\n\t\t\t\t\t\tManualBill.UploadManualBillingAccountAdjustment as Adj \r\n\t\t\t\t\ton  Summary.OriginalAccountNumber = Adj.OriginalAccountNumber\r\n\t\t\t\t\t\tand Summary.BillingPeriodRevision = Adj.BillingPeriodRevision\r\n\t\t\t\t)\r\n    GROUP BY UploadManualBillingCancellationSummary.OriginalAccountNumber,\r\n                UploadManualBillingCancellationSummary.BillingPeriodRevision    \r\n\r\n\t/*****************************************************************************************\r\n\tCreate original records for the account that do not have any\r\n\t******************************************************************************************/\t\r\n\tINSERT INTO ManualBill.UploadManualBillingAccountAdjustment\r\n\t\t([AccountSeqid]\r\n        ,[AccountBillingSeqid]\r\n        ,[AccountBillingPaperBillSeqid]\r\n        ,[UtilityCompanySeqid]\r\n        ,[InvoiceAccountGroupSeqid]\r\n        ,[OriginalAccountNumber]\r\n        ,[AccountBillingStatus]\r\n        ,[AccountBillingpreviousStatus]\r\n        ,[AccountBillingStatusPeriod]\r\n        ,[NumberOfTransactions]\r\n        ,[NumberOfRebillTransactions]\r\n        ,[NumberOfCancelTransactions]\r\n        ,[BillingPeriod]\r\n        ,[BillingPeriodRevision]\r\n        ,[BillingAction]\r\n        ,[NumberOfBillingPeriods]\r\n        ,[EstimatedOrActual]\r\n        ,[InitialCancelFromDate]\r\n        ,[CurrentBillingToDate]\r\n        ,[TotalBillingDaysRebilled]\r\n        ,[TotalRebilledAmount]\r\n        ,[TotalCanceledAmount]\r\n        ,[PaidAdjustmentAmount]\r\n        ,[NetPaidAdjustmentAmount]\r\n        ,[PriorRevisedBilledAmount]\r\n        ,[RevisedBilledAmount]\r\n        ,[CanceledBilledAmount]\r\n        ,[EnergySource]\r\n        ,[ToDate]\r\n        ,[FromDate]\r\n        ,[PriorRevisedEnergy]\r\n        ,[RevisedEnergy]\r\n        ,[CanceledEnergy]\r\n        ,[PriorRevisedDemand]\r\n        ,[RevisedDemand]\r\n        ,[CanceledDemand]\r\n        ,[PriorRevisedCCF]\r\n        ,[RevisedCCF]\r\n        ,[CanceledCCF]\r\n        ,[BillingDays]\r\n        ,[BillingDate]\r\n        ,[ProcessedInTheCurrentPeriod]\r\n        ,[GasRateCode]\r\n        ,[TotalCCF]\r\n        ,[TotalEnergy]\r\n        ,[ThermsFactor]\r\n        ,[TotalDemand]\r\n        ,[CancelFromDate]\r\n        ,[CancelToDate]\r\n        ,[CancelBillingDays]\r\n        ,[CancelTotalEnergy]\r\n        ,[CancelTotalDemand]\r\n        ,[CancelTotalCCF]\r\n        ,[CancelThermsFactor]\r\n        ,[ProcessEffectiveDate]\r\n        ,[DerivedFromSpannedBill]\r\n        ,[SpannedBillingPeriodRevision]\r\n        ,[SpannedFirstCanceledBillingPeriod]\r\n        ,[SpannedBilledAmount]\r\n        ,[SpannedCCF]\r\n        ,[SpannedThermFactor]\r\n        ,[SpannedEnergy]\r\n        ,[SpannedDemand]\r\n        ,[SpannedMonthlyPercentage]\r\n        ,[SpannedTotalPercentage]\r\n        ,TotalAmountDue\r\n\t\t,CreditedAmountPaid\r\n\t\t,CreditedAmountDate\r\n\t\t,LatePaymentAmount\r\n\t\t,Tax\r\n\t\t,TotalCancellationCreditTransfer\r\n\t\t,PreviousAccountBalance\r\n        ,[BillingCycle]\r\n        ,[SalesType]\r\n        ,[ManualPaymentOverride]\r\n        ,[ManualDataEntry]\r\n        ,[IsTimeOfDayAccount]\r\n        ,[LastPeriodModified]\r\n        ,[FacilityName]\r\n        ,[ServiceAddress]\r\n        ,[BillCreationDate]\r\n        ,[PostMarkDate]\r\n        ,[DatePaymentDue]\r\n        ,[DateAcceptanceIntoOEC]\r\n        ,InitialPostingDate\r\n        ,[Notes]\r\n        ,[AuthenticatedUserID]\r\n        ,[DateAdded]\r\n        ,[LastUpdate])\r\n\tSELECT\r\n\t\tAccountSeqid\t\t\t\t\t\t\t\t\t---\t[AccountSeqid]\r\n        ,null\t\t\t\t\t\t\t\t\t\t\t---\t[AccountBillingSeqid]\r\n        ,null\t\t\t\t\t\t\t\t\t\t\t---\t[AccountBillingPaperBillSeqid]\r\n        ,@utilityCompany\t\t\t\t\t\t\t\t\t---\t[UtilityCompanySeqid]\r\n        ,CurrentInvoiceAccountGroup\t\t\t\t\t\t---\t[InvoiceAccountGroupSeqid]\r\n        ,UniqueBilledAccounts.OriginalAccountNumber    \t---\t[OriginalAccountNumber]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingStatus]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingpreviousStatus]\r\n        ,null\t\t\t\t\t\t---\t[AccountBillingStatusPeriod]\r\n        ,1\t\t\t\t\t\t\t---\t[NumberOfTransactions]\r\n        ,1\t\t\t\t\t\t\t---\t[NumberOfRebillTransactions]\r\n        ,0\t\t\t\t\t\t\t---\t[NumberOfCancelTransactions]\r\n        ,@BillingPeriod\t\t\t\t---\t[BillingPeriod]\r\n        ,@BillingPeriod\t\t\t\t---\t[BillingPeriodRevision]\r\n        ,'O'\t\t\t\t\t\t\t---\t[BillingAction]\r\n\t\t,1\t\t\t\t\t\t\t---\t[NumberOfBillingPeriods]\r\n        ,'EST'\t\t\t\t\t\t---\t[EstimatedOrActual]\r\n        ,null\t\t\t\t\t\t---\t[InitialCancelFromDate]\r\n        ,null\t\t\t\t\t\t---\t[CurrentBillingToDate]\r\n        ,dbo.CalculateNumberOfBillingDays(ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'F', TripNumber, UniqueBilledAccounts.BillingCycle),ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'T', TripNumber, UniqueBilledAccounts.BillingCycle))    ---\t[TotalBillingDaysRebilled]\r\n\t    ,0\t\t\t\t\t\t\t---\t[TotalRebilledAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalCanceledAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[PaidAdjustmentAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[NetPaidAdjustmentAmount]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedBilledAmount]\r\n        ,0\t\t\t\t\t\t\t---\t[RevisedBilledAmount]\t\t\t\t\t\t\t\t\t\t\t\t\r\n        ,0   \t\t\t\t\t\t---\t[CanceledBilledAmount]\r\n        ,UniqueBilledAccounts.EnergySource\t\t\t\t---\t[EnergySource]\r\n        ,ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'T', TripNumber, UniqueBilledAccounts.BillingCycle)\t\t\t---\t[ToDate]\r\n        ,ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'F', TripNumber, UniqueBilledAccounts.BillingCycle)\t\t\t---\t[FromDate]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedEnergy]\r\n        ,0\t\t\t    \t\t\t---\t[RevisedEnergy]\r\n        ,null\t\t\t\t\t\t---\t[CanceledEnergy]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedDemand]\r\n\t\t,0\t\t\t\t\t\t\t---\t[RevisedDemand]\r\n        ,null\t\t\t\t\t\t---\t[CanceledDemand]\r\n        ,null\t\t\t\t\t\t---\t[PriorRevisedCCF]\r\n        ,null\t\t\t\t\t\t---\t[RevisedCCF]\r\n        ,null\t\t\t\t\t\t---\t[CanceledCCF]\r\n        ,dbo.CalculateNumberOfBillingDays(ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'F', TripNumber, UniqueBilledAccounts.BillingCycle),ManualBill.DetermineProjectedToOrFromDate(@utilityCompany,CurrentInvoiceAccountGroup, @BillingPeriod, 'T', TripNumber, UniqueBilledAccounts.BillingCycle))  ---\t[BillingDays]\r\n        ,null\t\t\t\t\t\t---\t[BillingDate]\r\n        ,'N'\t\t\t\t\t\t\t---\t[ProcessedInTheCurrentPeriod]\r\n        ,null\t\t\t\t\t\t---\t[GasRateCode]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalCCF]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalEnergy]\r\n        ,null\t\t\t\t\t\t---\t[ThermsFactor]\r\n        ,0\t\t\t\t\t\t\t---\t[TotalDemand]\r\n        ,null\t\t\t\t\t\t---\t[CancelFromDate]\r\n        ,null\t\t\t\t\t\t---\t[CancelToDate]\r\n        ,null\t\t\t\t\t\t---\t[CancelBillingDays]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalEnergy]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalDemand]\r\n        ,null\t\t\t\t\t\t---\t[CancelTotalCCF]\r\n        ,null\t\t\t\t\t\t---\t[CancelThermsFactor]\r\n        ,dbo.ConvertDatetimeToYYYYMMDD(getdate())\t---\t[ProcessEffectiveDate]\r\n        ,'N'\t\t\t\t\t\t\t---\t[DerivedFromSpannedBill]\r\n        ,null\t\t\t\t\t\t---\t[SpannedBillingPeriodRevision]\r\n\t    ,null\t\t\t\t\t\t---\t[SpannedFirstCanceledBillingPeriod]\r\n        ,null\t\t\t\t\t\t---\t[SpannedBilledAmount]\r\n        ,null\t\t\t\t\t\t---\t[SpannedCCF]\r\n        ,null\t\t\t\t\t\t---\t[SpannedThermFactor]\r\n        ,null\t\t\t\t\t\t---\t[SpannedEnergy]\r\n        ,null\t\t\t\t\t\t---\t[SpannedDemand]\r\n        ,null\t\t\t\t\t\t---\t[SpannedMonthlyPercentage]\r\n        ,null\t\t\t\t\t\t---\t[SpannedTotalPercentage]\r\n        ,null\t\t\t\t\t\t--- TotalAmountDue\r\n\t\t,null\t\t\t\t\t\t--- CreditedAmountPaid\r\n\t\t,null\t\t\t\t\t\t--- CreditedAmountDate\r\n\t\t,0\t\t\t\t\t\t\t--- LatePaymentAmount\r\n\t\t,0\t\t\t\t\t\t\t--- Tax\r\n\t\t,null\t\t\t\t\t\t--- TotalCancellationCreditTransfer\r\n\t\t,null\t\t\t\t\t\t--- PreviousAccountBalance\r\n        ,null\t\t\t\t\t\t---\t[BillingCycle]\r\n        ,null\t\t\t\t\t\t---\t[SalesType]\r\n        ,'Y'\t\t\t\t\t\t\t---\t[ManualPaymentOverride]\r\n        ,'Y'\t\t\t\t\t\t\t---\t[ManualDataEntry]\r\n        ,'N'\t\t\t\t\t\t\t---\t[IsTimeOfDayAccount]\r\n        ,null\t\t\t\t\t\t---\t[LastPeriodModified]\r\n        ,null\t\t\t\t\t\t---\t[FacilityName]\r\n        ,null\t\t\t\t\t\t---\t[ServiceAddress]\r\n        ,null\t\t\t\t\t\t---\t[BillCreationDate]\r\n        ,null\t\t\t\t\t\t---\t[PostMarkDate]\r\n        ,null\t\t\t\t\t\t---\t[DatePaymentDue]\r\n        ,null\t\t\t\t\t\t---\t[DateAcceptanceIntoOEC]\r\n        ,null\t\t\t\t\t\t--- InitialPostingDate\r\n        ,null\t\t\t\t\t\t---\t[Notes]\r\n        ,@authenticatedID\t\t\t---\t[AuthenticatedUserID]\r\n        ,getdate()\t\t\t\t\t---\t[DateAdded]\r\n        ,getdate()\t\t\t\t\t---\t[LastUpdate]\t\t\r\n\tFROM (SELECT OriginalAccountNumber as BilledAccountNumber, BillingPeriod, BillingPeriodRevision\r\n\t\t\t\tFROM ManualBill.UploadManualBillingAccountAdjustment\r\n\t\t\t\tWHERE  (BillingPeriodRevision = @BillingPeriod)\r\n\t\t\t) AS AccountsWithCurrentBill \r\n\t\t\tRIGHT JOIN\r\n\t\t\t(SELECT DISTINCT ManualBill.UploadManualBillingHeader.OriginalAccountNumber, ManualBill.UploadManualBillingHeader.CurrentInvoiceAccountGroup, \r\n\t\t\t\t\t\t\t\tBilling.Account.AccountSeqid, Billing.Account.EnergySource, Billing.Account.TripNumber, Billing.Account.BillingCycle\r\n\t\t\t\tFROM ManualBill.UploadManualBillingHeader INNER JOIN\r\n\t\t\t\t\t--Billing.Account ON ManualBill.UploadManualBillingHeader.AccountSeqid = Billing.Account.AccountSeqid /* Comment out on 12/17/2018 */\r\n\t\t\t\t\tBilling.Account ON ManualBill.UploadManualBillingHeader.UniqueAccountSeqID = Billing.Account.UniqueAccountSeqID and Billing.Account.IsCurrentRecord = 'Y' /* Added on 12/17/2018 */\r\n\t\t\t\t) AS UniqueBilledAccounts ON \r\n\t\t\t\tAccountsWithCurrentBill.BilledAccountNumber = UniqueBilledAccounts.OriginalAccountNumber\r\n\tWHERE   (AccountsWithCurrentBill.BilledAccountNumber IS NULL)\r\n\r\n\r\n\r\n\t\r\n\t/* added on 12/17/2018 for UniqueAccountSeqID */\r\n\tUPDATE mbaa\r\n\tSET UniqueAccountSeqID = acc.UniqueAccountSeqID\r\n\tFROM ManualBill.UploadManualBillingAccountAdjustment mbaa INNER join Billing.Account acc on mbaa.AccountSeqID = acc.AccountSeqID\r\n\tWHERE mbaa.UniqueAccountSeqID IS NULL;\r\n\r\n\r\n\t--SELECT * INTO ManualBill.UploadManualBillingAccountAdjustmentTEST FROM ManualBill.UploadManualBillingAccountAdjustment\r\n\r\n\r\n\r\n\r\n\t/***********************************************************************************************************************************************************************************\r\n\t-- update the original bills with the net paid amount from ManualBill.UploadManualBillingHeader\r\n\t************************************************************************************************************************************************************************************/\t\r\n\tUPDATE    ManualBill.UploadManualBillingAccountAdjustment\r\n\tSET\t\tPaidAdjustmentAmount    = VoucheredAmount - ManualBill.UploadManualBillingAccountAdjustment.RevisedBilledAmount\r\n\t\t\t,NetPaidAdjustmentAmount = VoucheredAmount - ManualBill.UploadManualBillingAccountAdjustment.RevisedBilledAmount\r\n\t\t\t,ManualPaymentOverrideAmount = AccountsAndPaidAmounts.ManualPaymentOverrideAmount\r\n\tFROM (SELECT  OriginalAccountNumber, SUM(VoucheredAmount) AS VoucheredAmount, SUM(ManualPaymentOverrideAmount) AS ManualPaymentOverrideAmount\r\n\t\t\tFROM ManualBill.UploadManualBillingHeader\r\n\t\t\tGROUP BY OriginalAccountNumber) AS AccountsAndPaidAmounts \r\n\t\t\tINNER JOIN ManualBill.UploadManualBillingAccountAdjustment ON \r\n\t\t\t  AccountsAndPaidAmounts.OriginalAccountNumber = ManualBill.UploadManualBillingAccountAdjustment.OriginalAccountNumber\r\n\tWHERE   (ManualBill.UploadManualBillingAccountAdjustment.BillingPeriodRevision = @BillingPeriod)\r\n\r\n\t/***********************************************************************************************************************************************************************************\r\n\t-- update the original bills with the total amount due on the bill \r\n\t-- also update whatever fields need to be copied over ( 4 dates)\r\n\t-- 20100322 added PreviousAccountBalance\r\n\t************************************************************************************************************************************************************************************/\t\r\n\tUPDATE  ManualBill.UploadManualBillingAccountAdjustment\r\n\tSET     EstimatedOrActual\t\t=  LatestHeaderInformation.ActualOrEstimated\r\n\t\t\t,TotalAmountDue\t\t=  LatestHeaderInformation.TotalAmountDue\r\n\t\t\t,CreditedAmountPaid\t=  LatestHeaderInformation.CreditedPaidAmount\r\n\t\t\t,CreditedAmountDate\t=  LatestHeaderInformation.CreditedPaymentDate\r\n\t\t\t,BillCreationDate\t\t=  LatestHeaderInformation.BillCreationDate\r\n\t\t\t,PostMarkDate\t\t\t=  LatestHeaderInformation.PostMarkDate\r\n\t\t\t,DatePaymentDue\t\t=  LatestHeaderInformation.DatePaymentDue\r\n\t\t\t,DateAcceptanceIntoOEC =  LatestHeaderInformation.DateAcceptanceIntoOEC\r\n\t\t\t,PreviousAccountBalance=  LatestHeaderInformation.PreviousAccountBalance\r\n\tFROM\tManualBill.UploadManualBillingHeader AS LatestHeaderInformation \r\n\t\t\tINNER JOIN\r\n\t\t\tManualBill.UploadManualBillingAccountAdjustment ON \r\n\t\t\tLatestHeaderInformation.OriginalAccountNumber = ManualBill.UploadManualBillingAccountAdjustment.OriginalAccountNumber\r\n\tWHERE   (LatestHeaderInformation.ToDate =\r\n\t\t\t\t\t\t\t  (\tSELECT TOP (1) ToDate\r\n\t\t\t\t\t\t\t\tFROM ManualBill.UploadManualBillingHeader\r\n\t\t\t\t\t\t\t\tWHERE  (OriginalAccountNumber = LatestHeaderInformation.OriginalAccountNumber)\r\n\t\t\t\t\t\t\t\tORDER BY ToDate DESC, InitialPostingDate DESC)) \r\n\t\t\tAND \r\n            (ManualBill.UploadManualBillingAccountAdjustment.BillingPeriodRevision = @BillingPeriod)\r\n\t\r\n\t-- MOH 20100319 \r\n\t-- added LatePaymentAmount, TotalCancellationCreditTransfer  to the adjustment table \r\n\t-- this caries over these charges to the AccountBillingPaperBill to verify the netPaidAdjustment\r\n\t-- MOH 20110706 added Tax to the adjutment table\t\r\n\tUPDATE  ManualBill.UploadManualBillingAccountAdjustment\r\n\tset   LatePaymentAmount = SumLatePaymentAmount\r\n\t     ,Tax = SumTax\r\n\t\t ,TotalCancellationCreditTransfer = SumTotalCancellationCreditTransfer\r\n\t\t \r\n\tfrom ( SELECT  OriginalAccountNumber, SUM(LatePaymentAmount) AS SumLatePaymentAmount, SUM(TotalCancellationCreditTransfer) \r\n\t\t\t\t\t\t\t\t\t AS SumTotalCancellationCreditTransfer, SUM(Tax) AS SumTax\r\n\t\t\t\tFROM ManualBill.UploadManualBillingHeader\r\n\t\t\t\tGROUP BY OriginalAccountNumber\t) \r\n\t\t\t\tas AgregatedInformation\r\n\t\t\t\tinner join ManualBill.UploadManualBillingAccountAdjustment\r\n\t\t\t\ton AgregatedInformation.OriginalAccountNumber = ManualBill.UploadManualBillingAccountAdjustment.OriginalAccountNumber\r\n\twhere \tManualBill.UploadManualBillingAccountAdjustment.BillingPeriodRevision = @BillingPeriod\t\r\n\t\r\n\t/*****************************************************************************************\r\n\tupdate the information from EC3\r\n\t******************************************************************************************/\t\r\n\t/*******************************************************************************************************************************************\r\n\t*  MOH on 06/15/2009 ( deleted the commented code on 01/07/2010 since it was not used anymore, it became the 2 next queries )\r\n\t*  due to the fact that accountBilling legacy data has no matching \tAccountBillingPaperBill records this query can not update the adjustment table with the AccountBillingSeqid \r\n\t*  therefore there are no inserts to the AccountBilling it's all updates. the solution was to break it up to get the AccountBilling inforamtion seperatly from the AccountBillingPaperBill\r\n\t*******************************************************************************************************************************************/\r\n\t\t\t  \r\n\t---- update the AccountBilling Information into the UploadManualBillingAccountAdjustment\t\t  \r\n\t-- update the AccountBilling Information into the UploadManualBillingAccountAdjustment\t\t  \r\n\tUPDATE    MUA\r\n\tSET [AccountBillingSeqid]\t\t= AB.AccountBillingSeqid\r\n\t\t,PriorRevisedBilledAmount\t= AB.RevisedBilledAmount\r\n\t\t,[PriorRevisedEnergy]\t\t= AB.AccountEnergyUsage\r\n\t\t,[PriorRevisedDemand]\t\t= AB.AccountDemandUsage\r\n\r\n\tFROM\tManualBill.UploadManualBillingAccountAdjustment MUA \r\n\tINNER JOIN Billing.AccountBilling AB ON MUA.BillingPeriodRevision = AB.BillingPeriod \r\n\tAND MUA.BillingPeriodRevision = AB.BillingPeriodRevision \r\n\tAND AB.UniqueAccountSeqId = MUA.UniqueAccountSeqID\r\n\tAND AB.UtilityCompanySeqid = MUA.UtilityCompanySeqid\r\n\t\r\n\t-- update the AccountBillingPaperBill Information into the UploadManualBillingAccountAdjustment\t\t  \r\n\tUPDATE  ManualBill.UploadManualBillingAccountAdjustment\r\n\tSET     AccountBillingPaperBillSeqid = ABP.AccountBillingPaperBillSeqid\r\n            ,LastPeriodModified\t\t\t = ABP.LastPeriodModified\r\n\tFROM\tManualBill.UploadManualBillingAccountAdjustment MUA\r\n\tINNER JOIN Billing.AccountBillingPaperBill ABP \r\n\tON MUA.BillingPeriodRevision = ABP.BillingPeriod \r\n\tAND MUA.BillingPeriodRevision = ABP.BillingPeriodRevision \r\n\tAND ABP.UniqueAccountSeqId = MUA.UniqueAccountSeqID\r\n\tAND ABP.UtilityCompanySeqid = MUA.UtilityCompanySeqid\t\r\n\r\n\r\n\r\n\tUPDATE ManualBill.UploadManualBillingAccountAdjustment\r\n\tSET    [TotalRebilledAmount]\t\t= Totals.RevisedBilledAmount\r\n\t\t  ,[TotalCanceledAmount]\t\t= Totals.CanceledBilledAmount\r\n\t\t  ,[TotalEnergy]\t\t\t\t= Totals.RevisedEnergy\r\n\t\t  ,[TotalDemand]\t\t\t\t= Totals.RevisedDemand\r\n\t\t  ,[TotalBillingDaysRebilled]\t= BillingPeriodDays\t     \r\n\t\t  \r\n\tFROM (SELECT OriginalAccountNumber, SUM(RevisedBilledAmount) AS RevisedBilledAmount, SUM(RevisedEnergy) AS RevisedEnergy,SUM(RevisedDemand) AS RevisedDemand, \r\n\t\t\t\tSUM(CanceledBilledAmount) AS CanceledBilledAmount, dbo.CalculateNumberOfBillingDays(min(FromDate), max(ToDate)) as BillingPeriodDays\r\n           FROM ManualBill.UploadManualBillingAccountAdjustment AS UploadManualBillingAccountAdjustment_1\r\n           GROUP BY OriginalAccountNumber) AS Totals INNER JOIN\r\n           ManualBill.UploadManualBillingAccountAdjustment ON \r\n           Totals.OriginalAccountNumber = ManualBill.UploadManualBillingAccountAdjustment.OriginalAccountNumber\t\t\t\t\r\n\r\n\t-- update the ISSummaryInvoice on the header table\r\n\tUPDATE A\r\n\tSET IsSummaryInvoice = SummaryBilling\r\n\tFROM ManualBill.UploadManualBillingAccountAdjustment AS A INNER JOIN Billing.InvoiceAccountGroup AS I\r\n\t\tON A.InvoiceAccountGroupSeqid = I.InvoiceAccountGroupSeqid\r\n\r\n\r\n\t\t\r\n\tSET @Status = 0;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

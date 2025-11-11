@@ -1,0 +1,988 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Common",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ProcessChangePriorNewActiveStatusToActive",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ProcessChangePriorNewActiveStatusToActive",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to update the status of accounts and meters that were newly created in a prior billing cycle to an active status. Specifically, it changes the status from a temporary \"new active\" status (coded as '46') to a permanent \"active\" status (coded as 'AC'). This transition occurs after the new active status has been in place for one billing cycle. The procedure updates both the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.Account",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "Billing.Meter",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables, ensuring that the status change is recorded along with audit information."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level is considered medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure involves multiple table updates and joins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes conditional logic to ensure the correct billing period is processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It handles audit logging and status transitions, which require careful management of business rules."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UtilityCompanySeqid int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the utility company for which the accounts and meters are being processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@InvoiceBillingGroup int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the billing group of the accounts and meters to be updated."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the ID of the user executing the procedure, used for audit purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure initializes several variables, including status codes and billing periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the current and prior billing periods from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.ApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table where the "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentProcessingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is marked as 'Y'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the "
+                },
+                {
+                  "type": "text",
+                  "text": "@NewBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not set correctly (defaulting to '187601'), the procedure returns -100, indicating an error."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Status Update for Accounts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates accounts in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table where the status is '46' and the billing group matches the input parameter."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Changes the status to 'AC', updates the audit fields, and logs the change."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Status Update for Meters",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Joins "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.AccountExchangeMeterTrack",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Meter",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " tables to update meters with status '46'."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Changes the status to 'AC', updates audit fields, and logs the change."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Completion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Returns 0 upon successful execution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the columns used in the "
+                },
+                {
+                  "type": "text",
+                  "text": "WHERE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " clauses, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountStatus",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentInvoiceAccountGroup",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "MeterStatus",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the number of records is large, consider processing in batches to avoid locking and performance degradation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure should be tested for concurrency to ensure that simultaneous executions do not lead to race conditions or deadlocks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Default Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of '187601' as a default billing period could lead to incorrect behavior if not properly managed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Audit Trail",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on setting "
+                },
+                {
+                  "type": "text",
+                  "text": "FireAuditTrigger",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to 'Y', which assumes that there is a mechanism to handle this trigger. Ensure that the audit system is correctly configured."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure has limited error handling. Consider adding more robust error management to handle unexpected scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the transition from status '46' to 'AC' aligns with business rules and does not inadvertently affect accounts or meters that should not be updated."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Common].[usp_ProcessChangePriorNewActiveStatusToActive] @UtilityCompanySeqid int , @InvoiceBillingGroup int , @AuthenticatedUserID int\n   \r\n AS --**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:   Change the status of the Accounts and Meters that were newly created in a prior billing cycle to an active status.  The new status \r\n--*\t\texists only for one billing cycle and then the account or meter new active status changes to active status.\r\n--*               \r\n--*\t\t Convert Prior Billing Period Active Once for Billing Adjustments (\"AO\") to their Previous Status probably (\"LG\") for Leagcy ???\r\n--*               \r\n--*               \r\n--* Exec:          usp_UpdateNewActiveStatusToActiveAC\r\n--*\r\n--* Parameter(s):         \r\n--*                            NewBillingPeriod  \t\t    varchar(6)  The current billing period\r\n--\t\t     PreviousBillingPeriodOneMonth   varchar(6)\r\n--*\r\n--*\r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t   -100 There must be one period only for Success\r\n--*                          0 Stored procedure success\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   10/26/2005\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 10/26/2005 PAH  First Version  \r\n--* 03/27/2006 PAH  Revised to \r\n--***************************************************************************************\r\n--\r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--declare\t@NewBillingPeriod varchar(6)\r\n--declare\t@PreviousBillingPeriodOneMonth varchar(6)\r\ndeclare\t@StatusCode varchar(2)\r\ndeclare\t@NewStatusCode varchar(2)\r\ndeclare @CurrentPeriodCount integer\r\ndeclare @ErrorStatusCode integer\r\ndeclare @NewBillingPeriod  varchar(6)\r\ndeclare @PriorBillingPeriod  varchar(6)\r\ndeclare @Yes  varchar(1)\r\n--\r\n--\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\nset  @StatusCode =  'AC'\r\nset  @Yes =  'Y'\r\n--\r\n--**************************************************************************************  \r\n--Main Process                                      \r\n--**************************************************************************************\r\n--\r\n--   Change the Prior billing cycle New Active Status (46) to existing active status (AC)\r\n--\r\nSELECT    @NewBillingPeriod = IsNull(BillingPeriod,'187601'),@PriorBillingPeriod = PreviousBillingPeriodOneMonth  FROM Billing.ApplicationTimeFrame  WHERE CurrentProcessingPeriod = @Yes\r\n\r\nprint '@NewBillingPeriod '+@NewBillingPeriod+'    @PriorBillingPeriod '+@PriorBillingPeriod\r\n--***\r\n-- The count must be one period only\r\n--***\r\nif ( @NewBillingPeriod = '187601' )    return -100\r\n--***\r\n-- Get the current period\r\n--***\r\n--SELECT @NewBillingPeriod  =  BillingPeriod, @PreviousBillingPeriodOneMonth = PreviousBillingPeriodOneMonth FROM ApplicationTimeFrame where  (CurrentProcessingPeriod = 'Y')\r\n--***\r\n-- Make sure that \r\n--***\r\n/*\r\n*\tConvert Prior Billing Period New Active accounts (\"46\") to Existing Active Status (\"AC\")\r\n*/\t\r\n\r\nset  @StatusCode =  'AC'\r\nset  @NewStatusCode =  '47'\r\n--\r\nupdate  Billing.Account\r\nset     AccountPreviousStatus = AccountStatus ,\r\n        AccountStatus = 'AC' ,\r\n        AccountStatusCodePeriod = @NewBillingPeriod ,\r\n        FireAuditTrigger = 'Y' ,\r\n        Notes = @NewBillingPeriod\r\n        + ' - Billing Period:  AccountStatus from 46 to AC' ,\r\n        LastUpdate = getdate() ,\r\n        AuthenticatedUserID = @AuthenticatedUserID\r\nwhere   ( AccountStatus = '46'\r\n          and ( CurrentInvoiceAccountGroup = @InvoiceBillingGroup )\r\n          and AccountStatusCodePeriod < @NewBillingPeriod\r\n        )\r\n\r\nupdate  Billing.Meter\r\nset     MeterPreviousStatus = Billing.Meter.MeterStatus ,\r\n        MeterStatus = 'AC' ,\r\n        MeterStatusCodePeriod = @NewBillingPeriod , --dbo.CalculateNextBillingPeriod(MeterStatusCodePeriod,'M'),\r\n        FireAuditTrigger = 'Y' ,\r\n        Notes = @NewBillingPeriod\r\n        + ' - Billing Period:  MeterStatus from 46 to AC' ,\r\n        LastUpdate = getdate() ,\r\n        AuthenticatedUserID = @AuthenticatedUserID\r\nFROM Billing.Account\r\n        inner join Billing.AccountExchangeMeterTrack on Billing.Account.AccountSeqid = Billing.AccountExchangeMeterTrack.OriginalAccountSeqid\r\n        inner join Billing.Meter on Billing.AccountExchangeMeterTrack.OriginalMeterSeqid = Billing.Meter.MeterSeqid\r\nwhere   ( Billing.Account.UtilityAccountProvider = @UtilityCompanySeqid\r\n          and Billing.Account.CurrentInvoiceAccountGroup = @InvoiceBillingGroup\r\n          and Billing.Meter.MeterStatus = '46'\r\n          and MeterStatusCodePeriod < @NewBillingPeriod\r\n        )\r\n\r\nreturn 0"
+        }
+      ]
+    }
+  ]
+}

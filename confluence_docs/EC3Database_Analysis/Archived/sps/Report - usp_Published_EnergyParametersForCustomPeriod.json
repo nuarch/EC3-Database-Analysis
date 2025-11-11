@@ -1,0 +1,884 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Published_EnergyParametersForCustomPeriod",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Published_EnergyParametersForCustomPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve energy-related data for specific facilities over a custom billing period. It logs the usage of the report and then performs a series of queries to gather and return data on energy costs, demand, and usage for facilities that match the given criteria. The data is sourced from a table named "
+        },
+        {
+          "type": "text",
+          "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and is filtered based on the provided parameters."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple SQL operations, including logging, joining tables, and executing three separate queries with "
+        },
+        {
+          "type": "text",
+          "text": "UNION ALL",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The complexity arises from the need to handle multiple conditions and the use of a user-defined function for filtering data."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report, used for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which the data is published, used to filter records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The agency code, used to filter and join data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OecFacilityNumber AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The facility number, used to filter and join data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriodStart AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The start of the custom billing period, used to filter records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriodEnd AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The end of the custom billing period, used to filter records."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by logging the report usage through a call to "
+                },
+                {
+                  "type": "text",
+                  "text": "Audit.usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", capturing details such as the report name, stored procedure name, and user email."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure executes three "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " queries, each joined with the result of a user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to filter facilities based on agency hierarchy."
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "First Query",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Retrieves energy cost data, categorizing costs by energy type (Electricity, Gas, Steam)."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Second Query",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Retrieves electricity demand data, specifically for electricity."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Third Query",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Retrieves energy usage data, categorizing usage by energy type (Electricity, Gas, Steam)."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Each query filters records based on the effective start and end periods, as well as the custom billing period range."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " allows reading uncommitted data, which can improve performance by reducing locking but may lead to dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Call",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The repeated use of the user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " could impact performance if the function is complex or not optimized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "UNION ALL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "UNION ALL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is efficient as it avoids the overhead of eliminating duplicates, but it may still be resource-intensive if the datasets are large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted or inconsistent data, which may not be suitable for all business scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may face performance issues with large datasets due to multiple joins and the use of a user-defined function."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The reliance on a user-defined function for filtering could lead to incorrect results if the function logic is flawed or if it does not handle edge cases properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include any explicit security checks or validations on input parameters, which could be a risk if inputs are not properly sanitized elsewhere in the application."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_Published_EnergyParametersForCustomPeriod]\n(\r\n\t@EmailAddress AS VARCHAR(75)\r\n\t,@PublishedBillingPeriod AS VARCHAR(6)\r\n\t,@AgencyCodeOEC AS VARCHAR(MAX)\r\n\t,@OecFacilityNumber AS VARCHAR(MAX)\r\n\t,@BillingPeriodStart AS VARCHAR(6)\r\n\t,@BillingPeriodEnd AS VARCHAR(6)\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,\r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = @AgencyCodeOEC,\r\n\t\t@prmFacilityNumber_s = @OecFacilityNumber,\r\n\t\t@prmStartingBillingPeriod = @BillingPeriodStart,\r\n\t\t@prmEndingBillingPeriod = @BillingPeriodEnd;\r\n\r\n\t\tSELECT @PublishedBillingPeriod AS PublishedBillingPeriod\r\n\t\t\t,T.BillingPeriod\r\n\t\t\t,T.FiscalYear, T.BillingMonth, \r\n\t\t\tT.AgencyCodeOEC, T.AgencyName, \r\n\t\t\tT.OecFacilityNumber, T.FacilityName, \r\n\t\t\tT.Address1, T.UtilityCompany,\r\n\t\t\tT.UtilityServiceAddress,\r\n\t\t\tT.CityPlanningBIN, T.Borough, \r\n\t\t\tT.[Block], T.LotNumber, \r\n\t\t\tT.CurrentAccountNumber, \r\n\t\t\tCASE WHEN T.Energytype = 'ELE' THEN 'Electricity Cost ($)'\r\n\t\t\t\tWHEN T.Energytype = 'GAS' THEN 'Gas Cost ($)'\r\n\t\t\t\tWHEN T.Energytype = 'STM' THEN 'Steam Cost ($)' END AS Cost\r\n\t\t\t,T.RevisedBilledAmount\r\n\t\tFROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS T\r\n\t\t\tINNER JOIN Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy(@AgencyCodeOEC,@OecFacilityNumber,@EmailAddress)\r\n\t\t\t\t\tAS A ON T.OecFacilityNumber = A.OecFacilityNumber\r\n\t\t\t\tAND T.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\tAND T.BillingPeriod >= @BillingPeriodStart AND T.BillingPeriod <= @BillingPeriodEnd\t\t\r\n\t\tUNION ALL\r\n\t\tSELECT @PublishedBillingPeriod AS PublishedBillingPeriod\r\n\t\t\t,T.BillingPeriod, T.FiscalYear, T.BillingMonth, \r\n\t\t\tT.AgencyCodeOEC, T.AgencyName, \r\n\t\t\tT.OecFacilityNumber,  T.FacilityName,\r\n\t\t\tT.Address1, T.UtilityCompany,\r\n\t\t\tT.UtilityServiceAddress, \r\n\t\t\tT.CityPlanningBIN, T.Borough, \r\n\t\t\tT.[Block], T.LotNumber, \r\n\t\t\tT.CurrentAccountNumber, \r\n\t\t\tCASE WHEN T.Energytype = 'ELE' THEN 'Electricity Demand (kW)' ELSE '' END AS Expr1, \r\n\t\t\tT.AccountDemandUsage\r\n\t\tFROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS T\r\n\t\t\tINNER JOIN Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy(@AgencyCodeOEC, @OecFacilityNumber, @EmailAddress) \r\n\t\t\t\t\tAS A ON T.OecFacilityNumber = A.OecFacilityNumber\r\n\t\t\t\tAND T.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\tAND T.BillingPeriod >= @BillingPeriodStart AND T.BillingPeriod <= @BillingPeriodEnd\t\t\r\n\t\tUNION ALL\r\n\t\tSELECT @PublishedBillingPeriod AS PublishedBillingPeriod, T.BillingPeriod, \r\n\t\t\tT.FiscalYear, T.BillingMonth, \r\n\t\t\tT.AgencyCodeOEC, T.AgencyName, \r\n\t\t\tT.OecFacilityNumber, T.FacilityName,\r\n\t\t\tT.Address1, T.UtilityCompany,\r\n\t\t\tT.UtilityServiceAddress,\r\n\t\t\tT.CityPlanningBIN, T.Borough, \r\n\t\t\tT.[Block], T.LotNumber, \r\n\t\t\tT.CurrentAccountNumber, \r\n\t\t\tCASE WHEN Energytype = 'ELE' THEN 'Electricity Usage (kWh)' WHEN Energytype = 'GAS' THEN 'Gas (Therms)' WHEN Energytype = 'STM' THEN 'Steam (MLbs)'\r\n\t\t\tEND AS Cost, T.AccountEnergyUsage\r\n\t\tFROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS T\r\n\t\t\tINNER JOIN Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy(@AgencyCodeOEC, @OecFacilityNumber, @EmailAddress)\r\n\t\t\t\t\tAS A ON T.OecFacilityNumber = A.OecFacilityNumber\r\n\t\t\t\tAND T.AgencyCodeOEC = A.AgencyCodeOEC\r\n\t\tWHERE T.EffectiveStartPeriod <= @PublishedBillingPeriod AND T.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\tAND T.BillingPeriod >= @BillingPeriodStart AND T.BillingPeriod <= @BillingPeriodEnd;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

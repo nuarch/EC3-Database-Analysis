@@ -1,0 +1,1021 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_ReportTotalDetailsByMonthAndAgency",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_ReportTotalDetailsByMonthAndAgency",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a detailed report of financial and energy usage data by month and agency for a specified scenario. It dynamically constructs and executes a SQL query to pivot data from a budget view and agency hierarchy view, aggregating totals for dollars, energy usage, and demand usage across different billing periods within a fiscal year. The results are returned in a tabular format with columns for each month and a total column."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves dynamic SQL construction, multiple joins, aggregations, and pivot operations, which add to its complexity. The use of dynamic SQL requires careful handling to ensure security and performance, making the complexity level medium."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@scenarioId AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter specifies the scenario for which the report is generated. It is used to filter data from the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.vwTotalBudget",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and declares several variables for fiscal year, billing period columns, and SQL string construction."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Fiscal Year Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the fiscal year ("
+                },
+                {
+                  "type": "text",
+                  "text": "@fy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") associated with the given "
+                },
+                {
+                  "type": "text",
+                  "text": "@scenarioId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Construction",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Constructs column lists ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@billingPeriodCols",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") and total column expressions ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@billingPeriodTotalCol",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") for each billing period within the fiscal year."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Constructs a display condition ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@displayCondition",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") to filter out rows where all billing period values are zero."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic Query Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Constructs a dynamic SQL query string ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@sqlStr",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ") that:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "bulletList",
+                      "content": [
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Joins "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "budget.vwTotalBudget",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " with "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "Preload.vwAgencyHierarchy",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " to aggregate data by agency and billing period."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Uses the "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "PIVOT",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " operator to transform rows into columns for each billing period."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Filters out rows with zero totals using the constructed display condition."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "Includes multiple "
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "UNION ALL",
+                                  "marks": [
+                                    {
+                                      "type": "code"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "text",
+                                  "text": " clauses to handle different types of data: Dollar, Consumption, Demand, and Total Cost."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Executes the dynamic SQL and inserts the results into a table variable "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@result",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure selects and returns the data from the "
+                },
+                {
+                  "type": "text",
+                  "text": "@result",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table variable."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of dynamic SQL can lead to performance issues due to lack of query plan reuse. SQL Server cannot cache execution plans for dynamic SQL, which may result in increased compilation time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This isolation level can improve performance by reducing locking but may lead to dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation and Pivoting",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The aggregation and pivot operations can be resource-intensive, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Proper indexing on the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.vwTotalBudget",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.vwAgencyHierarchy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables can improve join and aggregation performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SQL Injection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure constructs SQL queries dynamically using input parameters. If not properly handled, this can expose the system to SQL injection attacks. Although the parameter is cast to a string, further validation or parameterization should be considered."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted or dirty data, which might not be suitable for all reporting scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complexity in Maintenance",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The dynamic nature of the SQL and the use of multiple unions and pivots can make the procedure difficult to maintain and debug."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance of the procedure may degrade due to the complexity of the dynamic SQL and the operations performed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [report].[USP_ReportTotalDetailsByMonthAndAgency]\n(\r\n\t@scenarioId AS INT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @fy AS INT, @billingPeriodCols AS VARCHAR(120), @billingPeriodTotalCol AS VARCHAR(120)\r\n\t\t,@displayCondition AS VARCHAR(500), @sqlStr AS VARCHAR(MAX);\r\n\r\n\tDECLARE @result TABLE(AgencyCodeOEC VARCHAR(6),\r\n\t\tAgencyName VARCHAR(75),\r\n\t\tEnergyType VARCHAR(3),\r\n\t\tBudgetGroupName VARCHAR(75),\r\n\t\tType VARCHAR(50),\r\n\t\tTotal DECIMAL(20,2),\r\n\t\tJuly DECIMAL(20,2),\r\n\t\tAugust DECIMAL(20,2),\r\n\t\tSeptember DECIMAL(20,2),\r\n\t\tOctober DECIMAL(20,2),\r\n\t\tNovember DECIMAL(20,2),\r\n\t\tDecember DECIMAL(20,2),\r\n\t\tJanuary DECIMAL(20,2),\r\n\t\tFebruary DECIMAL(20,2),\r\n\t\tMarch DECIMAL(20,2),\r\n\t\tApril DECIMAL(20,2),\r\n\t\tMay DECIMAL(20,2),\r\n\t\tJune DECIMAL(20,2));\r\n\r\n\tSELECT @fy = FY FROM budget.Scenario WHERE ID=@scenarioId;\r\n\r\n\tSELECT @billingPeriodCols = COALESCE(@billingPeriodCols + ',', '') + '['+CAST(BudgetBillingperiod AS VARCHAR(6)) +']'\r\n\t\t,@billingPeriodTotalCol=COALESCE(@billingPeriodTotalCol + '+', '') + '['+CAST(BudgetBillingperiod AS VARCHAR(6)) +']'\r\n\t\t,@displayCondition=COALESCE(@displayCondition + '<>0 or ', '') + '['+CAST(BudgetBillingperiod AS VARCHAR(6)) +']'\r\n\tFROM Preload.BillingPeriod WHERE FY=@fy\r\n\tORDER BY BudgetBillingperiod;\r\n\r\n\tSET @sqlStr = 'SELECT AgencyCodeOEC, AgencyName, EnergyType, BudgetGroupName, ''Dollar'' AS Type, ' + @billingPeriodTotalCol + ' AS Total, ' +  @billingPeriodCols + '\r\n\t\tFROM (SELECT ParentAgencyCodeOEC AS AgencyCodeOEC, ParentAgencyName AS AgencyName, BudgetBillingPeriod, EnergyType, BudgetGroupName\r\n\t\t\t\t,SUM(ISNULL(TotalDollars,0)) AS TotalDollars\r\n\t\t\tFROM budget.vwTotalBudget a JOIN [Preload].[vwAgencyHierarchy] b ON a.AgencyCodeOEC=b.childAgencyCodeOEC\r\n\t\t\tWHERE ScenarioId=' +  CAST(@scenarioId AS VARCHAR(10)) + ' AND b.fy=' + CAST(@fy AS VARCHAR(4)) + '\r\n\t\t\tGROUP BY BudgetBillingPeriod, ParentAgencyCodeOEC, ParentAgencyName, EnergyType, BudgetGroupName\r\n\t\t) AS sourcetbl\r\n\t\tPIVOT\r\n\t\t(sum(TotalDollars) FOR budgetbillingperiod IN (' +  @billingPeriodCols + ')) AS pivottbl\r\n\t\tWhere ' + @displayCondition + '<>0 or ' + @billingPeriodTotalCol + '<>0 \r\n\t\tUNION ALL\r\n\t\tSELECT AgencyCodeOEC, AgencyName, EnergyType, BudgetGroupName, ''Consumption (''+ LOWER(EnergyUnit) + '')'' AS Type, ' + @billingPeriodTotalCol + ' AS Total, ' +  @billingPeriodCols + '\r\n\t\tFROM (SELECT ParentAgencyCodeOEC AS AgencyCodeOEC, ParentAgencyName AS AgencyName, BudgetBillingPeriod, EnergyType, EnergyUnit\r\n\t\t\t\t,BudgetGroupName, SUM(ISNULL([EnergyUsage],0)) AS [EnergyUsage]\r\n\t\t\tFROM budget.vwTotalBudget a JOIN [Preload].[vwAgencyHierarchy] b ON a.AgencyCodeOEC=b.childAgencyCodeOEC \r\n\t\t\tWHERE ScenarioId=' +  CAST(@scenarioId AS VARCHAR(10)) + ' AND b.fy=' + CAST(@fy AS VARCHAR(4)) + '\r\n\t\t\tGROUP BY BudgetBillingPeriod, ParentAgencyCodeOEC, ParentAgencyName, EnergyType, EnergyUnit, BudgetGroupName\r\n\t\t) AS sourcetbl\r\n\t\tPIVOT\r\n\t\t(sum([EnergyUsage]) FOR budgetbillingperiod IN (' +  @billingPeriodCols + ')) AS pivottbl\r\n\t\tWhere ' + @displayCondition + '<>0 or ' + @billingPeriodTotalCol + '<>0 \r\n\t\tUNION ALL\r\n\t\tSELECT AgencyCodeOEC, AgencyName, EnergyType, BudgetGroupName, ''Demand'' AS Type, ' + @billingPeriodTotalCol + ' AS Total, ' +  @billingPeriodCols + '\r\n\t\tFROM (SELECT ParentAgencyCodeOEC AS AgencyCodeOEC, ParentAgencyName AS AgencyName, BudgetBillingPeriod, EnergyType, BudgetGroupName\r\n\t\t\t\t,SUM(ISNULL([DemandUsage],0)) AS [DemandUsage]\r\n\t\t\tFROM budget.vwTotalBudget a JOIN [Preload].[vwAgencyHierarchy] b ON a.AgencyCodeOEC=b.childAgencyCodeOEC \r\n\t\t\tWHERE ScenarioId=' +  CAST(@scenarioId AS VARCHAR(10)) + ' AND b.fy=' + CAST(@fy AS VARCHAR(4)) + '\r\n\t\t\tGROUP BY BudgetBillingPeriod, ParentAgencyCodeOEC, ParentAgencyName, EnergyType, BudgetGroupName\r\n\t\t) AS sourcetbl\r\n\t\tPIVOT\r\n\t\t(sum([DemandUsage]) FOR budgetbillingperiod IN (' +  @billingPeriodCols + ')) AS pivottbl\r\n\t\tWhere ' + @displayCondition + '<>0 or ' + @billingPeriodTotalCol + '<>0 \r\n\t\tUnion ALL\r\n\t\tSELECT AgencyCodeOEC, AgencyName, '''' AS EnergyType, '''' AS BudgetGroupName, ''Total Cost'' AS Type, ' + @billingPeriodTotalCol + ' AS Total, ' +  @billingPeriodCols + '\r\n\t\tFROM (SELECT ParentAgencyCodeOEC AS AgencyCodeOEC, ParentAgencyName AS AgencyName, BudgetBillingPeriod, SUM(ISNULL(TotalDollars,0)) AS TotalDollars\r\n\t\t\tFROM budget.vwTotalBudget a JOIN [Preload].[vwAgencyHierarchy] b ON a.AgencyCodeOEC=b.childAgencyCodeOEC\r\n\t\t\tWHERE ScenarioId=' +  CAST(@scenarioId AS VARCHAR(10)) + ' AND b.fy=' + CAST(@fy AS VARCHAR(4)) + '\r\n\t\t\tGROUP BY BudgetBillingPeriod, ParentAgencyCodeOEC, ParentAgencyName\r\n\t\t) AS sourcetbl\r\n\t\tPIVOT\r\n\t\t(sum(TotalDollars) FOR budgetbillingperiod IN (' +  @billingPeriodCols + ')) AS pivottbl\r\n\t\tWhere ' + @displayCondition + '<>0 or ' + @billingPeriodTotalCol + '<>0\r\n\t\tORDER BY AgencyCodeOEC, EnergyType, BudgetGroupName, Type';\r\n\r\n\tINSERT INTO @result (AgencyCodeOEC, AgencyName, EnergyType, BudgetGroupName, [Type],\r\n\t\tTotal, July, August, September, October, November, December, January, February, March, April, May, June)\r\n\tEXEC(@sqlStr);\r\n\r\n\tSELECT AgencyCodeOEC, AgencyName, EnergyType, BudgetGroupName, [Type],\r\n\t\tTotal, July, August, September, October, November, December, January, February, March, April, May, June \r\n\tFROM @result;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

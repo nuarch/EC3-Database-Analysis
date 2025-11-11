@@ -1,0 +1,1070 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Lookup_AccountInformation_Upgrade",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Lookup_AccountInformation_Upgrade",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve account information from a database, specifically targeting accounts associated with certain agencies and filtered by various criteria. It supports pagination, sorting, and filtering based on account status and search text. The procedure logs its usage and retrieves account details, including associated meter numbers, from several related tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including logging, filtering, joining multiple tables, and handling dynamic sorting and pagination. The use of table variables, dynamic sorting, and XML path for concatenating meter numbers adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SearchText AS VARCHAR(150) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Optional text to filter accounts based on various fields."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PageSize AS INT = 10",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Number of records to return per page."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CurrentPageNumber AS INT = 1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current page number for pagination."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsActive AS yesnoWithDefaultYes = 'Y'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Filter accounts based on their active status ('Y' for active, 'N' for inactive)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Email AS emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Email address used to determine agency access and for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SortColumn AS VARCHAR(100) = 'OriginalAccountNumber'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Column name to sort the results by."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SortOrder AS VARCHAR(100) = 'ASC'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Order of sorting, either ascending ('ASC') or descending ('DESC')."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@TotalCount AS INT OUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Output parameter to return the total number of records found."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and initializes local variables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls a logging procedure to record the usage of this report, capturing the procedure name and email of the requester."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agency Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Populates a table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@SelectedAgencies",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with agencies associated with the provided email address."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Inserts filtered account data into the "
+                },
+                {
+                  "type": "text",
+                  "text": "@FilteredAccount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table variable. The filtering is based on:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Agency association"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Account status (active/inactive)"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Optional search text across multiple fields"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Total Count Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Determines the total number of filtered accounts and assigns it to the output parameter "
+                },
+                {
+                  "type": "text",
+                  "text": "@TotalCount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Meter Number Concatenation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Uses a Common Table Expression (CTE) "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to concatenate meter numbers associated with each account."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Selects the final result set from the "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " CTE, applying sorting and pagination based on input parameters."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking but may lead to reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Variables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using table variables for intermediate data storage can be efficient for small to medium datasets but may not perform well with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic Sorting",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "CASE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " statements for dynamic sorting can be less efficient than static SQL due to lack of index usage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Pagination",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Efficiently implemented using "
+                },
+                {
+                  "type": "text",
+                  "text": "OFFSET",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "FETCH NEXT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", but performance can degrade with large datasets if not indexed properly."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to dirty reads, which might not be suitable for all business scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Lack of validation for input parameters like "
+                },
+                {
+                  "type": "text",
+                  "text": "@SortColumn",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "@SortOrder",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " could lead to SQL errors if invalid values are provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may not scale well with very large datasets due to the use of table variables and potential lack of indexing on sorting columns."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the email address is a valid identifier for agency access, which could be a security risk if not properly validated or sanitized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_Lookup_AccountInformation_Upgrade]\n(\r\n\t@SearchText AS VARCHAR(150) = NULL\r\n\t,@PageSize AS INT = 10\r\n\t,@CurrentPageNumber AS INT = 1\r\n\t,@IsActive AS yesnoWithDefaultYes  = 'Y'\r\n\t,@Email AS emailaddr\r\n\t,@SortColumn AS VARCHAR(100) = 'OriginalAccountNumber'\r\n\t,@SortOrder AS VARCHAR(100) = 'ASC'\r\n\t,@TotalCount AS INT OUT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @PublishedBillingPeriod AS BillingPeriod, @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\tSELECT @PublishedBillingPeriod = MAX(publishedbillingPeriod) FROM Published.MonthlyPublishedSummaryData;\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName\t\t\t\t\t= @spname,\r\n\t\t@StoredProcName\t\t\t\t= @spname,\r\n\t\t@RequestedBy\t\t\t\t= @Email,    \r\n\t\t@prmPublishedBillingPeriod\t= @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod\t\t\t= NULL,\r\n\t\t@prmAgency_ies\t\t\t\t= NULL,\r\n\t\t@prmFacilityNumber_s\t\t= NULL,\r\n\t\t@prmStartingBillingPeriod\t= NULL,\r\n\t\t@prmEndingBillingPeriod\t\t= NULL;\r\n\r\n\tDECLARE @SelectedAgencies TABLE\r\n\t\t(AgencyDivisionSeqID seqid,\r\n\t\tAgencyCodeOEC AgencyCodeOEC,\r\n\t    AgencyName ldesc);\r\n\t\r\n\tINSERT INTO @SelectedAgencies\r\n\tSELECT DISTINCT agency.AgencyDivisionSeqID, agency.AgencyCodeOEC, agency.AgencyName\r\n\tFROM dbo.uftn_TableGetActiveAgenciesByEmailAddress(@Email) AS agency\r\n\r\n\t-- use table variable instead of CTE for better performance\r\n\tDECLARE @FilteredAccount TABLE\r\n\t\t(RowID INT IDENTITY,\r\n\t\tAccountSeqID INT,\r\n\t\tUniqueAccountSeqID INT,\r\n\t\tFacilitySeqId INT,\r\n\t\tAgencyDivisionSeqId INT,\r\n\t\tOriginalAccountNumber acctnum,\r\n\t\tAccountAddress LongAddress,\r\n\t\tUtilityCompany sdesc);\r\n\r\n\tINSERT INTO @FilteredAccount\r\n        (AccountSeqID,\r\n\t\tUniqueAccountSeqID,\r\n\t\tFacilitySeqId,\r\n\t\tAgencyDivisionSeqId,\r\n\t\tOriginalAccountNumber,\r\n\t\tAccountAddress,\r\n\t\tUtilityCompany)\r\n    SELECT DISTINCT\r\n\t\tA.AccountSeqID,\r\n\t\tA.UniqueAccountSeqid,\r\n\t\tA.FacilityAccount,\r\n\t\tA.AgencyAccount,        \r\n\t\tA.OriginalAccountNumber,\r\n\t\tA.UtilityServiceAddress,\r\n\t\tutility.ShortDesc\t\t\r\n\tFROM @SelectedAgencies AS agency\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = agency.AgencyDivisionSeqid\r\n\t\tINNER JOIN Billing.Facility AS F ON A.FacilityAccount = F.FacilitySeqid\r\n\t\tINNER JOIN Billing.UtilityCompany AS utility ON A.UtilityAccountProvider = utility.UtilityCompanySeqid\r\n\t\tLEFT JOIN Billing.AccountExchangeMeterTrack AS am ON A.AccountSeqid = am.OriginalAccountSeqid\r\n\t\tLEFT JOIN Billing.Meter AS m ON am.OriginalMeterSeqid = m.MeterSeqid\r\n\tWHERE ((A.AccountStatus IN ('AC', '46', 'UA') AND @IsActive = 'Y')\r\n\t\t\tOR (A.AccountStatus NOT IN ('AC', '46', 'UA') AND @IsActive = 'N'))   \r\n\t\tAND(@SearchText IS NULL OR\r\n\t\t\tISNULL(agency.AgencyCodeOEC, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(agency.AgencyCodeOEC, ''))\r\n\t\t\tOR ISNULL(agency.AgencyName, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(agency.AgencyName, ''))\r\n\t\t\tOR ISNULL(A.OriginalAccountNumber, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(A.OriginalAccountNumber, ''))\r\n\t\t\tOR ISNULL(F.OecFacilityNumber, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(F.OecFacilityNumber, ''))\r\n\t\t\tOR ISNULL(F.CityPlanningBIN, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(F.CityPlanningBIN, ''))\r\n\t\t\tOR ISNULL(F.Address1, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(F.Address1, ''))\r\n\t\t\tOR ISNULL(F.FacilityName, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(F.FacilityName, ''))\r\n\t\t\tOR ISNULL(m.OriginalMeterNumber, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(m.OriginalMeterNumber, ''))\r\n\t\t\tOR ISNULL(utility.ShortDesc, '') LIKE COALESCE('%' + @SearchText + '%', ISNULL(utility.ShortDesc, '')));  \r\n\t\r\n\tSELECT @TotalCount = COALESCE(MAX(RowID),0) FROM @FilteredAccount;\t\r\n\r\n\tWITH AccountMeter AS(           \t\t\t\r\n\t\tSELECT a.RowID,\r\n            a.AccountSeqID,\r\n\t\t\ta.UniqueAccountSeqID,\r\n            a.FacilitySeqId,\r\n            a.AgencyDivisionSeqId,\r\n            a.OriginalAccountNumber,\r\n            a.AccountAddress,\r\n            a.UtilityCompany, \r\n\t\t\tISNULL(( STUFF((SELECT ', ' + m.OriginalMeterNumber\r\n                         FROM Billing.AccountExchangeMeterTrack AS am INNER JOIN billing.Meter AS m ON am.OriginalMeterSeqid = m.MeterSeqid\r\n                         WHERE am.OriginalAccountSeqid = a.AccountSeqID\r\n                       FOR XML PATH('')), 1, 1, '') ), '') AS MeterNumbers\r\n\t\tFROM @FilteredAccount AS a)\r\n\r\n\tSELECT RowID\r\n\t\t,AccountSeqID\r\n\t\t,UniqueAccountSeqID\r\n\t\t,FacilitySeqId\r\n\t\t,AgencyDivisionSeqId\r\n\t\t,OriginalAccountNumber\r\n\t\t,AccountAddress\r\n\t\t,UtilityCompany\r\n\t\t,MeterNumbers\r\n\tFROM AccountMeter\r\n\tORDER BY CASE WHEN @SortColumn = '' THEN OriginalAccountNumber END ASC,\r\n\t\tCASE WHEN @SortColumn = 'OriginalAccountNumber' AND @SortOrder ='asc' THEN OriginalAccountNumber END ASC,\r\n\t\tCASE WHEN @SortColumn = 'OriginalAccountNumber' AND @SortOrder ='desc' THEN OriginalAccountNumber END DESC,\r\n\t\tCASE WHEN @SortColumn = 'AccountAddress' AND @SortOrder ='asc' THEN AccountAddress END ASC,\r\n\t\tCASE WHEN @SortColumn = 'AccountAddress' AND @SortOrder ='desc' THEN AccountAddress END DESC,\r\n\t\tCASE WHEN @SortColumn = 'MeterNumbers' AND @SortOrder ='asc' THEN MeterNumbers END ASC,\r\n\t\tCASE WHEN @SortColumn = 'MeterNumbers' AND @SortOrder ='desc' THEN MeterNumbers END DESC\r\n\t\tOFFSET CASE WHEN @PageSize = -1 THEN 0 ELSE @PageSize * (@CurrentPageNumber -1) END ROWS FETCH NEXT CASE WHEN @PageSize = -1 THEN IIF(@TotalCount > 0, @TotalCount, 1) ELSE @PageSize END ROWS ONLY;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

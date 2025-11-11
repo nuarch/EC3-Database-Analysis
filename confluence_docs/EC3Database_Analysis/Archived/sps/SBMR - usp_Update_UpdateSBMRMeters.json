@@ -1,0 +1,982 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "SBMR",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Update_UpdateSBMRMeters",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Update_UpdateSBMRMeters",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage meter records in the "
+        },
+        {
+          "type": "text",
+          "text": "SBMR.SBMRMeter",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It processes an XML input containing meter information, updates existing records, inserts new records, and deletes records that are no longer present in the input. This procedure is part of a system that tracks meter numbers and associated account numbers, likely for a utility or service provider."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple operations: parsing XML, inserting new records, updating existing records, and deleting obsolete records. The complexity arises from handling XML data, ensuring data integrity, and performing multiple conditional operations."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@MeterInformationXML XML",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An XML document containing meter information. It includes elements for "
+                },
+                {
+                  "type": "text",
+                  "text": "OriginalMeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentMeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SBMRHeaderSeqID seqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A sequence identifier that associates the operation with a specific header or batch."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID seqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The identifier of the user performing the operation, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by parsing the "
+                },
+                {
+                  "type": "text",
+                  "text": "@MeterInformationXML",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to extract meter data into a table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@UpdateMeters",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". Each meter entry is extracted and cast to a "
+                },
+                {
+                  "type": "text",
+                  "text": "varchar",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " type."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert New Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It inserts new meter records into the "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMR.SBMRMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. A record is considered new if its "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentMeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " does not already exist in the table for the given "
+                },
+                {
+                  "type": "text",
+                  "text": "@SBMRHeaderSeqID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Update Existing Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure updates existing records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMR.SBMRMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table where the "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentMeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " matches and the "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMRHeaderSeqID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is the same. It updates the meter numbers, account number, last update timestamp, and user ID."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Delete Obsolete Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It deletes records from the "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMR.SBMRMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table that are associated with the "
+                },
+                {
+                  "type": "text",
+                  "text": "@SBMRHeaderSeqID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " but are not present in the "
+                },
+                {
+                  "type": "text",
+                  "text": "@UpdateMeters",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, indicating they have been removed by the user."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Return Value",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure concludes by returning a value of "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which might be used as a status indicator."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Parsing XML can be resource-intensive, especially with large datasets. Ensuring the XML is well-formed and not excessively large will help maintain performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The performance of the "
+                },
+                {
+                  "type": "text",
+                  "text": "INSERT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UPDATE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "DELETE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operations can be improved with proper indexing on the "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMR.SBMRMeter",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, particularly on "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentMeterNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "SBMRHeaderSeqID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure might face concurrency issues if multiple users attempt to update the same records simultaneously. Implementing locking mechanisms or using transaction isolation levels could mitigate this."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Type Mismatch",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure casts XML data to "
+                },
+                {
+                  "type": "text",
+                  "text": "varchar",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " without specifying a length, which could lead to truncation if the data exceeds the default length."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling. If any operation fails, it could leave the database in an inconsistent state. Implementing try-catch blocks and transaction management would enhance reliability."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the input XML is safe and well-formed. There is a risk of SQL injection if the XML is not properly validated before processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of XML parsing and the subsequent operations may degrade. Consideration should be given to optimizing the XML structure or using alternative data formats for large datasets."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [SBMR].[usp_Update_UpdateSBMRMeters]\r\n\t/*\r\n\t<Meters>\r\n\t\t<Meter>\r\n\t\t\t<OriginalMeterNumber>\r\n\t\t\t<CurrentMeterNumber>\r\n\t\t\t<CurrentAccountNumber>\r\n\t*/\r\n\t@MeterInformationXML XML,\r\n\t@SBMRHeaderSeqID seqid,\r\n\t@AuthenticatedUserID seqid\r\nAS\r\nBEGIN\r\n\t\r\n\tDECLARE @UpdateMeters TABLE\r\n\t(\r\n\t\tOriginalMeterNumber MeterNumber,\r\n\t\tCurrentMeterNumber MeterNumber,\r\n\t\tCurrentAccountNumber acctnum\r\n\t)\r\n\t\r\n\tINSERT INTO @UpdateMeters\r\n    ( \r\n\t\tOriginalMeterNumber,\r\n\t\tCurrentMeterNumber,\r\n\t\tCurrentAccountNumber\r\n    )\r\n\tSELECT\r\n\t\tDISTINCT \r\n\t\tCAST(tbl.col.query('data(OriginalMeterNumber)') AS varchar),\r\n\t\tCAST(tbl.col.query('data(CurrentMeterNumber)') AS varchar),\r\n\t\tCAST(tbl.col.query('data(CurrentAccountNumber)') AS varchar) \r\n\tFROM \r\n\t\t@MeterInformationXML.nodes('//Meters//Meter') tbl(col)\r\n\t\r\n\t-- insert new records\r\n\tINSERT INTO SBMR.SBMRMeter\r\n\t        ( OriginalMeterNumber ,\r\n\t          CurrentMeterNumber ,\r\n\t          CurrentAccountNumber ,\r\n\t          SBMRHeaderSeqid ,\r\n\t          AuthenticatedUserID ,\r\n\t          DateAdded ,\r\n\t          LastUpdate\r\n\t        )\t\r\n\tSELECT OriginalMeterNumber,\r\n\t\t   CurrentMeterNumber,\r\n\t\t   CurrentAccountNumber,\r\n\t\t   @SBMRHeaderSeqid,\r\n\t\t   @AuthenticatedUserID,\r\n\t\t   GETDATE(),\r\n\t\t   GETDATE()\r\n\tFROM @UpdateMeters\r\n\tWHERE CurrentMeterNumber NOT IN \r\n\t(\r\n\t\tSELECT CurrentMeterNumber FROM SBMR.SBMRMeter\r\n\t\tWHERE SBMRHeaderSeqid = @SBMRHeaderSeqID\r\n\t)\r\n\t\r\n\t-- update existing records\r\n\tUPDATE a\r\n\t\tSET \r\n\t\t\ta.OriginalMeterNumber = ua.OriginalMeterNumber,\r\n\t\t\ta.CurrentMeterNumber = ua.CurrentMeterNumber,\r\n\t\t\ta.CurrentAccountNumber = ua.CurrentAccountNumber,\r\n\t\t\ta.LastUpdate = GETDATE(),\r\n\t\t\ta.AuthenticatedUserID = @AuthenticatedUserID\r\n\tFROM\r\n\tSBMR.SBMRMeter AS a\t\r\n\tINNER JOIN @UpdateMeters AS ua\r\n\tON a.CurrentMeterNumber = ua.CurrentMeterNumber\r\n\tWHERE\r\n\ta.SBMRHeaderSeqID = @SBMRHeaderSeqID\r\n\t\r\n\t-- delete records removed by user\r\n\tDELETE FROM SBMR.SBMRMeter\r\n\tWHERE \r\n\tSBMRHeaderSeqid = @SBMRHeaderSeqID\r\n\tAND\r\n\tCurrentMeterNumber NOT\r\n\tIN (SELECT CurrentMeterNumber FROM @UpdateMeters)\r\n\t\r\n\tSELECT 0;\r\nEND"
+        }
+      ]
+    }
+  ]
+}

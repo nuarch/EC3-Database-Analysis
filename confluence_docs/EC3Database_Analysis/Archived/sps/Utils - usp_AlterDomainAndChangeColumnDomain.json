@@ -1,0 +1,856 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Utils",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_AlterDomainAndChangeColumnDomain",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_AlterDomainAndChangeColumnDomain",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to alter the domain (user-defined data type) of columns in tables and views within a SQL Server database. It takes two parameters: the old domain name and the new domain name. The procedure is intended to update columns that use a specific user-defined data type to a new data type and refresh views that depend on these columns. However, the procedure is currently commented out, meaning it does not execute any operations."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level of this stored procedure is medium. It involves dynamic SQL execution, cursor operations, and conditional logic to handle both tables and views. The procedure also interacts with a user-defined view ("
+        },
+        {
+          "type": "text",
+          "text": "Utils.uvw_FindAllTablesColumnsByUserDefinedDatatype",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ") to retrieve metadata about tables and columns, adding to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OldDomainName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The name of the existing user-defined data type that needs to be changed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@NewDomainName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The name of the new user-defined data type to which the columns should be altered."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure declares several variables to store metadata about tables, columns, and views. These variables are used to construct dynamic SQL statements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor named "
+                },
+                {
+                  "type": "text",
+                  "text": "AlterDomainAndChangeColumnDomainCursor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to iterate over the results of a query that selects tables and columns using the old domain name from the view "
+                },
+                {
+                  "type": "text",
+                  "text": "Utils.uvw_FindAllTablesColumnsByUserDefinedDatatype",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is opened, and the procedure fetches each row into the declared variables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If the object is a table ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "@IsTable = 'T'",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "), it constructs an "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ALTER TABLE",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " statement to change the column's data type to the new domain name."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If the object is a view, it constructs an "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EXEC sp_refreshview",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " statement to refresh the view."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The constructed SQL statements are executed using "
+                },
+                {
+                  "type": "text",
+                  "text": "sp_executesql",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated after processing all rows."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Cursors can be resource-intensive, especially if the result set is large. This procedure uses a cursor to iterate over tables and views, which could impact performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of dynamic SQL ("
+                },
+                {
+                  "type": "text",
+                  "text": "sp_executesql",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") allows flexibility but can also lead to performance overhead due to query recompilation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "View Refreshing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Refreshing views with "
+                },
+                {
+                  "type": "text",
+                  "text": "sp_refreshview",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can be costly if there are many views or if the views are complex."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Commented Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The entire procedure is commented out, meaning it does not perform any operations. This could be intentional for testing or debugging purposes, but it renders the procedure non-functional."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no error handling in place. If an error occurs during the execution of dynamic SQL, it could lead to incomplete operations or data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on External View",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on the view "
+                },
+                {
+                  "type": "text",
+                  "text": "Utils.uvw_FindAllTablesColumnsByUserDefinedDatatype",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". If this view is altered or removed, the procedure will fail."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Changing data types can lead to data loss or truncation if the new domain is not compatible with existing data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not account for concurrent modifications to the schema, which could lead to race conditions or deadlocks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Utils].[usp_AlterDomainAndChangeColumnDomain] (@OldDomainName NVARCHAR(256),@NewDomainName NVARCHAR(256))\nAS\r\n\r\n\r\n-- originaly created by Peter Heller\r\n-- commented because it is causing issues with database porject\r\n\r\nSELECT '' placeholder\r\n\r\n\r\n----**************************************************************************************\r\n----\r\n----\r\n----\r\n----\r\n----\r\n----Declare Variables                                            \r\n----**************************************************************************************\r\n--declare @I int\r\n--declare @SQLString NVARCHAR(512)\r\n--declare @View NVARCHAR(512)\r\n--declare @SchemaQualifiedTriggerName NVARCHAR(256)\r\n--declare @TABLE_SCHEMA NVARCHAR(256)\r\n--declare @TABLE_NAME NVARCHAR(256)\r\n--declare @DOMAIN_SCHEMA NVARCHAR(256)\r\n--declare @DOMAIN_NAME NVARCHAR(256) \r\n--declare @COLUMN_NAME NVARCHAR(256)\r\n\r\n--declare @View_SCHEMA_NAME NVARCHAR(256)\r\n--declare @View_NAME NVARCHAR(256)\r\n--declare @IsTable VARCHAR(1)\r\n----\r\n--declare @SqlQuote char(1)\r\n----\r\n--set @I = 0\r\n--set @SqlQuote = char(39)\r\n----\r\n----\r\n--DECLARE AlterDomainAndChangeColumnDomainCursor CURSOR FOR\r\n--SELECT   TABLE_SCHEMA, TABLE_NAME, DOMAIN_SCHEMA, DOMAIN_NAME, COLUMN_NAME,View_SCHEMA_NAME,View_NAME,IsTable\r\n--FROM Utils.uvw_FindAllTablesColumnsByUserDefinedDatatype\r\n--WHERE (DOMAIN_NAME = @OldDomainName) -- and IsTable ='V' --TABLE_NAME not like 'uvw%' \r\n\r\n----\r\n--OPEN AlterDomainAndChangeColumnDomainCursor;\r\n----\r\n--FETCH NEXT FROM AlterDomainAndChangeColumnDomainCursor INTO \r\n--\t\t@TABLE_SCHEMA, @TABLE_NAME, @DOMAIN_SCHEMA, @DOMAIN_NAME, @COLUMN_NAME,@View_SCHEMA_NAME,@View_NAME,@IsTable\r\n----\r\n---- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n\r\n--WHILE @@FETCH_STATUS = 0\r\n--   BEGIN\r\n--\t--\r\n--\tif (@IsTable = 'T')\r\n--\t\tBEGIN\r\n--\t\t\tset @SQLString = 'ALTER TABLE '+@TABLE_SCHEMA+'.'+@TABLE_NAME+' ALTER COLUMN '+@COLUMN_NAME +' '+@NewDomainName\r\n--\t\t\tprint cast(@I as varchar(3))+') Table Altered: '+@SQLString\r\n--\t\tend\r\n--\telse\r\n--\t\tbegin\r\n--\t\t\tset @View = @SqlQuote+@View_SCHEMA_NAME+'.'+@View_NAME+@SqlQuote\r\n--\t\t\tset @SQLString = 'exec sp_refreshview '+ @View\r\n--\t\t\tprint cast(@I as varchar(3))+') Recompiled View: '+@SQLString\r\n--\t\tend\r\n----\r\n--\tEXEC sp_executesql @SQLString;\r\n--\tset @I = @I+1\r\n\r\n--\t--\r\n--FETCH NEXT FROM AlterDomainAndChangeColumnDomainCursor INTO \r\n--\t\t@TABLE_SCHEMA, @TABLE_NAME, @DOMAIN_SCHEMA, @DOMAIN_NAME, @COLUMN_NAME,@View_SCHEMA_NAME,@View_NAME,@IsTable\r\n--   END\r\n\r\n--CLOSE AlterDomainAndChangeColumnDomainCursor;\r\n--DEALLOCATE AlterDomainAndChangeColumnDomainCursor;"
+        }
+      ]
+    }
+  ]
+}

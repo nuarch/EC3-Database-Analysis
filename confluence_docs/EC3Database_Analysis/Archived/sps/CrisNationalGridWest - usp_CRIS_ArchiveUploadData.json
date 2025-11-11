@@ -1,0 +1,854 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CrisNationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_CRIS_ArchiveUploadData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_CRIS_ArchiveUploadData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to archive data from current upload tables to archive tables within the "
+        },
+        {
+          "type": "text",
+          "text": "CrisNationalGridWest",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema. It handles three main types of data: account billing details, meter read details, and payment details. The procedure first checks if there are existing records for the specified billing period in the archive tables and raises an error if such records exist. If no records exist, it proceeds to insert data from the current upload tables into the corresponding archive tables. Additionally, it updates certain fields in the archive meter read details table based on conditions from the current upload meter read details."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including conditional checks, data insertion, and updates across several tables. While the logic is straightforward, the number of operations and the potential volume of data being processed contribute to a medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period for which data is being archived. It is used to filter records in both the conditional checks and data operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the ID of the authenticated user performing the operation. This is used in the data insertion to track who performed the operation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode AS INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter intended to return the status of the operation, although it is not explicitly set within the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initial Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure checks if there are existing records for the specified billing period in the "
+                },
+                {
+                  "type": "text",
+                  "text": "ARCHIVEUploadAccountBillingDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "ARCHIVEUploadMeterReadDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables. If records exist, it raises an error and exits."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Account Billing Details",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadAccountBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ARCHIVEUploadAccountBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Meter Read Details",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadMeterReadDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ARCHIVEUploadMeterReadDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Payment Details",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadPaymentDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ARCHIVEUploadPaymentDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates specific fields in "
+                },
+                {
+                  "type": "text",
+                  "text": "ARCHIVEUploadMeterReadDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " based on conditions from "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadMeterReadDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may handle large volumes of data, especially if the upload tables contain many records for the specified billing period. This could impact performance during the insert and update operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensuring that the relevant columns, especially those used in joins and where clauses, are indexed can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not explicitly manage transactions, which could lead to partial updates if an error occurs after some operations have been completed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure raises errors if records exist for the billing period in the archive tables, but it does not handle other potential errors that could occur during data insertion or updates."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure are executed simultaneously for the same billing period, it could lead to race conditions or data integrity issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " output parameter is not utilized within the procedure, which may lead to confusion or incomplete status reporting."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without explicit transaction management, there is a risk of data inconsistency if the procedure is interrupted or fails partway through execution."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [CrisNationalGridWest].[usp_CRIS_ArchiveUploadData]\n(\r\n\t@BillingPeriod AS VARCHAR(6),\r\n\t@authenticatedID AS INT,\r\n\t@StatusCode AS INT  OUTPUT\r\n)  \r\n AS \r\n BEGIN\r\n\tSET NOCOUNT ON;\r\n\t\t\t\t\r\n\t-- check if there is any current periods records\t\t\r\n\tIF (EXISTS(SELECT ARCHIVEUploadAccountBillingDetailSeqid FROM CrisNationalGridWest.ARCHIVEUploadAccountBillingDetail WHERE BillingPeriod = @BillingPeriod))\r\n\tBEGIN\r\n\t\tRAISERROR ('The Archive account table has data for the current period. Please verify. ', 12, 1);\r\n\t\tRETURN;\r\n\tEND;\r\n\r\n\tIF (EXISTS(SELECT ARCHIVEUploadMeterReadDetailSeqid FROM CrisNationalGridWest.ARCHIVEUploadMeterReadDetail WHERE BillingPeriod = @BillingPeriod))\r\n\tBEGIN\r\n\t\tRAISERROR ('The Archive meter table has data for the current period. Please verify. ', 12, 1);\r\n\t\tRETURN;\r\n\tEND;\r\n\r\n\t-- account level details\r\n\tINSERT INTO CrisNationalGridWest.ARCHIVEUploadAccountBillingDetail\r\n\t\t(UploadAccountBillingDetailSeqid\r\n\t\t,UtilityCompanySeqid\r\n\t\t,AccountInvoiceBillingGroup\r\n\t\t,BillingPeriod\r\n\t\t,BillingPeriodRevision\r\n\t\t,CalculatedBillingPeriodRevision\r\n\t\t,FirstBillingPeriodCanceled\r\n\t\t,FirstNewCRISBillingPeriodRevision\r\n\t\t,IsSpannedBilling\r\n\t\t,NumberOfBillingPeriod\r\n\t\t,IsCurrentPeriodExchange\r\n\t\t,AccountNumber\r\n\t\t,MeterReadWorkDay\r\n\t\t,UtilityServiceAccountName\r\n\t\t,UtilityServiceAddress\r\n\t\t,Borough\r\n\t\t,Zipcode\r\n\t\t,[State]\r\n\t\t,ActivityCode\r\n\t\t,ActivityDate\r\n\t\t,ActivityTime\r\n\t\t,ActivityDateTime\r\n\t\t,TransactionCode\r\n\t\t,SpecialLedgerAccountNUmber\r\n\t\t,SpecialLedgerWorkDay\r\n\t\t,GasRateCode\r\n\t\t,BillFrequency\r\n\t\t,EstimatedOrActualBillingCode\r\n\t\t,GasChargeAmount\r\n\t\t,BillingFromDate\r\n\t\t,BillingToDate\r\n\t\t,BillRenderDate\r\n\t\t,BillingDays\r\n\t\t,BilledCCF\r\n\t\t,ThermFactor\r\n\t\t,BilledTherms\r\n\t\t,NumberOfMeters\r\n\t\t,BillType\r\n\t\t,CommodityChargeAmount\r\n\t\t,DeliveryChargeAmount\r\n\t\t,MTACommodityTax\r\n\t\t,MTADeliveryTax\r\n\t\t,SalesTax\r\n\t\t,SystemBenefitsCharge\r\n\t\t,RetailDecouplingMechanismCharge\r\n\t\t,DeliveryRateSurcharge\r\n\t\t,RealTimeNormalizationCharge\r\n\t\t,LatePaymentCharge\r\n\t\t,PaperBillCharge\r\n\t\t,CommodityCostFactor\r\n\t\t,MTACommodityFactor\r\n\t\t,MTADeliveryFactor\r\n\t\t,SalesTaxFactor\r\n\t\t,SystemBenefitChargeFactor\r\n\t\t,RetailDecouplingMechanismFactor\r\n\t\t,DeliveryRateSurchargeFactor\r\n\t\t,RealTimeNormalizationFactor\r\n\t\t,LatePaymentFactor\r\n\t\t,CurrentAccountBalance\r\n\t\t,AccountArrears\r\n\t\t,TerminationBalance\r\n\t\t,TotalPaymentsPosted\r\n\t\t,DateLastPayment\r\n\t\t,MiscellaneousChargeAmount\r\n\t\t,MiscellaneousChargeType\r\n\t\t,ExcludeAndReview\r\n\t\t,FireAuditTrigger\r\n\t\t,Notes\r\n\t\t,AuthenticatedUserID\r\n\t\t,DateAdded\r\n\t\t,LastUpdate\r\n\t\t,IsCancelForCurrentTransaction, \r\n\t\tIsCancelForPreviousTransaction, IsTransactionCancelFound, IsPartialCancelattionFromPriorPeriodMergedBilling, \r\n\t\tIsPartialRebillFromPriorPeriodMergedBilling, ExcludeReason)\t\t    \r\n\tSELECT UploadAccountBillingDetailSeqid, UtilityCompanySeqid, AccountInvoiceBillingGroup, BillingPeriod, BillingPeriodRevision, \r\n        CalculatedBillingPeriodRevision, FirstBillingPeriodCanceled, FirstNewCRISBillingPeriodRevision, IsSpannedBilling, NumberOfBillingPeriod, \r\n        IsCurrentPeriodExchange, AccountNumber, MeterReadWorkDay, UtilityServiceAccountName, UtilityServiceAddress, Borough, Zipcode, State, \r\n        ActivityCode, ActivityDate, ActivityTime, ActivityDateTime, TransactionCode, SpecialLedgerAccountNUmber, SpecialLedgerWorkDay, GasRateCode, \r\n        BillFrequency, EstimatedOrActualBillingCode, GasChargeAmount, BillingFromDate, BillingToDate, BillRenderDate, BillingDays, BilledCCF, \r\n        ThermFactor, BilledTherms, NumberOfMeters, BillType, CommodityChargeAmount, DeliveryChargeAmount, MTACommodityTax, MTADeliveryTax, \r\n        SalesTax, SystemBenefitsCharge, RetailDecouplingMechanismCharge, DeliveryRateSurcharge, RealTimeNormalizationCharge, LatePaymentCharge, \r\n        PaperBillCharge, CommodityCostFactor, MTACommodityFactor, MTADeliveryFactor, SalesTaxFactor, SystemBenefitChargeFactor, \r\n        RetailDecouplingMechanismFactor, DeliveryRateSurchargeFactor, RealTimeNormalizationFactor, LatePaymentFactor, CurrentAccountBalance, \r\n        AccountArrears, TerminationBalance, TotalPaymentsPosted, DateLastPayment, MiscellaneousChargeAmount, MiscellaneousChargeType, \r\n        ExcludeAndReview, FireAuditTrigger, Notes, AuthenticatedUserID, DateAdded, LastUpdate, IsCancelForCurrentTransaction, \r\n        IsCancelForPreviousTransaction, IsTransactionCancelFound, IsPartialCancelattionFromPriorPeriodMergedBilling, \r\n        IsPartialRebillFromPriorPeriodMergedBilling, ExcludeReason\r\n\tFROM CrisNationalGridWest.UploadAccountBillingDetail;\r\n\r\n\t--- meter level details\r\n\tINSERT INTO CrisNationalGridWest.ARCHIVEUploadMeterReadDetail\r\n\t\t(UploadMeterReadDetailSeqid\r\n\t\t,UtilityCompanySeqid\r\n\t\t,AccountInvoiceBillingGroup\r\n\t\t,BillingPeriod\r\n\t\t,BillingPeriodRevision\r\n\t\t,CalculatedBillingPeriodRevision\r\n\t\t,FirstBillingPeriodCanceled\r\n\t\t,AccountNumber\r\n\t\t,MeterReadWorkDay\r\n\t\t,UtilityServiceAccountName\r\n\t\t,UtilityServiceAddress\r\n\t\t,Borough\r\n\t\t,Zipcode\r\n\t\t,[State]\r\n\t\t,ActivityCode\r\n\t\t,ActivityDate\r\n\t\t,ActivityTime\r\n\t\t,ActivityDateTime\r\n\t\t,TransactionCode\r\n\t\t,SpecialLedgerAccountNumber\r\n\t\t,SpecialLedgerWorkDay\r\n\t\t,MeterNumber\r\n\t\t,CurrentMeterNumber\r\n\t\t,MeterConstant\r\n\t\t,NumberOfDials\r\n\t\t,MeterReadType\r\n\t\t,EstimatedOrActual\r\n\t\t,BillingTransactionCode\r\n\t\t,MeterReadStatus\r\n\t\t,MeterReadSource\r\n\t\t,MeterReadReason\r\n\t\t,MeterType\r\n\t\t,MeterReadingFromDate\r\n\t\t,MeterReadingToDate\r\n\t\t,MeterFromReading\r\n\t\t,MeterToReading\r\n\t\t,MeterReadTime\r\n\t\t,MeterCCF\r\n\t\t,Therms\r\n\t\t,ThermsFactor\r\n\t\t,GasRateCode\r\n\t\t,FixFactor\r\n\t\t,PartSupplied\r\n\t\t,HasMeterRolledOver\r\n\t\t,MeterCorrectorId\r\n\t\t,IsCancel\r\n\t\t,IsProcessed\r\n\t\t,ExcludeAndReview\r\n\t\t,FireAuditTrigger\r\n\t\t,Notes\r\n\t\t,AuthenticatedUserID\r\n\t\t,DateAdded\r\n\t\t,LastUpdate)\r\n\tSELECT UploadMeterReadDetailSeqid\r\n\t\t,UtilityCompanySeqid\r\n\t\t,AccountInvoiceBillingGroup\r\n\t\t,BillingPeriod\r\n\t\t,BillingPeriodRevision\r\n\t\t,CalculatedBillingPeriodRevision\r\n\t\t,FirstBillingPeriodCanceled\r\n\t\t,AccountNumber\r\n\t\t,MeterReadWorkDay\r\n\t\t,UtilityServiceAccountName\r\n\t\t,UtilityServiceAddress\r\n\t\t,Borough\r\n\t\t,Zipcode\r\n\t\t,[State]\r\n\t\t,ActivityCode\r\n\t\t,ActivityDate\r\n\t\t,ActivityTime\r\n\t\t,ActivityDateTime\r\n\t\t,TransactionCode\r\n\t\t,SpecialLedgerAccountNumber\r\n\t\t,SpecialLedgerWorkDay\r\n\t\t,MeterNumber\r\n\t\t,CurrentMeterNumber\r\n\t\t,MeterConstant\r\n\t\t,NumberOfDials\r\n\t\t,MeterReadType\r\n\t\t,EstimatedOrActual\r\n\t\t,BillingTransactionCode\r\n\t\t,MeterReadStatus\r\n\t\t,MeterReadSource\r\n\t\t,MeterReadReason\r\n\t\t,MeterType\r\n\t\t,MeterReadingFromDate\r\n\t\t,MeterReadingToDate\r\n\t\t,MeterFromReading\r\n\t\t,MeterToReading\r\n\t\t,MeterReadTime\r\n\t\t,MeterCCF\r\n\t\t,Therms\r\n\t\t,ThermsFactor\r\n\t\t,GasRateCode\r\n\t\t,FixFactor\r\n\t\t,PartSupplied\r\n\t\t,HasMeterRolledOver\r\n\t\t,MeterCorrectorId\r\n\t\t,IsCancel\r\n\t\t,IsProcessed\r\n\t\t,ExcludeAndReview\r\n\t\t,FireAuditTrigger\r\n\t\t,Notes\r\n\t\t,AuthenticatedUserID\r\n\t\t,DateAdded\r\n\t\t,LastUpdate\r\n\tFROM CrisNationalGridWest.UploadMeterReadDetail;\r\n\r\n\t-- update the ARCHIVE back\r\n\tUPDATE AMRD\r\n\tSET ExcludeTest = UMRD.ExcludeTest\r\n\t\t,ExclusionNotes = UMRD.ExcludeReason\r\n\t\t,IsCancelled = CASE WHEN UMRD.IsTransactionCancelFound  = 'Y' THEN 'Y' ELSE 'N' END\r\n\t\t,BPCancelled = CASE WHEN UMRD.IsTransactionCancelFound = 'Y' THEN UMRD.BillingPeriod ELSE NULL END\r\n\tFROM CrisNationalGridWest.ARCHIVEUploadMeterReadDetail AS AMRD\r\n\t\tINNER JOIN CrisNationalGridWest.UploadMeterReadDetail AS UMRD ON AMRD.UploadMeterReadDetailSeqid = UMRD.UploadMeterReadDetailSeqid AND AMRD.BillingPeriod = @BillingPeriod;\r\n\r\n\t-- Payment Detail section\r\n\tINSERT CrisNationalGridWest.ARCHIVEUploadPaymentDetail\r\n\t\t(UtilityCompanySeqid,\r\n\t\tAccountInvoiceBillingGroup,\r\n\t\tBillingPeriod,\r\n\t\tBillingPeriodRevision,\r\n\t\tPaymentBillingPeriod,\r\n\t\tAccountNumber,\r\n\t\tMeterReadWorkDay,\r\n\t\tUtilityServiceAccountName,\r\n\t\tUtilityServiceAddress,\r\n\t\tBorough,\r\n\t\tZipCode,\r\n\t\t[State],\r\n\t\tActivityCode,\r\n\t\tActivityDate,\r\n\t\tActivityTime,\r\n\t\tActivityDateTime,\r\n\t\tTransactionCode,\r\n\t\tSLAccountNUmber,\r\n\t\tAccountStatus,\r\n\t\tPaymentAmount,\r\n\t\tPaymentDate,\r\n\t\tCurrentAccountBalance,\r\n\t\tAcountArrears,\r\n\t\tTerminationBalance,\r\n\t\tOldCurrentAccountBalance,\r\n\t\tOldAcountArrears,\r\n\t\tOldTerminationBalance,\r\n\t\tMiscellaneousCreditAmount,\r\n\t\tMiscellaneousCreditType,\r\n\t\tGasRateCode,\r\n\t\tNotes,\r\n\t\tAuthenticatedUserID,\r\n\t\tDateAdded,\r\n\t\tLastUpdate)\r\n\tSELECT\r\n\t\tUtilityCompanySeqid,\r\n\t\tAccountInvoiceBillingGroup,\r\n\t\tBillingPeriod,\r\n\t\tBillingPeriodRevision,\r\n\t\tPaymentBillingPeriod,\r\n\t\tAccountNumber,\r\n\t\tMeterReadWorkDay,\r\n\t\tUtilityServiceAccountName,\r\n\t\tUtilityServiceAddress,\r\n\t\tBorough,\r\n\t\tZipCode,\r\n\t\t[State],\r\n\t\tActivityCode,\r\n\t\tActivityDate,\r\n\t\tActivityTime,\r\n\t\tActivityDateTime,\r\n\t\tTransactionCode,\r\n\t\tSLAccountNUmber,\r\n\t\tAccountStatus,\r\n\t\tPaymentAmount,\r\n\t\tPaymentDate,\r\n\t\tCurrentAccountBalance,\r\n\t\tAcountArrears,\r\n\t\tTerminationBalance,\r\n\t\tOldCurrentAccountBalance,\r\n\t\tOldAcountArrears,\r\n\t\tOldTerminationBalance,\r\n\t\tMiscellaneousCreditAmount,\r\n\t\tMiscellaneousCreditType,\r\n\t\tGasRateCode,\r\n\t\tNotes,\r\n\t\tAuthenticatedUserID,\r\n\t\tDateAdded,\r\n\t\tLastUpdate \r\n\tFROM CrisNationalGridWest.UploadPaymentDetail;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

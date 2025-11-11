@@ -1,0 +1,925 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_AccountInformationByAccountNumber",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_AccountInformationByAccountNumber",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to retrieve account information based on an account number and email address. It logs the usage of the report, filters accounts associated with agencies linked to the provided email, and returns detailed account information, including associated meter numbers."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including logging, filtering data from multiple tables, and handling optional input parameters. It uses temporary tables and complex joins, which add to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OriginalAccountNumber AS acctnum = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional parameter used to filter accounts by their original account number. If not provided, all accounts are considered."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Email AS emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A mandatory parameter used to identify agencies associated with the email address. It is also used for logging purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by logging the usage of the report using the "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " procedure. This includes details like the report name and the email of the requester."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Agency Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves active agencies associated with the provided email address using the function "
+                },
+                {
+                  "type": "text",
+                  "text": "uftn_TableGetActiveAgenciesByEmailAddress",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". The results are stored in a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@SelectedAgencies",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account Filtering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@FilteredAccount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is created to store account details."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure inserts data into this table by joining the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Facility",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.UtilityCompany",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " tables. It filters accounts based on their status, current record flag, and active status."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OriginalAccountNumber",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is filtered using a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "LIKE",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " condition with the provided parameter, allowing for partial matches."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The final SELECT statement retrieves account details from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@FilteredAccount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It also constructs a comma-separated list of meter numbers associated with each account using a subquery with "
+                        },
+                        {
+                          "type": "text",
+                          "text": "FOR XML PATH",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which can improve performance by allowing dirty reads but may lead to inconsistent data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of temporary tables can impact performance, especially if the data set is large. Indexing these tables could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Subqueries",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The complexity of joins and subqueries, especially with "
+                },
+                {
+                  "type": "text",
+                  "text": "FOR XML PATH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", can affect performance. Ensuring that the joined columns are indexed can help."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted changes from other transactions, resulting in potential data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is optional, but its handling with "
+                },
+                {
+                  "type": "text",
+                  "text": "LIKE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "COALESCE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " could lead to performance issues if not properly indexed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the number of accounts and associated data grows, the performance of the procedure may degrade due to the complexity of joins and the use of temporary tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include any explicit security checks or validations on the input parameters, which could be a risk if the procedure is exposed to untrusted sources."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_AccountInformationByAccountNumber]\n(\r\n\t@OriginalAccountNumber AS acctnum = NULL\r\n\t,@Email AS emailaddr\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @spname VARCHAR(100) = OBJECT_NAME(@@PROCID)\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName\t\t\t\t\t= @spname,\r\n\t\t@StoredProcName\t\t\t\t= @spname,\r\n\t\t@RequestedBy\t\t\t\t= @Email,\r\n\t\t@prmPublishedBillingPeriod\t= NULL,\r\n\t\t@prmBillingPeriod\t\t\t= NULL,\r\n\t\t@prmAgency_ies\t\t\t\t= NULL,\r\n\t\t@prmFacilityNumber_s\t\t= NULL,\r\n\t\t@prmStartingBillingPeriod\t= NULL,\r\n\t\t@prmEndingBillingPeriod\t\t= NULL;\r\n\r\n\tDECLARE @SelectedAgencies TABLE (AgencyDivisionSeqID seqid NOT NULL, AgencyCodeOEC AgencyCodeOEC NOT NULL, AgencyName ldesc NOT NULL);\r\n\t\r\n\tINSERT INTO @SelectedAgencies\r\n\tSELECT DISTINCT A.AgencyDivisionSeqID, A.AgencyCodeOEC, A.AgencyName\r\n\tFROM dbo.uftn_TableGetActiveAgenciesByEmailAddress(@Email) AS A;\r\n\r\n\tDECLARE @FilteredAccount TABLE\r\n\t\t(RowID INT IDENTITY,\r\n\t\tUniqueAccountSeqID INT NOT NULL,\r\n\t\tAccountSeqID INT NOT NULL,\r\n\t\tFacilitySeqId INT NOT NULL,\r\n\t\tAgencyDivisionSeqId INT NOT NULL,\r\n\t\tOriginalAccountNumber acctnum NOT NULL,\r\n\t\tAccountAddress LongAddress NULL,\r\n\t\tUtilityCompany sdesc NULL);\r\n\r\n\tINSERT INTO @FilteredAccount\r\n        (UniqueAccountSeqID,\r\n\t\tAccountSeqID,\r\n\t\tFacilitySeqId,\r\n\t\tAgencyDivisionSeqId,\r\n\t\tOriginalAccountNumber,\r\n\t\tAccountAddress,\r\n\t\tUtilityCompany)\r\n    SELECT DISTINCT A.UniqueAccountSeqid,\r\n\t\tA.AccountSeqID,\r\n\t\tA.FacilityAccount,\r\n\t\tA.AgencyAccount,\r\n\t\tA.OriginalAccountNumber,\r\n\t\tA.UtilityServiceAddress,\r\n\t\tU.ShortDesc\r\n\tFROM @SelectedAgencies AS agency\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = agency.AgencyDivisionSeqid\r\n\t\tINNER JOIN Billing.Facility AS F ON A.FacilityAccount = F.FacilitySeqid\r\n\t\tINNER JOIN Billing.UtilityCompany AS U ON A.UtilityAccountProvider = U.UtilityCompanySeqid\r\n\t\tLEFT JOIN Billing.AccountExchangeMeterTrack AS am ON A.AccountSeqid = am.OriginalAccountSeqid\r\n\t\tLEFT JOIN Billing.Meter AS M ON am.OriginalMeterSeqid = M.MeterSeqid\r\n\tWHERE A.AccountStatus IN ('AC', '46', 'UA') AND A.IsCurrentRecord = 'Y' AND A.IsActive = 1 AND A.AccountSeqID IS NOT NULL\r\n\t\tAND ISNULL(A.OriginalAccountNumber, '') LIKE COALESCE('%' + @OriginalAccountNumber + '%', ISNULL(A.OriginalAccountNumber, ''))\r\n\tORDER BY A.OriginalAccountNumber;\r\n\r\n\tSELECT a.RowID,\r\n\t\ta.UniqueAccountSeqID,\r\n        a.AccountSeqID,\r\n        a.FacilitySeqId,\r\n        a.AgencyDivisionSeqId,\r\n        a.OriginalAccountNumber,\r\n        a.AccountAddress,\r\n        a.UtilityCompany,\r\n\t\tISNULL((STUFF((SELECT ', ' + m.OriginalMeterNumber\r\n\t\t\tFROM Billing.AccountExchangeMeterTrack AS am\r\n\t\t\t\tINNER JOIN billing.Meter AS m ON am.OriginalMeterSeqid = m.MeterSeqid\r\n\t\t\tWHERE am.OriginalAccountSeqid = a.AccountSeqID\r\n\t\t\tFOR XML PATH('')), 1, 1, '') ), '') AS MeterNumbers\r\n\tFROM @FilteredAccount AS a;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

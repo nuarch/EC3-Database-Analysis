@@ -1,0 +1,823 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GetEstimatedActualForAccountsExtract",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GetEstimatedActualForAccountsExtract",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report on estimated actual account counts for different utility accounts (e.g., NYPA, Coned, National Grid West) for the current and previous billing periods. It retrieves data from the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.EstimatedActualReadingCounts",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table, processes it using a PIVOT operation, and calculates percentages of account types relative to their totals. The results are then returned in a structured format, comparing current and previous billing periods."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data retrieval, transformation using PIVOT, and calculation of percentages. It also involves joining temporary tables and handling potential null values, which adds to its complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates based on the data available in the "
+        },
+        {
+          "type": "text",
+          "text": "Billing.EstimatedActualReadingCounts",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table and uses internal logic to determine the billing periods of interest."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the message indicating the number of rows affected by a SQL statement from being returned. It also sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to allow dirty reads, which can improve performance by not locking the data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Billing Periods",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates the current ("
+                },
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") and previous ("
+                },
+                {
+                  "type": "text",
+                  "text": "@PreviousBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") billing periods. The current period is the maximum billing period in the "
+                },
+                {
+                  "type": "text",
+                  "text": "EstimatedActualReadingCounts",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, and the previous period is calculated using a user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo.CalculatePreviousBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Creation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@tmpEstAct",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is created to store the pivoted data for the current and previous billing periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval and Transformation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure retrieves data for the specified billing periods where "
+                },
+                {
+                  "type": "text",
+                  "text": "DataType",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is 'Accounts'. It uses a PIVOT operation to transform rows into columns for different account types."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Percentage Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the percentage of each account type relative to its total for both the current and previous billing periods. This involves conditional logic to handle division by zero."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results are selected and returned, showing the billing period, reading type, account counts, and their respective percentages for both current and previous periods."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking overhead but at the risk of reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "PIVOT Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The PIVOT operation can be resource-intensive, especially if the dataset is large. Indexing on the "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Header",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table helps in organizing intermediate results but can consume memory, especially if the dataset is large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " isolation level may lead to reading uncommitted or inconsistent data, which could affect the accuracy of the report."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Division by Zero",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure handles division by zero by returning 0, but this might not always be the desired behavior, depending on business requirements."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Dependency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on the "
+                },
+                {
+                  "type": "text",
+                  "text": "dbo.CalculatePreviousBillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function, which is not shown here. Any issues or changes in this function could affect the procedure's behavior."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the data grows, the performance of the PIVOT operation and temporary table usage might degrade, requiring optimization or refactoring."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Billing].[usp_GetEstimatedActualForAccountsExtract]\nAS \r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @PublishedBillingPeriod AS VARCHAR(6), @PreviousBillingPeriod AS VARCHAR(6);\r\n\r\n\tSELECT @PublishedBillingPeriod = MAX(BillingPeriod) FROM Billing.EstimatedActualReadingCounts;\r\n\tSELECT @PreviousBillingPeriod = dbo.CalculatePreviousBillingPeriod(@PublishedBillingPeriod, 'M');\r\n\r\n\tDECLARE @tmpEstAct TABLE\r\n\t\t([BillingPeriod] VARCHAR(6) NOT NULL,\r\n\t\t[Reading] VARCHAR(20) NULL,\r\n\t\t[NYPA Accounts] INT NULL,\r\n\t\t[Coned Accounts] INT  NULL,\r\n\t\t[National Grid West Accounts] INT  NULL,\r\n\t\t[Accounts from Other] VARCHAR(MAX)  NULL,\r\n\t\t[ELE Accounts] INT NULL,\r\n\t\t[GAS Accounts] INT NULL,\r\n\t\t[Steam Accounts] INT NULL,\r\n\t\t[Accounts from Other Types] VARCHAR(MAX) NULL);\r\n\r\n\t-- Report for Estimated Actual Accounts Count\r\n\tINSERT INTO @tmpEstAct\r\n\t\t(BillingPeriod,\r\n\t    Reading,\r\n\t    [NYPA Accounts],\r\n\t    [Coned Accounts],\r\n\t    [National Grid West Accounts],\r\n\t    [Accounts from Other],\r\n\t    [ELE Accounts],\r\n\t    [GAS Accounts],\r\n\t    [Steam Accounts],\r\n\t    [Accounts from Other Types])\r\n\tSELECT pt_acc.BillingPeriod\r\n\t\t,pt_acc.Reading\r\n\t\t,pt_acc.[NYPA Accounts]\r\n\t\t,pt_acc.[Coned Accounts]\r\n\t\t,pt_acc.[National Grid West Accounts]\r\n\t\t,ISNULL(pt_acc.[Accounts from Other],0) AS [Accounts from Other]\r\n\t\t,pt_acc.[ELE Accounts]\r\n\t\t,pt_acc.[GAS Accounts]\r\n\t\t,pt_acc.[Steam Accounts]\r\n\t\t,ISNULL(pt_acc.[Accounts from Other Types], 0) AS [Accounts from Other Types]\r\n\tFROM (SELECT ea.BillingPeriod\r\n\t\t\t,ea.DataType\r\n\t\t\t,ea.Reading\r\n\t\t\t,ea.Header\r\n\t\t\t,ea.DataCount\r\n\t\t\t,ea.DateAdded\r\n\t\tFROM Billing.EstimatedActualReadingCounts AS ea \r\n\t\tWHERE ea.DataType='Accounts' AND ea.BillingPeriod IN (@PublishedBillingPeriod, @PreviousBillingPeriod)) AS t \r\n\t\tPIVOT(SUM(DataCount) FOR Header IN ([NYPA Accounts]\r\n\t\t\t,[Coned Accounts]\r\n\t\t\t,[National Grid West Accounts]\r\n\t\t\t,[Accounts from Other]\r\n\t\t\t,[ELE Accounts]\r\n\t\t\t,[GAS Accounts]\r\n\t\t\t,[Steam Accounts]\r\n\t\t\t,[Accounts from Other Types])) AS pt_acc;\r\n\r\n\tSELECT DISTINCT curr.BillingPeriod\r\n\t\t,curr.Reading\r\n\t\t,curr.[NYPA Accounts]\r\n\t\t,CASE WHEN curr.[NYPA Accounts Total] = 0 THEN 0 ELSE ROUND( 100 * CAST(curr.[NYPA Accounts] AS DECIMAL(18, 2)) / CAST(curr.[NYPA Accounts Total] AS DECIMAL(18, 2)), 0) END [NYPA Accounts %]\r\n\t\t,prev.[Previous Month NYPA Accounts]\r\n\t\t,CASE WHEN prev.[Previous Month NYPA Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(prev.[Previous Month NYPA Accounts] AS DECIMAL(18, 2)) / CAST(prev.[Previous Month NYPA Accounts Total] AS DECIMAL(18, 2)), 0) END [Previous Month NYPA Accounts %]\r\n\t\t,curr.[Coned Accounts]\r\n\t\t,CASE WHEN curr.[Coned Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[Coned Accounts] AS DECIMAL(18, 2)) / CAST(curr.[Coned Accounts Total] AS DECIMAL(18, 2)), 0) END [Coned Accounts %]\r\n\t\t,prev.[Previous Month Coned Accounts]\r\n\t\t,CASE WHEN prev.[Previous Month Coned Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(prev.[Previous Month Coned Accounts] AS DECIMAL(18, 2)) / CAST(prev.[Previous Month Coned Accounts Total] AS DECIMAL(18, 2)), 0) END [Previous Month Coned Accounts %]\r\n\t\t,curr.[National Grid West Accounts]\r\n\t\t,CASE WHEN curr.[National Grid West Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[National Grid West Accounts] AS DECIMAL(18, 2)) / CAST(curr.[National Grid West Accounts Total] AS DECIMAL(18, 2)), 0) END [National Grid West Accounts %]\r\n\t\t,curr.[Accounts from Other] AS [Other Accounts]\r\n\t\t,CASE WHEN curr.[Accounts from Other Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[Accounts from Other] AS DECIMAL(18, 2)) / CAST(curr.[Accounts from Other Total] AS DECIMAL(18, 2)), 0) END [Other Accounts %]\r\n\t\t,curr.[ELE Accounts]\r\n\t\t,CASE WHEN curr.[ELE Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[ELE Accounts] AS DECIMAL(18, 2)) / CAST(curr.[ELE Accounts Total] AS DECIMAL(18, 2)), 0) END [ELE Accounts %]\r\n\t\t,curr.[GAS Accounts]\r\n\t\t,CASE WHEN curr.[GAS Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[GAS Accounts] AS DECIMAL(18, 2)) / CAST(curr.[GAS Accounts Total] AS DECIMAL(18, 2)), 0) END [GAS Accounts %]\r\n\t\t,curr.[Steam Accounts]\r\n\t\t,CASE WHEN curr.[Steam Accounts Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[Steam Accounts] AS DECIMAL(18, 2)) / CAST(curr.[Steam Accounts Total] AS DECIMAL(18, 2)), 0) END [Steam Accounts %]\r\n\t\t,curr.[Accounts from Other Types]\r\n\t\t,CASE WHEN curr.[Accounts from Other Types Total] = 0 THEN 0 ELSE  ROUND( 100 * CAST(curr.[Accounts from Other Types] AS DECIMAL(18, 2)) / CAST(curr.[Accounts from Other Types Total] AS DECIMAL(18, 2)), 0) END [Accounts from Other Types %]\r\n\tFROM (SELECT tea.BillingPeriod\r\n\t\t\t,tea.Reading\r\n\t\t\t,tea.[NYPA Accounts]\r\n\t\t\t,tea.[Coned Accounts]\r\n\t\t\t,tea.[National Grid West Accounts]\r\n\t\t\t,tea.[Accounts from Other]\r\n\t\t\t,tea.[ELE Accounts]\r\n\t\t\t,tea.[GAS Accounts]\r\n\t\t\t,tea.[Steam Accounts]\r\n\t\t\t,tea.[Accounts from Other Types]\r\n\t\t\t,teb.[NYPA Accounts] AS [NYPA Accounts Total]\r\n\t\t\t,teb.[Coned Accounts] AS [Coned Accounts Total]\r\n\t\t\t,teb.[National Grid West Accounts] AS [National Grid West Accounts Total]\r\n\t\t\t,teb.[Accounts from Other] AS [Accounts from Other Total]\r\n\t\t\t,teb.[ELE Accounts] AS [ELE Accounts Total]\r\n\t\t\t,teb.[GAS Accounts] AS [GAS Accounts Total]\r\n\t\t\t,teb.[Steam Accounts] AS [Steam Accounts Total]\r\n\t\t\t,teb.[Accounts from Other Types] [Accounts from Other Types Total]\r\n\t\tFROM @tmpEstAct AS tea\r\n\t\t\tINNER JOIN @tmpEstAct AS teb ON teb.BillingPeriod = tea.BillingPeriod AND teb.Reading ='Billed'\r\n\t\tWHERE tea.BillingPeriod = @PublishedBillingPeriod) AS curr\r\n\t\tINNER JOIN (SELECT tea.BillingPeriod\r\n\t\t\t\t,tea.Reading\r\n\t\t\t\t,tea.[NYPA Accounts] AS [Previous Month NYPA Accounts]\r\n\t\t\t\t,tea.[Coned Accounts] AS [Previous Month Coned Accounts]\r\n\t\t\t\t,teb.[NYPA Accounts] AS [Previous Month NYPA Accounts Total]\r\n\t\t\t\t,teb.[Coned Accounts] AS [Previous Month Coned Accounts Total]\r\n\t\t\tFROM @tmpEstAct AS tea\r\n\t\t\t\tINNER JOIN @tmpEstAct AS teb ON teb.BillingPeriod = tea.BillingPeriod AND teb.Reading ='Billed'\r\n\t\t\tWHERE tea.BillingPeriod = @PreviousBillingPeriod) AS prev ON prev.Reading = curr.Reading;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

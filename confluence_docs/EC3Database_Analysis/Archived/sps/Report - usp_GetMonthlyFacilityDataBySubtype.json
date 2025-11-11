@@ -1,0 +1,1005 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GetMonthlyFacilityDataBySubtype",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GetMonthlyFacilityDataBySubtype",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report of monthly facility data categorized by energy subtypes. It retrieves data from various tables, processes it, and outputs a pivoted dataset that includes energy usage, cost, and demand metrics for facilities associated with a specific agency. The procedure logs its usage, dynamically constructs SQL for pivoting data, and returns the results in a structured format."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple complex operations, including dynamic SQL generation, data transformation using UNPIVOT and PIVOT, conditional logic, and extensive use of temporary tables and updates. The complexity is further increased by the need to handle various energy types and subtypes, and the dynamic construction of SQL queries based on input parameters."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report, used for logging and permission checks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which the report is generated, formatted as YYYYMM."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The code representing the agency for which the data is being retrieved."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@OecFacilityNumber AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A list of facility numbers to filter the data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsAgencyUser AS BIT = 0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A flag indicating if the user is an agency user, affecting how the billing period is determined."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent extra result sets and declares the procedure name for logging."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Adjustment",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the user is an agency user, the billing period is set to the current processing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Usage Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls another stored procedure to log the report usage with relevant parameters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Facility Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Inserts facility data into a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@FacilityData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " based on user permissions and input parameters."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Periods Construction",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Constructs a comma-separated list of billing periods for the past five years up to the specified period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Extraction and Transformation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves and unpivots data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.TemporalAccountLevelRawDataForCurrentPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Joins with "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@FacilityData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.EnergyDeliverySubType",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to enrich the dataset."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts the transformed data into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "#Result",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Formatting and Ordering",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates "
+                },
+                {
+                  "type": "text",
+                  "text": "#Result",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to set display and order numbers based on energy types and subtypes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Constructs and executes a dynamic SQL query to pivot the data and format the final output."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Drops the temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "#Result",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to free resources."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of dynamic SQL can lead to performance issues due to lack of query plan reuse and potential SQL injection risks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Extensive use of temporary tables can impact performance, especially if the dataset is large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Joins and Aggregations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves complex joins and aggregations, which can be resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the underlying tables have appropriate indexes to optimize join and filter operations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SQL Injection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The dynamic SQL construction should be reviewed to ensure it is safe from SQL injection vulnerabilities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may not scale well with large datasets due to its complexity and use of temporary tables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": High concurrency could lead to contention on temporary tables and logging operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and incomplete operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the data transformations and updates do not lead to incorrect or inconsistent data outputs."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_GetMonthlyFacilityDataBySubtype]\n(\r\n\t@EmailAddress AS VARCHAR(75)\r\n\t,@PublishedBillingPeriod AS VARCHAR(6)\r\n\t,@AgencyCodeOEC AS VARCHAR(6)\r\n\t,@OecFacilityNumber AS VARCHAR(MAX)\r\n\t,@IsAgencyUser AS BIT = 0\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tIF (@IsAgencyUser = 1)\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = PublishedBillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y';\r\n\tEND;\r\n\t\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,\r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = NULL,\r\n\t\t@prmFacilityNumber_s = NULL,\r\n\t\t@prmStartingBillingPeriod = NULL,\r\n\t\t@prmEndingBillingPeriod = NULL;\r\n\t\r\n\tDECLARE @FacilityData TABLE (OECID OECBuildingNumber NOT NULL\r\n\t\t,AgencyName VARCHAR(75) NULL\r\n\t\t,FacilityName VARCHAR(100) NULL\r\n\t\t,FacilityAddress VARCHAR(120) NULL\r\n\t\t,AgencyCodeOEC AgencyCodeOEC NULL);\r\n\t\r\n\t-- add agency based on user email permission\r\n\tINSERT INTO @FacilityData(AgencyName, FacilityName, FacilityAddress, OECID, AgencyCodeOEC)\r\n\tSELECT DISTINCT AgencyName, FacilityName, Address1, OecFacilityNumber, AgencyCodeOEC\r\n\tFROM Billing.uftn_TableGetOECFacilityNumberByAgencyHierarchy(@AgencyCodeOEC, @OecFacilityNumber, @EmailAddress);\r\n\r\n\t-- to pivot billing period\r\n\tDECLARE @BillingPeriods AS VARCHAR(MAX);\r\n\tSELECT @BillingPeriods = COALESCE(@BillingPeriods + ', ', '') + QUOTENAME(BillingPeriod)\r\n\tFROM (SELECT DISTINCT BillingPeriod\r\n\t\tFROM Published.TemporalAccountLevelRawDataForCurrentPeriod\r\n\t\tWHERE BillingPeriod <= @PublishedBillingPeriod AND BillingPeriod >= (YEAR(GETDATE()) -5) * 100 + 06) AS B\r\n\tORDER BY B.BillingPeriod DESC;\r\n\r\n\tDROP TABLE IF EXISTS #Result;\r\n\r\n\tSELECT dataExtract.BillingPeriod\r\n\t\t,dataExtract.AgencyCodeOEC\r\n\t\t,f.AgencyName\r\n\t\t,dataExtract.OecFacilityNumber\r\n\t\t,f.FacilityName\r\n\t\t,f.FacilityAddress\r\n\t\t,ISNULL(dataExtract.EnergyType, 'The') EnergyType\r\n\t\t,CASE WHEN edst.[Name] = 'District Steam' THEN 'District' WHEN edst.[Name] = 'Natural Gas' THEN 'Natural'\r\n\t\t\tELSE ISNULL(edst.[Name], 'Total') END EnergySubType\r\n\t\t,dataExtract.header AS DataType\r\n\t\t,dataExtract.valuexx\r\n\t\t,CASE WHEN dataExtract.header = 'BTU' AND dataExtract.EnergyType IS NULL THEN 20\r\n\t\t\tWHEN dataExtract.header = 'Cost' AND dataExtract.EnergyType IS NULL THEN 21\r\n\t\t\tWHEN dataExtract.header = 'Usage' AND ISNULL(edst.[Name], 'Total') <> 'Total' THEN 1\r\n\t\t\tWHEN dataExtract.header = 'Demand' AND ISNULL(edst.[Name], 'Total') <> 'Total' AND dataExtract.EnergyType = 'ELE' THEN 2\r\n\t\t\tWHEN dataExtract.header = 'Cost' AND ISNULL(edst.[Name], 'Total') = 'Total' AND ISNULL(dataExtract.EnergyType, 'The') <> 'The' THEN 3\r\n\t\t\tELSE 0 END AS Display \r\n\t\t,CASE WHEN dataExtract.header = 'BTU' THEN 'mmBTUs'\r\n\t\t\tWHEN dataExtract.header = 'Cost' THEN '$'\r\n\t\t\tWHEN dataExtract.header = 'Demand' THEN 'KW'\r\n\t\t\tWHEN dataExtract.header = 'Usage' AND dataExtract.EnergyType='ELE' THEN 'kWh'\r\n\t\t\tWHEN dataExtract.header = 'Usage' AND dataExtract.EnergyType='GAS' THEN 'Therms'\r\n\t\t\tWHEN dataExtract.header = 'Usage' AND dataExtract.EnergyType='STM' THEN 'MLbs'\r\n\t\t\tELSE 'UnknownUnit' END AS Unit\r\n\t\t,0 AS OrderNumber\r\n\t\tINTO #Result\r\n\tFROM (SELECT unso.BillingPeriod\r\n\t\t\t,unso.AgencyCodeOEC \r\n\t\t\t,unso.OecFacilityNumber\r\n\t\t\t,unso.EnergyType\r\n\t\t\t,unso.EnergyDeliverySubTypeID\t\t\r\n\t\t\t,CASE WHEN unso.header = 'AccountEnergyUsage' THEN 'Usage'\r\n\t\t\t\tWHEN unso.header = 'AccountDemandUsage' THEN 'Demand'\r\n\t\t\t\tWHEN unso.header = 'RevisedBilledAmount' THEN 'Cost'\r\n\t\t\t\tWHEN unso.header = 'BTU' THEN 'BTU'\r\n\t\t\t\tELSE 'UNKNOWN' END AS header\r\n\t\t\t,SUM(unso.valuex) AS valuexx\r\n\t\tFROM (SELECT TA.BillingPeriod\r\n\t\t\t\t,TA.AgencyCodeOEC\r\n\t\t\t\t,TA.OecFacilityNumber\r\n\t\t\t\t,TA.EnergyType\r\n\t\t\t\t,TA.EnergyDeliverySubTypeID\r\n\t\t\t\t,CAST(SUM(TA.RevisedBilledAmount) AS NUMERIC(18, 2)) AS RevisedBilledAmount\r\n\t\t\t\t,CAST(SUM(TA.AccountDemandUsage) AS NUMERIC(18, 2)) AS AccountDemandUsage\r\n\t\t\t\t,CAST(SUM(TA.AccountEnergyUsage) AS NUMERIC(18, 2)) AS AccountEnergyUsage\r\n\t\t\t\t,CAST(SUM(TA.BTU) AS NUMERIC(18, 2)) AS BTU\r\n\t\t\tFROM Published.TemporalAccountLevelRawDataForCurrentPeriod AS TA\r\n\t\t\t\tINNER JOIN @FacilityData AS FD ON TA.OecFacilityNumber = FD.OECID AND TA.AgencyCodeOEC = FD.AgencyCodeOEC\r\n\t\t\tWHERE TA.EffectiveStartPeriod <= @PublishedBillingPeriod AND TA.EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t\t\tAND TA.BillingPeriod BETWEEN ((SUBSTRING(@PublishedBillingPeriod,1,4)-5)*100 + 6) and  @PublishedBillingPeriod\r\n\t\t\tGROUP BY TA.OecFacilityNumber, TA.EnergyDeliverySubTypeID, TA.EnergyType, TA.AgencyCodeOEC, TA.BillingPeriod) AS abc\r\n\t\t\tUNPIVOT (valuex FOR header IN (RevisedBilledAmount,\tAccountDemandUsage,\tAccountEnergyUsage,\tBTU)) AS unso\r\n\t\t\tGROUP BY ROLLUP(unso.BillingPeriod, unso.header, unso.OecFacilityNumber, unso.AgencyCodeOEC\r\n\t\t\t\t,unso.EnergyType, unso.EnergyDeliverySubTypeID)) AS dataExtract\r\n\t\tLEFT JOIN Billing.EnergyDeliverySubType AS edst ON edst.EnergyDeliverySubTypeId = dataExtract.EnergyDeliverySubTypeID\r\n\t\tINNER JOIN @FacilityData AS f ON f.OECID = dataExtract.OecFacilityNumber AND f.AgencyCodeOEC = dataExtract.AgencyCodeOEC\r\n\tWHERE dataExtract.BillingPeriod IS NOT NULL AND dataExtract.AgencyCodeOEC IS NOT NULL AND dataExtract.OecFacilityNumber IS NOT NULL\r\n\tORDER BY dataExtract.BillingPeriod;\r\n\r\n\tUPDATE #Result SET Display = 3 WHERE EnergySubType IN ('On-Site Solar', 'Grid Purchase','Other ELE') AND DataType = 'Cost';\r\n\tUPDATE #Result SET Display = 4 WHERE EnergySubType IN ('Total') AND DataType = 'Cost' AND EnergyType = 'ELE';\r\n\tUPDATE #Result SET Display = 5 WHERE EnergySubType IN ('Total') AND DataType = 'Usage' AND EnergyType = 'ELE';\r\n\r\n\tUPDATE #Result SET Display = 0 WHERE EnergySubType = 'On-Site Solar' AND DataType ='Demand';\r\n\tUPDATE #Result SET Display = 0 WHERE EnergySubType = 'Elec Excess Dist.';\r\n\tUPDATE #Result SET EnergySubType = REPLACE(EnergySubType, 'Total', 'Total Energy') WHERE Display IN (20, 21);\r\n\r\n\tUPDATE #Result SET EnergySubType = REPLACE(EnergySubType, 'Grid Purchase', 'Grid');\r\n\tUPDATE #Result SET EnergySubType = REPLACE(EnergySubType, 'On-Site Solar', 'Solar');\r\n\r\n\tUPDATE #Result SET OrderNumber = 1 WHERE EnergySubType = 'Grid' AND DataType = 'Demand';\r\n\tUPDATE #Result SET OrderNumber = 2 WHERE EnergySubType = 'Grid' AND DataType = 'Usage';\r\n\tUPDATE #Result SET OrderNumber = 3 WHERE EnergySubType = 'Grid' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET OrderNumber = 4 WHERE EnergySubType = 'Solar' AND DataType = 'Usage';\r\n\tUPDATE #Result SET OrderNumber = 5 WHERE EnergySubType = 'Solar' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET OrderNumber = 6 WHERE EnergyType = 'ELE' AND EnergySubType = 'Total' AND DataType = 'Usage';\r\n\tUPDATE #Result SET OrderNumber = 7 WHERE EnergyType = 'ELE' AND EnergySubType = 'Total' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET OrderNumber = 8 WHERE EnergyType = 'GAS' AND EnergySubType = 'Natural' AND DataType = 'Usage';\r\n\tUPDATE #Result SET OrderNumber = 9 WHERE EnergyType = 'GAS' AND EnergySubType = 'Total' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET OrderNumber = 10 WHERE EnergyType = 'STM' AND EnergySubType = 'District' AND DataType = 'Usage';\r\n\tUPDATE #Result SET OrderNumber = 11 WHERE EnergyType = 'STM' AND EnergySubType = 'Total' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET OrderNumber = 12 WHERE EnergySubType = 'Total Energy' AND DataType = 'BTU';\r\n\tUPDATE #Result SET OrderNumber = 13 WHERE EnergySubType = 'Total Energy' AND DataType = 'Cost';\r\n\r\n\tUPDATE #Result SET EnergySubType = '' WHERE EnergySubType = 'Total' AND EnergyType = 'GAS' AND OrderNumber = 9;\r\n\tUPDATE #Result SET EnergySubType = '' WHERE EnergySubType = 'Total' AND EnergyType = 'STM' AND OrderNumber = 11;\r\n\tUPDATE #Result SET DataType = '' WHERE EnergySubType = 'Total Energy' AND DataType = 'BTU' AND OrderNumber = 12;\r\n\r\n\tUPDATE #Result SET EnergySubType = '' WHERE EnergyType = 'GAS' AND EnergySubType = 'Natural' AND DataType = 'Usage';\r\n\tUPDATE #Result SET EnergySubType = '' WHERE EnergyType = 'STM' AND EnergySubType = 'District' AND DataType = 'Usage';\r\n\r\n\tDECLARE @ReportSQL AS NVARCHAR(MAX), @space AS VARCHAR(50) = '+'' ''+', @openpar AS VARCHAR(10) = '+''(''+', @closepar AS VARCHAR(10) = '+'')''';\r\n\r\n\tSET @ReportSQL = 'SELECT AgencyCodeOEC, AgencyName,\tOecFacilityNumber, FacilityName, FacilityAddress\r\n\t\t\t,EnergySubType' + @space + 'REPLACE(EnergyType, ''The'', '''') ' + @space + ' DataType ' + @space + @openpar + ' Unit '+ @closepar + ' AS parameters, OrderNumber, ' + @BillingPeriods + '\r\n\t\tFROM #Result AS PivotData \r\n\t\t\tPIVOT (MAX(valuexx) FOR BillingPeriod IN (' + @BillingPeriods + ')) AS PR \r\n\t\tWHERE display <> 0\r\n\t\tORDER BY AgencyCodeOEC, OecFacilityNumber, EnergyType, FacilityAddress, OrderNumber, display';\r\n\t\r\n\tEXECUTE sp_executesql @ReportSQL;\r\n\tDROP TABLE IF EXISTS #Result;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

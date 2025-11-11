@@ -1,0 +1,833 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "NationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LegacyData_ProcessAccountSpanned",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LegacyData_ProcessAccountSpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process legacy billing data for accounts that have spanned multiple billing periods. It performs several operations, including moving spanned records to a temporary summary table, parsing spanned account information, setting gas rate codes, and transferring data from a summary table to an adjustment table. The procedure is part of the "
+        },
+        {
+          "type": "text",
+          "text": "NationalGridWest",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema and interacts with multiple tables within this schema and others, such as "
+        },
+        {
+          "type": "text",
+          "text": "Billing.Account",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps and interactions with different tables, including data insertion, updates, and the execution of another stored procedure. The complexity arises from the need to handle spanned billing records, calculate billing periods and days, and manage gas rate codes. However, the logic is straightforward and follows a clear sequence of operations, making it manageable for those familiar with SQL and database operations."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in the format "
+                },
+                {
+                  "type": "text",
+                  "text": "yyyymm",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". It is used to filter and process records relevant to a specific billing cycle."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An identifier for the authenticated user executing the procedure. It is used for tracking and auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingCycle varchar(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing cycle, which is used in determining billing periods and other related calculations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A utility code is set to '2', which is used later in the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Move Spanned Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Records with "
+                },
+                {
+                  "type": "text",
+                  "text": "DeltaNumberOfPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " greater than 1 are inserted into the "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestAccountTempSummarySpanned",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. This step isolates accounts that span multiple billing periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parse Spanned Account Info",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_LegacyData_ParseSpannedAccountInfo",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is executed to further process the spanned account information using the provided billing period, authenticated ID, and billing cycle."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Set Gas Rate Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Default gas rate codes are set to '020' in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadLegacyKeyspanWestAccountSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Gas rate codes are updated to match the commodity tariff rate from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table where account numbers match."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Move Data to Adjustment Table",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Data is aggregated and inserted into the "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestAccountBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table. This involves calculating billing periods, days, and other metrics, and grouping by original account number and billing period revision."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple insert and update operations, which can be resource-intensive if the tables contain a large number of records."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensuring that relevant columns, such as "
+                },
+                {
+                  "type": "text",
+                  "text": "OriginalAccountNumber",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are indexed can improve the performance of join and update operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may lock tables during execution, potentially impacting other operations. Consider using transaction isolation levels or optimizing the procedure to minimize lock durations."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that data in the source tables is accurate and complete. Any discrepancies could lead to incorrect calculations or data being moved incorrectly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could result in unhandled exceptions or partial data processing if an error occurs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade. Regular monitoring and optimization may be necessary to maintain efficiency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The utility code is hardcoded, which may limit flexibility if changes are needed in the future. Consider parameterizing such values for easier maintenance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [NationalGridWest].[usp_LegacyData_ProcessAccountSpanned]\r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@BillingCycle varchar(1)\r\nAS\r\n\r\nBEGIN\r\n\r\ndeclare @utilityCode varchar(1)\r\nset @utilityCode = '2'\r\n\r\n\r\n/******************************************************\r\n1. Move spanned records in to UploadLegacyKeyspanWestAccountTempSummarySpanned\r\n*******************************************************/\r\nINSERT INTO [NationalGridWest].[UploadLegacyKeyspanWestAccountTempSummarySpanned]\r\n       ([title]\r\n       ,[AccountNumber]\r\n       ,[BillingPeriod]\r\n       ,[BillingPeriodRevision]\r\n       ,[FirstPeriodCanceled]\r\n       ,[FromDate]\r\n       ,[ToDate]\r\n       ,[BilledAmount]\r\n       ,[AveragePreviousBalance]\r\n       ,[Therms]\r\n       ,[ThermFactor]\r\n       ,[CCF]\r\n       ,[TariffCode]\r\n       ,[DeltaNumberOfPeriods]\r\n       ,[BillingPeriodDays]\r\n       ,[FacilityName]\r\n       ,[ServiceAddress]\r\n       ,[PostingDate]\r\n\t   ,EstimatedOrActual)\r\n select \r\n\t\t'SpannedAccountbilling' AS title, --<title, varchar(21),>\r\n\t\tAccountNumber, --<AccountNumber, acctnum,>\r\n\t\tBillingPeriod, --<BillingPeriod, yyyymm,>\r\n\t\tBillingPeriodRevision, --<BillingPeriodRevision, yyyymm,>\r\n\t\tFirstPeriodCanceled as FirstPeriodCanceled, --<FirstPeriodCanceled, yyyymm,>\r\n\t\tFromDate, --<FromDate, yyyymmdd,>\r\n\t\tToDate, --<ToDate, yyyymmdd,>\r\n\t\tBilledAmount AS BilledAmount, --<BilledAmount, BillingAmt,>\r\n\t\tPreviousBalance AS AveragePreviousBalance, --<AveragePreviousBalance, BillingAmt,>\r\n\t\tTherms AS Therms, --<Therms, EnergyUnit,>\r\n\t\tThermFactor AS ThermFactor, --<ThermFactor, ThermsFactor,>\r\n\t\tCCF AS CCF, --<CCF, EnergyUnit,>\r\n\t\tTariffCode AS TariffCode, --<TariffCode, tariff,>\r\n\t\tDeltaNumberOfPeriods AS DeltaNumberOfPeriods, --<DeltaNumberOfPeriods, Accumulator,>\r\n\t\tBillingPeriodDays AS BillingPeriodDays, --<BillingPeriodDays, Accumulator,>\r\n\t\tFacilityName AS FacilityName, --<FacilityName, UtilityServiceAccountName,>\r\n\t\tServiceAddress AS ServiceAddress,--<ServiceAddress, addr,>\r\n\t\tPostingDate AS PostingDate,--<PostingDate, PostingDate,>\r\n\t\tEstimatedOrActual \r\n from NationalGridWest.UploadLegacyKeyspanWestAccount\r\n where DeltaNumberOfPeriods > 1 \r\n\r\n\r\n/*********************************\r\n2. Parsed spanned acount info\r\n********************************/\r\nexec NationalGridWest.usp_LegacyData_ParseSpannedAccountInfo @BillingPeriod, @authenticatedID, @BillingCycle\r\n\r\n\r\n/*********************************\r\n3. Set Gas Rate Code\r\n********************************/\r\n\r\n-- set default gas rate code\r\nUPDATE NationalGridWest.UploadLegacyKeyspanWestAccountSummary\t\r\nSET GasRateCode = '020'\r\n\r\n-- set gas rate code = commodity tariff rate in EC3\r\nUPDATE  s\r\nSET s.GasRateCode = a.CommodityTariffRate \r\nFROM NationalGridWest.UploadLegacyKeyspanWestAccountSummary AS s, Billing.Account AS a\r\nWHERE s.OriginalAccountNumber = a.OriginalAccountNumber\r\n\r\n\r\n/********************************\r\n4. move data from summary into adjustment\r\n*********************************/\r\n/*\r\nmove data into adjustment table from the summary.\r\ntable includes original bill (billingPeriod = revisedBillingPeriod)\r\n*/\r\nINSERT INTO NationalGridWest.UploadLegacyKeyspanWestAccountBillingAdjustmentGas\r\n   ([AdjustedAccount]\r\n   ,[AccountUtilityCompanySeqid]\r\n   ,[NumberOfTransactions]\r\n   ,[NumberOfRebillTransactions]\r\n   ,[NumberOfCancelTransactions]\r\n   ,[OriginalAccountNumber]\r\n   ,[BillingPeriod]\r\n   ,[BillingPeriodRevision]\r\n   ,[FirstCanceledBillingPeriod]\r\n   ,[EstimatedOrActualBilling]\r\n   ,[InitialCancelFromDate]\r\n   ,[CurrentBillingToDate]\r\n   ,[NumberOfBillingPeriods]\r\n   ,[TotalBillingDaysRebilled]\r\n   ,[TotalRebilledAmount]\r\n   ,[TotalCanceledAmount]\r\n   ,[AverageRebillCostOfGasCharge]\r\n   ,[AverageRebillThermsFactor]\r\n   ,[BillingDays]\r\n   ,[BillingDate]\r\n   ,[ToDate]\r\n   ,[FromDate]\r\n   ,[BillingAction]\r\n   ,[ProcessedInTheCurrentPeriod]\r\n   ,[GasRateCode]\r\n   ,[TotalCCF]\r\n   ,[TotalTherms]\r\n   ,[ThermsFactor]\r\n   ,[CancelFromDate]\r\n   ,[CancelToDate]\r\n   ,[CancelTotalCCF]\t\t\t\r\n   ,[CancelTotalTherms]\t\t\t\r\n   ,[CancelThermsFactor]\t\t\t\r\n   ,[ProcessEffectiveDate]\r\n   ,[DerivedFromSpannedBill]\r\n   ,[SpannedBillingPeriodRevision]\r\n   ,[SpannedFirstCanceledBillingPeriod]\r\n   ,[SpannedBilledAmount]\r\n   ,[SpannedCCF]\r\n   ,[SpannedThermFactor]\r\n   ,[SpannedTherm]\r\n   ,[SpannedMonthlyPercentage]\r\n   ,[SpannedTotalPercentage]\t\t\t\r\n   ,[Notes]\t\t\t\r\n   ,[AuthenticatedUserID]\t\t\t\r\n   ,[DateAdded]\t\t\t\r\n   ,[LastUpdate]\t\t\t\r\n   ,FacilityName --  FacilityName\r\n   ,ServiceAddress -- service address\r\n   )\t\t\t\r\nSELECT \t\t\t\r\n\tNULL,\t-- (<AdjustedAccount, seqid,>\r\n\t@utilityCode,\t-- <AccountUtilityCompanySeqid, seqid,>\r\n\tcount(*), --[NumberOfTransactions]\t\r\n\tcount(*), -- [NumberOfRebillTransactions]\t\t\t\r\n\t0\t\t  , -- [NumberOfCancelTransactions]\t\r\n\tOriginalAccountNumber\t,\t-- <OriginalAccountNumber, acctnum,>\r\n\tMAX(BillingPeriod),\t-- <BillingPeriod, BillingPeriod,>\t\r\n\tBillingPeriodRevision,\t-- <BillingPeriodRevision, BillingPeriodRevision,>\r\n\tNationalGridWest.DetermineBillingPeriod(@BillingCycle, Min(FromDate), 'F', substring(OriginalAccountNumber,12,2)) as 'FirstCanceledBillingPeriod',\r\n\tMax(EstimatedOrActualBilling) as 'EstimatedOrActualBilling',\r\n\tNULL,\t--<InitialCancelFromDate, yyyymmdd,>\r\n\tNULL,\t--<CurrentBillingToDate, yyyymmdd,>\r\n\t[dbo].[CalculateDeltaBillingPeriods]\r\n\t\t(\r\n\t\t\tNationalGridWest.DetermineBillingPeriod(@BillingCycle, Min(FromDate), 'F', substring(OriginalAccountNumber,12,2)),\r\n\t\t\tNationalGridWest.DetermineBillingPeriod(@BillingCycle, Min(ToDate), 'T', substring(OriginalAccountNumber,12,2)),\r\n\t\t\t@BillingCycle                                                                                                                                                         \r\n\t\t) as 'NumberOfBillingPeriods',\r\n\tdbo.CalculateNumberOfBillingDays(MIN(FromDate),MAX(ToDate)) as 'TotalBillingDaysRebilled',\r\n\tSUM(TotalRebilledAmount) as 'TotalRebilledAmount',\r\n\t0 as 'TotalCanceledAmount',\t-- <TotalCanceledAmount, money,>\r\n\tnull,\t-- <AverageRebillCostOfGasCharge, money,>\r\n\tAVG(ThermsFactor) as 'ThermsFactor',\t--,<AverageRebillThermsFactor, ThermsFactor,>\r\n\tdbo.CalculateNumberOfBillingDays(MIN(FromDate),MAX(ToDate))\t,\t-- <BillingDays, int,>\r\n\tMAX(BillingDate),\t-- <BillingDate, int,>\r\n\tMAX(ToDate),\t-- <ToDate, yyyymmdd,>\r\n\tMIN(FromDate),\t-- <FromDate, yyyymmdd,>\r\n\tCASE WHEN MAX(BillingPeriod)=MIN(BillingPeriodRevision) THEN 'O' ELSE 'A' END,\t-- <BillingAction, BillingAction,>\r\n\t'N', --<ProcessedInTheCurrentPeriod, yesno,>\r\n\tMAX(GasRateCode), -- ,<GasRateCode, varchar(3),>\r\n\tSUM(TotalCCF),\t--\t<TotalCCF, EnergyUnit,>\r\n\tSUM(TotalTherms),\t-- <TotalTherms, EnergyUnit,>\r\n\tSUM(ThermsFactor),\t-- <ThermsFactor, ThermsFactor,>\r\n\tNULL,\t--,<CancelFromDate, yyyymmdd,>\r\n\tNULL,\t--,<CancelToDate, yyyymmdd,>\r\n\tNULL,\t--,<CancelTotalCCF, EnergyUnit,>\r\n\tNULL,\t--,<CancelTotalTherms, EnergyUnit,>\r\n\tNULL,\t--,<CancelThermsFactor, ThermsFactor,>\r\n\t[dbo].ConvertDateToYYYYMMDD (GETDATE()),\t-- <ProcessEffectiveDate, varchar(8),>\r\n\tMAX(DerivedFromSpannedBill),\r\n\tMAX(SpannedBillingPeriodRevision),\r\n\tMAX(SpannedFirstCanceledBillingPeriod),\r\n\tMAX(SpannedBilledAmount),\r\n\tMAX(SpannedCCF),\r\n\tMAX(SpannedThermFactor),\r\n\tMAX(SpannedTherm),\r\n\tMAX(SpannedMonthlyPercentage),\r\n\tMAX(SpannedTotalPercentage),\r\n\tMAX(Notes),\t\t\t\r\n\tMAX(AuthenticatedUserID),\t\t\t\r\n\tGETDATE(),\t\t\t\r\n\tGETDATE(),\t\r\n\tMIN(FacilityName) , --  FacilityName\r\n\tMIN(ServiceAddress) -- service address\r\nFROM NationalGridWest.UploadLegacyKeyspanWestAccountSummary\t\t\r\nGROUP BY OriginalAccountNumber, BillingPeriodRevision\t\r\n\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

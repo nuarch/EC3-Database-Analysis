@@ -1,0 +1,1184 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_DeleteHeaderBySeqid",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_DeleteHeaderBySeqid",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to delete an invoice header from the "
+        },
+        {
+          "type": "text",
+          "text": "ManualBill.AccountManualBillingHeader",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table based on a given sequence ID ("
+        },
+        {
+          "type": "text",
+          "text": "@HeaderSeqid",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "). It also deletes associated details and cancellations from related tables. The procedure includes several validation checks to ensure that the invoice can be safely deleted without violating business rules, such as ensuring the invoice has not been processed, vouchered, or had credits collected. If any of these conditions are not met, the procedure raises an error and aborts the deletion process. The procedure uses a transaction to ensure atomicity and includes error handling to manage exceptions."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Multiple validation checks before performing the delete operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of transactions to ensure data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error handling with detailed error messages."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Interaction with multiple tables to ensure all related data is correctly deleted."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@HeaderSeqid int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is the sequence ID of the invoice header that needs to be deleted. It is the primary key used to identify the specific record in the "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountManualBillingHeader",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is an output parameter used to indicate the success or failure of the procedure. A value of "
+                },
+                {
+                  "type": "text",
+                  "text": "0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates success, while "
+                },
+                {
+                  "type": "text",
+                  "text": "9",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " indicates failure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure initializes the "
+                },
+                {
+                  "type": "text",
+                  "text": "@StatusCode",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to "
+                },
+                {
+                  "type": "text",
+                  "text": "9",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " (failure) at the start."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation Checks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Existence Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Verifies if the header exists in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountManualBillingHeader",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processing Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Ensures the invoice has not been processed in the current period."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Vouchering Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Ensures the invoice has not been vouchered."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Credit Collection Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Ensures no credits have been collected from the invoice."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Cancellation Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Ensures no cancellations are associated with the invoice."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Previous Billing Cancellation Check",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Ensures the invoice does not cancel any previous billing."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Block",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Begins a transaction to ensure all delete operations are atomic."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Deletes records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountManualBillingCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountManualBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AccountManualBillingHeader",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " tables."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Commits the transaction if all operations succeed."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sets "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "0",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to indicate success."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Catches any errors during the transaction."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Rolls back the transaction if an error occurs."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Raises a detailed error message with information about the error."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sets "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@StatusCode",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to "
+                        },
+                        {
+                          "type": "text",
+                          "text": "9",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to indicate failure."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "AccountManualBillingHeaderSeqid",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " column is indexed in all involved tables to optimize the "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "DELETE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is limited to the necessary delete operations, which helps minimize locking and potential contention."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling Overhead",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error handling mechanism is comprehensive, which may introduce some overhead, but it is necessary for robust error management."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple users attempt to delete the same invoice simultaneously, it could lead to deadlocks or blocking. Proper indexing and transaction management can mitigate this."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that all related data can be safely deleted. If there are additional business rules not covered by the validations, it could lead to data integrity issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Message Clarity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The error messages are detailed but could be further improved by including more context about the specific validation that failed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the volume of data grows, the performance of the procedure may degrade if not properly indexed or optimized. Regular monitoring and optimization may be required."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE   PROCEDURE [ManualBill].[usp_DeleteHeaderBySeqid] ( @HeaderSeqid int, @StatusCode int output)\nas\r\nbegin\r\n\t\t--**************************************************************************************\r\n\t\t--* Name:         \r\n\t\t--*\r\n\t\t--* Description:\tDeletes Invoice by Header seqid.\r\n\t\t--*\t\t\t\t\tdeletes the associated details and cancellations\r\n\t\t--*\t\t\t\t\treverses any detail that was a cancellation\r\n\t\t--*               \r\n\t\t--* \r\n\t\t--*\r\n\t\t--* Parameter(s):         \r\n\t\t--*\t\t\t\t\tHeaderSeqid int\t- the seqid of the header to delete\t\r\n\t\t--*\r\n\t\t--*\r\n\t\t--* Return:\t        0 Success\r\n\t\t--*                 9 Failure\r\n\t\t--*\r\n\t\t--* AUTHOR:\t\t\tMOHAMMED BELARREM\r\n\t\t--* Created On:\t\t04/14/2010\r\n\t\t--**************************************************************************************\r\n\t\t--* Date         Tech Description of Change\r\n\t\t--* ---------- ---  -------------------------------------------------------------\r\n\t\t--* 04/14/2010 MOH\tFirst Version  \r\n\t\t--*\r\n\t\t--*\r\n\t\t--*\r\n\t\t--*\r\n\t\t--*\r\n\t\t--*\r\n\t\t--***************************************************************************************\r\n\r\n\t\t--************************************************************************************** \r\n\t\t--Declare Variables                                            \r\n\t\t--**************************************************************************************\r\n\t\t--\r\n\t\t\r\n\t\tdeclare @HasBeenProcessed as dbo.yesno\r\n\t\tdeclare @HasBeenVouchered as dbo.yesno\r\n\t\tdeclare @CreditHasBeenCollected as dbo.yesno\r\n\t\t\r\n\t\t\r\n\t\tset @StatusCode = 9\r\n\t\t\r\n\t\t--************************ validations ****************************************************************************************************\r\n\t\t-- check the obvious\r\n\t\t\r\n\t\t-- check if the header exists\r\n\t\tif not exists   ( \r\n\t\t\t\t\t\t\tSELECT  AccountManualBillingHeaderSeqid\r\n\t\t\t\t\t\t\tFROM ManualBill.AccountManualBillingHeader\r\n\t\t\t\t\t\t\twhere\tAccountManualBillingHeaderSeqid = @HeaderSeqid\r\n\t\t\t\t\t)   \r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying to delete does not exist ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\t\t\r\n\t\t-- collect vouchering and processing information\r\n\t\tselect  @HasBeenProcessed = ProcessedInTheCurrentPeriod, \r\n\t\t\t\t@HasBeenVouchered = case when InvoiceTrackingSeqid is not null then 'Y' else 'N' end ,\r\n\t\t\t\t@CreditHasBeenCollected = CreditHasBeenCollected  \r\n\t\tfrom\tManualBill.AccountManualBillingHeader\r\n\t\twhere\tAccountManualBillingHeaderSeqid = @HeaderSeqid\r\n\t\t\r\n\t\t\t\t\r\n\t\t-- check if the header was already processed\r\n\t\tif ( @HasBeenProcessed = 'Y' )\r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying to delete has been processed into the account billing. You can not delete it at this point ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\t\t\t\r\n\t\t-- check if the header was already vouchered\r\n\t\tif ( @HasBeenVouchered = 'Y' )\r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying to delete has been vouchered. To delete it, you need to unvoucher it first ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\t\t\t\r\n\t\t-- check if any credits were collected from this header\r\n\t\tif ( @CreditHasBeenCollected = 'Y' )\r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying had credits that were collected. Please adjust those first ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\t\r\n\t\t\t\t\r\n\t\t-- check if the header had any cancellations applied to it\r\n\t\tif exists   ( \r\n\t\t\t\t\t\t\tSELECT  AccountManualBillingDetailSeqid\r\n\t\t\t\t\t\t\tFROM ManualBill.AccountManualBillingDetail\r\n\t\t\t\t\t\t\twhere\tAccountManualBillingHeaderSeqid = @HeaderSeqid and IsCancellation = 'Y'\r\n\t\t\t\t\t)   \r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying to delete has a detail that was cancelled in a later date ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\t\t\r\n\t\t-- check if the header had any previous billing that it cancelled \r\n\t\tif exists   ( \r\n\t\t\t\t\t\t\tSELECT  AccountManualBillingCancellationSeqid\r\n\t\t\t\t\t\t\tFROM ManualBill.AccountManualBillingCancellation\r\n\t\t\t\t\t\t\twhere\tAccountManualBillingHeaderSeqid = @HeaderSeqid and AccountManualBillingDetailSeqidCancelled is not null \r\n\t\t\t\t\t)   \r\n\t\tbegin\r\n\t\t\t\tRAISERROR ('The Invoice you are trying to delete cancels some previous billing. Please adjust this first before deleting ', 10, 1 ) \r\n\t\t\t\treturn\r\n\t\tend\r\n\r\n\r\n\t\t--************************ end of validations **********************************************************************************************\r\n\r\n\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\r\n\t\tbegin try\r\n\t\t\t\tbegin transaction\r\n\t\t\t\t\r\n\t\t\t\t\t-- delete cancellations\r\n\t\t\t\t\tDELETE FROM ManualBill.AccountManualBillingCancellation\r\n\t\t\t\t\tWHERE  AccountManualBillingHeaderSeqid = @HeaderSeqid\r\n\t\t\t\t\t\r\n\t\t\t\t\t-- delete details\r\n\t\t\t\t\tDELETE from ManualBill.AccountManualBillingDetail \r\n\t\t\t\t\twhere AccountManualBillingHeaderSeqid = @HeaderSeqid\r\n\t\t\t\t\t\r\n\t\t\t\t\t-- delete the header\r\n\t\t\t\t\tDELETE from ManualBill.AccountManualBillingHeader \r\n\t\t\t\t\twhere AccountManualBillingHeaderSeqid = @HeaderSeqid\r\n\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\tcommit transaction;\r\n\t\t\t\t\r\n\t\t\t\t-- success\r\n\t\t\t\tset @StatusCode  = 0\r\n\t\t\r\n\t\tEND try\r\n\t\t\t\t\t\t\r\n\t\tBEGIN CATCH\r\n\t\t\t\tDECLARE @ExchangeErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorMessage NVARCHAR(4000);\r\n\t\t\t\tDECLARE @ErrorSeverity INT;\r\n\t\t\t\tDECLARE @ErrorState INT;\r\n\t\t\t\tDECLARE @ErrorNumber INT;\r\n\t\t\t\tDECLARE @ErrorLine INT;\r\n\t\t\t\tDECLARE @ErrorProcedure NVARCHAR(126);\r\n\t\t\t\t--\r\n\t\t\t\tSELECT \r\n\t\t\t\t\t@ExchangeErrorMessage ='Error in StoredProcedure %125s at line number %8.0d    ',\r\n\t\t\t\t\t@ErrorMessage\t= ERROR_MESSAGE(),\r\n\t\t\t\t\t@ErrorSeverity\t= ERROR_SEVERITY(),\r\n\t\t\t\t\t@ErrorState\t\t= ERROR_STATE(),\r\n\t\t\t\t\t@ErrorNumber\t= ERROR_NUMBER(),\r\n\t\t\t\t\t@ErrorProcedure = ERROR_PROCEDURE(),\r\n\t\t\t\t\t@ErrorLine\t\t= ERROR_LINE();\t\t\t\r\n\t\t\t\t--\r\n\t\t\t\tset\t@ErrorMessage = @ExchangeErrorMessage + @ErrorMessage\r\n\t\t\t\t--\r\n\t\t\t\tRAISERROR (@ErrorMessage, -- Message text.\r\n\t\t\t\t\t\t   @ErrorSeverity, -- Severity.\r\n\t\t\t\t\t\t   @ErrorState, -- State.\r\n\t\t\t\t\t\t   @ErrorProcedure,\r\n\t\t\t\t\t\t   @ErrorLine\r\n\t\t\t\t\t\t   ) \r\n\t\t\t\t\r\n\t\t\t\t--failure\r\n\t\t\t\tset @StatusCode  = 9\r\n\t\t\t\t\t\t   \r\n\t\t\t\trollback transaction;\r\n\t\t\t\t\t\t   \r\n\t\tEND CATCH\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t\r\n\r\nend"
+        }
+      ]
+    }
+  ]
+}

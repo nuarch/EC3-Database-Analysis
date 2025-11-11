@@ -1,0 +1,986 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Published",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GlobalSearch",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GlobalSearch",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to perform a global search across multiple entities within a database. It takes an email address and a search text as input parameters and returns a combined result set from various tables, each representing different entities such as Reports, Agencies, Facilities, Utility Companies, Accounts, and Meters. The procedure logs the usage of the search operation and retrieves up to 10 matching records from each entity type based on the search text."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(75)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is used to filter the search results based on the user's access rights. It is passed to a user-defined function to retrieve agency access information."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SearchText AS VARCHAR(250)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is the search keyword used to filter records across multiple entities. It is trimmed of any leading or trailing spaces before use."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", which allows reading uncommitted changes from other transactions, potentially improving performance at the cost of accuracy."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Trim Search Text",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@SearchText",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is trimmed to remove any unnecessary spaces."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure logs the usage of the search operation by calling another stored procedure, "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", with details such as the report name, stored procedure name, and the email address of the requester."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Search Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs a series of "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " statements, each targeting a different entity type:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Reports",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Searches the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Membership.MenuItem",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table for titles and descriptions matching the search text."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Agencies",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Uses a user-defined function to filter agencies accessible by the email address and searches for matches in agency codes, names, and descriptions."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Facilities",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Searches facilities associated with the user's accessible agencies for matches in facility numbers, names, and addresses."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Utility Companies",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Searches utility companies linked to the user's accessible agencies for matches in descriptions and addresses."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Accounts",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Searches accounts linked to the user's accessible agencies for matches in account numbers, descriptions, and service addresses."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Meters",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Searches meters linked to the user's accessible accounts for matches in meter numbers, account numbers, and service addresses."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Compilation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The results from each entity search are combined using "
+                },
+                {
+                  "type": "text",
+                  "text": "UNION ALL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", ensuring that up to 10 records from each entity type are returned."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking overhead but may result in dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "String Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "LIKE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with wildcards ("
+                },
+                {
+                  "type": "text",
+                  "text": "%",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") can lead to full table scans, which may be inefficient for large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The repeated use of the user-defined function "
+                },
+                {
+                  "type": "text",
+                  "text": "uftn_TableGetAgencyByEmailAddressAgencyAccessAction",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " could be a performance bottleneck if it involves complex logic or large data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Union Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "UNION ALL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operation is efficient as it does not remove duplicates, but the overall query complexity increases with multiple "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " statements."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " isolation level may lead to inconsistent data being read if other transactions are modifying the data concurrently."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Performance Bottlenecks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "LIKE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with leading wildcards and repeated function calls can degrade performance, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security Risks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the user-defined function or the procedure itself does not properly handle SQL injection, there could be security vulnerabilities."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the number of records grows, the performance of the search operation may degrade due to the lack of indexing on the search columns and the use of full table scans."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Published].[usp_GlobalSearch]\n(\r\n    @EmailAddress AS VARCHAR(75)\r\n    ,@SearchText AS VARCHAR(250)\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tSELECT @SearchText = TRIM(@SearchText);\r\n\r\n    DECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n    EXEC [Audit].usp_AddReportUsageLog\r\n\t    @ReportName = @spname,\r\n        @StoredProcName = @spname,\r\n        @RequestedBy = @EmailAddress,\r\n        @prmPublishedBillingPeriod = NULL,\r\n        @prmBillingPeriod = NULL,\r\n        @prmAgency_ies = NULL,\r\n        @prmFacilityNumber_s = NULL,\r\n        @prmStartingBillingPeriod = NULL,\r\n        @prmEndingBillingPeriod = NULL;\r\n\r\n\tSELECT TOP (10) 'Report' AS EntityType\r\n\t\t,MenuItemSeqID AS EntityId\r\n\t\t,[URL] AS EntityOec\r\n\t\t,MenuItemTitle AS EntityName\r\n\t\t,MenuItemDescription AS EntityAddress\r\n    FROM Membership.MenuItem\r\n    WHERE (MenuItemTitle LIKE '%' + @SearchText + '%'\r\n\t\tOR MenuItemDescription LIKE '%' + @SearchText + '%')\r\n\t\tAND [URL] IS NOT NULL\r\n\t\tAND IsAdminApp = 1\r\n\tUNION ALL\r\n    SELECT TOP (10) 'Agency' AS EntityType\r\n\t\t,AD.AgencyDivisionSeqid AS EntityId\r\n\t\t,AD.AgencyCodeOEC AS EntityOec\r\n\t\t,AD.AgencyName AS EntityName\r\n\t\t,'' AS EntityAddress\r\n    FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@EmailAddress) AS A\r\n        INNER JOIN Billing.AgencyDivision AS AD ON AD.AgencyDivisionSeqid = A.AgencyDivisionSeqid\r\n    WHERE AD.AgencyCodeOEC LIKE '%' + @SearchText + '%'\r\n\t\tOR AD.AgencyName LIKE '%' + @SearchText + '%'\r\n\t\tOR AD.AgencyShortDesc LIKE '%' + @SearchText + '%'\r\n\tGROUP BY AD.AgencyDivisionSeqid\r\n\t\t,AD.AgencyCodeOEC\r\n\t\t,AD.AgencyName\r\n\tUNION ALL\r\n    SELECT TOP (10) 'Facility' AS EntityType\r\n\t\t,F.FacilitySeqid AS EntityId\r\n\t\t,F.OecFacilityNumber AS EntityOec\r\n\t\t,F.FacilityName\tAS EntityName\r\n\t\t,F.Address1\tAS EntityAddress\r\n    FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@EmailAddress) AS FA\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = FA.AgencyDivisionSeqid\r\n        INNER JOIN Billing.Facility AS F ON F.FacilitySeqid = A.FacilityAccount\r\n    WHERE F.OecFacilityNumber LIKE '%' + @SearchText + '%'\r\n\t\tOR F.FacilityName LIKE '%' + @SearchText + '%'\r\n\t\tOR F.Address1 LIKE '%' + @SearchText + '%'\r\n\tGROUP BY F.FacilitySeqid\r\n\t\t,F.OecFacilityNumber\r\n\t\t,F.FacilityName\r\n\t\t,F.Address1\r\n\tUNION ALL\r\n    SELECT TOP (10) 'UtilityCompany' AS EntityType\r\n\t\t,UC.UtilityCompanySeqid AS EntityId\r\n\t\t,UC.ShortDesc AS EntityOec\r\n\t\t,UC.[Description] AS EntityName\r\n\t\t,UC.Address1 AS EntityAddress\r\n    FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@EmailAddress) AS FA\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = FA.AgencyDivisionSeqid\r\n        INNER JOIN Billing.UtilityCompany AS UC ON UC.UtilityCompanySeqid = A.UtilityAccountProvider\r\n    WHERE UC.ShortDesc LIKE '%' + @SearchText + '%'\r\n\t\tOR UC.[Description] LIKE '%' + @SearchText + '%'\r\n\t\tOR UC.Address1 LIKE '%' + @SearchText + '%'\r\n\tGROUP BY UC.UtilityCompanySeqid\r\n\t\t,UC.ShortDesc\r\n\t\t,UC.[Description]\r\n\t\t,UC.Address1\r\n\tUNION ALL\r\n    SELECT TOP (10) 'Account' AS EntityType\r\n\t\t,A.UniqueAccountSeqid AS EntityId\r\n\t\t,A.CurrentAccountNumber AS EntityOec\r\n\t\t,ET.[Description] AS EntityName\r\n\t\t,A.UtilityServiceAddress AS EntityAddress\r\n    FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@EmailAddress) AS FA\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = FA.AgencyDivisionSeqid\r\n\t\tINNER JOIN Billing.EnergyDeliveryType AS ET ON ET.EnergyDeliveryType = A.EnergyAccountDescription\r\n    WHERE A.CurrentAccountNumber LIKE '%' + @SearchText + '%'\r\n\t\tOR ET.[Description] LIKE '%' + @SearchText + '%'\r\n\t\tOR A.UtilityServiceAddress LIKE '%' + @SearchText + '%'\r\n\tGROUP BY A.UniqueAccountSeqid\r\n\t\t,A.CurrentAccountNumber\r\n\t\t,ET.[Description]\r\n\t\t,A.UtilityServiceAddress\r\n\tUNION ALL\r\n    SELECT TOP (10) 'Meter' AS EntityType\r\n\t\t,M.UniqueMeterSeqid AS EntityId\r\n\t\t,M.CurrentMeterNumber AS EntityOec\r\n\t\t,A.CurrentAccountNumber\tAS EntityName\r\n\t\t,M.UtilityServiceAddress AS EntityAddress\r\n    FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@EmailAddress) AS FA\r\n\t\tINNER JOIN Billing.Account AS A ON A.AgencyAccount = FA.AgencyDivisionSeqid\r\n        INNER JOIN Billing.Meter AS M ON M.UniqueAccountSeqID = A.UniqueAccountSeqid\r\n    WHERE M.CurrentMeterNumber LIKE '%' + @SearchText + '%'\r\n\t\tOR A.CurrentAccountNumber LIKE '%' + @SearchText + '%'\r\n\t\tOR M.UtilityServiceAddress LIKE '%' + @SearchText + '%'\r\n\tGROUP BY M.UniqueMeterSeqid\r\n\t\t,M.CurrentMeterNumber\r\n\t\t,A.CurrentAccountNumber\r\n\t\t,M.UtilityServiceAddress;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

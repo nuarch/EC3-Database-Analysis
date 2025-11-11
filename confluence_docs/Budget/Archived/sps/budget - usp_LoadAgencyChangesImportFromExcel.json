@@ -1,0 +1,1313 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "budget",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LoadAgencyChangesImportFromExcel",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LoadAgencyChangesImportFromExcel",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to import and process agency change data from an Excel file into a SQL Server database. It utilizes SQL Server Integration Services (SSIS) to load data from an Excel file into temporary tables, processes and aggregates this data, and then inserts it into permanent tables for further use. The procedure involves several steps, including data truncation, SSIS package execution, data aggregation, and insertion into target tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@fy AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the fiscal year for the agency changes. If not provided, it defaults to the next year based on the current date."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@name AS VARCHAR(250) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the name of the agency change upload. If not provided, it defaults to a system-generated name based on the current date and time."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@description AS VARCHAR(500) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents a description of the agency change upload. Defaults to the same value as "
+                },
+                {
+                  "type": "text",
+                  "text": "@name",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if not provided."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@id AS INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that returns the ID of the newly inserted record in the "
+                },
+                {
+                  "type": "text",
+                  "text": "input.AgencyChange",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization and Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by setting "
+                        },
+                        {
+                          "type": "text",
+                          "text": "NOCOUNT ON",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to prevent the sending of row count messages."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It declares several local variables for paths, commands, and counters."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Preparation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Truncates the tables "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesImportFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesGroupedFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to ensure they are empty before loading new data."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Loading",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Sets the paths for the SSIS package and the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DTExec",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " utility."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Constructs a command to execute the SSIS package using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "xp_cmdshell",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Temporarily enables "
+                        },
+                        {
+                          "type": "text",
+                          "text": "xp_cmdshell",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to run the command, then disables it afterward for security reasons."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Deletes any rows from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesImportFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " where "
+                        },
+                        {
+                          "type": "text",
+                          "text": "agencycodeoec",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is NULL."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesImportFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesGroupedFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "GROUP BY",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " clause and various aggregate functions like "
+                        },
+                        {
+                          "type": "text",
+                          "text": "SUM",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "MIN",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Checks if there are any records in "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Budget.AgencyChangesGroupedFromExcel",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If records exist, it sets default values for "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@fy",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@name",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@description",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " if they are NULL."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts a new record into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.AgencyChange",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and captures the inserted ID."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts detailed records into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "input.AgencyChangeDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "SELECT",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " statement with a "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DENSE_RANK",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " function to generate unique entity IDs."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncation and Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Truncating tables and deleting rows can be resource-intensive, especially if the tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SSIS Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Running SSIS packages via "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can be slow and may block other operations if not managed properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The aggregation process could be optimized by ensuring indexes are in place on the columns used in "
+                },
+                {
+                  "type": "text",
+                  "text": "GROUP BY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "JOIN",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and table truncation may affect concurrency and should be managed carefully in a multi-user environment."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security Risks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Enabling "
+                },
+                {
+                  "type": "text",
+                  "text": "xp_cmdshell",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " poses a security risk as it allows execution of arbitrary commands on the server. It should be used with caution and disabled immediately after use."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the SSIS package will always execute successfully and load data correctly. Any failure in the SSIS execution could lead to incomplete or incorrect data processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms. Any failure in the SSIS execution or SQL operations could cause the procedure to fail without a clear indication of the issue."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Paths",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The SSIS package path and "
+                },
+                {
+                  "type": "text",
+                  "text": "DTExec",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " path are hardcoded, which could lead to issues if the server configuration changes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "NULL Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure deletes rows with NULL "
+                },
+                {
+                  "type": "text",
+                  "text": "agencycodeoec",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " but does not handle other potential NULL values that might affect data integrity during aggregation and insertion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [budget].[usp_LoadAgencyChangesImportFromExcel]\n(\r\n\t@fy AS INT = NULL\r\n\t,@name AS VARCHAR(250) = NULL\r\n\t,@description AS VARCHAR(500) = NULL\r\n\t,@id AS INT OUTPUT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @ssispath AS VARCHAR(1000), @dtexecpath AS VARCHAR(500), @cmd AS VARCHAR(1000), @actionBy AS VARCHAR(25) = 'SYSTEM'\r\n\t\t,@maxAgencyChangeDetailEntityId AS INT, @importCounter AS INT;\r\n\tDECLARE @IdOutput TABLE (ID INT NULL);\r\n\r\n\tTRUNCATE TABLE Budget.AgencyChangesImportFromExcel;\r\n\tTRUNCATE TABLE Budget.AgencyChangesGroupedFromExcel;\r\n\r\n\t/**********************************************\r\n\t1. Load data into excel table\r\n\t**********************************************/\r\n\tSET @ssispath = 'Z:\\CSCBackup\\Agency changes FROM Survey.dtsx';\r\n\tSET @dtexecpath = '\"C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\DTExec.exe\"';\r\n\tSET @cmd = 'CMD /S /C \" ' + @dtexecpath + ' /f \"' + @ssispath + '\" \"'; -- set ssis path\r\n\t\r\n\tEXEC sp_configure 'show advanced options', 1;\r\n\tRECONFIGURE;\r\n\tEXEC sp_configure 'xp_cmdshell', 1;\r\n\tRECONFIGURE;\r\n\t\r\n\tEXEC xp_cmdshell @cmd;\r\n\t\r\n\tEXEC sp_configure 'show advanced options', 1;\r\n\tRECONFIGURE;\r\n\tEXEC sp_configure 'xp_cmdshell', 0;\r\n\tRECONFIGURE;\r\n\r\n\tDELETE FROM budget.AgencyChangesImportFromExcel WHERE agencycodeoec IS NULL;\r\n\r\n\t/**********************************************\r\n\t2. Insert into aggregate table\r\n\t**********************************************/\r\n\tINSERT INTO Budget.AgencyChangesGroupedFromExcel(PublishedBillingPeriod\r\n\t\t,BudgetGroupDEM\r\n\t\t,AgencyChangesEnergyUsage\r\n\t\t,AgencyChangesDemandUsage\r\n\t\t,AgencyCodeOEC\r\n\t\t,BillingPeriod\r\n\t\t,IsNewAddition\r\n\t\t,ShouldExclude\r\n\t\t,IsEIAP\r\n\t\t,AgencyChangesAccountReactivePowerEnergy\r\n\t\t,AgencyChangesOnPeakEnergyUsage\r\n\t\t,AgencyChangesStreetLightingFacilityPoints\r\n\t\t,AgencyChangesOffPeakEnergyUsage\r\n\t\t,BuildingID)\r\n\tSELECT PublishedBillingPeriod\r\n\t\t,BudgetGroupDEM\r\n\t\t,SUM(AgencyChangesEnergyUsage) AS AgencyChangesEnergyUsage\r\n\t\t,SUM(AgencyChangesDemandUsage) AS AgencyChangesDemandUsage\r\n\t\t,AgencyCodeOEC\r\n\t\t,BillingPeriod\r\n\t\t,MIN(IsNewAddition) AS IsNewAddition\r\n\t\t,MIN(ShouldExclude) AS ShouldExclude\r\n\t\t,MIN(isEIAP) AS isEIAP\r\n\t\t,SUM(AgencyChangesAccountReactivePowerEnergy) AS AgencyChangesAccountReactivePowerEnergy\r\n\t\t,SUM(AgencyChangesOnPeakEnergyUsage) AS AgencyChangesOnPeakEnergyUsage\r\n\t\t,SUM(AgencyChangesStreetLightingFacilityPoints) AS AgencyChangesStreetLightingFacilityPoints\r\n\t\t,SUM(AgencyChangesOffPeakEnergyUsage) AS AgencyChangesOffPeakEnergyUsage\r\n\t\t,BuildingID\r\n\tFROM Budget.AgencyChangesImportFromExcel\r\n\tGROUP BY PublishedBillingPeriod,\r\n\t\tBudgetGroupDEM,\r\n\t\tAgencyCodeOEC,\r\n\t\tBillingPeriod,\r\n\t\tBuildingID;\r\n\r\n\tSELECT @importCounter = COUNT(1) FROM Budget.AgencyChangesGroupedFromExcel;\r\n\r\n\t/**********************************************\r\n\t3. Create new collection of agency changes\r\n\t**********************************************/\r\n\tIF (@importCounter > 0)\r\n\tBEGIN\r\n\t\tset @fy = ISNULL(@fy, cast(CONVERT(VARCHAR(4), getdate(), 121) AS INT)+1)\r\n\t\tset @name = ISNULL(@name, @actionBy + ' UPLOAD ' + replace(replace(replace(CONVERT(VARCHAR(20), getdate(),120), ' ',''), ':', ''), '-',''))\r\n\t\tset @description = ISNULL(@description, @name)\r\n\r\n\t\tselect @maxAgencyChangeDetailEntityId=ISNULL(max(AgencyChangeDetailEntityId), 0)\r\n\t\tFROM [input].[AgencyChangeDetail];\r\n \r\n\t\t-- insert into agencyChange table \r\n\t\tINSERT INTO input.AgencyChange (FY, [Name], [Description], CreatedBy, ModifiedBy)\r\n\t\tOUTPUT INSERTED.ID INTO @IdOutput\r\n\t\tVALUES (@fy, @name, @description, @actionBy, @actionBy);\r\n\r\n\t\tSELECT @id = ID FROM @IdOutput;\r\n\t   \r\n\t\tINSERT INTO input.AgencyChangeDetail(AgencyChangeID\r\n\t\t\t,AgencyCode\r\n\t\t\t,FacilityNo\r\n\t\t\t,BudgetGroupID\r\n\t\t\t,BillingPeriod\r\n\t\t\t,IsNewAddition\r\n\t\t\t,IsEIAP\r\n\t\t\t,DemandUsage\r\n\t\t\t,EnergyUsage\r\n\t\t\t,EnergyUsagePeakPercentage\r\n\t\t\t,EnergyUsageReactivePower\r\n\t\t\t,StreetLightingFacilityPoints\r\n\t\t\t,AgencyChangeDetailEntityId)\r\n\t\tSELECT @id\r\n\t\t\t,a.AgencyCodeOEC\r\n\t\t\t,CASE WHEN a.BuildingID IS NULL OR UPPER(a.BuildingID) = 'NULL' THEN '0000000' ELSE LEFT(LTRIM(a.BuildingID), 10) END\r\n\t\t\t,b.BudgetGroupID-- case when BudgetGroupDEM IS NULL then 35 else BudgetGroupDEM end\r\n\t\t\t,a.BillingPeriod\r\n\t\t\t,CASE WHEN a.IsNewAddition = 'N' THEN 0 ELSE 1 END\r\n\t\t\t,CASE WHEN a.IsEIAP = 'N' THEN 0 ELSE 1 END\r\n\t\t\t,ISNULL(a.AgencyChangesDemandUsage, 0)\r\n\t\t\t,ISNULL(a.AgencyChangesEnergyUsage, 0)\r\n\t\t\t,CASE WHEN ISNULL(a.AgencyChangesEnergyUsage, 0) = 0 THEN 0 ELSE a.AgencyChangesOnPeakEnergyUsage/a.AgencyChangesEnergyUsage END\r\n\t\t\t,ISNULL(a.AgencyChangesAccountReactivePowerEnergy, 0)\r\n\t\t\t,ISNULL(a.AgencyChangesStreetLightingFacilityPoints, 0)\r\n\t\t\t,@maxAgencyChangeDetailEntityId + (DENSE_RANK()\r\n\t\t\t\tOVER (ORDER BY a.AgencyCodeOEC\r\n\t\t\t\t\t,CASE WHEN a.BuildingID IS NULL OR UPPER(a.BuildingID) = 'NULL' THEN '0000000' ELSE LEFT(LTRIM(a.BuildingID), 10) END\r\n\t\t\t\t\t,b.BudgetGroupID))\r\n\t\tFROM Budget.AgencyChangesImportFromExcel AS a\r\n\t\t\tINNER JOIN EC3DB.BudgetApp_vwBudgetGroups AS b ON (CASE WHEN a.BudgetGroupDEM IS NULL THEN 35 ELSE a.BudgetGroupDEM END) = b.BudgetGroupID\r\n\t\tWHERE a.AgencyCodeOEC IS NULL;\r\n\tEND;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

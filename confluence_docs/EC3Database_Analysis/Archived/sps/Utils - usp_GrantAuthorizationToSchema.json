@@ -1,0 +1,744 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Utils",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GrantAuthorizationToSchema",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GrantAuthorizationToSchema",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to alter the authorization of schemas within a SQL Server database. It assigns a specified Active Directory user as the owner of each schema that meets certain criteria. The procedure iterates over schemas with a specific "
+        },
+        {
+          "type": "text",
+          "text": "principal_id",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and excludes certain schema IDs. For each qualifying schema, it constructs and executes a dynamic SQL statement to change the schema's authorization to the specified user."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves dynamic SQL execution, cursor usage, and interaction with system catalog views, which adds to its complexity. While the logic is straightforward, the use of cursors and dynamic SQL requires careful handling to ensure performance and security."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ActiveDirectoryDomainName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the domain name of the Active Directory."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@DomainUserName NVARCHAR(256)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the username within the specified Active Directory domain."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "These parameters are combined to form the fully qualified domain user name that will be granted authorization over the schemas."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure initializes several variables, although not all are used in the current logic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "User Construction",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Combines the domain name and username to form a fully qualified domain user name."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor "
+                },
+                {
+                  "type": "text",
+                  "text": "GrantAuthorizationToSchema",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is declared to iterate over schemas with "
+                },
+                {
+                  "type": "text",
+                  "text": "principal_id = 20",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", excluding specific schema IDs (13, 46, 16405)."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Opens the cursor and fetches schema names one by one."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": For each schema, constructs a dynamic SQL statement to alter the schema's authorization to the specified domain user and executes it using "
+                },
+                {
+                  "type": "text",
+                  "text": "sp_executesql",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Closes and deallocates the cursor after processing all schemas."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Cursors can be resource-intensive, especially if the number of schemas is large. Consider using set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While flexible, dynamic SQL can introduce overhead and security risks (e.g., SQL injection) if not handled properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "System Catalog Access",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Accessing system catalog views like "
+                },
+                {
+                  "type": "text",
+                  "text": "sys.schemas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is generally efficient, but performance can degrade if the database has a large number of schemas."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security Risks",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Dynamic SQL execution can be vulnerable to SQL injection if input parameters are not properly sanitized. Although this procedure constructs SQL statements in a controlled manner, any changes should be carefully reviewed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms. If an error occurs during the execution of dynamic SQL, it could leave the database in an inconsistent state."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses hardcoded schema IDs to exclude certain schemas. This approach can lead to maintenance challenges if schema IDs change or new schemas need to be excluded."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor may not scale well with a large number of schemas, potentially leading to performance bottlenecks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Utils].[usp_GrantAuthorizationToSchema] (@ActiveDirectoryDomainName NVARCHAR(256),@DomainUserName NVARCHAR(256))\nas\r\n--**************************************************************************************\r\n--\r\n--\r\n--\t\t\t\t\tALTER AUTHORIZATION ON SCHEMA::[Budget] TO [DCAS\\ec3applogin]\r\n--\r\n--\t\t\t\t\tGRANT INSERT ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\t\t\t\t\tGRANT SELECT ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\t\t\t\t\tGRANT UPDATE ON [SBMR].[SbmrAction] TO [DCAS\\ec3applogin]\r\n--\r\n--\t\t\t\t\tGRANT EXECUTE ON [Gas].[usp_ProcessGasAccountBilling] TO [DCAS\\ec3applogin]\r\n--\r\n--\r\n--Declare Variables                                            \r\n--**************************************************************************************\r\ndeclare @I int\r\ndeclare @SQLString NVARCHAR(512)\r\ndeclare @View NVARCHAR(512)\r\ndeclare @SchemaQualifiedTriggerName NVARCHAR(256)\r\ndeclare @SchemaName NVARCHAR(256)\r\ndeclare @TABLE_SCHEMA NVARCHAR(256)\r\ndeclare @TABLE_NAME NVARCHAR(256)\r\ndeclare @TABLE_TYPE NVARCHAR(256)\r\ndeclare @DOMAIN_SCHEMA NVARCHAR(256)\r\ndeclare @DOMAIN_NAME NVARCHAR(256) \r\ndeclare @COLUMN_NAME NVARCHAR(256)\r\ndeclare @View_SCHEMA_NAME NVARCHAR(256)\r\ndeclare @View_NAME NVARCHAR(256)\r\ndeclare @IsTable VARCHAR(1)\r\n--\r\ndeclare @SqlQuote char(1)\r\ndeclare @UserName NVARCHAR(256)\r\n--\r\nset @UserName = @ActiveDirectoryDomainName+'\\\\'+@DomainUserName\r\n--\r\nset @I = 0\r\nset @SqlQuote = char(39)\r\n--\r\n------SELECT name, schema_id, principal_id\r\n------FROM sys.schemas\r\n------WHERE (principal_id = 20) and not schema_id in (46,16405)\r\n------order by name\r\n------\r\n------SELECT TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME, TABLE_TYPE\r\n------FROM INFORMATION_SCHEMA.TABLES\r\n------where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA <> 'dbo' or  TABLE_TYPE = 'VIEW'\r\n------\r\n------\r\n------SELECT SPECIFIC_CATALOG, SPECIFIC_SCHEMA, SPECIFIC_NAME, ROUTINE_TYPE\r\n------FROM INFORMATION_SCHEMA.ROUTINES\r\n------where ROUTINE_TYPE like 'F%'\r\n\r\n\r\n-- \r\nDECLARE GrantAuthorizationToSchema CURSOR FOR\r\nSELECT name as SchemaName -- , schema_id, principal_id\r\nFROM sys.schemas\r\nWHERE (principal_id = 20) and not schema_id in (13,46,16405)\r\norder by name\r\n--\r\nOPEN GrantAuthorizationToSchema;\r\n--\r\nFETCH NEXT FROM GrantAuthorizationToSchema INTO @SchemaName\r\n--\r\n-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n\r\nWHILE @@FETCH_STATUS = 0\r\n   BEGIN\r\n\t--\r\n\t\tset @SQLString = 'ALTER AUTHORIZATION ON SCHEMA::' +@SchemaName+' TO '+ @DomainUserName\r\n\t\tprint cast(@I as varchar(3))+') AUTHORIZATION: '+@SQLString\r\n\t\tEXEC sp_executesql @SQLString;\r\n\t\tset @I = @I+1\r\n\t--\r\nFETCH NEXT FROM GrantAuthorizationToSchema INTO @SchemaName\r\n   END\r\n\r\nCLOSE GrantAuthorizationToSchema;\r\nDEALLOCATE GrantAuthorizationToSchema;"
+        }
+      ]
+    }
+  ]
+}

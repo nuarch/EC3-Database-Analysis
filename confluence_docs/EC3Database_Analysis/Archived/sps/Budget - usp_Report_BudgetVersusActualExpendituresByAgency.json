@@ -1,0 +1,869 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Budget",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Report_BudgetVersusActualExpendituresByAgency",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Report_BudgetVersusActualExpendituresByAgency",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report comparing budgeted versus actual expenditures for various agencies within a specified billing period. It aggregates financial data, adjusts specific agency records, and outputs a detailed report including surplus or deficit calculations and percentage changes. The procedure uses a temporary table to store intermediate results and performs several updates to adjust the data before producing the final output."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including data aggregation, conditional updates, and joins with other tables or functions. The complexity arises from the need to handle specific business rules for certain agency codes and the integration of data from multiple sources."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS emailaddr",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Used to filter or join data based on user-specific access or permissions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the agency or agencies for which the report is generated."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod AS BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Defines the time period for which the budget versus actual expenditures are compared."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initial Setup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and improve performance during data reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Aggregation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It inserts aggregated data into a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "@Result",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Budget.BudgetVersusActualExpendituresByAgencyAndServiceClassification",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, filtering by "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetVersusExpenditureTypeSeqID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Adjustments for Specific Agencies",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For agency code "
+                        },
+                        {
+                          "type": "text",
+                          "text": "856090",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", actual expenditures are set to match budgeted expenditures."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "For agency code "
+                        },
+                        {
+                          "type": "text",
+                          "text": "856001",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", actual expenditures are adjusted by subtracting the expenditures of "
+                        },
+                        {
+                          "type": "text",
+                          "text": "856090",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Flagging Source of Funding",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Agencies with specific codes are flagged as sources of funding group data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Report Generation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure joins the temporary results with other tables/functions to enrich the data with additional attributes like agency level and funding source descriptions. It calculates surplus/deficit and percentage changes for various financial metrics."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The final result set is ordered by parent agency funding sequence ID and agency hierarchy levels."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This improves performance by reducing locking but may lead to reading uncommitted or dirty data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation and Joins",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of aggregation functions and multiple joins can be resource-intensive, especially if the underlying tables are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table helps manage intermediate results but can consume memory and affect performance if not managed properly."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading inconsistent data, which might affect the accuracy of the report."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Agency Codes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure contains hardcoded logic for specific agency codes ("
+                },
+                {
+                  "type": "text",
+                  "text": "856090",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "856001",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", etc.), which may require updates if business rules change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the data volume grows, the performance of aggregation and joins may degrade, necessitating optimization or indexing strategies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or incomplete transactions in case of failures."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Budget].[usp_Report_BudgetVersusActualExpendituresByAgency]\n(\r\n\t@EmailAddress AS emailaddr,\r\n\t@AgencyCodeOEC AS VARCHAR(MAX),\r\n\t@BillingPeriod AS BillingPeriod\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @Result TABLE(AgencyCodeOEC AgencyCodeOEC,\r\n\t\tParentAgencyCodeOEC VARCHAR(6) NULL,\r\n\t\tAgencyName ldesc,\r\n\t\tCurrentMonthBudgetEnergyDollars MONEY,\r\n\t\tCurrentMonthActualDollars MONEY,\r\n\t\tYearToDateBudgetDollars MONEY,\r\n\t\tYearToDateActuralDollars MONEY,\r\n\t\tEndOfYearBudgetDollars MONEY,\r\n\t\tEndOfYearProjectionDollars MONEY,\r\n\t\tIsSourceOfFundingGroupData VARCHAR(1))\t;\r\n\r\n\tINSERT INTO @Result(AgencyCodeOEC,\r\n\t\tParentAgencyCodeOEC,\r\n\t\tAgencyName,\r\n\t\tCurrentMonthBudgetEnergyDollars,\r\n\t\tCurrentMonthActualDollars,\r\n\t\tYearToDateBudgetDollars,\r\n\t\tYearToDateActuralDollars,\r\n\t\tEndOfYearBudgetDollars,\r\n\t\tEndOfYearProjectionDollars,\r\n\t\tIsSourceOfFundingGroupData)\r\n\tSELECT AgencyCodeOEC,\r\n\t\tMAX(ParentAgencyCodeOEC),\r\n\t\tMAX(AgencyName),\r\n\t\tSUM(CurrentMonthBudgetEnergyDollars),\r\n\t\tSUM(CurrentMonthActualDollars),\r\n\t\tSUM(YearToDateBudgetDollars),\r\n\t\tSUM(YearToDateActuralDollars),\r\n\t\tSUM(EndOfYearBudgetDollars),\r\n\t\tSUM(EndOfYearProjectionDollars),\r\n\t\tIsSourceOfFundingGroupData\r\n\tFROM Budget.BudgetVersusActualExpendituresByAgencyAndServiceClassification\r\n\tWHERE BudgetVersusExpenditureTypeSeqID = 19 AND BillingPeriod = @BillingPeriod AND PublishedBillingPeriod = @BillingPeriod\r\n\tGROUP BY AgencyCodeOEC, IsSourceOfFundingGroupData;\r\n\r\n\t/*The actual expenditures for State Funds should be set equal to the budgeted expenditures for State Funds (856090).\r\n\t\tThe actual expenditures for DCAS 856001 should be reduced by the expenditures assigned to State Funds.*/\r\n\tUPDATE @Result\r\n\tSET CurrentMonthActualDollars = CurrentMonthBudgetEnergyDollars, YearToDateActuralDollars = YearToDateBudgetDollars\r\n\tWHERE AgencyCodeOEC = '856090';\r\n\r\n\t-- UPDATE : added isnull 0 for 856001 update of CurrentMonthActualDollars and  YearToDateActuralDollars\r\n\t-- thisd block takes states fund and substract from current month actual year to date of 856001\r\n\tUPDATE @Result\r\n\tSET CurrentMonthActualDollars = CurrentMonthActualDollars - ISNULL((SELECT SUM(CurrentMonthActualDollars) FROM @Result WHERE AgencyCodeOEC = '856090'), 0),\r\n\tYearToDateActuralDollars = YearToDateActuralDollars - ISNULL((SELECT SUM(YearToDateActuralDollars) FROM @Result WHERE AgencyCodeOEC = '856090'), 0)\r\n\tWHERE AgencyCodeOEC = '856001';\r\n\r\n\t-- handle exception case. These parent have billing records associated with them67t\r\n\tUPDATE @Result\r\n\tSET IsSourceOfFundingGroupData = 'Y'\r\n\tWHERE AgencyCodeOEC in ('056000', '126016', '826000');\r\n\r\n\tUPDATE @Result\r\n\tSET IsSourceOfFundingGroupData = 'N'\r\n\tWHERE  ParentAgencyCodeOEC in ('056000', '126016', '826000');\r\n\r\n\tSELECT EI.AgencyCodeOEC,\r\n        EI.AgencyName,\r\n        BAD.agencyLevel,\r\n        SUM(EI.CurrentMonthBudgetEnergyDollars) CurrentMonthBudgetEnergyDollars,\r\n        SUM(EI.CurrentMonthActualDollars) CurrentMonthActualDollars,\r\n        SUM(EI.YearToDateBudgetDollars) + SUM(EI.EndOfYearBudgetDollars) AS FullYearBudgetDollars,\r\n        SUM(EI.YearToDateActuralDollars) + SUM(EI.EndOfYearProjectionDollars) AS FullYearProjectionDollars,\r\n        SUM(EI.YearToDateBudgetDollars) YearToDateBudgetDollars,\r\n        SUM(EI.YearToDateActuralDollars) YearToDateActuralDollars,\r\n        SUM(EI.EndOfYearBudgetDollars) EndOfYearBudgetDollars,\r\n        SUM(EI.EndOfYearProjectionDollars) EndOfYearProjectionDollars,\r\n        SUM(EI.CurrentMonthBudgetEnergyDollars) - SUM(EI.CurrentMonthActualDollars) AS CurrentMonthSurplusOrDeficitDollars,\r\n        CASE WHEN SUM(EI.CurrentMonthBudgetEnergyDollars) = 0 THEN 0 ELSE (SUM(EI.CurrentMonthBudgetEnergyDollars) - SUM(EI.CurrentMonthActualDollars)) / SUM(EI.CurrentMonthBudgetEnergyDollars) END * 100 AS CurrentMonthPercentageChange,\r\n        SUM(EI.YearToDateBudgetDollars) - SUM(EI.YearToDateActuralDollars) AS YearToDateSurplusOrDeficitDollars,\r\n        CASE WHEN SUM(EI.YearToDateBudgetDollars) = 0 THEN 0 ELSE (SUM(EI.YearToDateBudgetDollars) - SUM(EI.YearToDateActuralDollars)) / SUM(EI.YearToDateBudgetDollars) END * 100 AS YearToDatePercentageChange,\r\n        SUM(EI.EndOfYearBudgetDollars)-SUM(EI.EndOfYearProjectionDollars) AS EndOfYearProjectedSurplusOrDeficitDollars,\r\n        SUM(EI.YearToDateBudgetDollars) + SUM(EI.EndOfYearBudgetDollars) - SUM(EI.YearToDateActuralDollars) - SUM(EI.EndOfYearProjectionDollars) AS FullYearProjectedSurplusOrDeficitDollars,\r\n        PA.AgencyFundingSeqid AS ParentFundingSeqID,\r\n        AFS.AgencyFundingSeqid,\r\n        AFS.FundingSourceDescription,\r\n        EI.IsSourceOfFundingGroupData,\r\n        BAD.IsHidden\r\n\t FROM @Result AS EI\r\n\t\tINNER JOIN [Budget].[uftn_BudgetAgencyDivision](@EmailAddress, @AgencyCodeOEC, 'N') AS BAD ON EI.AgencyCodeOEC = BAD.AgencyCodeOEC\r\n\t\tINNER JOIN Billing.AgencyFunding AS AFS ON AFS.AgencyFundingSeqid = BAD.AgencyFundingSeqid\r\n\t\tLEFT JOIN [Budget].[uftn_BudgetAgencyDivision](@EmailAddress, @AgencyCodeOEC, 'N') AS PA ON BAD.parentAgencyDivisionSeqID = PA.AgencyDivisionSeqid\r\n\t WHERE BAD.IsHiddenInFundingGroupSummary = 'N'\r\n\t GROUP BY EI.AgencyCodeOEC,\r\n\t\tEI.AgencyName,\r\n\t\tBAD.agencyLevel,\r\n\t\tPA.AgencyFundingSeqid,\r\n\t\tAFS.AgencyFundingSeqid,\r\n\t\tAFS.FundingSourceDescription,\r\n\t\tEI.IsSourceOfFundingGroupData,\r\n\t\tBAD.IsHidden,\r\n\t\tBAD.AgencyOECL1,\r\n\t\tBAD.AgencyOECL2,\r\n\t\tBAD.AgencyOECL3\r\n\tORDER BY PA.AgencyFundingSeqid,\r\n\t\tBAD.AgencyOECL1,\r\n\t\tBAD.AgencyOECL2,\r\n\t\tBAD.AgencyOECL3;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

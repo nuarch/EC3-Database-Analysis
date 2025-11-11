@@ -1,0 +1,865 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNewManualBillingCurrentBillingPeriod",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNewManualBillingCurrentBillingPeriod",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage billing periods within a manual billing system. It calculates and inserts a new billing period into the "
+        },
+        {
+          "type": "text",
+          "text": "ManualBillingApplicationTimeFrame",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table, ensuring that only one billing period is marked as the current processing period at any given time. The procedure also computes various fiscal and seasonal periods related to the new billing period and updates the table with these details."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including validation, data retrieval, and insertion, as well as the use of several user-defined functions to calculate fiscal and seasonal periods. The complexity arises from the need to ensure data integrity and the correct calculation of various time periods."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StatusCode int output",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This is an output parameter used to return the status of the procedure execution. It is set to "
+                },
+                {
+                  "type": "text",
+                  "text": "100",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " upon successful completion and "
+                },
+                {
+                  "type": "text",
+                  "text": "-100",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if there is already a current processing period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure declares several local variables to store billing periods and fiscal years."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It checks if there is already a billing period marked as the current processing period. If so, it exits with a status code of "
+                },
+                {
+                  "type": "text",
+                  "text": "-100",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Last Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the most recent billing period from the "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBillingApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Calculate New Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure calculates the next billing period using the "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Calculate Previous Billing Periods",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It calculates previous billing periods for the last one, two, and three years using the "
+                },
+                {
+                  "type": "text",
+                  "text": "CreatePreviousPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert New Billing Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure inserts a new record into the "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBillingApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table with the new billing period and associated fiscal and seasonal periods. It uses several user-defined functions to calculate these periods."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Set Status Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Upon successful insertion, the status code is set to "
+                },
+                {
+                  "type": "text",
+                  "text": "100",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBillingApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is properly indexed, especially on the "
+                },
+                {
+                  "type": "text",
+                  "text": "CurrentProcessingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BillingPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns, to optimize the SELECT and INSERT operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies heavily on user-defined functions for period calculations. These functions should be optimized for performance, as they are called multiple times."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not use explicit transaction handling or locking mechanisms, which could lead to concurrency issues if multiple instances are executed simultaneously."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Without explicit transaction handling, there is a risk of race conditions if the procedure is executed concurrently, potentially leading to multiple periods being marked as current."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks comprehensive error handling. If any of the function calls fail, the procedure may not handle the error gracefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "CreatePreviousPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " functions will always return valid periods. If these functions return unexpected results, it could lead to incorrect data being inserted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the number of records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBillingApplicationTimeFrame",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table grows, the performance of the SELECT operations may degrade if not properly indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE     PROCEDURE [ManualBill].[usp_InsertNewManualBillingCurrentBillingPeriod] (@StatusCode int output)\nAS\r\n/* =============================================\r\n-- Create procedure basic template\r\n\tBillingPeriod = @NewBillingPeriod\r\n\tCurrentProcessingPeriod = \"Y\"\r\n\tCurrentProcessingPeriodCompleted = NULL\r\n\tFiscalYear =  [dbo].[CreateFiscalYear] ( @NewBillingPeriod,'C')\r\n\tFiscalYearStartDate\r\n\tFiscalYearEndDate\r\n\tFYSummerStart \r\n\tFYSummerEnd\r\n\tFYWinterStart\r\n\tFYWinterEnd\r\n\tPriorFiscalYear\r\n\tPriorFiscalYearStartDate\r\n\tPriorFiscalYearEndDate\r\n\tPriorFYSummerStart \r\n\tPriorFYSummerEnd\r\n\tPriorFYWinterStart\r\n\tPriorFYWinterEnd\r\n\tNextBillingPeriodOneMonth\r\n\tNextBillingPeriodTwoMonth\r\n\tNextBillingPeriodQuaterly \r\n\tNextBillingPeriodYear\r\n\tPreviousBillingPeriodOneMonth  [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'Y')\r\n\tPreviousBillingPeriodTwoMonth \r\n\tPreviousBillingPeriodQuaterly\r\n\tPreviousBillingPeriodYear \r\n\tPreviousBillingPeriodTwoYears \r\n\tPreviousBillingPeriodThreeYears\r\n\tAuthenticatedUserID\r\n-- =============================================  */\r\ndeclare\t@BillingPeriod varchar(6)\r\ndeclare\t@NewBillingPeriod varchar(6)\r\ndeclare\t@PreviousBillingPeriodLastYear varchar(6)\r\ndeclare\t@PreviousBillingPeriodLastTwoYears varchar(6)\r\ndeclare\t@PreviousBillingPeriodLastThreeYears varchar(6)\r\ndeclare\t@PreviousFiscalYear varchar(4)\r\ndeclare\t@FiscalYear varchar(4)\r\n--\r\ndeclare @CurrentPeriodCount integer\r\ndeclare @ErrorStatusCode integer\r\n--\r\nSELECT @CurrentPeriodCount = count(*)  FROM [ManualBill].[ManualBillingApplicationTimeFrame] where  (CurrentProcessingPeriod = 'Y')\r\n--***\r\n-- The count must be one period only\r\n--***\r\nif ( @CurrentPeriodCount  <> 0 )    return -100\r\n--***\r\n-- Get the last Billing period and calculate the next month\r\n--***\r\nSELECT  TOP 1 @BillingPeriod = BillingPeriod   FROM [ManualBill].[ManualBillingApplicationTimeFrame]\r\n--***\r\n-- Make sure that \r\n--***\r\nSELECT * FROM [ManualBill].[ManualBillingApplicationTimeFrame]\r\n--\r\nset @NewBillingPeriod = [dbo].[CreateNextPeriod] (@BillingPeriod,'M')\r\nset @PreviousBillingPeriodLastYear  = [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'Y')\r\nset @PreviousBillingPeriodLastTwoYears  = [dbo].[CreatePreviousPeriod] ( @PreviousBillingPeriodLastYear ,'Y')\r\nset @PreviousBillingPeriodLastThreeYears  = [dbo].[CreatePreviousPeriod] (@PreviousBillingPeriodLastTwoYears,'Y')\r\nINSERT INTO [ManualBill].[ManualBillingApplicationTimeFrame]\r\n                      (BillingPeriod, CurrentProcessingPeriod, FiscalYear, FiscalYearStartDate, FiscalYearEndDate, \r\n\t               FYSummerStart, FYSummerEnd, FYWinterStart, FYWinterEnd, \r\n                      PriorFiscalYear, PriorFiscalYearStartDate, PriorFiscalYearEndDate, \r\n                      PriorFYSummerStart, PriorFYSummerEnd, PriorFYWinterStart, PriorFYWinterEnd,\r\n                      NextBillingPeriodOneMonth, NextBillingPeriodTwoMonth, NextBillingPeriodQuaterly, \r\n                      NextBillingPeriodYear, PreviousBillingPeriodOneMonth, PreviousBillingPeriodTwoMonth, \r\n                      PreviousBillingPeriodQuaterly, PreviousBillingPeriodYear, \r\n                      PreviousBillingPeriodTwoYears, PreviousBillingPeriodThreeYears, AuthenticatedUserID)\r\nSELECT    @NewBillingPeriod ,'Y',  [dbo].[CreateFiscalYear] ( @NewBillingPeriod,'C'),  [dbo].[CreateFiscalYearPeriod] (@NewBillingPeriod,'S'),[dbo].[CreateFiscalYearPeriod] (@NewBillingPeriod,'E'),\r\n\t        [dbo].[CreateSummerPeriod] (@NewBillingPeriod ,'S'),[dbo].[CreateSummerPeriod] (@NewBillingPeriod ,'E'),[dbo].[CreateWinterPeriod] (@NewBillingPeriod ,'S'),[dbo].[CreateWinterPeriod] (@NewBillingPeriod ,'E'),\r\n                      [dbo].[CreateFiscalYear] ( @NewBillingPeriod,'P'), [dbo].[CreateFiscalYearPeriod] (@PreviousBillingPeriodLastYear,'S'),[dbo].[CreateFiscalYearPeriod] (@PreviousBillingPeriodLastYear,'E'),\r\n\t        [dbo].[CreateSummerPeriod] (@PreviousBillingPeriodLastYear  ,'S'),[dbo].[CreateSummerPeriod] (@PreviousBillingPeriodLastYear  ,'E'),[dbo].[CreateWinterPeriod] (@PreviousBillingPeriodLastYear  ,'S'),[dbo].[CreateWinterPeriod] (@PreviousBillingPeriodLastYear  ,'E'), \r\n\r\n\t         [dbo].[CreateNextPeriod] (@NewBillingPeriod,'M'), [dbo].[CreateNextPeriod] (@NewBillingPeriod,'B'),[dbo].[CreateNextPeriod] (@NewBillingPeriod,'Q'), [dbo].[CreateNextPeriod] (@NewBillingPeriod,'Y'), \r\n                      [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'M'),  [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'B'), [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'Q'), [dbo].[CreatePreviousPeriod] (@NewBillingPeriod,'Y'),\r\n                      @PreviousBillingPeriodLastTwoYears ,@PreviousBillingPeriodLastThreeYears, '1'\r\nFROM [ManualBill].[ManualBillingApplicationTimeFrame]\r\nset @StatusCode = 100\r\n\r\n\r\n\r\n\r\n\r\n\r\nset ANSI_NULLS ON\r\nset QUOTED_IDENTIFIER ON"
+        }
+      ]
+    }
+  ]
+}

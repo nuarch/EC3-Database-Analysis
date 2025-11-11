@@ -1,0 +1,905 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Archive_usp_IdentifyUniqueNetZeroTransactionsAndRemoveByCursor",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "Archive_usp_IdentifyUniqueNetZeroTransactionsAndRemoveByCursor",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to identify and remove duplicate net-zero transactions from a set of tables related to billing data for Con Edison. A net-zero transaction is defined as a transaction where the sum of billed amounts, therms, and CCF (hundred cubic feet) from both the account and cancellation records equals zero. The procedure uses a cursor to iterate through these transactions, inserts unique net-zero transactions into a temporary table, and subsequently deletes them from the original tables. It also identifies and removes meter billing records that do not have corresponding account bills."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level is medium due to the use of cursors, multiple table joins, and conditional logic to identify and process net-zero transactions. The procedure involves several steps, including data selection, insertion, and deletion, which require careful handling to ensure data integrity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is intended to represent the ID of the user executing the procedure. However, it is not used within the procedure, indicating it might be a placeholder for auditing or logging purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure begins by declaring variables and fetching the current billing period from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.ApplicationTimeFrame",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Preparation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonNetZeroTransactions",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table is truncated to prepare for new data insertion."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Definition and Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "A cursor named "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UniqueConEdisonNetZeroTransactions_record",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is defined to select transactions where the sum of billed amounts, therms, and CCF from both account and cancellation records equals zero."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The cursor iterates through these transactions, checking if they are already present in the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonNetZeroTransactions",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table. If not, they are inserted into this table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "After processing the cursor, the procedure deletes the identified net-zero transactions from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonAccount",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and their preload counterparts."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Meter Billing Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure identifies and deletes meter billing records that do not have corresponding account bills, which may result from incorrect data reporting."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Finalization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The cursor is closed and deallocated, and the procedure concludes by selecting data from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.UploadConEdisonNetZeroTransactions",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConEd.uvw_ConEdisonNetZeroTransactionSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " views for review."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance bottlenecks, especially with large datasets, as it processes rows one at a time. Consider replacing the cursor with set-based operations if possible."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Truncation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Truncating the "
+                },
+                {
+                  "type": "text",
+                  "text": "ConEd.UploadConEdisonNetZeroTransactions",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table is efficient for clearing data but assumes that no data needs to be retained between executions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved in joins and where conditions are properly indexed to improve query performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure deletes records from multiple tables, which could lead to data integrity issues if not handled correctly. Ensure that the logic accurately identifies net-zero transactions to prevent accidental data loss."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include transaction handling, which could lead to issues in a concurrent environment. Consider wrapping critical sections in transactions to maintain consistency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Unused Parameter",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@AuthenticatedUserID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is not utilized, which may indicate incomplete implementation or oversight. Consider implementing logging or auditing to make use of this parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling, which could result in unhandled exceptions and incomplete execution. Implement try-catch blocks to manage potential errors gracefully."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE  PROCEDURE [ConEd].[Archive_usp_IdentifyUniqueNetZeroTransactionsAndRemoveByCursor] (@AuthenticatedUserID int)\nAS\r\n\r\n--**************************************************************************************\r\n--* Name:         \r\n--*\r\n--* Description:  \r\n--*               \r\n--*               \r\n--*               \r\n--* Exec:         usp_ProcessNYPAExchangeInfo\r\n--*\r\n--* Parameter(s):         \r\n--*                            UtilityCompanySeqid int   \t   - The sequence id of the Utility Companyto be processed\r\n--*                            StatusCode  int output       \t   -  Execution Return Status \r\n--*\r\n--* Database:     OEC\r\n--*\r\n--* Return:\t    0 Success\r\n--*                   9 Failure\r\n--*\r\n--* AUTHOR:       Peter Heller (PAH)\r\n--* Created On:   10/26/2005\r\n--**************************************************************************************\r\n--* Date         Tech Description of Change\r\n--* ---------- ----  -------------------------------------------------------------\r\n--* 05/16/2006 PAH  First Version  \r\n--***************************************************************************************\r\nBegin \r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--\r\ndeclare @BillingPeriod varchar(6)\r\n--\r\n\r\nSELECT @BillingPeriod=BillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y'\r\n--\r\n--  Find and delete the duplicate net zero transactions where the ConEd.UploadConEdisonAccount.BilledAmount + ConEd.UploadConEdisonCancellation.BilledAmount is 0\r\n--\r\ntruncate table ConEd.UploadConEdisonNetZeroTransactions\r\n--\r\ndeclare @HoldUploadConEdisonCancellationSeqid int\r\n--\r\ndeclare @CancellationBillingPeriodRevision varchar(6)\r\ndeclare @CancellationAccountNumber varchar(15)\r\ndeclare @AccountUploadConEdisonAccountSeqid int\r\ndeclare @CancellationUploadConEdisonCancellationSeqid int\r\ndeclare @AccountTherms int\r\ndeclare @CancellationTherms int\r\ndeclare @AccountCCF int\r\ndeclare @CancellationCCF int\r\ndeclare @AccountBilledAmount money\r\ndeclare @CancellationBilledAmount money\r\n--\r\nDeclare UniqueConEdisonNetZeroTransactions_record cursor for \r\nSELECT ConEd.UploadConEdisonCancellation.BillingPeriodRevision, ConEd.UploadConEdisonCancellation.AccountNumber, \r\n                      ConEd.UploadConEdisonAccount.UploadConEdisonAccountSeqid, ConEd.UploadConEdisonCancellation.UploadConEdisonCancellationSeqid, \r\n                      ConEd.UploadConEdisonAccount.Therms, ConEd.UploadConEdisonCancellation.Therms AS CancellationTherms, ConEd.UploadConEdisonAccount.CCF, \r\n                      ConEd.UploadConEdisonCancellation.CCF AS CancellationCCF, ConEd.UploadConEdisonAccount.BilledAmount, \r\n                      ConEd.UploadConEdisonCancellation.BilledAmount AS CancellationBilledAmount\r\nFROM ConEd.UploadConEdisonAccount INNER JOIN\r\n                      ConEd.UploadConEdisonCancellation ON \r\n                      ConEd.UploadConEdisonAccount.DeltaNumberOfPeriods = ConEd.UploadConEdisonCancellation.DeltaNumberOfPeriods AND \r\n                      ConEd.UploadConEdisonAccount.BillingPeriodRevision = ConEd.UploadConEdisonCancellation.BillingPeriodRevision AND \r\n                      ConEd.UploadConEdisonAccount.BillingPeriod = ConEd.UploadConEdisonCancellation.BillingPeriod AND \r\n                      ConEd.UploadConEdisonAccount.AccountNumber = ConEd.UploadConEdisonCancellation.AccountNumber /*INNER JOIN\r\n                      Billing.ApplicationTimeFrame ON ConEd.UploadConEdisonCancellation.BillingPeriodRevision = Billing.ApplicationTimeFrame.BillingPeriod*/\r\nWHERE (ConEd.UploadConEdisonAccount.BilledAmount + ConEd.UploadConEdisonCancellation.BilledAmount = 0) AND \r\n                      (ConEd.UploadConEdisonAccount.Therms + ConEd.UploadConEdisonCancellation.Therms = 0) AND \r\n                      (ConEd.UploadConEdisonAccount.CCF + ConEd.UploadConEdisonCancellation.CCF = 0) /*AND \r\n                      (Billing.ApplicationTimeFrame.CurrentProcessingPeriod = 'Y')*/\r\nORDER BY ConEd.UploadConEdisonCancellation.UploadConEdisonCancellationSeqid\r\n--\r\nopen UniqueConEdisonNetZeroTransactions_record\r\n--\r\nset @HoldUploadConEdisonCancellationSeqid = 0\r\n--\r\n-- Read first row\r\nfetch UniqueConEdisonNetZeroTransactions_record into \r\n\t@CancellationBillingPeriodRevision,@CancellationAccountNumber,@AccountUploadConEdisonAccountSeqid,@CancellationUploadConEdisonCancellationSeqid,\r\n\t@AccountTherms, @CancellationTherms,@AccountCCF,@CancellationCCF, @AccountBilledAmount, @CancellationBilledAmount\r\n\r\n\r\nwhile @@fetch_status =0\r\n  begin\r\n  \r\n\t-- if @AccountUploadConEdisonAccountSeqid and @CancellationUploadConEdisonCancellationSeqid are not currently in the UploadConEdisonNetZeroTransactions\r\n\tif(not exists(select * from ConEd.UploadConEdisonNetZeroTransactions where UploadConEdisonAccountSeqid = @AccountUploadConEdisonAccountSeqid or UploadConEdisonCancellationSeqid = @CancellationUploadConEdisonCancellationSeqid))\r\n\tbegin\r\n\r\n\t\tINSERT INTO ConEd.UploadConEdisonNetZeroTransactions\r\n\t\t\t(BillingPeriod,BillingPeriodRevision, AccountNumber, UploadConEdisonAccountSeqid, UploadConEdisonCancellationSeqid, Therms, CancellationTherms, CCF, \r\n\t\t\tCancellationCCF, BilledAmount, CancellationBilledAmount)\r\n\t\tvalues\r\n\t\t(\r\n\t\t\t@BillingPeriod,@CancellationBillingPeriodRevision,@CancellationAccountNumber,@AccountUploadConEdisonAccountSeqid,@CancellationUploadConEdisonCancellationSeqid,\r\n\t\t\t@AccountTherms, @CancellationTherms, @AccountCCF,@CancellationCCF , @AccountBilledAmount, @CancellationBilledAmount\r\n\t\t)\r\n\t\t\r\n\tend\r\n\t\t\r\n\t\r\n\tfetch UniqueConEdisonNetZeroTransactions_record into \r\n\t\t@CancellationBillingPeriodRevision,@CancellationAccountNumber,@AccountUploadConEdisonAccountSeqid,@CancellationUploadConEdisonCancellationSeqid,\r\n\t\t@AccountTherms, @CancellationTherms,@AccountCCF,@CancellationCCF, @AccountBilledAmount, @CancellationBilledAmount\r\n end \r\n--\r\nclose UniqueConEdisonNetZeroTransactions_record\r\n\r\nDeallocate UniqueConEdisonNetZeroTransactions_record\r\n\r\nselect * from ConEd.UploadConEdisonNetZeroTransactions\r\nselect * from ConEd.uvw_ConEdisonNetZeroTransactionSummary\r\n--\r\n-- Delete Net zero transactions from UploadConEdisonAccount & UploadConEdisonCancellation\r\n--\r\ndelete ConEd.UploadConEdisonCancellation from ConEd.UploadConEdisonCancellation\r\ninner join \r\n(\r\n   select * from ConEd.UploadConEdisonNetZeroTransactions\r\n) as NetZeroTransactions on \r\nConEd.UploadConEdisonCancellation.UploadConEdisonCancellationSeqid = NetZeroTransactions.UploadConEdisonCancellationSeqid\r\n--\r\nDELETE ConEd.UploadConEdisonAccount from ConEd.UploadConEdisonAccount\r\n inner join \r\n(\r\n   select * from ConEd.UploadConEdisonNetZeroTransactions\r\n) as NetZeroTransactions on \r\nConEd.UploadConEdisonAccount.UploadConEdisonAccountSeqid = NetZeroTransactions.UploadConEdisonAccountSeqid\r\n--\r\n-- Delete Net zero transactions from UploadConEdisonAccountPreload & UploadConEdisonCancellationPreload\r\n-- Due to the insert of data using the Preload data instead of the ocnverted data\r\n--\t\t\tFROM ConEd.UploadConEdisonAccountPreload\t\t\t\r\n--\t\t\tWHERE UploadConEdisonAccountPreload.DeltaNumberOfPeriods<=1\t\r\n\r\ndelete ConEd.UploadConEdisonCancellationPreload from ConEd.UploadConEdisonCancellationPreload\r\ninner join \r\n(\r\n   select * from ConEd.UploadConEdisonNetZeroTransactions\r\n) as NetZeroTransactions on \r\nConEd.UploadConEdisonCancellationPreload.UploadConEdisonCancellationPreloadSeqid = NetZeroTransactions.UploadConEdisonCancellationSeqid\r\n--\r\ndelete ConEd.UploadConEdisonAccountPreload\r\nfrom ConEd.UploadConEdisonAccountPreload inner join \r\n(\r\n  select * from ConEd.UploadConEdisonNetZeroTransactions\r\n) as NetZeroTransactions on \r\nConEd.UploadConEdisonAccountPreload.UploadConEdisonAccountPreloadSeqid = NetZeroTransactions.UploadConEdisonAccountSeqid\r\n--\r\n--\tIdentify all meter billings that do not have an account bill for removal.  \r\n--\r\nSELECT 'Meterbilling without an associated Accountbill' AS Description, ConEd.UploadConEdisonMeter.BillingPeriod, \r\n                      ConEd.UploadConEdisonMeter.BillingPeriodRevision, ConEd.UploadConEdisonAccount.UploadConEdisonAccountSeqid, \r\n                      ConEd.UploadConEdisonMeter.AccountNumber, ConEd.UploadConEdisonMeter.MeterNumber, ConEd.UploadConEdisonMeter.FromDate, \r\n                      ConEd.UploadConEdisonMeter.ToDate, ConEd.UploadConEdisonMeter.FromReading, ConEd.UploadConEdisonMeter.ToReading, \r\n                      ConEd.UploadConEdisonMeter.CCF\r\nFROM ConEd.UploadConEdisonMeter LEFT JOIN\r\n                      ConEd.UploadConEdisonAccount ON ConEd.UploadConEdisonMeter.BillingPeriod = ConEd.UploadConEdisonAccount.BillingPeriod AND \r\n                      ConEd.UploadConEdisonMeter.BillingPeriodRevision = ConEd.UploadConEdisonAccount.BillingPeriodRevision AND \r\n                      ConEd.UploadConEdisonMeter.AccountNumber = ConEd.UploadConEdisonAccount.AccountNumber\r\nWHERE (ConEd.UploadConEdisonAccount.UploadConEdisonAccountSeqid IS NULL)\r\n--\r\n--\tRemove all meter billings that do not have an account bill.  This can occur from problematic data that is reported incorrectly\r\n--\tfrom Con Edsion data.  The net zero transactions are their way of correcting incorrect reporting within their system.\r\n--\r\ndelete from ConEd.UploadConEdisonMeter\r\nFROM ConEd.UploadConEdisonMeter LEFT JOIN\r\n                      ConEd.UploadConEdisonAccount ON ConEd.UploadConEdisonMeter.BillingPeriod = ConEd.UploadConEdisonAccount.BillingPeriod AND \r\n                      ConEd.UploadConEdisonMeter.BillingPeriodRevision = ConEd.UploadConEdisonAccount.BillingPeriodRevision AND \r\n                      ConEd.UploadConEdisonMeter.AccountNumber = ConEd.UploadConEdisonAccount.AccountNumber\r\nWHERE (ConEd.UploadConEdisonAccount.UploadConEdisonAccountSeqid IS NULL)\r\nend"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1190 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "CustomReportExport",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The "
+        },
+        {
+          "type": "text",
+          "text": "CustomReportExport",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " stored procedure is designed to generate custom reports based on user-specified criteria. It dynamically constructs and executes SQL queries to retrieve data from either an account-level or meter-level view, depending on the specified report level. The procedure supports filtering by various parameters such as billing periods, fiscal years, agency divisions, facilities, accounts, meters, energy types, and more. It also logs report usage for auditing purposes."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium due to the dynamic SQL generation, conditional logic based on user roles, and multiple filtering criteria. The use of XML and table variables for handling additional columns adds to the complexity."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Email AS VARCHAR(50)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Level AS VARCHAR(10)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the report level, either 'Account' or 'Meter'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyDivisionSeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of agency division sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@FacilitySeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of facility sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UniqueAccountSeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of unique account sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UniqueMeterSeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of unique meter sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EnergyTypes AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of energy types for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@InvoiceBillingGroupSeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of invoice billing group sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@TariffClassSeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of tariff class sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UtilityCompanySeqIds AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of utility company sequence IDs for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AdditionalColumns AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Comma-separated list of additional columns to include in the report."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StartBillingPeriod AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Start of the billing period range for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EndBillingPeriod AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": End of the billing period range for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@StartFiscalYear AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Start of the fiscal year range for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EndFiscalYear AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": End of the fiscal year range for filtering."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsFiscal AS BIT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Indicates whether the report should consider fiscal years."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues and initializes variables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Audit Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It logs the report request using the "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Role Check",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Determines if the user has admin privileges by checking their roles."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Additional Columns",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If additional columns are specified, they are parsed and stored in a table variable."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL Construction",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Depending on the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@Level",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " parameter, it constructs a SQL query for either the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CustomReportAccountView",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " or "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CustomReportMeterView",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It selects columns based on the report level and additional columns specified."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Applies filters based on billing periods, fiscal years, agency divisions, facilities, accounts, meters, energy types, and other parameters."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Admin users have additional filtering capabilities on invoice account groups."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Execution",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The constructed SQL query is printed for debugging purposes and then executed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic SQL",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While flexible, dynamic SQL can lead to performance issues if not properly managed, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This isolation level can improve performance by reducing locking but may result in dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "String Manipulation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Extensive use of string manipulation for dynamic SQL and parameter parsing can be resource-intensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of scalar functions like "
+                },
+                {
+                  "type": "text",
+                  "text": "ufnSplit",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in WHERE clauses can degrade performance, especially with large input lists."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SQL Injection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Dynamic SQL is vulnerable to SQL injection if input parameters are not properly sanitized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to inconsistent data reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the number of filters and data volume increases, the performance may degrade."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Role Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that role names contain 'admin', which may not be robust for all role naming conventions."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[CustomReportExport]\n(\r\n\t@Email AS VARCHAR(50),\r\n\t@Level AS VARCHAR(10),\r\n\t@AgencyDivisionSeqIds AS VARCHAR(MAX) = '',\r\n\t@FacilitySeqIds AS VARCHAR(MAX) = '',\r\n\t@UniqueAccountSeqIds AS VARCHAR(MAX) = '',\r\n\t@UniqueMeterSeqIds AS VARCHAR(MAX) = '',\r\n\t@EnergyTypes AS VARCHAR(MAX) = '',\r\n\t@InvoiceBillingGroupSeqIds AS VARCHAR(MAX) = '',\r\n\t@TariffClassSeqIds AS VARCHAR(MAX) = '',\r\n\t@UtilityCompanySeqIds AS VARCHAR(MAX) = '',\r\n\t@AdditionalColumns AS VARCHAR(MAX) = NULL,\r\n\t@StartBillingPeriod AS INT,\r\n\t@EndBillingPeriod AS INT,\r\n\t@StartFiscalYear AS INT,\r\n\t@EndFiscalYear AS INT,\r\n\t@IsFiscal AS BIT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @Email,\r\n\t\t@prmPublishedBillingPeriod = null,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = @AgencyDivisionSeqIds,\r\n\t\t@prmFacilityNumber_s = @FacilitySeqIds,\r\n\t\t@prmStartingBillingPeriod = @StartBillingPeriod,\r\n\t\t@prmEndingBillingPeriod = @EndBillingPeriod;\r\n\t\r\n\tDECLARE @IsAdmin AS BIT = 0, @sql AS NVARCHAR(MAX), @Columns AS VARCHAR(MAX) = '';\r\n\tDECLARE @AdditionalFieldList TABLE (ColumnId VARCHAR(5) NOT NULL);\r\n\r\n\tIF EXISTS(SELECT DISTINCT R.RoleId FROM dbo.aspnet_UsersInRoles AS UR INNER JOIN dbo.aspnet_Users AS U ON U.UserId = UR.UserId\r\n\t\tINNER JOIN dbo.aspnet_Roles AS R ON R.RoleId = UR.RoleId WHERE R.RoleName LIKE '%admin%' AND U.UserName = @Email)\r\n\tBEGIN\r\n\t\tSET @IsAdmin = 1;\r\n\tEND;\r\n\r\n\tIF(@AdditionalColumns IS NOT NULL)\r\n\tBEGIN\r\n\t\tDECLARE @sql_xml AS XML = CAST('<root><U>'+ Replace(@AdditionalColumns, ',', '</U><U>')+ '</U></root>' AS XML);\r\n\t\t\r\n\t\tINSERT INTO @AdditionalFieldList (ColumnId)\r\n\t\tSELECT f.x.value('.', 'BIGINT') AS ac FROM @sql_xml.nodes('/root/U') f(x);\r\n\tEND;\r\n\r\n\tIF(@Level = 'Account')\r\n\tBEGIN\r\n\t\tSELECT @Columns = @Columns + COALESCE(', AV.' +  DatabaseName +' AS [' + AliasName + ']' , '')\r\n\t\tFROM Report.CustomReportAlias\r\n\t\tWHERE CustomReportLevelId = 3 AND (IsSelectable = 0 OR CustomReportAliasId IN (SELECT ColumnId FROM @AdditionalFieldList))\r\n\t\tORDER BY DisplayOrder;\r\n\t\tSELECT @Columns = STUFF(@Columns, CHARINDEX(',', @Columns), LEN(','), '');\r\n\r\n\t\tSET @sql = 'SELECT ' + @Columns + '\r\n\t\tFROM Report.CustomReportAccountView AS AV\r\n\t\t\tINNER JOIN dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(''' + @Email + ''') AS A ON A.AgencyCodeOEC = AV.AgencyCodeOEC\r\n\t\tWHERE (AV.BillingPeriod >= ' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' OR (' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1) OR (' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0))\r\n\t\t\tAND (AV.BillingPeriod <= ' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' OR (' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1) OR (' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0))\r\n\t\t\tAND (AV.FiscalYear >= ' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' OR (' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0) OR (' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1))\r\n\t\t\tAND (AV.FiscalYear <= ' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' OR (' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0) OR (' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1))\r\n\t\t\tAND (AV.AgencyDivisionSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @AgencyDivisionSeqIds + ''', '','')) OR ''' + @AgencyDivisionSeqIds + ''' = '''')\r\n\t\t\tAND (AV.FacilitySeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @FacilitySeqIds + ''', '','')) OR ''' + @FacilitySeqIds + ''' = '''')\r\n\t\t\tAND (AV.UniqueAccountSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @UniqueAccountSeqIds + ''', '','')) OR ''' + @UniqueAccountSeqIds + ''' = '''')\r\n\t\t\tAND (AV.EnergyType IN (SELECT Item FROM dbo.ufnSplit(''' + @EnergyTypes + ''', '','')) OR ''' + @EnergyTypes + ''' = '''')';\r\n\r\n\t\tIF(@IsAdmin = 1)\r\n\t\tBEGIN\r\n\t\t\tSET @sql += '\r\n\t\t\tAND (AV.InvoiceAccountGroupSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @InvoiceBillingGroupSeqIds + ''', '','')) OR ''' + @InvoiceBillingGroupSeqIds + ''' = '''')';\r\n\t\tEND;\r\n\r\n\t\tSET @sql += '\r\n\t\t\tAND (AV.UtilityCompanySeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @UtilityCompanySeqIds + ''', '','')) OR ''' + @UtilityCompanySeqIds + ''' = '''')\r\n\t\t\tAND (AV.UtilityTariffRateInformationSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @TariffClassSeqIds + ''', '','')) OR ''' + @TariffClassSeqIds + ''' = '''')'\r\n\t\t\t\r\n\t\tSET @sql += '\r\n\t\tORDER BY AV.BillingPeriod DESC, AV.AgencyCodeOEC, AV.OecFacilityNumber, AV.CurrentAccountNumber;';\r\n    END;\r\n\tELSE IF(@Level = 'Meter')\r\n\tBEGIN\r\n\t\tSELECT @Columns = @Columns + COALESCE(', MV.' +  DatabaseName +' AS [' + AliasName + ']' , '')\r\n\t\tFROM Report.CustomReportAlias\r\n\t\tWHERE CustomReportLevelId = 4 AND (IsSelectable = 0 OR CustomReportAliasId IN (SELECT ColumnId FROM @AdditionalFieldList))\r\n\t\tORDER BY DisplayOrder;\r\n\t\tSELECT @Columns = STUFF(@Columns, CHARINDEX(',', @Columns), LEN(','), '');\r\n\r\n\t\tSET @sql = 'SELECT ' + @Columns + '\r\n\t\tFROM Report.CustomReportMeterView AS MV\r\n\t\t\tINNER JOIN dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(''' + @Email + ''') AS A ON A.AgencyCodeOEC = MV.AgencyCodeOEC\r\n\t\tWHERE (MV.BillingPeriod >= ' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' OR (' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1) OR (' + CONVERT(VARCHAR(6), @StartBillingPeriod) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0))\r\n\t\t\tAND (MV.BillingPeriod <= ' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' OR (' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1) OR (' + CONVERT(VARCHAR(6), @EndBillingPeriod) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0))\r\n\t\t\tAND (MV.FiscalYear >= ' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' OR (' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0) OR (' + CONVERT(VARCHAR(4), @StartFiscalYear) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1))\r\n\t\t\tAND (MV.FiscalYear <= ' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' OR (' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' = -1 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 0) OR (' + CONVERT(VARCHAR(4), @EndFiscalYear) + ' = 0 AND ' + CONVERT(VARCHAR(1), @IsFiscal) + ' = 1))\r\n\t\t\tAND (MV.AgencyDivisionSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @AgencyDivisionSeqIds + ''', '','')) OR ''' + @AgencyDivisionSeqIds + ''' = '''')\r\n\t\t\tAND (MV.FacilitySeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @FacilitySeqIds + ''', '','')) OR ''' + @FacilitySeqIds + ''' = '''')\r\n\t\t\tAND (MV.UniqueAccountSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @UniqueAccountSeqIds + ''', '','')) OR ''' + @UniqueAccountSeqIds + ''' = '''')\r\n\t\t\tAND (MV.UniqueMeterSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @UniqueMeterSeqIds + ''', '','')) OR ''' + @UniqueMeterSeqIds + ''' = '''')\r\n\t\t\tAND (MV.EnergyType IN (SELECT Item FROM dbo.ufnSplit(''' + @EnergyTypes + ''', '','')) OR ''' + @EnergyTypes + ''' = '''')';\r\n\r\n\t\tIF(@IsAdmin = 1)\r\n\t\tBEGIN\r\n\t\t\tSET @sql += '\r\n\t\t\t\tAND (MV.InvoiceAccountGroupSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @InvoiceBillingGroupSeqIds + ''', '','')) OR ''' + @InvoiceBillingGroupSeqIds + ''' = '''')';\r\n\t\tEND;\r\n\r\n\t\tSET @sql += '\r\n\t\t\tAND (MV.UtilityCompanySeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @UtilityCompanySeqIds + ''', '','')) OR ''' + @UtilityCompanySeqIds + ''' = '''')\r\n\t\t\tAND (MV.UtilityTariffRateInformationSeqid IN (SELECT CAST(Item AS INT) FROM dbo.ufnSplit(''' + @TariffClassSeqIds + ''', '','')) OR ''' + @TariffClassSeqIds + ''' = '''')';\r\n\r\n\t\tSET @sql += '\r\n\t\tORDER BY MV.BillingPeriod DESC, MV.AgencyCodeOEC, MV.OecFacilityNumber, MV.CurrentAccountNumber, MV.CurrentMeterNumber;';\r\n    END;\r\n\tPRINT @sql;\r\n\tEXEC (@sql);\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

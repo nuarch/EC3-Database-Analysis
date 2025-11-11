@@ -1,0 +1,939 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ConEd",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_Upload_7_PrepareCancellationData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_Upload_7_PrepareCancellationData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and prepare cancellation data for Con Edison billing records. It operates on two main tables: "
+        },
+        {
+          "type": "text",
+          "text": "UploadConEdisonCancellationSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "UploadConEdisonCancellationTempSummarySpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure handles two types of cancellations: those spanning 0-1 billing periods and those spanning more than one billing period. It first truncates the target tables to remove existing data, then inserts new records based on the data from the "
+        },
+        {
+          "type": "text",
+          "text": "UploadConEdisonCancellationPreload",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "UploadConEdisonCancellation",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple operations, including truncating tables, inserting data with complex calculations, and using several user-defined functions. The logic is straightforward but involves a significant number of columns and calculations, making it moderately complex."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "This stored procedure does not take any input parameters. It operates on predefined tables within the "
+        },
+        {
+          "type": "text",
+          "text": "ConEd",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncate Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by truncating "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadConEdisonCancellationSummary",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to clear existing data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert 0-1 Period Cancels",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Data is inserted into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadConEdisonCancellationSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadConEdisonCancellationPreload",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " where "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DeltaNumberOfPeriods",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is less than or equal to 1."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Various fields are populated using direct mappings, default values, and calculations involving user-defined functions such as "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DetermineConEdisonActualOrEstimatedBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "JulianDateToYYYYMMDD",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "ConvertOverpunch9ToMoney",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingAction",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is determined based on whether the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " matches the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "BillingPeriodRevision",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncate and Insert >1 Period Cancels",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure truncates "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadConEdisonCancellationTempSummarySpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It then inserts data into this table from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadConEdisonCancellation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " where "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DeltaNumberOfPeriods",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is greater than 1."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The insertion involves calculating the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CancelThermFactor",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CalculateGasThermFactor",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " function and determining the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "CancelBillingPeriodDays",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "DATEDIFF",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Truncation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Truncating tables can be efficient for clearing data but may not be suitable if data needs to be archived or if there are foreign key constraints."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of multiple user-defined functions can impact performance, especially if they are computationally intensive or not optimized."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure processes all records in the source tables, which could be a performance bottleneck if these tables are large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Loss",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Truncating tables without archiving data can lead to data loss if not managed properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Dependencies",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies heavily on user-defined functions. Any changes or issues in these functions can affect the procedure's output."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade, particularly due to the truncation and insertion operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms, which could lead to unhandled exceptions and incomplete data processing in case of failures."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [ConEd].[usp_Upload_7_PrepareCancellationData]\r\nAS \r\n\r\nbegin\r\n\t\r\n\t---Loading 0-1 Period Cancels (Temporarily here)\r\n    TRUNCATE TABLE ConEd.UploadConEdisonCancellationSummary\r\n    INSERT  INTO ConEd.[UploadConEdisonCancellationSummary]\r\n            ( [AdjustedAccount] ,\r\n                [AccountUtilityCompanySeqid] ,\r\n                [NumberOfTransactions] ,\r\n                [NumberOfRebillTransactions] ,\r\n                [NumberOfCancelTransactions] ,\r\n                [OriginalAccountNumber] ,\r\n                [BillingPeriod] ,\r\n                [BillingPeriodRevision] ,\r\n                [FirstCanceledBillingPeriod] ,\r\n                [EstimatedOrActualBilling] ,\r\n                [InitialCancelFromDate] ,\r\n                [CurrentBillingToDate] ,\r\n                [NumberOfBillingPeriods] ,\r\n                [TotalBillingDaysRebilled] ,\r\n                [TotalRebilledAmount] ,\r\n                [TotalCanceledAmount] ,\r\n                [AverageRebillCostOfGasCharge] ,\r\n                [AverageRebillThermsFactor] ,\r\n                [BillingDays] ,\r\n                [BillingDate] ,\r\n                [ToDate] ,\r\n                [FromDate] ,\r\n                [MTATaxAmount] ,\r\n                [BillingAction] ,\r\n                [ProcessedInTheCurrentPeriod] ,\r\n                [GasRateCode] ,\r\n                [TotalCCF] ,\r\n                [TotalTherms] ,\r\n                [ThermsFactor] ,\r\n                [CancelFromDate] ,\r\n                [CancelToDate] ,\r\n                [CancelTotalCCF] ,\r\n                [CancelTotalTherms] ,\r\n                [CancelThermsFactor] ,\r\n                [CancelBillingDays] ,\r\n                [ProcessEffectiveDate] ,\r\n                [Notes] ,\r\n                [AuthenticatedUserID] ,\r\n                [DateAdded] ,\r\n                [LastUpdate] ,\r\n                [DeliveryChargeAmount] ,\r\n                [ThermsChargeAmount] ,\r\n                [DiscountedAmount] ,\r\n                [DiscountPercentage] ,\r\n                [CustomerMinimumCharge] ,\r\n                [CostOfGasCharge] ,\r\n                [SpecialCharge] ,\r\n                [SomeCharge] ,\r\n                [CancelDeliveryChargeAmount] ,\r\n                [CancelThermsChargeAmount] ,\r\n                [CancelDiscountedAmount] ,\r\n                [CancelDiscountPercentage] ,\r\n                [CancelCustomerMinimumCharge] ,\r\n                [CancelCostOfGasCharge] ,\r\n                [CancelSpecialCharge] ,\r\n                [CancelSomeCharge] ,\r\n                [FacilityName] ,\r\n                [ServiceAddress]\r\n            )\r\n            SELECT  NULL ,\t--\t           (<AdjustedAccount, seqid,>\r\n                    9 ,\t--\t           ,<AccountUtilityCompanySeqid, seqid,>\r\n                    1 ,\t   -- ,[NumberOfTransactions]\t\r\n                    0 , -- ,[NumberOfRebillTransactions]\t\t\t\r\n                    1 , -- ,[NumberOfCancelTransactions]\t\r\n                    UploadConEdisonCancellationPreload.AccountNumber ,\t--\t           ,<OriginalAccountNumber, acctnum,>\r\n                    UploadConEdisonCancellationPreload.BillingPeriod ,\t--\t           ,<BillingPeriod, BillingPeriod,>\t\r\n                    UploadConEdisonCancellationPreload.BillingPeriodRevision ,\t--\t           ,<BillingPeriodRevision, BillingPeriodRevision,>\r\n                    UploadConEdisonCancellationPreload.FirstPeriodCanceled ,\t--\t           ,<FirstCanceledBillingPeriod, yyyymm,>\r\n                    [dbo].[DetermineConEdisonActualOrEstimatedBilling](UploadConEdisonCancellationPreload.AccountNumber,\r\n                                                            UploadConEdisonCancellationPreload.BillingPeriodRevision) ,\t--\t  ,<EstimatedOrActualBilling, varchar(3),>\r\n                    [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.FromDate) ,\t--\t           ,<InitialCancelFromDate, yyyymmdd,>\r\n                    [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.ToDateJul) ,\t--\t           ,<CurrentBillingToDate, yyyymmdd,>\r\n                    DeltaNumberOfPeriods ,\t--\t           ,<NumberOfBillingPeriods, int,>\t\r\n                    dbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.FromDate),\r\n                                                        [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.ToDateJul)) ,\t--\t           ,<TotalBillingDaysRebilled, int,>\r\n                    0 ,\t--\t           ,<TotalRebilledAmount, money,>\r\n                    dbo.ConvertOverpunch9ToMoney(UploadConEdisonCancellationPreload.BilledAmount) ,\t--\t           ,<TotalCanceledAmount, money,>\r\n                    0 ,\t--\t           ,<AverageRebillCostOfGasCharge, money,>\r\n                    1.0 ,\t--\t           ,<AverageRebillThermsFactor, ThermsFactor,>\r\n                    0 ,\t--\t           ,<BillingDays, int,>\r\n                    [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.PostingDate) ,\t--\t           ,<BillingDate, int,>\r\n                    NULL ,\t--\t           ,<ToDate, yyyymmdd,>\r\n                    NULL ,\t--\t           ,<FromDate, yyyymmdd,>\r\n                    0 ,\t--\t           ,<MTATaxAmount, money,>\r\n                    CASE WHEN UploadConEdisonCancellationPreload.BillingPeriod = UploadConEdisonCancellationPreload.BillingPeriodRevision\r\n                            THEN 'O'\r\n                            ELSE 'A'\r\n                    END , -- ,<BillingAction, BillingAction,>\r\n                    'N' ,\t--\t  !!!         ,<ProcessedInTheCurrentPeriod, yesno,>\r\n                    UploadConEdisonCancellationPreload.TariffCode ,\t--\t           ,<GasRateCode, varchar(3),>\r\n                    0 ,\t--\t           ,<TotalCCF, EnergyUnit,>\r\n                    0 ,\t--\t           ,<TotalTherms, EnergyUnit,>\r\n                    1.0 ,\t--\t           ,<ThermsFactor, ThermsFactor,>\r\n                    [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.FromDate) ,\t--\t           ,<CancelFromDate, yyyymmdd,>\r\n                    [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.ToDateJul) ,\t--\t           ,<CancelToDate, yyyymmdd,>\r\n                    dbo.ConvertOverpunch8ToInt32(UploadConEdisonCancellationPreload.CCF) ,\t--\t           ,<CancelTotalCCF, EnergyUnit,>\r\n                    dbo.ConvertOverpunch8ToInt32(UploadConEdisonCancellationPreload.Therms) ,\t--\t           ,<CancelTotalTherms, EnergyUnit,>\r\n                    dbo.ConvertOverpunch4ToDecimal(UploadConEdisonCancellationPreload.ThermFactor) ,\t--\t           ,<CancelThermsFactor, ThermsFactor,>\r\n                    dbo.CalculateNumberOfBillingDays([dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.FromDate),\r\n                                                        [dbo].[JulianDateToYYYYMMDD](UploadConEdisonCancellationPreload.ToDateJul)) ,\t--\t           ,<CancelBillingDays>\r\n                    [dbo].ConvertDateToYYYYMMDD(GETDATE()) ,\t--\t           ,<ProcessEffectiveDate, varchar(8),>\r\n                    NULL ,\r\n                    1 ,\r\n                    GETDATE() ,\r\n                    GETDATE() ,\r\n                    0 ,\t--\t           ,<DeliveryChargeAmount, BillingAmt,>\r\n                    0 ,\t--\t           ,<ThermsChargeAmount, BillingAmt,>\r\n                    0 ,\t--\t           ,<DiscountedAmount, BillingAmt,>\r\n                    0 ,\t--\t           ,<DiscountPercentage, DiscountPercentage,>\r\n                    0 ,\t--\t           ,<CustomerMinimumCharge, BillingAmt,>\r\n                    dbo.ConvertOverpunch9ToMoney(UploadConEdisonCancellationPreload.CommodityCharge) ,\t--\t           ,<CostOfGasCharge, BillingAmt,>\r\n                    0 ,\t--\t           ,<SpecialCharge, BillingAmt,>\r\n                    0 ,\t--\t           ,<SomeCharge, money,>\r\n                    NULL ,\t--\t           ,<CancelDeliveryChargeAmount, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelThermsChargeAmount, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelDiscountedAmount, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelDiscountPercentage, DiscountPercentage,>\r\n                    NULL ,\t--\t           ,<CancelCustomerMinimumCharge, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelCostOfGasCharge, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelSpecialCharge, BillingAmt,>\r\n                    NULL ,\t--\t           ,<CancelSomeCharge, money,>\r\n                    FacilityName ,\r\n                    ServiceAddress\r\n            FROM ConEd.UploadConEdisonCancellationPreload\r\n            WHERE   UploadConEdisonCancellationPreload.DeltaNumberOfPeriods <= 1\t\r\n\r\n\t-- loading >1 period cancels\t\r\n\ttruncate table ConEd.UploadConEdisonCancellationTempSummarySpanned\r\n\tINSERT INTO ConEd.UploadConEdisonCancellationTempSummarySpanned\r\n\t\t\t\t\t\t\t(title, AccountNumber, MeterNumber, BillingPeriod, BillingPeriodRevision, FirstPeriodCanceled, CancelFromDate, CancelToDate, CancelBilledAmount, \r\n\t\t\t\t\t\t\tCancelTherms, CancelThermFactor, CancelCCF, CancelTariffCode, CancelBillingPeriodDays, FacilityName, ServiceAddress, DeltaNumberOfPeriods, \r\n\t\t\t\t\t\t\tDials, PostingDate)\r\n\tSELECT  'SpannedCancellation' AS title,   AccountNumber, MeterNumber AS MeterNumber, BillingPeriod, BillingPeriodRevision,  FirstPeriodCanceled as FirstPeriodCanceled, FromDate as CancelFromDate, \r\n\tToDate as CancelToDate, BilledAmount as CancelBilledAmount, \r\n\t\t\t\t\t\t\tTherms as CancelTherms, [dbo].[CalculateGasThermFactor] (CCF,Therms) as CancelThermFactor, CCF as CancelCCF, TariffCode as CancelTariffCode, \r\n\t\tDATEDIFF(day,  [dbo].[ConvertYYYYMMDDToDatetime] (FromDate),[dbo].[ConvertYYYYMMDDToDatetime] (ToDate)) as CancelBillingPeriodDays, FacilityName as FacilityName, \r\n\t\t\t\t\t\t\tServiceAddress as ServiceAddress, DeltaNumberOfPeriods AS DeltaNumberOfPeriods, Dials AS Dials,PostingDate\r\n\t--into UploadConEdisonCancellationTempSummarySpanned\r\n\tFROM ConEd.UploadConEdisonCancellation\r\n\tWHERE (DeltaNumberOfPeriods > 1)\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

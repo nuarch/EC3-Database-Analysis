@@ -1,0 +1,931 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Temporal",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_InsertNewPeriodFromPublishedToTemporalAccountLevelSummaryByCityWide",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_InsertNewPeriodFromPublishedToTemporalAccountLevelSummaryByCityWide",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage the insertion and update of billing period data from a source table ("
+        },
+        {
+          "type": "text",
+          "text": "Published.AccountLevelSummaryByCityWide",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ") to a temporal destination table ("
+        },
+        {
+          "type": "text",
+          "text": "Published.TemporalAccountLevelSummaryByCityWide",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "). It ensures that only the next sequential billing period is inserted and that all necessary data integrity checks are performed before the insertion. The procedure also updates existing records in the temporal table to reflect changes in the billing period."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PublishedBillingPeriod AS VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter represents the billing period that is intended to be inserted into the temporal table. It is expected to be in a format such as 'YYYYMM'."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Next Period",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by determining the maximum effective start period from the temporal table and calculates the next period using a function "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It checks if the provided "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@PublishedBillingPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " matches the calculated next period. If not, an error is raised, and the procedure exits."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It ensures that all records in both the source and destination tables have a populated "
+                        },
+                        {
+                          "type": "text",
+                          "text": "HashValue",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ". If any "
+                        },
+                        {
+                          "type": "text",
+                          "text": "HashValue",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is missing, an error is raised, and the procedure exits."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts new records from the source table into the temporal table for the specified billing period, ensuring no duplicate "
+                        },
+                        {
+                          "type": "text",
+                          "text": "HashValue",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " entries exist for the current period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EffectiveEndPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " for records in the temporal table that match the current billing period but have an open-ended period ("
+                        },
+                        {
+                          "type": "text",
+                          "text": "999912",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ")."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates records that exist in the temporal table but not in the source table for the current period, setting their "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EffectiveEndPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to the current billing period."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Completion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure prints a message indicating the process has finished."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "HashValue",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveStartPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "EffectiveEndPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize the join and update operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may lock rows in the temporal table during updates, potentially causing contention in high-concurrency environments."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Call",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function should be efficient, as it is critical for determining the next period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the "
+                },
+                {
+                  "type": "text",
+                  "text": "CreateNextPeriod",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " function does not correctly calculate the next period, it could lead to incorrect data insertion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses "
+                },
+                {
+                  "type": "text",
+                  "text": "RAISERROR",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for error handling, which may not be sufficient for all scenarios. Consider implementing TRY-CATCH blocks for more robust error management."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the performance of the procedure may degrade, especially if the tables involved are large and not properly indexed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Assumptions on Data Format",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the billing period is always in the format 'YYYYMM'. Any deviation from this format could cause errors."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of '999912' as a placeholder for open-ended periods is a hardcoded value that may need to be revisited if business rules change."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Temporal].[usp_InsertNewPeriodFromPublishedToTemporalAccountLevelSummaryByCityWide]\n(\r\n\t@PublishedBillingPeriod AS VARCHAR(6)\r\n)\r\nAS\r\nBEGIN\r\n\tDECLARE @MaxPeriod VARCHAR(6) = (SELECT MAX(EffectiveStartPeriod) FROM Published.TemporalAccountLevelSummaryByCityWide);\r\n\tDECLARE @NextPeriod VARCHAR(6) = [dbo].[CreateNextPeriod](@MaxPeriod, 'M');\r\n\t\t\r\n\t-- Make sure only next period after the max is being inserted\r\n\tIF (@NextPeriod <> @PublishedBillingPeriod)\r\n\tBEGIN\r\n\t\tRAISERROR ('ERROR: You can only insert this period: %s', 12, 1, @NextPeriod);\r\n\t\tRETURN;\r\n\tEND;\r\n\r\n\t-- make sure the hashcode is populated before starting\r\n\tDECLARE @CountNullHashCodeSource INT = (SELECT COUNT(*) FROM [Published].[AccountLevelSummaryByCityWide] WHERE HashValue IS NULL);\r\n\tDECLARE @CountNullHashCodeDestination INT =  (SELECT COUNT(*) FROM [Published].[TemporalAccountLevelSummaryByCityWide] WHERE HashValue IS NULL);\r\n\r\n\tIF (@CountNullHashCodeSource > 0 OR @CountNullHashCodeDestination > 0)\r\n\tBEGIN\t\t\r\n\t\tRAISERROR ('ERROR: HashCode is missing from either [Published].[TemporalAccountLevelSummaryByCityWide] or [Published].[AccountLevelSummaryByCityWide].', 12, 1);\r\n\t\tRETURN;\r\n\tEND;\r\n\r\n\t---Process start---------------------------------------\r\n\t\t\t\t\t\r\n\tPRINT 'Inserting initial data from Published.AccountLevelSummaryByCityWide to Published.TemporalAccountLevelSummaryByCityWide';\r\n\r\n\tINSERT INTO Published.TemporalAccountLevelSummaryByCityWide\r\n\t\t(BillingPeriod\r\n\t\t,FiscalYear\r\n\t\t,EnergyType\r\n\t\t,CalendarYear\r\n\t\t,[MonthName]\r\n\t\t,MonthNameYear\r\n\t\t,BilledAmount\r\n\t\t,EnergyUsage\r\n\t\t,DemandUsage\r\n\t\t,EnergySource\r\n\t\t,BTUfactor\r\n\t\t,Co2factor\r\n\t\t,BTU\r\n\t\t,CO2\r\n\t\t,BillingPeriodLastYear\r\n\t\t,BilledAmountLastYear\r\n\t\t,DemandUsageLastYear\r\n\t\t,EnergyUsageLastYear\r\n\t\t,BTULastYear\r\n\t\t,BTUFiscalYearVariance\r\n\t\t,BilledAmountFiscalYearVariance\r\n\t\t,Notes\r\n\t\t,AuthenticatedUserID\r\n\t\t,DateAdded\r\n\t\t,LastUpdate\r\n\t\t,EffectiveStartPeriod\r\n\t\t,EffectiveEndPeriod\r\n\t\t,HashValue)\t\r\n\tSELECT\r\n\t\talsbf.BillingPeriod\r\n\t\t,alsbf.FiscalYear\r\n\t\t,alsbf.EnergyType\r\n\t\t,alsbf.CalendarYear\r\n\t\t,alsbf.[MonthName]\r\n\t\t,alsbf.MonthNameYear\r\n\t\t,alsbf.BilledAmount\r\n\t\t,alsbf.EnergyUsage\r\n\t\t,alsbf.DemandUsage\r\n\t\t,alsbf.EnergySource\r\n\t\t,alsbf.BTUfactor\r\n\t\t,alsbf.Co2factor\r\n\t\t,alsbf.BTU\r\n\t\t,alsbf.CO2\r\n\t\t,alsbf.BillingPeriodLastYear\r\n\t\t,alsbf.BilledAmountLastYear\r\n\t\t,alsbf.DemandUsageLastYear\r\n\t\t,alsbf.EnergyUsageLastYear\r\n\t\t,alsbf.BTULastYear\r\n\t\t,alsbf.BTUFiscalYearVariance\r\n\t\t,alsbf.BilledAmountFiscalYearVariance\r\n\t\t,alsbf.Notes\r\n\t\t,alsbf.AuthenticatedUserID\r\n\t\t,alsbf.DateAdded\r\n\t\t,alsbf.LastUpdate \r\n\t\t,alsbf.PublishedBillingPeriod\r\n\t\t,'999912' \r\n\t\t,alsbf.HashValue\t\t\r\n\tFROM Published.AccountLevelSummaryByCityWide AS alsbf\r\n\t\tLEFT JOIN (SELECT t.HashValue,t.EffectiveStartPeriod FROM Published.TemporalAccountLevelSummaryByCityWide t WHERE EffectiveEndPeriod='999912') AS talsbf \r\n\t\t\tON talsbf.hashValue = alsbf.hashValue\r\n\tWHERE alsbf.PublishedBillingPeriod = @PublishedBillingPeriod AND talsbf.EffectiveStartPeriod IS NULL;\r\n\t\r\n\t-- we are joining with active data only\r\n\t\t\r\n\t-- this is data change, just set datato publishedbillingperiod\r\n\tUPDATE Published.TemporalAccountLevelSummaryByCityWide\r\n\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\tWHERE Seqid IN (\r\n\t\tSELECT previousPeriods.Seqid \r\n\t\tFROM \r\n\t\t(SELECT talrdfcp.BillingPeriod,talrdfcp.EnergyType FROM Published.TemporalAccountLevelSummaryByCityWide AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod=@PublishedBillingPeriod) AS processingPeriod\r\n\t\tINNER JOIN \r\n\t\t(SELECT talrdfcp.Seqid,talrdfcp.BillingPeriod,talrdfcp.EnergyType,talrdfcp.EffectiveEndPeriod FROM Published.TemporalAccountLevelSummaryByCityWide AS talrdfcp WHERE talrdfcp.EffectiveStartPeriod<@PublishedBillingPeriod) AS previousPeriods\r\n\t\tON previousPeriods.BillingPeriod= processingPeriod.BillingPeriod\r\n\t\tAND previousPeriods.EnergyType = processingPeriod.EnergyType\r\n\t\tWHERE previousPeriods.EffectiveEndPeriod='999912');\r\n\r\n\t-- this is existing accountbilling seqid but does not exist in current period, set datato publishedbillingperiod\r\n\tUPDATE Published.TemporalAccountLevelSummaryByCityWide\r\n\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\tWHERE Seqid IN (\r\n\t\tSELECT talrdfcp.Seqid FROM \r\n\t\tPublished.TemporalAccountLevelSummaryByCityWide AS talrdfcp\r\n\t\tLEFT JOIN \r\n\t\tPublished.AccountLevelSummaryByCityWide AS alrdfcp\r\n\t\tON alrdfcp.hashValue = talrdfcp.hashValue \r\n\t\tWHERE alrdfcp.PublishedBillingPeriod=@PublishedBillingPeriod\r\n\t\tAND  talrdfcp.EffectiveEndPeriod='999912'\r\n\t\tAND alrdfcp.BillingPeriod IS NULL);\r\n\r\n\t-- this is setting datato to publishedbillingperiod for data that exists in destination but not exist in source\r\n\tUPDATE Published.TemporalAccountLevelSummaryByCityWide\r\n\tSET EffectiveEndPeriod = @PublishedBillingPeriod\r\n\tWHERE Seqid IN (\r\n\t\tSELECT t.Seqid\r\n\t\tFROM \r\n\t\t(\r\n\t\t\tSELECT Seqid,HashValue FROM Published.TemporalAccountLevelSummaryByCityWide\r\n\t\t\tWHERE EffectiveStartPeriod <= @PublishedBillingPeriod AND EffectiveEndPeriod > @PublishedBillingPeriod\r\n\t\t) t\r\n\t\tLEFT JOIN\r\n\t\t(\r\n\t\t\tSELECT ammlrdfcp.HashValue,ammlrdfcp.PublishedBillingPeriod FROM Published.AccountLevelSummaryByCityWide AS ammlrdfcp\r\n\t\t\tWHERE ammlrdfcp.PublishedBillingPeriod = @PublishedBillingPeriod\r\n\t\t) p \r\n\t\tON p.hashValue = t.hashValue\r\n\t\tWHERE p.PublishedBillingPeriod IS NULL);\r\n\r\n\t--PROCESS ENDS-------------------------\t\t\t          \r\n         \t\t\t\r\n\tPRINT 'process finished';\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

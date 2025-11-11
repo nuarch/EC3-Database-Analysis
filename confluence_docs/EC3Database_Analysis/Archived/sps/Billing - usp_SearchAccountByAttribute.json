@@ -1,0 +1,1021 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Billing",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_SearchAccountByAttribute",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_SearchAccountByAttribute",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to search for accounts based on various attributes and criteria provided in XML format. It supports pagination, sorting, and filtering based on search text and attributes. The procedure retrieves account information from a view and related tables, processes the input parameters, and returns a paginated and sorted list of accounts that match the search criteria."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@ParametersXML AS XML",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An XML input containing search criteria such as search terms, agencies, facilities, attributes, and user ID."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SearchText AS VARCHAR(150) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A text string used to filter results based on account-related fields."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CurrentPageNumber AS INT = 1",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The current page number for pagination."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@PageSize AS INT = 10",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The number of records per page for pagination."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SortColumn AS VARCHAR(100) = 'AgencyCodeOEC'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The column by which to sort the results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@SortOrder AS VARCHAR(100) = 'ASC'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The order of sorting, either ascending or descending."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@Total AS INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter that returns the total number of records matching the search criteria."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to avoid locking issues."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The XML input is parsed into a table variable "
+                },
+                {
+                  "type": "text",
+                  "text": "@ParameterTbl",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " using a Common Table Expression (CTE). This table stores search terms, agencies, facilities, attributes, and user ID."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Assignment",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The parsed values are assigned to local variables for further processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Email Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email associated with the user ID is retrieved from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Membership.EC3Membership",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Search Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If no attributes are specified, accounts are filtered based on agency codes."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If attributes are specified, accounts are further filtered based on attribute types and statuses."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Calculation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The total number of matching records is calculated and stored in the "
+                },
+                {
+                  "type": "text",
+                  "text": "@Total",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " output parameter."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Result Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The final result set is selected from the "
+                },
+                {
+                  "type": "text",
+                  "text": "@SearchHits",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table variable, joined with the account view, and sorted/paginated based on the input parameters."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking but may lead to dirty reads."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Parsing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Parsing XML can be resource-intensive, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dynamic Sorting and Pagination",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "OFFSET",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "FETCH NEXT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for pagination is efficient but may require careful indexing on the sorted columns."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "String Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "LIKE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with wildcards can lead to full table scans if not properly indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may result in reading uncommitted data, which could lead to inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "XML Complexity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Complex or malformed XML input could lead to parsing errors or performance degradation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "SQL Injection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although parameters are used, dynamic SQL or improper handling of input could expose the procedure to SQL injection risks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Lack of proper indexing on the columns used in joins and filters could lead to performance bottlenecks."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance of XML parsing and string operations may degrade, requiring optimization or refactoring."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Billing].[usp_SearchAccountByAttribute]\n(\r\n\t@ParametersXML AS XML,\r\n\t@SearchText AS VARCHAR(150) = NULL,\r\n\t@CurrentPageNumber AS INT = 1,\r\n\t@PageSize AS INT = 10,\r\n\t@SortColumn AS VARCHAR(100) = 'AgencyCodeOEC',\r\n\t@SortOrder AS VARCHAR(100) = 'ASC',\r\n\t@Total AS INT OUTPUT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE\t@Agencies AS VARCHAR(1000) = NULL, @Attributes VARCHAR(1000) = NULL, @UserId AS INT, @Email AS VARCHAR(50) = NULL;\r\n\r\n\tDECLARE @ParameterTbl TABLE(SearchTerm VARCHAR(1000) NULL,\r\n\t\tAgencies VARCHAR(1000) NULL,\r\n\t\tFacilities VARCHAR(1000) NULL,\r\n\t\tAttributes VARCHAR(1000) NULL,\r\n\t\tisAdvanceSearch BIT NULL,\r\n\t\tUserID INT NULL);\r\n\r\n\tWITH cte AS (SELECT p.value('SearchTerm[1]', 'varchar(200)') AS SearchTerm,\r\n\t\tp.value('IsAdvanceSearch[1]', 'bit') AS IsAdvanceSearch,\r\n\t\tp.query('Facility') AS Facility,\r\n\t\tp.query('Agency') AS Agency,\r\n\t\tp.query('Attribute') AS Attribute,\r\n\t\tp.value('UserId[1]','int') AS UserId\r\n\t  FROM @ParametersXML.nodes('/SearchModel') p(p))\r\n\r\n\tINSERT INTO @ParameterTbl(SearchTerm\r\n\t\t,isAdvanceSearch\r\n\t\t,Facilities\r\n\t\t,Agencies\r\n\t\t,Attributes\r\n\t\t,UserId)\r\n\tSELECT SearchTerm,\r\n\t\tIsAdvanceSearch,\r\n\t\t(SELECT d.value('.', 'varchar(100)')+',' FROM cte.Facility.nodes('Facility') d(d) FOR XML PATH('')) AS Facility,\r\n\t\tCASE WHEN (SELECT w.value('.', 'varchar(1000)')+',' FROM cte.Agency.nodes('Agency') w(w) FOR XML PATH('')) = '*,' THEN NULL\r\n\t\t\tELSE (SELECT w.value('.', 'varchar(1000)')+',' FROM cte.Agency.nodes('Agency') w(w) FOR XML PATH(''))\r\n\t\tEND AS Agency,\r\n\t\t(SELECT w.value('.', 'varchar(100)')+',' FROM cte.Attribute.nodes('Attribute') w(w)\tFOR XML PATH('')) AS Attribute,\r\n\t\tUserId\r\n\tFROM cte;\r\n\r\n\tSELECT @Agencies = '' + LEFT(Agencies, LEN(Agencies) -1) + '', @Attributes = '' + LEFT(Attributes, LEN(Attributes)-1) + '',\t@UserId = UserID FROM @ParameterTbl;\r\n\tSELECT @Email = Email FROM Membership.EC3Membership WHERE AuthenticatedUserID = @UserId;\r\n\r\n\t-- table variable to hold temp results\r\n\tDECLARE @SearchHits TABLE (UniqueAccountSeqid INT NULL, AccountSeqId INT NULL);\r\n\t\r\n\tIF(@Attributes IS NULL)\r\n\tBEGIN\r\n\t\tINSERT INTO @SearchHits(UniqueAccountSeqid,\r\n\t\t    AccountSeqId)\r\n\t\tSELECT DISTINCT va.UniqueAccountSeqid,\r\n\t\t\tva.AccountSeqId\r\n\t\tFROM Billing.uvw_AccountSearchView AS va\r\n\t\t\tINNER JOIN (SELECT zx.AgencyCodeOEC FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@Email) zx) AS fag ON va.AgencyCodeOEC = fag.AgencyCodeOEC\r\n\t\tWHERE (CASE WHEN @Agencies IS NULL THEN 1 ELSE 0 END = 1) OR va.AgencyCodeOEC IN (SELECT Item FROM dbo.ufnSplit(@Agencies, ','));\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n\t\tDECLARE @Attribute TABLE (Item VARCHAR(1000) NOT NULL);\r\n\r\n\t\tINSERT INTO @Attribute (Item) SELECT REPLACE(REPLACE(Item, 'P', ''), 'C', '') FROM dbo.ufnSplit(@Attributes, ',');\r\n\r\n\t\tINSERT INTO @SearchHits(UniqueAccountSeqid,\r\n\t\t    AccountSeqId)\r\n\t\tSELECT DISTINCT va.UniqueAccountSeqid,\r\n\t\t\tva.AccountSeqId\r\n\t\tFROM Billing.uvw_AccountSearchView AS va\r\n\t\t\tINNER JOIN (SELECT zx.AgencyCodeOEC FROM dbo.uftn_TableGetAgencyByEmailAddressAgencyAccessAction(@Email) AS zx) AS fag ON va.AgencyCodeOEC = fag.AgencyCodeOEC\r\n\t\t\tINNER JOIN Billing.AccountProgramAttributeType AS apat ON va.UniqueAccountSeqid = apat.AccountUniqueSeqID\r\n\t\tWHERE ((CASE WHEN @Agencies IS NULL THEN 1 ELSE 0 END = 1) OR va.AgencyCodeOEC IN (SELECT Item FROM dbo.ufnSplit(@Agencies, ',')))\r\n\t\t\tAND (apat.AttributeTypeOptionSeqid IN (SELECT Item FROM @Attribute)\tOR apat.AttributeStatusOptionSeqid IN (SELECT Item FROM @Attribute));\r\n\tEND;\r\n\r\n\t--------(2)-- return result\r\n\tSELECT @Total = COUNT(*)\r\n\tFROM @SearchHits AS sh\r\n\t\tINNER JOIN Billing.uvw_AccountSearchView AS va ON va.AccountSeqId = sh.AccountSeqId\r\n\tWHERE @SearchText IS NULL OR (va.CurrentAccountNumber LIKE '%' + @SearchText + '%'\r\n\t\tOR va.FacilityName LIKE '%' + @SearchText + '%'\r\n\t\tOR va.FacilityAddress LIKE '%' + @SearchText + '%'\r\n\t\tOR va.AgencyName LIKE '%' + @SearchText + '%'\r\n\t\tOR va.UtilityCompany LIKE '%' + @SearchText + '%');\r\n\r\n\tSELECT va.UniqueAccountSeqid,\r\n\t\tva.AccountSeqId,\r\n\t\tva.CurrentAccountNumber,\r\n\t\tva.UtilityServiceAccountName,\r\n\t\tva.UtilityServiceAddress,\r\n\t\tva.AccountStatus,\r\n\t\tva.AccountPreviousStatus,\r\n\t\tva.AccountStatusCodePeriod,\r\n\t\tva.IsTimeOfDayAccount,\r\n\t\tva.BillingCycle,\r\n\t\tva.AccountEffectiveTurnOn,\r\n\t\tva.AccountEffectiveTurnOff,\r\n\t\tva.UtilityCompany,\r\n\t\tva.InvoiceBillingGroup,\r\n\t\tva.AgencyCodeOEC,\r\n\t\tva.AgencyName,\r\n\t\tva.OecFacilityNumber,\r\n\t\tva.FacilityName,\r\n\t\tva.FacilityAddress,\r\n\t\tva.BBL,\r\n\t\tva.EnergyDeliveryType,\r\n\t\tva.DeliveryTariffRate,\r\n\t\tva.BudgetGroupDEMName,\r\n\t\tva.RateGroup1,\r\n\t\tva.RateGroup2,\r\n\t\tva.RateGroup3,\r\n\t\tva.RateGroup4,\r\n\t\tva.RateGroup5,\r\n\t\tva.EnergyUnit,\r\n\t\tva.DeliveryTariffEffectiveDate,\r\n\t\tva.IsActive\r\n\tFROM @SearchHits AS sh\r\n\t\tINNER JOIN Billing.uvw_AccountSearchView AS va ON va.AccountSeqId = sh.AccountSeqId\r\n\tWHERE @SearchText IS NULL\r\n\t\tOR (va.CurrentAccountNumber LIKE '%' + @SearchText + '%'\r\n\t\t\tOR va.FacilityName LIKE '%' + @SearchText + '%'\r\n\t\t\tOR va.FacilityAddress LIKE '%' + @SearchText + '%'\r\n\t\t\tOR va.AgencyName LIKE '%' + @SearchText + '%'\r\n\t\t\tOR va.UtilityCompany LIKE '%' + @SearchText + '%')\r\n\tORDER BY CASE WHEN(@SortColumn = 'AgencyCodeOEC' AND @SortOrder = 'ASC') THEN va.AgencyCodeOEC END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'AgencyCodeOEC' AND @SortOrder = 'DESC') THEN va.AgencyCodeOEC END DESC\r\n\t\t,CASE WHEN(@SortColumn = '') THEN va.AgencyCodeOEC END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'CurrentAccountNumber' AND @SortOrder = 'ASC') THEN va.CurrentAccountNumber END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'CurrentAccountNumber' AND @SortOrder = 'DESC') THEN va.CurrentAccountNumber END DESC\r\n\t\t,CASE WHEN(@SortColumn = 'FacilityName' AND @SortOrder = 'ASC') THEN va.FacilityName END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'FacilityName' AND @SortOrder = 'DESC') THEN va.FacilityName END DESC\r\n\t\t,CASE WHEN(@SortColumn = 'FacilityAddress' AND @SortOrder = 'ASC') THEN va.FacilityAddress END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'FacilityAddress' AND @SortOrder = 'DESC') THEN va.FacilityAddress END DESC\r\n\t\t,CASE WHEN(@SortColumn = 'AgencyName' AND @SortOrder = 'ASC') THEN va.AgencyName END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'AgencyName' AND @SortOrder = 'DESC') THEN va.AgencyName END DESC\r\n\t\t,CASE WHEN(@SortColumn = 'UtilityCompany' AND @SortOrder = 'ASC') THEN va.UtilityCompany END ASC\r\n\t\t,CASE WHEN(@SortColumn = 'UtilityCompany' AND @SortOrder = 'DESC') THEN va.UtilityCompany END DESC\r\n\t\tOFFSET CASE WHEN @PageSize = -1 THEN 0 ELSE @PageSize * (@CurrentPageNumber -1) END ROWS FETCH NEXT CASE WHEN @PageSize = -1 THEN IIF(@Total > 0, @Total, 1) ELSE @PageSize END ROWS ONLY;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}

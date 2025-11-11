@@ -1,0 +1,988 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "NationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LegacyData_ParseSpannedMeterCancellationInfo",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LegacyData_ParseSpannedMeterCancellationInfo",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process and parse legacy data related to gas meter cancellations that span multiple billing periods. It operates within the "
+        },
+        {
+          "type": "text",
+          "text": "NationalGridWest",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " schema and handles records from a temporary summary table, "
+        },
+        {
+          "type": "text",
+          "text": "UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". The procedure calculates and inserts parsed data into another table, "
+        },
+        {
+          "type": "text",
+          "text": "UploadLegacyKeyspanWestMeterCancellationSummary",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ", by iterating over records where the billing spans more than one period. It performs calculations to adjust meter readings, billing amounts, and other related metrics for each period within the span."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is high due to several factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves multiple calculations and adjustments for each record processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It uses a cursor to iterate over potentially large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It includes complex logic for handling meter rollovers and prorating billing amounts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It relies on several user-defined functions and types, which adds layers of abstraction."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in "
+                },
+                {
+                  "type": "text",
+                  "text": "yyyymm",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " format. It is used to filter or set the context for processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the authenticated user executing the procedure, used for tracking purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingCycle varchar(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing cycle, which influences how billing periods are calculated and processed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Variable Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure declares numerous variables, many of which are user-defined types, to store intermediate values and results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Declaration",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A cursor, "
+                },
+                {
+                  "type": "text",
+                  "text": "SpannedGasBillCursor",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", is declared to iterate over records in the "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table where "
+                },
+                {
+                  "type": "text",
+                  "text": "DeltaNumberOfPeriods",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is greater than 1."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Loop",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": For each record:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It fetches and buffers data into local variables."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Calculates the total gas spanned billed percentage using a user-defined function."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Determines the number of periods minus one for prorating purposes."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Initializes counters and variables for parsing."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Handles meter rollover logic and adjusts readings accordingly."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Iterates through each period within the span, calculating prorated values for CCF (hundred cubic feet) and Therms, and updates meter readings."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts parsed data into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UploadLegacyKeyspanWestMeterCancellationSummary",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates variables for the next iteration."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Period Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After exiting the loop, it processes the last period's data, ensuring all prorated values are correctly calculated and inserted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The cursor is closed and deallocated at the end of the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cursor Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a cursor can lead to performance bottlenecks, especially with large datasets, as it processes rows sequentially."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Complex Calculations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs numerous calculations and function calls, which can be computationally expensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Table Scans",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Depending on the size of the "
+                },
+                {
+                  "type": "text",
+                  "text": "UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table, the initial SELECT statement for the cursor may result in a full table scan if not properly indexed."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of cursors and sequential processing may lead to locking issues in a high-concurrency environment."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions and data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the performance may degrade due to the cursor-based approach and complex calculations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dependency on User-Defined Functions",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure relies on several user-defined functions, which, if not optimized, could further impact performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The logic for handling meter rollovers and prorating values is complex and may lead to incorrect calculations if not thoroughly tested."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [NationalGridWest].[usp_LegacyData_ParseSpannedMeterCancellationInfo]\r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@BillingCycle varchar(1)\r\nAS\r\nBEGIN\r\n\r\n\r\n\r\n--************************************************************************************** \r\n--Declare Variables                                            \r\n--**************************************************************************************\r\n--\r\ndeclare @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid dbo.seqid\r\n--\r\ndeclare @Notes dbo.notes\r\ndeclare @AccountNumber dbo.acctnum\r\ndeclare @FacilityName dbo.UtilityServiceAccountName\r\ndeclare @ServiceAddress dbo.addr\r\ndeclare @TariffCode dbo.tariff\r\ndeclare @PostingDate dbo.PostingDate\r\n--\r\ndeclare @OriginalMeterNumber meternumber \r\ndeclare @GasRateCode GasRateCode \r\ndeclare @MeterFromReading MeterReadingNumber \r\ndeclare @MeterToReading MeterReadingNumber \r\ndeclare @MeterConstant MeterConstantMultiplier \r\ndeclare @ReadingCode ReadingCode \r\ndeclare @NumberOfDials MeterDials \r\n--\r\ndeclare @NumberOfPeriodsMinusOne dbo.Accumulator\r\ndeclare @DeltaNumberOfPeriods dbo.Accumulator\r\n\r\ndeclare @FirstPeriodCanceled dbo.yyyymm \r\ndeclare @ThermFactor dbo.ThermsFactor \r\ndeclare @FudgedThermFactor dbo.ThermsFactor \r\ndeclare @BillingPeriodRevision dbo.yyyymm \r\ndeclare @FromDate dbo.yyyymmdd \r\ndeclare @ToDate dbo.yyyymmdd \r\ndeclare @CalculatedBillingPeriodRevision dbo.yyyymm \r\ndeclare @CalculatedFromDate dbo.yyyymmdd \r\ndeclare @CalculatedToDate dbo.yyyymmdd \r\ndeclare @BilledAmount dbo.BillingAmt \r\ndeclare @BilledAmountMonthly dbo.BillingAmt \r\ndeclare @BilledAmountAverage dbo.BillingAmt \r\ndeclare @BilledAmountRemainder dbo.BillingAmt \r\ndeclare @BillingPeriodDays dbo.Accumulator \r\ndeclare @BillingPeriodDaysAverage dbo.Accumulator \r\ndeclare @BillingPeriodDaysRemainder dbo.Accumulator \r\ndeclare @Therms dbo.EnergyUnit \r\ndeclare @LastPeriodTherms dbo.EnergyUnit \r\ndeclare @ThermsAverage dbo.EnergyUnit \r\ndeclare @ThermsRemainder dbo.EnergyUnit \r\ndeclare @CCF dbo.EnergyUnit \r\ndeclare @CCFAverage dbo.EnergyUnit \r\ndeclare @CCFRemainder dbo.EnergyUnit \r\ndeclare @SumAverageCCF dbo.EnergyUnit \r\ndeclare @idx int\r\ndeclare @StartingBillingPeriodDaysIncrement int\r\ndeclare @StartingBillingPeriodCCFIncrement int\r\ndeclare @StartingBillingPeriodThermsIncrement int\r\ndeclare @IncrementBillingPeriodDays int\r\ndeclare @IncrementBillingPeriodCCF int\r\ndeclare @IncrementBillingPeriodTherms int\r\n--\r\ndeclare @MeterRolloverAdjustmentFactor int\r\ndeclare @NumberOfDialsAdjustmentFactor int\r\ndeclare @MeterHasRolledOver bit\r\n\r\n--\r\ndeclare @ThermsMonthlyLastPeriod dbo.EnergyUnit \r\ndeclare @CCFMonthlyLastPeriod dbo.EnergyUnit \r\n\r\ndeclare @CalculatedMeterFromReading int \r\ndeclare @CalculatedMeterToReading int\r\ndeclare @CalculatedMeterConstant decimal(7,1)\r\n--\r\ndeclare @UtilityCode dbo.seqid\r\ndeclare @ApplyMonthlyPercentage  dbo.DiscountPercentage\r\ndeclare @ThermsMonthlySum  dbo.EnergyUnit \r\ndeclare @ThermsMonthly  dbo.EnergyUnit \r\ndeclare @CCFMonthly  dbo.EnergyUnit \r\ndeclare @CCFMonthlySum  dbo.EnergyUnit \r\ndeclare @TotalGasSpannedBilledPercentage dbo.DiscountPercentage\r\n\r\ndeclare @BillingDate dbo.yyyymmdd\r\n--\r\n--\r\n--**************************************************************************************  \r\n--SET DEFAULTS                                                  \r\n--**************************************************************************************\r\n--\r\n--SELECT @BillingPeriod = BillingPeriod FROM ApplicationTimeFrame WHERE (CurrentProcessingPeriod = 'Y')\r\n--\r\n\r\nset @UtilityCode = 2\r\n--\r\n\r\n--\r\n--**************************************************************************************  \r\n--Main Process                                      \r\n--**************************************************************************************\r\n--\r\n--\tDECLARE a cursor to find all account bills that span more than one period.\r\n--\r\nDECLARE SpannedGasBillCursor CURSOR FOR\r\nSELECT UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid FROM NationalGridWest.UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned\r\nwhere (DeltaNumberOfPeriods > 1) --and @BillingPeriod=@BillingPeriod\r\n--\r\nOPEN SpannedGasBillCursor;\r\n\r\nFETCH NEXT FROM SpannedGasBillCursor INTO @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid\r\n-- \r\n-- Check @@FETCH_STATUS to see if there are any more rows to fetch.\r\n-- \r\nWHILE @@FETCH_STATUS = 0\r\nBEGIN -- begin cursor fetching loop\r\n\r\n\t--\tBuffer all of the columns from the spanned row for parsing purposes\r\n\t--\r\n\t--\r\n\tSELECT  \r\n\t\t@AccountNumber=AccountNumber,\r\n\t\t@OriginalMeterNumber = MeterNumber,\r\n\t\t@MeterFromReading = IsNull(FromReading,0),\r\n\t\t@MeterToReading = IsNull(ToReading,0),\r\n\t\t@MeterConstant = IsNull(MeterConstant,1),\r\n\t\t@ReadingCode = ReadingCode,\r\n\t\t@NumberOfDials = Dials,\r\n\t\t@DeltaNumberOfPeriods=DeltaNumberOfPeriods, \r\n\t\t@BillingPeriodRevision=BillingPeriodRevision,\r\n\t\t@FirstPeriodCanceled=FirstPeriodCanceled, \r\n\t\t@FromDate=FromDate,\r\n\t\t@ToDate=ToDate, \r\n\t\t@CCF=CCF, \r\n\t\t@ThermFactor=ThermFactor,\r\n\t\t@BillingPeriod = BillingPeriod,\r\n\t\t@FacilityName=FacilityName,\r\n\t\t@ServiceAddress =ServiceAddress,\r\n\t\t@ThermFactor = ThermFactor,\r\n\t\t@Therms = Therms\t\t\r\n\tFROM NationalGridWest.UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned\r\n\tWHERE   (UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid = @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid) \r\n\r\n\r\n\r\n\r\n\t--\r\n\t--\tAggregate the average City wide monthly gas usage percentage for the spanned row billing periods \r\n\t--\r\n\tselect @TotalGasSpannedBilledPercentage= dbo.[CalculateTotalGasSpannedBilledPercentage] (@BillingCycle,@DeltaNumberOfPeriods,@FirstPeriodCanceled,@BillingPeriodRevision)\r\n\r\n\t--\r\n\t--\tDetermine the number of periods minus 1 to pro-rate the money and usage.  The last period will derive the money and usage\r\n\t--\tby row totals - (the n-1 aggregates of money and usage)\r\n\t--\r\n\tset @NumberOfPeriodsMinusOne = @DeltaNumberOfPeriods-1\r\n\t--\r\n\t--\tInitialize the counters for the n-1 parses\r\n\t--\r\n\r\n\tset @CalculatedBillingPeriodRevision = @FirstPeriodCanceled\r\n\tset @CalculatedFromDate = @FromDate\r\n\tset @CalculatedToDate = @ToDate\r\n\tset @idx = 0\r\n\tset @ThermsMonthlySum = 0\r\n\tset @CCFMonthlySum = 0\r\n\tset @CalculatedMeterFromReading = cast(@MeterFromReading as int)\r\n\tset @CalculatedMeterToReading = cast(@MeterToReading AS int)\r\n\tset @CalculatedMeterConstant = cast (@MeterConstant as decimal(7,1))\r\n\t\r\n\t--set @Therms = Round(@CCF*@ThermFactor,0)\r\n\t\r\n\t--\r\n\tset @NumberOfDialsAdjustmentFactor = case \r\n\t\t-- Standard Gas meter has from 3 to 6 dials.  \r\n\t\twhen 2 < @NumberOfDials and @NumberOfDials < 7 \r\n\t\tthen Cast (@NumberOfDials as int)\r\n\t\t-- If there are no dials reported or the number of dials is outside the \r\n\t\t-- range of the standard number of dials (3 to 6 dials).  The sum of the \r\n\t\t-- MeterFromReading + total CCF will derive a number that is equal to the \r\n\t\t-- number of dials - 1 raised to the power of 10 plus the MeterToReading.\r\n\t\telse len(cast(@CCF+@CalculatedMeterFromReading as varchar(7)))-1\r\n\t\tend\r\n\tset @MeterHasRolledOver = 0\r\n\tset @MeterRolloverAdjustmentFactor = power(10,@NumberOfDialsAdjustmentFactor)\r\n\tif ( @CalculatedMeterToReading < @CalculatedMeterFromReading or power(10,@NumberOfDialsAdjustmentFactor) <= @CCF)\r\n\r\n\tBegin\r\n\t\tset @MeterHasRolledOver = 1\r\n\tEnd\r\n\t--\r\n\t--\r\n\r\n\twhile (@NumberOfPeriodsMinusOne > @idx)\r\n\tBegin -- begin parse n-1 records\r\n\t\t-- The @ApplyMonthlyPercentage holds the weigthed average for the particular month\r\n\t\t--\r\n\t\tselect @ApplyMonthlyPercentage = [dbo].[CalculateApplyMonthlyPercentageGasSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalGasSpannedBilledPercentage)\r\n\t\t--\r\n\t\t-- Apply the Monthly Percentage to the meter reading and derive the CCF, Therms  and accumulate the weigthed average units.\r\n\t\t--\r\n\r\n\t\tset @CCFMonthly = ROUND(@CCF * @ApplyMonthlyPercentage,0)\r\n\t\tset @CCFMonthlySum = @CCFMonthlySum + @CCFMonthly\r\n\t\tset @ThermsMonthly = ROUND(@Therms * @ApplyMonthlyPercentage,0)\r\n\t\tset @ThermsMonthlySum = @ThermsMonthlySum + @ThermsMonthly\r\n\t\t--\r\n\t\t--\tThe CCF, Therms and Meter To Reading are derived.  The CCF\r\n\t\t--\r\n\t\tset @CalculatedMeterToReading = @CalculatedMeterFromReading + round(abs(@CCFMonthly)/@CalculatedMeterConstant,0)\r\n\r\n\t\tset @CalculatedMeterToReading = case when @MeterHasRolledOver = 0 then @CalculatedMeterToReading else  \r\n\t\t\t -- The spanned meter reading has rolled over.  If the MeterToReading is less than @NumberOfDialsAdjustmentFactor then \r\n\t\t\t -- the derived MeterToReading remains unadjusted. When the sum of the @CalculatedMeterFromReading + @CCFMonthly is greater\r\n\t\t\t -- than the @NumberOfDialsAdjustmentFactor is subtracted to make the adjustment for the rollover meter reset.\r\n\t\t\tcase when @CalculatedMeterToReading < @MeterRolloverAdjustmentFactor then @CalculatedMeterToReading else @CalculatedMeterToReading - @MeterRolloverAdjustmentFactor \r\n\t\t\tend\r\n\t\tend \r\n\r\n\t\t--\tThe Billing Period Projected \"ToDate\" is derived from the table \"dbo.BillingPeriodProjected\" using the utility company seqid and the\r\n\t\t--\tRevisedBillingPeriod and using the \"EndofPeriodTodate\" as the derived \"Todate\" for the account.\r\n\t\t\r\n\t\tselect @CalculatedToDate=\r\n\t\t\tNationalGridWest.DeterminActualDate(@AccountNumber, 'T', @CalculatedBillingPeriodRevision, @BillingCycle)\r\n\r\n\t\tif(@CalculatedToDate is null)\r\n\t\t\tselect @CalculatedToDate = NationalGridWest.DetermineProjectedDate(@BillingCycle, @CalculatedBillingPeriodRevision, 'T', substring(@AccountNumber,12,2)) \r\n\r\n\t\t-- calculate therms factor\t\r\n\t\tIF(@CCFMonthly <> 0 AND ABS(@ThermsMonthly/@CCFMonthly)<=2)\r\n\t\t\tSET @ThermFactor = ROUND((CAST (@ThermsMonthly AS FLOAT)/@CCFMonthly), 4)\r\n\t\t\r\n\t\t--\r\n\t\t--\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t\t--\tIt will note in EC3 that the transaction was derived.\r\n\t\t--\r\n\t\tselect @Notes = SUBSTRING('CalcThermFactor '+cast(@ThermFactor as varchar(10))+' = '+cast(@ThermsMonthly as varchar(6))+' / '+cast(@CCFMonthly as varchar(10))+\r\n\t\t' for '+cast(@DeltaNumberOfPeriods as varchar(6))+' periods, First: '+@FirstPeriodCanceled +' ( '+@MeterFromReading+') Last: '+ \r\n\t\t@BillingPeriodRevision +' ( '+@MeterToReading+'). '+' period: '+@CalculatedBillingPeriodRevision+ ' Month %: '+cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t\t' - Total %: '+cast(@TotalGasSpannedBilledPercentage as varchar(10)), 1, 300)\r\n\t\t\r\n--\r\n\r\n\t\tINSERT INTO NationalGridWest.UploadLegacyKeyspanWestMeterCancellationSummary (\r\n\t\t\tAccountUtilityCompanySeqid,\r\n\t\t\tOriginalAccountNumber,\r\n\t\t\tOriginalMeterNumber,\r\n\t\t\tNumberOfTransactions, \r\n\t\t\tNumberOfRebillTransactions,\r\n\t\t\tNumberOfCancelTransactions,\r\n\t\t\tBillingPeriod,\r\n\t\t\tBillingPeriodRevision,\r\n\t\t\tFirstCancelPeriod,\r\n\t\t\tBillingAction,\r\n\t\t\tInitialCancelFromDate,\r\n\t\t\tCurrentBillingToDate,\r\n\t\t\tGasRateCode,\r\n\t\t\tCancelFromDate,\r\n\t\t\tCancelToDate,\r\n\t\t\tCancelMeterFromReading,\r\n\t\t\tCancelMeterToReading,\r\n\t\t\tCancelCcf,\r\n\t\t\tCancelTherms,\r\n\t\t\tCancelThermsFactor,\r\n\t\t\tCancelMeterConstant,\r\n\t\t\tTotalBillingDaysRebilled,\r\n\t\t\tNumberOfBillingPeriods,\r\n\t\t\tBillingDays,\r\n\t\t\tBillingDate,\r\n\t\t\tCancelReadingCode,\r\n\t\t\tNumberOfDials,\r\n\t\t\tMeterType,\r\n\t\t\tProcessedInTheCurrentPeriod,\r\n\t\t\tProcessEffectiveDate,\r\n\t\t\tInitialPostingDate,\r\n\t\t\tAuthenticatedUserID,\r\n\t\t\tNotes,\r\n\t\t\tDerivedFromSpannedBill,\r\n\t\t\tSpannedBillingPeriodRevision,\r\n\t\t\tSpannedFirstCanceledBillingPeriod,\r\n\t\t\tSpannedCCF,\r\n\t\t\tSpannedThermFactor,\r\n\t\t\tSpannedTherm,\r\n\t\t\tSpannedMonthlyPercentage,\r\n\t\t\tSpannedTotalPercentage,\r\n\t\t\tEstimatedOrActualBilling,\r\n\t\t\tFacilityName,\r\n\t\t\tServiceAddress\r\n\t\t\t)\r\n\t\tSELECT \t\r\n\t\t\t@UtilityCode,\r\n\t\t\t@AccountNumber,\r\n\t\t\t@OriginalMeterNumber, \r\n\t\t\t1,-- NumberOfTransactions, \r\n\t\t\t0,-- NumberOfRebillTransactions,\r\n\t\t\t1,-- NumberOfCancelTransactions,\r\n\t\t\t@BillingPeriod, \r\n\t\t\t@CalculatedBillingPeriodRevision,\r\n\t\t\t@CalculatedBillingPeriodRevision,\r\n\t\t\tCASE WHEN @BillingPeriod = @CalculatedBillingPeriodRevision THEN 'O' ELSE 'A' END,-- BillingAction, \r\n\t\t\t@CalculatedFromDate,\r\n\t\t\t@CalculatedToDate,\r\n\t\t\t@GasRateCode,\r\n\t\t\t@CalculatedFromDate,\r\n\t\t\t@CalculatedToDate,\r\n\t\t\tCast(@CalculatedMeterFromReading as varchar(6)),  --dbo.MeterReadingNumber\r\n\t\t\tCast(@CalculatedMeterToReading as varchar(6)),  --dbo.MeterReadingNumber\r\n\t\t\t@CCFMonthly, \r\n\t\t\t@ThermsMonthly,\r\n\t\t\t@ThermFactor,\r\n\t\t\t@MeterConstant,\r\n\t\t\t[dbo].[CalculateNumberOfBillingDays]  (@CalculatedFromDate,@CalculatedToDate), \r\n\t\t\t1, \r\n\t\t\t[dbo].[CalculateNumberOfBillingDays]  (@CalculatedFromDate,@CalculatedToDate),\r\n\t\t\t@BillingDate, \r\n\t\t\t@ReadingCode,\r\n\t\t\t@NumberOfDials,\r\n\t\t\t'G', -- MeterType,\r\n\t\t\t'N', --ProcessedInTheCurrentPeriod\r\n\t\t\t[dbo].ConvertDateToYYYYMMDD (GETDATE()), -- ProcessEffectiveDate\r\n\t\t\tgetDate(), -- InitialPostingDate\r\n\t\t\t1, --\tAuthenticatedUserID,\r\n\t\t\t@Notes,\r\n\t\t\t'Y', -- DerivedFromSpannedBill\r\n\t\t\t@BillingPeriodRevision,  -- SpannedBillingPeriodRevision\r\n\t\t\t@FirstPeriodCanceled,  -- SpannedFirstPeriodCanceled\r\n\t\t\t@CCF,  -- SpannedCCF\r\n\t\t\t@ThermFactor,  -- SpannedThermFactor\r\n\t\t\t@Therms,  -- SpannedTherms\r\n\t\t\t@ApplyMonthlyPercentage,  -- SpannedApplyMonthlyPercentage\r\n\t\t\t@TotalGasSpannedBilledPercentage,  -- SpannedTotalGasSpannedBilledPercentage\r\n\t\t\tcase when @ReadingCode < 15 then 'EST' else 'ACT' END -- EstimatedOrActualBilling\t\r\n\t\t\t,\r\n\t\t\tFacilityName,\r\n\t\t\tServiceAddress\r\n\t\tFROM NationalGridWest.UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned \r\n\t\tWHERE   (UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid = @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid)\r\n\r\n\r\n\r\n\t\t--\r\n\t\t--\tSet up for the next the Revised Billing Period row.\r\n\t\t--\r\n\t\tset @SumAverageCCF = @SumAverageCCF + @CCFAverage \t\r\n\r\n\r\n\t\t--\r\n\t\t--\tCalculate the next the Revised Billing Period row.\r\n\t\tselect @CalculatedBillingPeriodRevision = [dbo].[CalculateNextBillingPeriod]  (@CalculatedBillingPeriodRevision,@BillingCycle)\r\n\t\t--\tThis will derive the new Revised Billing Period row's \"FromDate\"\r\n\t\t\r\n\t\t--\r\n\t\tselect @CalculatedMeterFromReading = @CalculatedMeterToReading \r\n\t\t-- Cast(@CalculatedMeterFromReading as dbo.MeterReadingNumber)\r\n\t\t--\tProcess the next Revised Billing Period row\r\n\t\t--\r\n\r\n\t\tselect @CalculatedFromDate=\r\n\t\t\tNationalGridWest.DeterminActualDate(@AccountNumber, 'F', @CalculatedBillingPeriodRevision, @BillingCycle)\r\n\r\n\t\tif(@CalculatedFromDate is null)\r\n\t\t\tselect @CalculatedFromDate = NationalGridWest.DetermineProjectedDate(@BillingCycle, @CalculatedBillingPeriodRevision, 'F', substring(@AccountNumber,12,2)) \r\n\r\n\r\n\t\tset @idx = @idx + 1\r\n\tend -- end parsing n-1 records\r\n\r\n\r\n\r\n\t--\r\n\t--\tFinish up the last period's processing\r\n\t--\r\n\t--\tUse the (Nth -1) periods @CalculatedToDate as the \"FromDate\" and the acutal \"ToDate\" from the spanned record as the \"ToDate\"\r\n\t--\r\n\tselect @CalculatedFromDate = @CalculatedToDate\r\n\tselect @CalculatedToDate = @ToDate\r\n\t--0\r\n\t--\tUse the (Nth -1) periods Calculated Meter From Reading as the \"MeterFromReading\" and the acutal \"MeterToReading\" from the spanned record as the \"MeterToReading\"\r\n\t--\r\n\tselect @CalculatedMeterFromReading = @CalculatedMeterToReading \r\n\r\n\tselect @CalculatedMeterToReading   = cast(@MeterToReading AS int)\r\n\t--\r\n\t--\t@ApplyMonthlyPercentage is used for the notes purposes only\r\n\t--\r\n\tselect @ApplyMonthlyPercentage = [dbo].[CalculateApplyMonthlyPercentageGasSpannedBilled] (@CalculatedBillingPeriodRevision,@TotalGasSpannedBilledPercentage)\r\n\r\n\t--\r\n\t--\tDerive the net changes to avoid rounding errors\r\n\t--\r\n--\tset @BilledAmountMonthlyLastPeriod = @BilledAmount - @BilledAmountMonthlySum\r\n\tset @ThermsMonthlyLastPeriod = @Therms - @ThermsMonthlySum\r\n\tset @CCFMonthlyLastPeriod = @CCF  - @CCFMonthlySum\r\n\r\n\tIF(@CCFMonthlyLastPeriod > 0 and ABS(@ThermsMonthlyLastPeriod/@CCFMonthlyLastPeriod)<=2) \r\n\tbegin\r\n\t\tSET @ThermFactor = ROUND((CAST(@ThermsMonthlyLastPeriod AS FLOAT)/@CCFMonthlyLastPeriod), 4)\r\n\tEND\r\n\t\r\n\t--\tCreate a custom note that explains how the information was parsed and what was the original information of the spanned row.\r\n\t--\tIt will note in EC3 that the transaction was derived.\r\n\t--\r\n\tselect @Notes = SUBSTRING('CalcThermFactor '+cast(@ThermFactor as varchar(10))+' = '+cast(@ThermsMonthlyLastPeriod as varchar(6))+' / '+cast(@CCFMonthlyLastPeriod as varchar(10))+\r\n\t' for '+cast(@DeltaNumberOfPeriods as varchar(6))+' periods, First: '+@FirstPeriodCanceled +' ( '+@MeterFromReading+') Last: '+ \r\n\t@BillingPeriodRevision +' ( '+@MeterToReading+'). '+' period: '+@CalculatedBillingPeriodRevision+ ' Month %: '+cast(@ApplyMonthlyPercentage as varchar(10))+\r\n\t' - Total %: '+cast(@TotalGasSpannedBilledPercentage as varchar(10)), 1, 300)\r\n\r\n\r\n\r\n\t--\r\n\tINSERT INTO NationalGridWest.UploadLegacyKeyspanWestMeterCancellationSummary (\r\n\t\tAccountUtilityCompanySeqid,\r\n\t\tOriginalAccountNumber,\r\n\t\tOriginalMeterNumber,\r\n\t\tNumberOfTransactions, \r\n\t\tNumberOfRebillTransactions,\r\n\t\tNumberOfCancelTransactions,\r\n\t\tBillingPeriod,\r\n\t\tBillingPeriodRevision,\r\n\t\tFirstCancelPeriod,\r\n\t\tBillingAction,\r\n\t\tInitialCancelFromDate,\r\n\t\tCurrentBillingToDate,\r\n\t\tGasRateCode,\r\n\t\tCancelFromDate,\r\n\t\tCancelToDate,\r\n\t\tCancelMeterFromReading,\r\n\t\tCancelMeterToReading,\r\n\t\tCancelCcf,\r\n\t\tCancelTherms,\r\n\t\tCancelThermsFactor,\r\n\t\tCancelMeterConstant,\r\n\t\tTotalBillingDaysRebilled,\r\n\t\tNumberOfBillingPeriods,\r\n\t\tBillingDays,\r\n\t\tBillingDate,\r\n\t\tReadingCode,\r\n\t\tNumberOfDials,\r\n\t\tMeterType,\r\n\t\tProcessedInTheCurrentPeriod,\r\n\t\tProcessEffectiveDate,\r\n\t\tInitialPostingDate,\r\n\t\tAuthenticatedUserID,\r\n\t\tNotes,\r\n\t\tDerivedFromSpannedBill,\r\n\t\tSpannedBillingPeriodRevision,\r\n\t\tSpannedFirstCanceledBillingPeriod,\r\n\t\tSpannedCCF,\r\n\t\tSpannedThermFactor,\r\n\t\tSpannedTherm,\r\n\t\tSpannedMonthlyPercentage,\r\n\t\tSpannedTotalPercentage,\r\n\t\tEstimatedOrActualBilling,\r\n\t\t\tFacilityName,\r\n\t\t\tServiceAddress\r\n\t\t)\r\n\tSELECT \t\t\t\r\n\t\t@UtilityCode,\r\n\t\t@AccountNumber,\r\n\t\t@OriginalMeterNumber, \r\n\t\t1,-- NumberOfTransactions, \r\n\t\t0,-- NumberOfRebillTransactions,\r\n\t\t1,-- NumberOfCancelTransactions,\r\n\t\t@BillingPeriod, \r\n\t\t@CalculatedBillingPeriodRevision,\r\n\t\t@CalculatedBillingPeriodRevision,\r\n\t\tCASE WHEN @BillingPeriod = @CalculatedBillingPeriodRevision THEN 'O' ELSE 'A' END,-- BillingAction, \r\n\t\t@CalculatedFromDate,\r\n\t\t@CalculatedToDate,\r\n\t\t@GasRateCode,\r\n\t\t@CalculatedFromDate,\r\n\t\t@CalculatedToDate,\r\n\t\tCast(@CalculatedMeterFromReading as varchar(6)),  --dbo.MeterReadingNumber\r\n\t\tCast(@CalculatedMeterToReading as varchar(6)),  --dbo.MeterReadingNumber\r\n\t\t@CCFMonthlyLastPeriod, \r\n\t\t@ThermsMonthlyLastPeriod,\r\n\t\t@ThermFactor,\r\n\t\t@MeterConstant,\r\n\t\t[dbo].[CalculateNumberOfBillingDays]  (@CalculatedFromDate,@CalculatedToDate), \r\n\t\t1, \r\n\t\t[dbo].[CalculateNumberOfBillingDays]  (@CalculatedFromDate,@CalculatedToDate),\r\n\t\t@BillingDate, \r\n\t\t@ReadingCode,\r\n\t\t@NumberOfDials,\r\n\t\t'G', -- MeterType,\r\n\t\t'N', --ProcessedInTheCurrentPeriod\r\n\t\t[dbo].ConvertDateToYYYYMMDD (GETDATE()), -- ProcessEffectiveDate\r\n\t\tgetDate(), -- InitialPostingDate\r\n\t\t@authenticatedID, --\tAuthenticatedUserID,\r\n\t\t@Notes,\r\n\t\t'Y', -- DerivedFromSpannedBill\r\n\t\t@BillingPeriodRevision,  -- SpannedBillingPeriodRevision\r\n\t\t@FirstPeriodCanceled,  -- SpannedFirstPeriodCanceled\r\n\t\t@CCF,  -- SpannedCCF\r\n\t\t@ThermFactor,  -- SpannedThermFactor\r\n\t\t@Therms,  -- SpannedTherms\r\n\t\t@ApplyMonthlyPercentage,  -- SpannedApplyMonthlyPercentage\r\n\t\t@TotalGasSpannedBilledPercentage,  -- SpannedTotalGasSpannedBilledPercentage\r\n\t\tcase when @ReadingCode < 15 then 'EST' else 'ACT' END -- EstimatedOrActualBilling\r\n\t\t,\r\n\t\tFacilityName,\r\n\t\tServiceAddress\r\n\tFROM NationalGridWest.UploadLegacyKeyspanWestMeterCancellationTempSummarySpanned \r\n\tWHERE   (UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid = @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid) \r\n\r\n\r\n\t--\r\n\t--\tProcess the next row\r\n\t--\r\n\tFETCH NEXT FROM SpannedGasBillCursor INTO @UploadLegacyKeyspanWestMeterCancellationTempSummarySpannedSeqid\r\nend -- end cursor fetching loop\r\n\r\nCLOSE SpannedGasBillCursor;\r\nDEALLOCATE SpannedGasBillCursor;\r\n\r\n\t\r\nEND"
+        }
+      ]
+    }
+  ]
+}

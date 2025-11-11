@@ -1,0 +1,998 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "ManualBill",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_GenerateManualBillingHeaderAndDetailStubsForAccountSeqidList",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_GenerateManualBillingHeaderAndDetailStubsForAccountSeqidList",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate manual billing header and detail stubs for a list of account sequence IDs. It processes each account in the provided list, retrieves necessary account information, and inserts records into two tables: "
+        },
+        {
+          "type": "text",
+          "text": "ManualBill.AccountManualBillingHeader",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " and "
+        },
+        {
+          "type": "text",
+          "text": "ManualBill.AccountManualBillingDetail",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". This procedure is used to create stubs for manual billing, especially when an account receives more than one invoice in a billing period or when original details are overridden."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity level is considered medium due to the following factors:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It involves string manipulation to parse a list of account sequence IDs."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It performs multiple database operations, including data retrieval and insertion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "It handles conditional logic and loops to process each account in the list."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@accountSeqidList VARCHAR(max)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A comma-separated list of account sequence IDs to be processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@utilityCompany INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the utility company associated with the accounts."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@invoiceBillingGroup INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing group for the invoice."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedUserID INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The ID of the user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@billingPeriod dbo.yyyymm",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The billing period for which the stubs are being generated."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@output INT OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An output parameter indicating the success (0) or failure (9) of the procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure trims the input list of account sequence IDs and appends a comma for parsing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Loop through Accounts",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It iterates over each account sequence ID in the list:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Extracts the current account sequence ID."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Retrieves account details such as "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OriginalAccountNumber",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EnergySource",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ", and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "UniqueAccountSeqID",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " from the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.Account",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert Header Record",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": For each account, it inserts a record into "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBill.AccountManualBillingHeader",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " with details like utility company, billing group, account number, energy source, and billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Retrieve Header Sequence ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": After inserting the header, it retrieves the sequence ID of the newly inserted header record."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Insert Detail Record",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It inserts a corresponding record into "
+                },
+                {
+                  "type": "text",
+                  "text": "ManualBill.AccountManualBillingDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " using the retrieved header sequence ID and other account details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Completion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets the output parameter to 0 to indicate successful completion."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "String Manipulation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "CHARINDEX",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "LTRIM/RTRIM",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for parsing the account sequence ID list can be inefficient for very large lists."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Looping",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure processes each account individually, which could be slow if the list is extensive."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Database Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Multiple SELECT and INSERT operations are performed for each account, which could impact performance under high load."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Input Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no validation for the input parameters, particularly the format and content of "
+                },
+                {
+                  "type": "text",
+                  "text": "@accountSeqidList",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks error handling mechanisms, such as TRY-CATCH blocks, which could lead to unhandled exceptions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If multiple instances of this procedure run simultaneously, there could be issues with data consistency or contention, especially when retrieving the current identity value with "
+                },
+                {
+                  "type": "text",
+                  "text": "ident_current",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The approach of handling each account in a loop may not scale well with a large number of accounts, leading to potential performance bottlenecks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [ManualBill].[usp_GenerateManualBillingHeaderAndDetailStubsForAccountSeqidList]\n\t\t@accountSeqidList VARCHAR(max),\r\n\t\t@utilityCompany INT ,\r\n\t\t@invoiceBillingGroup INT,\r\n\t\t@authenticatedUserID INT,\r\n\t\t@billingPeriod dbo.yyyymm,\r\n\t\t@output INT OUTPUT \r\nAS\r\nbegin\r\n\r\n\t-- Description\r\n\t----\r\n\t--\tthe stored procedure receives a list of account seqids that needs a stub for the manual billing.\r\n\t--  it inserts stubbs for each of the accounts for the current billing period\r\n\t--  UPDATE: The stored procedure now creates a stub for the header and the detail, since the rule change and now we need to have  \r\n\t--\t\t     a stub for the detail also. The stored procedure also will be used when we need to create a stub for the original detail if it was ovveriden\r\n\t--\t\t\t or if the account receives more than 1 invoice in a billng period\r\n\t----\r\n\t--\tCreated on  11/03/2008 by Mohammed Belarrem\r\n\t--  Modified on 02/10/2009 by Mohammed Belarrem\r\n\t--\t\t\t\t: changed the billingperiod from automatic to manual pass it as paramter)\r\n\t--\tModified on 07/06/2011 by Mohammed Belarrem\r\n\t--\t\t\t\t: modified the stored procedure since some of the fields were dropped\r\n\t--  Modified on 01/18/2019 by Vicky Yu\r\n\t--              : modified for UniqueAccountSeqID\r\n\t----\r\n\t\r\n\tDECLARE @accountSeqid dbo.seqid\r\n\t--DECLARE @BillingPeriod dbo.BillingPeriod\r\n\tDECLARE @accountNumber dbo.acctnum \r\n\tDECLARE @accountEnergySource dbo.EnergySource\r\n\tDECLARE\t@HeaderSeqid dbo.seqid\r\n\tDECLARE @UniqueAccountSeqID as INT /* added on 1/18/2019 */\r\n\t--DECLARE\t@lastPeriodBilled dbo.BillingPeriod\r\n\t\r\n\t\r\n\t-- set up the list \r\n\tDECLARE @Pos INT\r\n\t\r\n\tset @output = 9 -- failure\r\n\t\r\n\t\r\n\t--SET @BillingPeriod = (SELECT BillingPeriod FROM Billing.ApplicationTimeFrame WHERE (CurrentProcessingPeriod = 'Y')) \r\n\t\r\n\t-- initial setup\r\n\tSET @accountSeqidList = LTRIM(RTRIM(@accountSeqidList))+ ','\r\n\tSET @Pos = CHARINDEX(',', @accountSeqidList, 1)\r\n\t\r\n\t-- loop starts here\r\n\t\tWHILE @Pos > 0\r\n\t\tBEGIN\r\n\t\t\t  SET @accountSeqid = LTRIM(RTRIM(LEFT(@accountSeqidList, @Pos - 1)))\r\n\t\t\t  IF @accountSeqid <> ''\r\n\t\t\t  BEGIN\r\n\t\t\t\t\t-- processing by record \r\n\t\t\t\t\r\n\t\t\t\t\t--SELECT (CAST(@accountSeqid AS int)) --Use Appropriate conversion\r\n\t\t\t\t\tSELECT\t@accountNumber = OriginalAccountNumber ,\r\n\t\t\t\t\t\t\t@accountEnergySource = EnergySource,\r\n\t\t\t\t\t\t\t@UniqueAccountSeqID = UniqueAccountSeqid /* added on 1/18/2019 */\r\n\t\t\t\t\t\tFROM Billing.Account WHERE (AccountSeqid = (CAST(@accountSeqid AS int)) )\r\n\r\n\t\t\t\t\t\t-- commented out since we do not use LastPeriodAccountBilled field\t\t\t\r\n\t\t\t\t\t\t---- last period billed\r\n\t\t\t\t\t\t--set   @lastPeriodBilled = ( SELECT TOP (1) BillingPeriod\r\n\t\t\t\t\t\t--FROM ManualBill.AccountManualBillingHeader\r\n\t\t\t\t\t\t--WHERE (InitialPostingDate IS NOT NULL) AND (OriginalAccountNumber = @accountNumber )\r\n\t\t\t\t\t\t--ORDER BY BillingPeriod desc )\r\n\r\n\r\n\t\t\t\t\t-- insert the HEADER record\r\n\t\t\t\t\tINSERT INTO ManualBill.AccountManualBillingHeader\r\n\t\t\t\t\t\t\t   (\r\n\t\t\t\t\t\t\t    AccountUtilityCompanySeqid\r\n\t\t\t\t\t\t\t   ,CurrentInvoiceAccountGroup\r\n\t\t\t\t\t\t\t   ,AccountSeqid\r\n\t\t\t\t\t\t\t   ,UniqueAccountSeqID /* added on 1/18/2019 */\r\n\t\t\t\t\t\t\t   ,OriginalAccountNumber\r\n\t\t\t\t\t\t\t   ,AccountEnergySource\r\n\t\t\t\t\t\t\t   ,BillingPeriod\r\n\t\t\t\t\t\t\t   ,BillingAction\r\n\t\t\t\t\t\t\t   ,ProcessedInTheCurrentPeriod\r\n\t\t\t\t\t\t\t   ,ManualPaymentOverrideAmount\r\n\t\t\t\t\t\t\t   --,OriginalAmountBilled\r\n\t\t\t\t\t\t\t   --,NetAdjustmentAmount\r\n\t\t\t\t\t\t\t   ,ReadyForVouchering\r\n\t\t\t\t\t\t\t   --,LastPeriodAccountBilled\r\n\t\t\t\t\t\t\t   --,ManualPaymentOverride\r\n\t\t\t\t\t\t\t   ,ActualOrEstimated\r\n\t\t\t\t\t\t\t   ,AuthenticatedUserID\r\n\t\t\t\t\t\t\t   ,DateAdded\r\n\t\t\t\t\t\t\t   ,LastUpdate\r\n\t\t\t\t\t\t\t   )\r\n\t\t\t\t\t\t VALUES\r\n\t\t\t\t\t\t\t   (\r\n\t\t\t\t\t\t\t\t@utilityCompany\r\n\t\t\t\t\t\t\t   ,@invoiceBillingGroup\r\n\t\t\t\t\t\t\t   ,(CAST(@accountSeqid AS int))\r\n\t\t\t\t\t\t\t   ,@UniqueAccountSeqID /* added on 1/18/2019 */\r\n\t\t\t\t\t\t\t   ,@AccountNumber\r\n\t\t\t\t\t\t\t   ,@accountEnergySource\r\n\t\t\t\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t\t\t\t   ,'O'\r\n\t\t\t\t\t\t\t   ,'N'\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   --,0.00\r\n\t\t\t\t\t\t\t   --,0.00\r\n\t\t\t\t\t\t\t   ,'Y'\r\n\t\t\t\t\t\t\t   --,@lastPeriodBilled\r\n\t\t\t\t\t\t\t   --,'N'\r\n\t\t\t\t\t\t\t   ,'ACT'\r\n\t\t\t\t\t\t\t   ,@authenticatedUserID\r\n\t\t\t\t\t\t\t   ,GETDATE()\r\n\t\t\t\t\t\t\t   ,GETDATE()\r\n\t\t\t\t\t\t\t   )\r\n\t\t\t\t\t\t\t   \r\n\t\t\t\t\t-- Get the header sequence id after it is inserted\r\n\t\t\t\t\tselect @HeaderSeqid  = ident_current('ManualBill.AccountManualBillingHeader')\t\t   \r\n\t\t\t\t\t\t\t   \r\n\t\t\t\t\t-- insert the DETAIL record\r\n\t\t\t\t\tINSERT INTO ManualBill.AccountManualBillingDetail\r\n\t\t\t\t\t\t\t   (\r\n\t\t\t\t\t\t\t\t--IsRecreatedLegacyCancellationData\r\n\t\t\t\t\t\t\t    AccountManualBillingHeaderSeqid\r\n\t\t\t\t\t\t\t   ,OriginalAccountNumber\r\n\t\t\t\t\t\t\t   ,IsCancellation\r\n\t\t\t\t\t\t\t   ,EnergySource\r\n\t\t\t\t\t\t\t   ,BillingPeriod\r\n\t\t\t\t\t\t\t   ,BillingPeriodRevision\r\n\t\t\t\t\t\t\t   ,FirstBillingPeriodCanceled\r\n\t\t\t\t\t\t\t   ,BillingAction\r\n\t\t\t\t\t\t\t   ,ActualOrEstimated\r\n\t\t\t\t\t\t\t   ,BilledAmount\r\n\t\t\t\t\t\t\t   ,Tax\r\n\t\t\t\t\t\t\t   ,NetBilledAmount\r\n\t\t\t\t\t\t\t   ,EnergyUsage\r\n\t\t\t\t\t\t\t   ,DemandUsage\r\n\t\t\t\t\t\t\t   ,AuthenticatedUserID\r\n\t\t\t\t\t\t\t   ,DateAdded\r\n\t\t\t\t\t\t\t   ,LastUpdate\r\n\t\t\t\t\t\t\t   )\r\n\t\t\t\t\tVALUES\r\n\t\t\t\t\t\t\t   (\r\n\t\t\t\t\t\t\t   --'N'\r\n\t\t\t\t\t\t\t    @HeaderSeqid\r\n\t\t\t\t\t\t\t   ,@accountNumber\r\n\t\t\t\t\t\t\t   ,'N'\r\n\t\t\t\t\t\t\t   ,@accountEnergySource\r\n\t\t\t\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t\t\t\t   ,@BillingPeriod\r\n\t\t\t\t\t\t\t   ,'O'\r\n\t\t\t\t\t\t\t   ,'ACT'\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   ,0.00\r\n\t\t\t\t\t\t\t   ,@authenticatedUserID\r\n\t\t\t\t\t\t\t   ,getdate()\r\n\t\t\t\t\t\t\t   ,getdate()\r\n\t\t\t\t\t\t\t   )\r\n\t\t\t\t\t\t\t   \r\n\t\t\t\t\t\t\t   \r\n\t\t\t\t\t\t\t   \r\n\t\t\t\t\t\r\n\t\t\t\t\t\r\n\t\t\t  END\r\n\t\t\t  \r\n\t\t\t  -- prep for next iteration\r\n\t\t\t  SET @accountSeqidList = RIGHT(@accountSeqidList, LEN(@accountSeqidList) - @Pos)\r\n\t\t\t  SET @Pos = CHARINDEX(',', @accountSeqidList, 1)\r\n\t\t\r\n\t\tEND -- loop ends here\r\n\t  \r\n\t\t-- success completion\r\n\t\tSET @output = 0 \r\n\t\r\n\t           \r\nEND"
+        }
+      ]
+    }
+  ]
+}

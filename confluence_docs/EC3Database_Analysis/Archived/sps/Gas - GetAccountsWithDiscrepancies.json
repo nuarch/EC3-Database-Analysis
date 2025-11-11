@@ -1,0 +1,834 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Gas",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "GetAccountsWithDiscrepancies",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "GetAccountsWithDiscrepancies",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to identify discrepancies in billing data for gas accounts. It compares billing adjustments and actual billed amounts for accounts within a specified utility company, billing period, and billing group. The procedure first gathers detailed billing information into a temporary table and then compares this data against uploaded billing adjustments to find accounts where there are mismatches in billed amounts, therms, or CCF (hundred cubic feet)."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple joins and aggregations, which increases its complexity. It also uses a temporary table to store intermediate results, which adds to the complexity but is necessary for the logic implemented. The complexity is further increased by the need to ensure data consistency across multiple related tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@UtilityCompanySeqID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the utility company for which the discrepancies are being checked."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod VARCHAR(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the billing period to filter the data. The format is assumed to be 'YYYYMM'."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@CurrentInvoiceAccountBillingGroupSeqid int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the billing group within the utility company for which discrepancies are being checked."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Collection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by selecting distinct billing records from the "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", and "
+                },
+                {
+                  "type": "text",
+                  "text": "Billing.AccountBillingAdjustmentGas",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables. These records are filtered based on the input parameters and stored in a temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "#AccountBillingDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Aggregation and Comparison",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure aggregates data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "gas.UploadAccountBillingAdjustmentGas",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to calculate total net amounts, therms, and CCF for each account."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It also aggregates data from the temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "#AccountBillingDetail",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " to calculate net billed amounts, therms, and CCF."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The results from these two aggregations are joined on "
+                        },
+                        {
+                          "type": "text",
+                          "text": "OriginalAccountNumber",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and compared to identify discrepancies where the totals do not match."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Output",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure outputs the accounts with discrepancies in their billing data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Cleanup",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "#AccountBillingDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is dropped at the end of the procedure to free up resources."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table can be resource-intensive, especially if the dataset is large. Indexing the temporary table could improve performance but is not implemented here."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Aggregations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins and aggregations, which can be costly in terms of performance. Ensuring that the joined columns are indexed in the source tables can help mitigate this."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Distinct Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "DISTINCT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " in the initial select statement can be expensive, especially if the dataset is large."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Volume",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the tables involved contain a large volume of data, the procedure may experience performance degradation due to the complexity of joins and aggregations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Lack of proper indexing on the columns used in joins and where clauses can lead to slow query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of a temporary table could lead to contention issues if the procedure is executed concurrently by multiple sessions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Consistency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data across the joined tables is consistent and correctly aligned by the join conditions. Any discrepancies in data integrity could lead to incorrect results."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include error handling, which could lead to unhandled exceptions if unexpected data issues occur."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\t<Author,,Name>\r\n-- Create date: <Create Date,,>\r\n-- Description:\t<Description,,>\r\n-- =============================================\r\nCREATE PROCEDURE [Gas].[GetAccountsWithDiscrepancies]\r\n\t\t\r\n\t@UtilityCompanySeqID int, \r\n\t@BillingPeriod VARCHAR(6),\r\n\t@CurrentInvoiceAccountBillingGroupSeqid int\r\nAS\r\nBEGIN\r\n\tSELECT  distinct\r\n\t\tBilling.AccountBilling.OriginalAccountNumber,\r\n        Billing.AccountBilling.UtilityCompanySeqid,\r\n        Billing.AccountBilling.CurrentInvoiceAccountBillingGroup,\r\n        Billing.AccountBillingAdjustmentGas.BillingPeriod,\r\n        Billing.AccountBilling.LastPeriodModified,\r\n        Billing.AccountBilling.AccountBillingStatus,\r\n        Billing.AccountBillingAdjustmentGas.AccountStatus,\r\n        Billing.AccountBilling.BillingPeriodRevision,\r\n        Billing.AccountBilling.OriginalBilledAmount,\r\n        Billing.AccountBilling.RevisedBilledAmount,\r\n        Billing.AccountBilling.OriginalBilledAmountPaid,\r\n        Billing.AccountBilling.PaidAdjustmentAmount,\r\n        Billing.AccountBilling.TotalAmountDue,\r\n        Billing.AccountBilling.AccountEnergyUsage,\r\n        Billing.AccountBillingGas.BilledAmount,\r\n        Billing.AccountBillingGas.TotalCCF,\r\n        Billing.AccountBillingGas.TotalTherms,\r\n        Billing.AccountBillingAdjustmentGas.RevisedBilledAmount AS abagRevisedBilledAmount,\r\n        Billing.AccountBillingAdjustmentGas.CanceledBilledAmount AS abagCanceledBilledAmount,\r\n        Billing.AccountBillingGas.DiscountedAmount AS discountedAmount,\r\n        Billing.AccountBillingAdjustmentGas.RevisedCCF,\r\n        Billing.AccountBillingAdjustmentGas.CanceledCCF,\r\n        Billing.AccountBillingAdjustmentGas.RevisedTherms,\r\n        Billing.AccountBillingAdjustmentGas.CanceledTherms,\r\n        Billing.AccountBillingAdjustmentGas.AccountBillingAdjustmentGasSeqid,\r\n        Billing.AccountBillingAdjustmentGas.AccountBillingSeqid,\r\n        Billing.AccountBillingAdjustmentGas.AccountBillingGasSeqid,\r\n        Billing.AccountBilling.AccountBillingSeqid AS abAccountBillingSeqid,\r\n        Billing.AccountBillingGas.AccountBillingSeqid AS abgAccountBillingSeqid,\r\n        Billing.AccountBillingGas.AccountBillingAdjustmentGasSeqid AS abgAccountBillingAdjustmentGasSeqid,\r\n        Billing.AccountBillingGas.AccountBillingGasSeqid AS abgAccountBillingGasSeqid\r\nINTO #AccountBillingDetail\r\nFROM Billing.AccountBilling\r\n        INNER JOIN Billing.AccountBillingGas \r\n        ON \r\n\t\t\tBilling.AccountBilling.AccountBillingSeqid = Billing.AccountBillingGas.AccountBillingSeqid\r\n\t\t\tAND \r\n\t\t\tBilling.AccountBilling.OriginalAccountNumber = Billing.AccountBillingGas.OriginalAccountNumber\r\n\t\t\tAND Billing.AccountBilling.LastPeriodModified = Billing.AccountBillingGas.LastPeriodModified\r\n\t\t\tAND Billing.AccountBilling.BillingPeriodRevision = Billing.AccountBillingGas.BillingPeriodRevision\r\n\t\t\tAND Billing.AccountBilling.BillingPeriod = Billing.AccountBillingGas.BillingPeriod\r\n\t\t\tAND Billing.AccountBilling.UtilityCompanySeqid = Billing.AccountBillingGas.UtilityCompanySeqid\r\n\t\tINNER JOIN Billing.AccountBillingAdjustmentGas \r\n\t\tON \r\n\t\t\tBilling.AccountBillingGas.LastPeriodModified = Billing.AccountBillingAdjustmentGas.BillingPeriod\r\n\t\t\tAND Billing.AccountBillingGas.OriginalAccountNumber = Billing.AccountBillingAdjustmentGas.OriginalAccountNumber\r\n\t\t\tAND Billing.AccountBillingGas.UtilityCompanySeqid = Billing.AccountBillingAdjustmentGas.UtilityCompanySeqid\r\n\t\t\tAND Billing.AccountBillingGas.BillingPeriodRevision = Billing.AccountBillingAdjustmentGas.BillingPeriodRevision\r\nWHERE   Billing.AccountBillingAdjustmentGas.BillingPeriod = @BillingPeriod \r\n        AND Billing.AccountBilling.UtilityCompanySeqid = @UtilityCompanySeqID\r\n        AND Billing.AccountBilling.CurrentInvoiceAccountBillingGroup = @CurrentInvoiceAccountBillingGroupSeqid\r\n        \r\nSELECT *\r\nfrom\r\n(\r\n\tSELECT OriginalAccountNumber, SUM(TotalRebilledAmount + TotalCanceledAmount) AS TotalNetAmount, \r\n\tSUM(RevisedTherms + CanceledTherms) AS NetTherms, \r\n\tSUM(RevisedCCF + CanceledCCF) AS NetCCF\r\n\tFROM gas.UploadAccountBillingAdjustmentGas\r\n\tGROUP BY OriginalAccountNumber\r\n) AS gasSum\r\nINNER JOIN\r\n(\r\n\tSELECT OriginalAccountNumber,\r\n\tSUM(abagRevisedBilledAmount + abagCanceledBilledAmount) AS NetBilledAmount,\r\n\tSUM(RevisedTherms + CanceledTherms) AS NetTherms,\r\n\tSUM(RevisedCCF + CanceledCCF) AS NetCCF\r\n\tFROM #AccountBillingDetail\r\n\tGROUP BY OriginalAccountNumber\r\n) AS billDetailSum\r\nON \r\ngasSum.OriginalAccountNumber = billDetailSum.OriginalAccountNumber\r\nAND \r\n(\r\n\tgasSum.TotalNetAmount <> billDetailSum.NetBilledAmount\r\n\tOR\r\n\tgasSum.NetTherms <> billDetailSum.NetTherms\r\n\tOR\r\n\tgasSum.NetCCF <> billDetailSum.NetCCF\r\n)\r\n\r\nDROP TABLE #AccountBillingDetail\r\n\r\n\r\nEND"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,948 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Preload",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_PreloadEC3BaseData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "High",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_PreloadEC3BaseData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to preload energy consumption and billing data into a table named "
+        },
+        {
+          "type": "text",
+          "text": "Preload.EC3BaseData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". It processes data for a specified fiscal year and published month, performing several operations including data validation, deletion of previous data, insertion of new data, and normalization of energy usage. The procedure ensures that the data is consistent and complete for the given fiscal year by checking for missing records and handling them appropriately."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: High"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure is complex due to its multiple steps, use of temporary tables, conditional logic, and error handling. It involves data validation, transformation, and normalization processes, which require a deep understanding of the underlying data structures and business rules."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@fy AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the fiscal year for which the data is being preloaded. If not provided, it defaults to the next year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@publishedMonth AS INT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Specifies the month for which the data is being processed. This parameter is mandatory."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy AS VARCHAR(25) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Indicates the user or system initiating the procedure. Defaults to 'SYSTEM' if not provided."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization and Defaults",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets default values for fiscal year and action initiator. Calculates the base year as two years prior to the fiscal year."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Checks for the existence of required data in "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.DegreeDay",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.BudgetGroupByFY",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " tables. Throws errors if data is missing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Deletes existing records for the specified fiscal year from "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.EC3BaseData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Insertion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": "
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts data from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "EC3DB.Published_AccountLevelRawDataForCurrentPeriod",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " into a temporary table "
+                        },
+                        {
+                          "type": "text",
+                          "text": "preloadTbl",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Aggregates and inserts processed data into "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Preload.EC3BaseData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Handling Missing Records",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies and inserts missing billing records for agency-budget group pairs that do not have complete data for all months."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates "
+                },
+                {
+                  "type": "text",
+                  "text": "StreetLightingFacilityPoints",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " based on data from "
+                },
+                {
+                  "type": "text",
+                  "text": "EC3DB.Billing_AccountBilling",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Normalization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Normalizes energy usage data based on degree days and energy type."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Adjustments",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates normalized energy usage and reactive power energy columns."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Uses transactions to ensure data integrity, with error handling to rollback in case of failures."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the tables involved, especially those with large datasets like "
+                },
+                {
+                  "type": "text",
+                  "text": "Preload.EC3BaseData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", are properly indexed to optimize query performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Batch Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Consider processing data in smaller batches if the dataset is large to avoid locking and performance degradation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of transactions and potential locking should be monitored to prevent blocking issues in a multi-user environment."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure assumes that the data in source tables is accurate and complete. Any discrepancies could lead to incorrect preloading."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While the procedure includes error handling, it may not cover all possible exceptions, especially those related to data inconsistencies."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volume grows, the procedure may face performance bottlenecks, particularly during the aggregation and normalization steps."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Values",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of hardcoded values for budget group IDs and other parameters could lead to maintenance challenges if these values change."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Resource Utilization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure may consume significant resources during execution, impacting other operations on the database server."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Preload].[USP_PreloadEC3BaseData]\n(\r\n\t@fy AS INT = NULL\r\n\t,@publishedMonth AS INT\r\n\t,@actionBy AS VARCHAR(25) = NULL\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @baseYear AS INT, @createdDate AS DATETIME = GETDATE(), @streetLightingBudgetGroupDEM AS INT = 7, @excessDistBudgetGroupDEMs AS input.UDT_IDList\r\n\t\t,@pollutionBudgetGroupDEMs AS input.UDT_IDList, @streetLightingBudgetGroupDEMs AS input.UDT_IDList, @TranName AS VARCHAR(20) = 'TransEC3BaseData'\r\n\t\t,@errMsg AS VARCHAR(255);\r\n\r\n\tSELECT @fy = ISNULL(@fy, DATEPART(yyyy, GETDATE())+1), @actionBy = ISNULL(@actionBy, 'SYSTEM');\r\n\t-- Why is this 2 years prior by default\r\n\t-- We should pull in the selected base year here\r\n\tSET @baseYear = @fy-2;\r\n\r\n\tINSERT INTO @excessDistBudgetGroupDEMs (ID) VALUES (15), (48);\r\n\tINSERT INTO @pollutionBudgetGroupDEMs (ID) VALUES (5), (6);\r\n\tINSERT INTO @streetLightingBudgetGroupDEMs (ID) VALUES (7), (21);\r\n\r\n\tBEGIN TRY\r\n\t\tBEGIN TRAN @TranName;\r\n\r\n\t\t-- 1. check Preload.DegreeDay and Preload.BudgetGroup tables\r\n\t\tIF NOT EXISTS (SELECT 1 FROM Preload.DegreeDay WHERE BillingPeriod/100 = @baseYear)\r\n\t\tBEGIN\r\n\t\t\tSET @errMsg = CONCAT('There is no ', CAST(@baseYear AS VARCHAR(4)), '(BaseYear) data in Preload.DegreeDay table.');\r\n\t\t\tTHROW 88001, @errMsg, 1;\r\n\t\tEND;\r\n\r\n\t\tIF NOT EXISTS (SELECT 1 FROM Preload.BudgetGroupByFY WHERE FY = @fy)\r\n\t\tBEGIN\r\n\t\t\tSET @errMsg = CONCAT('There is no ', CAST(@fy AS VARCHAR(4)), '(FY) data in Preload.BudgetGroup table.');\r\n\t\t\tTHROW 88002, @errMsg, 1;\r\n\t\tEND;\r\n\r\n\t\t-- 2. delete previous preload\r\n\t\tDELETE FROM Preload.EC3BaseData WHERE FY = @fy;\r\n\r\n\t\t-- 3. insert FROM EC3 Database.Published.AccountLevelRawDataForCurrentPeriod\r\n\t\tWITH preloadTbl AS(SELECT ep.BillingPeriod\r\n\t\t\t,ep.AgencyCodeOEC\r\n\t\t\t,ep.BillingCycle\r\n\t\t\t,ep.UtilityCompany\r\n\t\t\t,ep.UtilityCompanySeqId\r\n\t\t\t,ep.IsTimeOfDayAccount\r\n\t\t\t,ep.CurrentAccountNumber\r\n\t\t\t,ep.DeliveryTariffRate\r\n\t\t\t,ep.EnergyUnit\r\n\t\t\t,ep.EnergyType AS EnergyType\r\n\t\t\t,ep.BudgetGroupDEM AS BudgetGroupDEM\r\n\t\t\t,ep.RevisedBilledAmount\r\n\t\t\t,CASE WHEN ep.EnergyUnit = 'GALLON' THEN 50.00 * ep.AccountEnergyUsage\r\n\t\t\t\tELSE ep.AccountEnergyUsage END AS AccountEnergyUsage\r\n\t\t\t,ISNULL(ep.AccountDemandUsage, 0) AS AccountDemandUsage\r\n\t\t\t,ISNULL(ep.OnPeakEnergyUsage, 0) AS OnPeakEnergyUsage\r\n\t\t\t,ISNULL(ep.OffPeakEnergyUsage, 0) AS OffPeakEnergyUsage\r\n\t\t\t,ISNULL(ep.RevisedReactivePowerDollars, 0) AS RevisedReactivePowerDollars\r\n\t\t\t,ISNULL(ep.AccountReactivePowerEnergy, 0) AS AccountReactivePowerEnergy\r\n\t\t\t,ep.IsMinimumBilledCharged\r\n\t\t\t,ISNULL(ep.MinimumBilledDemandDollars, 0) AS MinimumBilledDemandDollars\r\n\t\t\t,ISNULL(ep.MinimumBilledDemandUsage, 0) AS MinimumBilledDemandUsage\r\n\t\t\t,ep.IsDeliveryMinimumBilledFlag\r\n\t\t\t,ISNULL(ep.DeliveryMinimumBilledAmount, 0) AS DeliveryMinimumBilledAmount\r\n\t\t\t,ISNULL(ep.DeliveryMinimumBilledDemand, 0) AS DeliveryMinimumBilledDemand\r\n\t\t\t,ISNULL(ep.MinimumBilledEnergyDollars, 0) AS MinimumBilledEnergyDollars\r\n\t\t\t,ISNULL(ep.MinimumBilledEnergyUsage, 0) AS MinimumBilledEnergyUsage\r\n\t\t\t,ISNULL(ep.StreetLightingFacilityPoints, 0) AS DeliveryStreetLightingFacilityPoints\r\n\t\t\t,ISNULL(ep.CustomerLevelAdjustmentAmount, 0) AS CustomerLevelAdjustmentAmount\r\n\t\t\t,ISNULL(ep.CommodityAllocationCharge, 0) AS CommodityAllocationCharge\r\n\t\t\t,ISNULL(ep.DeliveryAllocationCharge, 0) AS DeliveryAllocationCharge\r\n\t\tFROM EC3DB.Published_AccountLevelRawDataForCurrentPeriod AS ep\r\n\t\t\tINNER JOIN EC3DB.Billing_UtilityTariffRateInformation AS euti ON ep.UtilityTariffRateInformationSeqId = euti.UtilityTariffRateInformationSeqId\r\n\t\tWHERE (SUBSTRING(ep.BillingPeriod, 1, 4) = CAST(@baseYear AS VARCHAR(4)))\r\n\t\t\tAND ep.AccountStatus NOT IN ('28'))\r\n\r\n\t\tINSERT INTO Preload.EC3BaseData(AgencyCodeOEC\r\n\t\t\t,BudgetGroupDEM\r\n\t\t\t,BillingPeriod\r\n\t\t\t,BaseEnergyUsage\r\n\t\t\t,BaseDemandUsage\r\n\t\t\t,BaseBilledDollars\r\n\t\t\t,NumberOfDistinctAccounts\r\n\t\t\t,AdditionalProductionDemandUnitsBilled\r\n\t\t\t,AdditionalDeliveryDemandUnitsBilled\r\n\t\t\t,Additional062MinimumBilledEnergyUsageUnits\r\n\t\t\t,BaseOnPeakEnergyUsage\r\n\t\t\t,BaseOffPeakEnergyUsage\r\n\t\t\t,BaseAccountReactivePowerEnergy\r\n\t\t\t,DeliveryStreetLightingFacilityPoints\r\n\t\t\t,StreetLightingFacilityPoints\r\n\t\t\t,CommodityAllocationChargeAdder\r\n\t\t\t,DeliveryAllocationChargeAdder\r\n\t\t\t,IsNotBilled\r\n\t\t\t,CreatedDate\r\n\t\t\t,CreatedBy)\r\n\t\tSELECT AgencyCodeOEC\r\n\t\t\t,BudgetGroupDEM\r\n\t\t\t,BillingPeriod\r\n\t\t\t,SUM(AccountEnergyUsage) AS EnergyUsage\r\n\t\t\t,SUM(ISNULL(AccountDemandUsage, 0)) AS DemandUsage\r\n\t\t\t,SUM(RevisedBilledAmount) AS BilledDollars\r\n\t\t\t,COUNT(DISTINCT CurrentAccountNumber) AS NumberOfDistinctAccounts\r\n\t\t\t,SUM(CASE WHEN IsMinimumBilledCharged = 'Y' THEN MinimumBilledDemandUsage - ISNULL(AccountDemandUsage, 0)\r\n\t\t\t\tELSE 0 END) AS AdditionalProductionDemandUnitsBilled\r\n\t\t\t,SUM(CASE WHEN IsDeliveryMinimumBilledFlag = 'Y' THEN DeliveryMinimumBilledDemand - ISNULL(AccountDemandUsage, 0)\r\n\t\t\t\tELSE 0 END) AS AdditionalDeliveryDemandUnitsBilled\r\n\t\t\t,SUM(CASE WHEN DeliveryTariffRate = '062' AND (50 - ISNULL(AccountEnergyUsage, 0) > 0) THEN 50 - ISNULL(AccountEnergyUsage, 0)\r\n\t\t\t\tELSE 0 END) AS Additional062MinimumBilledEnergyUsageUnits\r\n\t\t\t,SUM(OnPeakEnergyUsage) AS OnPeakEnergyUsage\r\n\t\t\t,SUM(OffPeakEnergyUsage) AS OffPeakEnergyUsage\r\n\t\t\t,SUM(AccountReactivePowerEnergy) AS BaseAccountReactivePowerEnergy\r\n\t\t\t,SUM(ISNULL(DeliveryStreetLightingFacilityPoints, 0)) AS DeliveryStreetLightingFacilityPoints\r\n\t\t\t,0 AS StreetLightingFacilityPoints\r\n\t\t\t,SUM(ISNULL(CustomerLevelAdjustmentAmount, 0) + ISNULL(CommodityAllocationCharge, 0)) AS CommodityAllocationChargeAdder\r\n\t\t\t,SUM(ISNULL(DeliveryAllocationCharge, 0)) AS DeliveryAllocationChargeAdder\r\n\t\t\t,0 AS IsNotBilled\r\n\t\t\t,@createdDate\r\n\t\t\t,@actionBy\r\n\t\tFROM preloadTbl\r\n\t\tGROUP BY AgencyCodeOEC, BudgetGroupDEM, BillingPeriod;\r\n\r\n\t\t-- 4. Insert Missing billing records for existing Agency-BudgetGroups\r\n\t\tWITH notBilledAgcBGrpTbl AS(SELECT AgencyCodeOEC, BudgetGroupDEM\r\n\t\t\tFROM preload.ec3basedata\r\n\t\t\tWHERE FY = @fy\r\n\t\t\tGROUP BY AgencyCodeOEC, BudgetGroupDEM\r\n\t\t\tHAVING COUNT(1) < 12)\r\n\t\t,billingPeriodTbl AS (SELECT DISTINCT BillingPeriod\r\n\t\t\tFROM Preload.EC3BaseData\r\n\t\t\tWHERE FY = @fy)\r\n\t\t,notBilledAgcBGrpBillingPrdTbl AS (SELECT N.AgencyCodeOEC, N.BudgetGroupDEM, A.BillingPeriod\r\n\t\t\tFROM notBilledAgcBGrpTbl AS N CROSS JOIN billingPeriodTbl AS A\r\n\t\t\tEXCEPT SELECT a.AgencyCodeOEC, a.BudgetGroupDEM, a.BillingPeriod\r\n\t\t\tFROM preload.ec3basedata AS a\r\n\t\t\t\tINNER JOIN notBilledAgcBGrpTbl AS b ON a.AgencyCodeOEC = b.AgencyCodeOEC AND a.BudgetGroupDEM = b.BudgetGroupDEM\r\n\t\t\tWHERE a.FY = @fy)\r\n\t\tINSERT INTO Preload.EC3BaseData(AgencyCodeOEC\r\n\t\t\t,BudgetGroupDEM\r\n\t\t\t,BillingPeriod\r\n\t\t\t,BaseEnergyUsage\r\n\t\t\t,BaseDemandUsage\r\n\t\t\t,BaseBilledDollars\r\n\t\t\t,NumberOfDistinctAccounts\r\n\t\t\t,AdditionalProductionDemandUnitsBilled\r\n\t\t\t,AdditionalDeliveryDemandUnitsBilled\r\n\t\t\t,Additional062MinimumBilledEnergyUsageUnits\r\n\t\t\t,BaseOnPeakEnergyUsage\r\n\t\t\t,BaseOffPeakEnergyUsage\r\n\t\t\t,BaseAccountReactivePowerEnergy\r\n\t\t\t,DeliveryStreetLightingFacilityPoints\r\n\t\t\t,StreetLightingFacilityPoints\r\n\t\t\t,CommodityAllocationChargeAdder\r\n\t\t\t,DeliveryAllocationChargeAdder\r\n\t\t\t,IsNotBilled\r\n\t\t\t,CreatedDate\r\n\t\t\t,CreatedBy)\r\n\t\tSELECT AgencyCodeOEC\r\n\t\t\t,BudgetGroupDEM\r\n\t\t\t,BillingPeriod\r\n\t\t\t,0 AS EnergyUsage\r\n\t\t\t,0 AS DemandUsage\r\n\t\t\t,0 AS BilledDollars\r\n\t\t\t,1 AS NumberOfDistinctAccounts\r\n\t\t\t,0 AS AdditionalProductionDemandUnitsBilled\r\n\t\t\t,0 AS AdditionalDeliveryDemandUnitsBilled\r\n\t\t\t,0 AS Additional062MinimumBilledEnergyUsageUnits\r\n\t\t\t,0 AS OnPeakEnergyUsage\r\n\t\t\t,0 AS OffPeakEnergyUsage\r\n\t\t\t,0 AS BaseAccountReactivePowerEnergy\r\n\t\t\t,0 AS DeliveryStreetLightingFacilityPoints\r\n\t\t\t,0 AS StreetLightingFacilityPoints\r\n\t\t\t,0 AS CommodityAllocationChargeAdder\r\n\t\t\t,0 AS DeliveryAllocationChargeAdder\r\n\t\t\t,1 AS IsNotBilled\r\n\t\t\t,@createdDate\r\n\t\t\t,@actionBy\r\n\t\tFROM notBilledAgcBGrpBillingPrdTbl;\r\n\r\n\t\t-- 5. Update StreetLightingFacilityPoints\r\n\t\tUPDATE B\r\n\t\tSET B.StreetLightingFacilityPoints = S.DeliveryStreetLightingFacilityPoints\r\n\t\tFROM Preload.EC3BaseData AS B\r\n\t\t\tINNER JOIN (SELECT Eab.BillingPeriodRevision, SUM(eabe.DeliveryStreetLightingFacilityPoints) AS DeliveryStreetLightingFacilityPoints\r\n\t\t\tFROM EC3DB.Billing_AccountBilling AS Eab\r\n\t\t\t\tINNER JOIN EC3DB.Billing_AccountBillingElectric AS eabe ON Eab.AccountBillingSeqId = eabe.MonthlyAccountBillingChargesElectric\r\n\t\t\tWHERE SUBSTRING(Eab.BillingPeriodRevision, 1, 4) = CAST(@baseYear AS VARCHAR(4))\r\n\t\t\tGROUP BY Eab.BillingPeriodRevision) AS S ON B.BillingPeriod%100 = CAST(S.BillingPeriodRevision AS INT)%100\r\n\t\tWHERE B.FY = @fy\r\n\t\t\tAND B.BudgetGroupDEM = @streetLightingBudgetGroupDEM;\r\n\r\n\t\t-- 6. Normalize Usages\r\n\t\tWITH minTbl AS(SELECT a.PreloadBillingDataSeqId\r\n\t\t\t\t,c.EnergyType\r\n\t\t\t\t,b.IsHeatingDegreeDayPeriod\r\n\t\t\t\t,b.NormalCoolingDegreeDays\r\n\t\t\t\t,b.NormalHeatingDegreeDays\r\n\t\t\t\t,b.ActualCoolingDegreeDays\r\n\t\t\t\t,b.ActualHeatingDegreeDays\r\n\t\t\t\t,MIN(ISNULL(a.BaseDemandUsage, 0)) OVER (PARTITION BY a.AgencyCodeOEC, a.BudgetGroupDEM) AS MinimumBaseDemandUsage\r\n\t\t\t\t,MIN(ISNULL(a.BaseOnPeakEnergyUsage, 0)) OVER (PARTITION BY a.AgencyCodeOEC, a.BudgetGroupDEM) AS MinimumBaseOnPeakEnergyUsage\r\n\t\t\t\t,MIN(ISNULL(a.BaseOffPeakEnergyUsage, 0)) OVER (PARTITION BY a.AgencyCodeOEC, a.BudgetGroupDEM) AS MinimumBaseOffPeakEnergyUsage\r\n\t\t\tFROM Preload.EC3BaseData AS a\r\n\t\t\t\tINNER JOIN Preload.DegreeDay AS b ON a.billingperiod = b.billingperiod\r\n\t\t\t\tINNER JOIN Preload.BudgetGroup AS c ON a.BudgetGroupDEM = c.BudgetGroupID\r\n\t\t\tWHERE a.FY = @fy)\r\n\t\tUPDATE B\r\n\t\tSET\tNormalizedOnPeakEnergyUsage =\r\n\t\t\tCASE WHEN B.BudgetGroupDEM IN (SELECT ID FROM @pollutionBudgetGroupDEMs UNION SELECT ID FROM @streetLightingBudgetGroupDEMs) THEN ISNULL(B.BaseOnPeakEnergyUsage, 0)\r\n\t\t\tELSE CASE WHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('GAS', 'STM') AND C.NormalHeatingDegreeDays <> 0\r\n\t\t\t\t\tTHEN ((B.BaseOnPeakEnergyUsage - C.MinimumBaseOnPeakEnergyUsage) * (C.NormalHeatingDegreeDays * 1.00 / C.ActualHeatingDegreeDays) + C.MinimumBaseOnPeakEnergyUsage)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('GAS', 'STM') AND C.NormalHeatingDegreeDays = 0 THEN B.BaseOnPeakEnergyUsage\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('GAS', 'STM') THEN B.BaseOnPeakEnergyUsage\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod\t= 'N' AND C.EnergyType IN ('ELE', 'CHW') AND C.NormalCoolingDegreeDays <> 0\r\n\t\t\t\tTHEN ((B.BaseOnPeakEnergyUsage - C.MinimumBaseOnPeakEnergyUsage) * (C.NormalCoolingDegreeDays * 1.00 / C.ActualCoolingDegreeDays) + C.MinimumBaseOnPeakEnergyUsage)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('ELE', 'CHW') AND C.NormalCoolingDegreeDays = 0 THEN B.BaseOnPeakEnergyUsage\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('ELE', 'CHW') THEN B.BaseOnPeakEnergyUsage\r\n\t\t\t\tELSE -9999999999 END\r\n\t\t\tEND\r\n\t\t\t,NormalizedOffPeakEnergyUsage =\r\n\t\t\tCASE WHEN B.BudgetGroupDEM IN (SELECT ID FROM @pollutionBudgetGroupDEMs UNION SELECT ID FROM @streetLightingBudgetGroupDEMs) THEN ISNULL(B.BaseOffPeakEnergyUsage, 0)\r\n\t\t\tELSE CASE WHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('GAS', 'STM') AND C.NormalHeatingDegreeDays <> 0\r\n\t\t\t\t\tTHEN ((B.BaseOffPeakEnergyUsage - C.MinimumBaseOffPeakEnergyUsage) * (C.NormalHeatingDegreeDays * 1.00 / C.ActualHeatingDegreeDays) + C.MinimumBaseOffPeakEnergyUsage)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('GAS', 'STM') AND C.NormalHeatingDegreeDays = 0 THEN B.BaseOffPeakEnergyUsage\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('GAS', 'STM') THEN B.BaseOffPeakEnergyUsage\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('ELE', 'CHW')\r\n\t\t\t\t\tTHEN ((B.BaseOffPeakEnergyUsage - C.MinimumBaseOffPeakEnergyUsage) * (C.NormalCoolingDegreeDays * 1.00 / C.ActualCoolingDegreeDays) + C.MinimumBaseOffPeakEnergyUsage)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('ELE', 'CHW') THEN B.BaseOffPeakEnergyUsage\r\n\t\t\t\tELSE -9999999999 END\r\n\t\t\tEND\r\n\t\t\t,NormalizedDemandUsage =\r\n\t\t\tCASE WHEN B.BudgetGroupDEM IN (SELECT ID FROM @pollutionBudgetGroupDEMs UNION SELECT ID FROM @streetLightingBudgetGroupDEMs) THEN ISNULL(B.BaseDemandUsage, 0)\r\n\t\t\tELSE CASE WHEN C.EnergyType IN ('GAS', 'STM')  THEN ISNULL(B.BaseDemandUsage, 0)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('ELE', 'CHW') AND C.NormalCoolingDegreeDays <> 0\r\n\t\t\t\t\tTHEN ((ISNULL(B.BaseDemandUsage, 0) - ISNULL(C.MinimumBaseDemandUsage, 0)) * (C.NormalCoolingDegreeDays * 1.00 / C.ActualCoolingDegreeDays) + ISNULL(C.MinimumBaseDemandUsage, 0))\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'N' AND C.EnergyType IN ('ELE', 'CHW') AND C.NormalCoolingDegreeDays = 0  THEN ISNULL(B.BaseDemandUsage, 0)\r\n\t\t\t\tWHEN C.IsHeatingDegreeDayPeriod = 'Y' AND C.EnergyType IN ('ELE', 'CHW') THEN ISNULL(B.BaseDemandUsage, 0)\r\n\t\t\t\tELSE -9999999999 END\r\n\t\t\tEND\r\n\t\tFROM Preload.EC3BaseData AS B\r\n\t\t\tINNER JOIN minTbl AS C ON C.PreloadBillingDataSeqid = B.PreloadBillingDataSeqid\r\n\t\tWHERE B.FY = @fy AND B.BudgetGroupDEM NOT IN (SELECT ID FROM @excessDistBudgetGroupDEMs);\r\n\t\t\r\n\t\t-- 7. Special handling for NormalizedEnergyUsage and NormalizedAccountReactivePowerEnergy Columns\r\n\t\tUPDATE Preload.EC3BaseData\r\n\t\tSET NormalizedEnergyUsage = CASE WHEN BudgetGroupDEM IN (SELECT ID FROM @pollutionBudgetGroupDEMs UNION SELECT ID FROM @streetLightingBudgetGroupDEMs) THEN ISNULL(BaseEnergyUsage, 0)\r\n\t\t\t\tELSE NormalizedOnPeakEnergyUsage + NormalizedOffPeakEnergyUsage END\r\n\t\t\t,NormalizedAccountReactivePowerEnergy = BaseAccountReactivePowerEnergy\r\n\t\tWHERE FY = @fy AND BudgetGroupDEM NOT IN (SELECT ID FROM @excessDistBudgetGroupDEMs);\r\n\r\n\t\tCOMMIT TRAN @TranName;\r\n\r\n\t\tSELECT COUNT(1) AS Preload_EC3BaseData_RowCount, COUNT(1)/12 AS Agency_BudgetGroup_Pair_Count FROM Preload.EC3BaseData WHERE FY = @fy;\r\n\tEND TRY\r\n\tBEGIN CATCH\r\n\t    SELECT ERROR_NUMBER() AS ErrorNumber, ERROR_STATE() AS ErrorState, ERROR_MESSAGE() AS ErrorMessage, ERROR_LINE () AS ErrorLine;\r\n\r\n\t\tIF (@@TRANCOUNT > 0)\r\n\t\tBEGIN\r\n\t\t\tROLLBACK TRAN @TranName;\r\n\t\tEND;\r\n\tEND CATCH;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,952 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "NationalGridWest",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_LegacyData_Main_ProcessLegacyNationalGridData",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_LegacyData_Main_ProcessLegacyNationalGridData",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to process legacy data related to the National Grid West. It handles various stages of data processing, including raw data preparation, account and meter data processing, and data transfer. The procedure is structured to execute multiple sub-procedures that handle specific tasks such as processing unspanned and spanned data records, handling account and meter cancellations, and preparing data for transfer to schema tables."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The complexity of this stored procedure is medium. It involves multiple steps and calls to other stored procedures, which indicates a layered and modular approach to data processing. However, the logic is straightforward, focusing on sequential execution of tasks without complex conditional logic or loops."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingPeriod varchar(6)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing period in a format such as 'YYYYMM'. It is used to filter and process data specific to a particular billing cycle."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@authenticatedID int",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Likely represents an identifier for the authenticated user or process executing the procedure, possibly for logging or auditing purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@BillingCycle varchar(1)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Represents the billing cycle, which might be used to differentiate between different cycles within the same billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@TotalDiscountedAmount billingAmt",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": This parameter is intended to hold a monetary value, possibly representing the total discounted amount for the billing period. However, its usage within the procedure is limited to being passed to another procedure."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Raw Data Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Although commented out, the procedure initially intended to prepare raw data using "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_LegacyData_PrepareRawData",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Account Data Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processes unspanned account data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessAccountUnspanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processes spanned account data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessAccountSpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Handles account cancellations for both unspanned and spanned data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessAccountCancellationUnspanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessAccountCancellationSpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Meter Data Processing",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processes unspanned meter data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessMeterUnspanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Processes spanned meter data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessMeterSpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Handles meter cancellations for both unspanned and spanned data using "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessMeterCancellationUnspanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "usp_LegacyData_ProcessMeterCancellationSpanned",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Preparation for Transfer",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Prepares data for transfer using "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_LegacyData_PrepareDataTransfer",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", passing the billing period, authenticated ID, billing cycle, and total discounted amount."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Transfer to Schema Tables",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Transfers the prepared data to schema tables using "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_LegacyData_TransferDataToSchemaTables",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The procedure is designed to handle a significant amount of data processing, which could impact performance depending on the volume of data and the efficiency of the sub-procedures."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The initial run time is noted as 21 seconds, with subsequent runs taking 5-6 seconds, suggesting that the procedure may benefit from caching or pre-processing."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The use of multiple sub-procedures allows for modular processing, which can be optimized individually for better performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Commented Code",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The presence of commented-out code, such as the raw data preparation step, suggests incomplete or deprecated functionality that could lead to confusion or errors if not properly documented or maintained."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The "
+                },
+                {
+                  "type": "text",
+                  "text": "@TotalDiscountedAmount",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter is not utilized within the main procedure logic, which could indicate an oversight or a need for further integration with the business logic."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or failures during execution. Implementing try-catch blocks or error logging would enhance robustness."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As data volumes grow, the procedure may face scalability challenges, particularly if the sub-procedures are not optimized for large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of an "
+                },
+                {
+                  "type": "text",
+                  "text": "@authenticatedID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " parameter suggests a need for security and auditing, but the procedure does not explicitly handle authentication or authorization checks."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "-- =============================================\n-- Author:\t\tDerek Ho\r\n-- Create date: 08/01/2008\r\n-- Description:\tProcess Legacy Nation Grid West Data. Processing time: 21 seconds for the initial run, 5-6 seconds for the second run\r\n--\tdeclare @message varchar(1000)\r\n--\tdeclare @result bit\r\n--\texec [NationalGridWest].[usp_LegacyData_Main_ProcessLegacyNationalGridData] '200607', '1', 'B', @result output, @message output\r\n--\tselect @message\r\n-- =============================================\r\nCREATE PROCEDURE [NationalGridWest].[usp_LegacyData_Main_ProcessLegacyNationalGridData]\r\n\t@BillingPeriod varchar(6),\r\n\t@authenticatedID int,\r\n\t@BillingCycle varchar(1),\r\n\t@TotalDiscountedAmount billingAmt\r\n\t--@validationResult bit output, -- 1: success; 0: fail\r\n\t--@validationMessage varchar(2000) OUTPUT --  message return\r\n\r\nAS\r\nBEGIN\r\n\r\n\r\n\r\n\t\t/*************************** \r\n\t\t[1] process Raw data\r\n\t\t****************************/\r\n\t\t--exec NationalGridWest.usp_LegacyData_PrepareRawData @BillingPeriod\r\n\r\n\t\t/* QA test case \r\n\t\tdelete  from\r\n\t\tNationalGridWest.UploadLegacyNationalGridWestDataPreload\r\n\t\tWHERE dbo.KeyspanConvertLegacyAccountToEC3Number(dbo.KeyspanConvertCancellationAccountNumber([KeyspanOldAccountNumber],BilledAmount)) <> '008945100012400'\r\n\t\t\r\n\t\t--SELECT * FROM NationalGridWest.UploadLegacyNationalGridWestDataPreload\r\n\t\t */\r\n\t\t--RETURN \r\n\t\t/*************************** \r\n\t\t[2] process account data\r\n\t\t****************************/\r\n\r\n\r\n\t\t-- (2.1) process account level unspanned data record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessAccountUnspanned @BillingPeriod, @authenticatedID, @BillingCycle\t\r\n\r\n\t\t-- (2.2) process account level spanned data record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessAccountSpanned @BillingPeriod, @authenticatedID, @BillingCycle\r\n\t\t\r\n\t\t\r\n\r\n\r\n\r\n\t\t-- (2.4) process account cancellation record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessAccountCancellationUnspanned @BillingPeriod, @authenticatedID, @BillingCycle\t\t\r\n\t\t-- (2.5) process account cancellation spanned\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessAccountCancellationSpanned @BillingPeriod, @authenticatedID, @BillingCycle\t\t\r\n\r\n\t\t\r\n\r\n\r\n\t\t/*************************** \r\n\t\t[3] process meter data\r\n\t\t****************************/\r\n\t\t\r\n\r\n\t\t-- (3.1) process meter level unspanned data record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessMeterUnspanned @BillingPeriod, @authenticatedID, @BillingCycle\t\t\r\n\t\t\r\n\t\t-- (3.2) process meter level spanned data record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessMeterSpanned @BillingPeriod, @authenticatedID, @BillingCycle\t\r\n\t\t\r\n\t\t\r\n\r\n\r\n\r\n\t\t-- (3.4) process meter cancellation record\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessMeterCancellationUnspanned @BillingPeriod, @authenticatedID, @BillingCycle\t\t\r\n\r\n\t\t-- (3.5) process meter cancellation spanned\r\n\t\texec NationalGridWest.usp_LegacyData_ProcessMeterCancellationSpanned @BillingPeriod, @authenticatedID, @BillingCycle\t\t\r\n\r\n\t\t\r\n/*\r\n*/\t\t\t\t\r\n\t\t/*************************** \r\n\t\t[4] prepare data for transfer\r\n\t\t****************************/\r\n\t    EXEC NationalGridWest.usp_LegacyData_PrepareDataTransfer @BillingPeriod, @authenticatedID, @BillingCycle, @TotalDiscountedAmount, '4'\t\t\r\n    \r\n\t    /*************************** \r\n\t\t[5] transfer data to schema \r\n\t\t****************************/\r\n\t    EXEC NationalGridWest.usp_LegacyData_TransferDataToSchemaTables '4'\r\n\t    /*{/\r\n\t    */\r\nEND"
+        }
+      ]
+    }
+  ]
+}

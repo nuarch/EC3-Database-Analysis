@@ -1,0 +1,1229 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "input",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_BaseRateDetailsSave",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_BaseRateDetailsSave",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to manage the saving of base rate details into the "
+        },
+        {
+          "type": "text",
+          "text": "input.BaseRateDetail",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table. It takes a set of base rate details as input, processes them, and updates the database accordingly. The procedure handles both updates to existing records and the insertion of new records, as well as the deletion of records that are no longer needed. It also updates metadata in related tables to reflect changes."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves several SQL operations, including conditional logic, temporary table creation, and a "
+        },
+        {
+          "type": "text",
+          "text": "MERGE",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " statement, which adds to its complexity. The use of a table-valued parameter and the need to handle different scenarios (insert, update, delete) also contribute to the medium complexity level."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@details",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A table-valued parameter of type "
+                },
+                {
+                  "type": "text",
+                  "text": "input.UDT_BaseRateDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". It contains the base rate details to be processed. This parameter is used to pass multiple rows of data into the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": An optional integer parameter with a default value of "
+                },
+                {
+                  "type": "text",
+                  "text": "NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". It specifies the budget group ID for which the base rate details are being processed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@actionBy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A string parameter with a default value of "
+                },
+                {
+                  "type": "text",
+                  "text": "'SYSTEM'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". It indicates the user or system responsible for the action, used for auditing purposes."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure begins by setting "
+                },
+                {
+                  "type": "text",
+                  "text": "NOCOUNT ON",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " to prevent the sending of row count messages, which can improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Determine Base Rate ID",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": It retrieves the maximum "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from the input details to identify the relevant base rate."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Conditional Deletion",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": If the "
+                },
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is not 35, it deletes existing records in "
+                },
+                {
+                  "type": "text",
+                  "text": "input.BaseRateDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " that match the "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " from the input details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Temporary Table Creation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A temporary table "
+                },
+                {
+                  "type": "text",
+                  "text": "#tmpBaseRates",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is created to hold existing base rate details for the specified "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Merge Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure uses a "
+                },
+                {
+                  "type": "text",
+                  "text": "MERGE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " statement to synchronize the temporary table with the input details:"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Matched Rows",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Updates existing records in the temporary table with values from the input details."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Not Matched by Target",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Inserts new records into the temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Not Matched by Source",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": ": Deletes records from the temporary table that are not present in the input details."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Final Update and Insert",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Deletes all records from "
+                },
+                {
+                  "type": "text",
+                  "text": "input.BaseRateDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for the specified "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", then inserts the processed records from the temporary table back into "
+                },
+                {
+                  "type": "text",
+                  "text": "input.BaseRateDetail",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Metadata Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates the "
+                },
+                {
+                  "type": "text",
+                  "text": "ModifiedDate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "ModifiedBy",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " fields in the "
+                },
+                {
+                  "type": "text",
+                  "text": "input.BaseRate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table for the relevant "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scenario Status Update",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Updates the status of related scenarios in the "
+                },
+                {
+                  "type": "text",
+                  "text": "budget.Scenario",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " table to "
+                },
+                {
+                  "type": "text",
+                  "text": "'REQUIRERECALC'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " if their current status is "
+                },
+                {
+                  "type": "text",
+                  "text": "'CALCULATED'",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Use of Temporary Table",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The creation and use of a temporary table can be resource-intensive, especially if the dataset is large. Indexing the temporary table could improve performance."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "MERGE Statement",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While powerful, the "
+                },
+                {
+                  "type": "text",
+                  "text": "MERGE",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " statement can be complex and may have performance implications if not optimized properly."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "DELETE and INSERT Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure performs a full delete and insert operation, which can be costly in terms of performance. Consideration should be given to optimizing these operations, especially for large datasets."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include explicit transaction handling, which could lead to issues in a concurrent environment. Implementing transactions could help maintain data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": There is no error handling in place. Adding "
+                },
+                {
+                  "type": "text",
+                  "text": "TRY...CATCH",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " blocks could help manage exceptions and ensure the procedure fails gracefully."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Assumptions on Uniqueness",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "SELECT DISTINCT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " assumes that "
+                },
+                {
+                  "type": "text",
+                  "text": "BaseRateID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "BudgetGroupID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " are unique within the input details. If this assumption is violated, it could lead to unexpected behavior."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Hardcoded Logic",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The check for "
+                },
+                {
+                  "type": "text",
+                  "text": "@budgetGroupId<>35",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is hardcoded, which reduces flexibility. If business rules change, the procedure will need to be updated."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [input].[USP_BaseRateDetailsSave]\n\t@details\t\tinput.UDT_BaseRateDetail READONLY\r\n\t, @budgetGroupId\tINT = NULL\r\n\t, @actionBy\t\tVARCHAR(25) = 'SYSTEM'\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @baseRateId INT;\r\n\r\n\tSELECT @baseRateId=MAX(BaseRateID)\r\n\tFROM @details;\r\n\r\n\tIf @budgetGroupId<>35 --Edit, then delete old first\r\n\t\tDELETE FROM input.BaseRateDetail\r\n\t\tWHERE BaseRateID = (SELECT DISTINCT BaseRateID FROM @details)\r\n\t\t\t  AND BudgetGroupID = @budgetGroupId;\r\n\r\n\t-- Create temp table with existing base rates for given base rate\r\n\tSELECT BaseRateID, BudgetGroupID, BillingPeriod\r\n\t\t,CommodityConsumption, CommodityConsumptionOffPeak, CommodityDemand\r\n\t\t,DeliveryConsumption, DeliveryDemand, DeliveryReactivePower, DeliveryFacilityPoints\r\n\t\t,CustomerCharge\r\n\tINTO #tmpBaseRates\r\n\tFROM input.BaseRateDetail\r\n\tWHERE BaseRateID = (SELECT DISTINCT BaseRateID FROM @details)\r\n\t\tAND BudgetGroupID = (SELECT DISTINCT BudgetGroupID FROM @details);\r\n\r\n\t-- Merge changes FROM input base rates table\r\n\tMERGE #tmpBaseRates AS TARGET\r\n\tUSING @details AS SOURCE\r\n\tON TARGET.BaseRateID\t\t\t= SOURCE.BaseRateID\r\n\t\tAND TARGET.BudgetGroupID\t= SOURCE.BudgetGroupID\r\n\t\tAND TARGET.BillingPeriod\t= SOURCE.BillingPeriod\r\n\tWHEN MATCHED THEN\r\n\t\tUPDATE SET\r\n\t\t\tTARGET.CommodityConsumption\t\t\t\t= SOURCE.CommodityConsumption\r\n\t\t\t, TARGET.CommodityConsumptionOffPeak\t= SOURCE.CommodityConsumptionOffPeak\r\n\t\t\t, TARGET.CommodityDemand\t\t\t\t= SOURCE.CommodityDemand\r\n\t\t\t, TARGET.DeliveryConsumption\t\t\t= SOURCE.DeliveryConsumption\r\n\t\t\t, TARGET.DeliveryDemand\t\t\t\t\t= SOURCE.DeliveryDemand\r\n\t\t\t, TARGET.DeliveryReactivePower\t\t\t= SOURCE.DeliveryReactivePower\r\n\t\t\t, TARGET.DeliveryFacilityPoints\t\t\t= SOURCE.DeliveryFacilityPoints\r\n\t\t\t, TARGET.CustomerCharge\t\t\t\t\t= SOURCE.CustomerCharge\r\n\tWHEN NOT MATCHED BY TARGET THEN\r\n\t\tINSERT (BaseRateID, BudgetGroupID\r\n\t\t\t, BillingPeriod\r\n\t\t\t, CommodityConsumption, CommodityConsumptionOffPeak, CommodityDemand\r\n\t\t\t, DeliveryConsumption, DeliveryDemand, DeliveryReactivePower, DeliveryFacilityPoints\r\n\t\t\t, CustomerCharge)\r\n\t\tVALUES (SOURCE.BaseRateID, SOURCE.BudgetGroupID, SOURCE.BillingPeriod\r\n\t\t\t, SOURCE.CommodityConsumption, SOURCE.CommodityConsumptionOffPeak, SOURCE.CommodityDemand\r\n\t\t\t, SOURCE.DeliveryConsumption, SOURCE.DeliveryDemand, SOURCE.DeliveryReactivePower, SOURCE.DeliveryFacilityPoints\r\n\t\t\t, SOURCE.CustomerCharge)\r\n\tWHEN NOT MATCHED BY SOURCE THEN\r\n\t\tDELETE;\r\n\r\n\tDELETE FROM input.BaseRateDetail\r\n\tWHERE BaseRateID = (SELECT DISTINCT BaseRateID FROM @details)\r\n\t\tAND BudgetGroupID = (SELECT DISTINCT BudgetGroupID FROM @details);\r\n\r\n\tINSERT INTO input.BaseRateDetail (BaseRateID, BudgetGroupID, BillingPeriod\r\n\t\t\t, CommodityConsumption, CommodityConsumptionOffPeak, CommodityDemand\r\n\t\t\t, DeliveryConsumption, DeliveryDemand, DeliveryFacilityPoints, DeliveryReactivePower\r\n\t\t\t, CustomerCharge)\r\n\t\tSELECT BaseRateID, BudgetGroupID, BillingPeriod\r\n\t\t\t, CommodityConsumption, CommodityConsumptionOffPeak, CommodityDemand\r\n\t\t\t, DeliveryConsumption, DeliveryDemand, DeliveryFacilityPoints, DeliveryReactivePower\r\n\t\t\t, CustomerCharge\r\n\t\tFROM #tmpBaseRates;\r\n\r\n\tUPDATE input.BaseRate\r\n\tSET ModifiedDate=GETDATE(), ModifiedBy=@actionBy\r\n\tWHERE ID = @baseRateId;\r\n\r\n\tUPDATE budget.Scenario\r\n\tSET [Status] = 'REQUIRERECALC'\r\n\tWHERE BaseRateID=@baseRateId AND [Status] IN ('CALCULATED');\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

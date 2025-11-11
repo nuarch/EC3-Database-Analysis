@@ -1,0 +1,1120 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Invoice",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "USP_InvoiceAccountBillingDelete",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "USP_InvoiceAccountBillingDelete",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to delete invoice account and billing records from a SQL Server database. It performs several operations, including deleting records from the "
+        },
+        {
+          "type": "text",
+          "text": "InvoiceAccountBilling",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " table, creating audit notes, updating payment allocations, and handling fiscal year-specific deletions. The procedure also logs the operation details and handles exceptions by rolling back transactions and logging errors."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple steps, including conditional logic, transaction management, and exception handling. It interacts with several tables and uses user-defined functions, which adds to its complexity. However, it is well-structured with clear separation of concerns, making it manageable for experienced developers."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@invoiceGroupId AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the invoice group to be deleted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@invoiceBillingId AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Identifies the specific invoice billing record to be deleted."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@comments AS VARCHAR(500) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Optional comments about the deletion."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@correlationId AS VARCHAR(128) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Correlation ID for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@machineName AS VARCHAR(128) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Name of the machine executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@processName AS VARCHAR(128) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Name of the process executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@domain AS VARCHAR(25) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Domain of the user executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@username AS VARCHAR(25) = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Username of the person executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@userId AS INT = NULL",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": User ID of the person executing the procedure."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@exceptionDetails AS VARCHAR(MAX) = NULL OUTPUT",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Output parameter to capture exception details if any occur."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Initialization",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Sets default values for various parameters and initializes logging variables."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Validation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Checks if at least one of "
+                },
+                {
+                  "type": "text",
+                  "text": "@invoiceGroupId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " or "
+                },
+                {
+                  "type": "text",
+                  "text": "@invoiceBillingId",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " is provided. Raises an error if both are null."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Retrieves invoice details from "
+                },
+                {
+                  "type": "text",
+                  "text": "vwInvoiceAccountBillings",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and fiscal year information using user-defined functions."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Management",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Begins a transaction to ensure atomicity of the delete operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Deletion Operations",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Deletes records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "InvoiceAccountBilling",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Inserts an audit note into the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Common.Note",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Updates payment allocations by inserting into a temporary table."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Deletes related records from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "InvoiceContractLineAllocation",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and "
+                        },
+                        {
+                          "type": "text",
+                          "text": "InvoiceContractLine",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " based on fiscal year conditions."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Exception Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Catches exceptions, rolls back the transaction if necessary, and logs the error details."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Logs the operation details using "
+                },
+                {
+                  "type": "text",
+                  "text": "USP_AppLogCreate",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Index Usage",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that the "
+                },
+                {
+                  "type": "text",
+                  "text": "InvoiceBillingID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " and "
+                },
+                {
+                  "type": "text",
+                  "text": "InvoiceGroupContractID",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " columns are indexed to optimize the DELETE operations."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Scope",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The transaction scope is well-defined, but long-running transactions could lead to locking issues. Consider breaking down operations if performance issues arise."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Function Calls",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of user-defined functions ("
+                },
+                {
+                  "type": "text",
+                  "text": "UDF_IsSplitFYInvoice",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", "
+                },
+                {
+                  "type": "text",
+                  "text": "UDF_GetFiscalYear",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ") could impact performance if they are complex or not optimized."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": While exceptions are caught and logged, the procedure does not re-raise the error, which might be necessary for some applications to handle errors appropriately."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Concurrency",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure could face concurrency issues if multiple instances attempt to delete the same records simultaneously. Implementing row-level locking or using isolation levels could mitigate this."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Integrity",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensure that foreign key constraints and cascading deletes are appropriately managed to maintain data integrity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging Overhead",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Extensive logging, especially with large "
+                },
+                {
+                  "type": "text",
+                  "text": "@messageDetails",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", could introduce overhead. Consider optimizing the logging mechanism if performance is impacted."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Invoice].[USP_InvoiceAccountBillingDelete]\n(\r\n\t@invoiceGroupId AS INT = NULL,@invoiceBillingId AS INT = NULL,@comments AS VARCHAR(500) = NULL,@correlationId AS VARCHAR(128) = NULL,@machineName AS VARCHAR(128) = NULL,@processName AS VARCHAR(128) = NULL,@domain AS VARCHAR(25) = NULL,@username AS VARCHAR(25) = NULL,@userId AS INT = NULL,@exceptionDetails AS VARCHAR(MAX) = NULL OUTPUT\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\r\n\tDECLARE @action AS VARCHAR(25) = 'DELETE', @severity AS VARCHAR(25) = 'INFO', @elapsedTime AS INT,@message AS VARCHAR(255) = 'Deleted invoice account(s) and billing(s)', @sendEmail AS BIT = 0,@messageDetails AS VARCHAR(MAX), @startTime AS DATETIME = GETDATE();\r\n\t\r\n\tSELECT @invoiceGroupId = NULLIF(@invoiceGroupId, 0), @invoiceBillingId = NULLIF(@invoiceBillingId, 0), @userId = ISNULL(@userId, 0),@comments = ISNULL(NULLIF(@comments, ''), 'Deleted invoice account and billing');\r\n\r\n\tSELECT @correlationId = ISNULL(@correlationId, CONVERT(VARCHAR(128), NEWID())), @machineName = COALESCE(@machineName, @@SERVERNAME, 'NA'),@processName = COALESCE(@processName, QUOTENAME(OBJECT_SCHEMA_NAME(@@PROCID)) + '.' + QUOTENAME(OBJECT_NAME(@@PROCID)), 'NA'),@messageDetails = CONVERT(VARCHAR(MAX), (SELECT @invoiceBillingId AS BILLID, @comments AS CMT FOR XML PATH('INPUTS')));\r\n\r\n\tIF (ISNULL(@invoiceGroupId, 0) = 0 AND ISNULL(@invoiceBillingId, 0) = 0)\r\n\tBEGIN\r\n RAISERROR (N'Please specify either the account or the group', 16, 1);\r\n\tEND;\r\n\r\n\tDECLARE @invoiceId AS INT, @contractID AS INT, @accountID AS INT, @fiscalYear AS VARCHAR(4), @invoiceIsSplitFY AS BIT,@currentFY AS INT, @accountNumber AS VARCHAR(15), @groupId AS INT, @tranName VARCHAR(128) = CONVERT(VARCHAR(128), NEWID());\r\n\r\n\tSELECT @invoiceId = InvoiceID,@contractID = ContractID,@accountID = AccountID,@fiscalYear = FiscalYear,@accountNumber = ISNULL(AccountNumber, ''),@groupId = GroupID\r\n\tFROM Invoice.vwInvoiceAccountBillings\r\n\tWHERE InvoiceBillingID = ISNULL(@invoiceBillingId, InvoiceBillingID)\r\n AND InvoiceGroupContractID = ISNULL(@invoiceGroupId, InvoiceGroupContractID);\r\n\r\n\tSELECT @invoiceIsSplitFY = Billing.UDF_IsSplitFYInvoice(InvoiceID),@currentFY = Billing.UDF_GetFiscalYear(CreatedDate) \r\n\tFROM Invoice.Invoice\r\n\tWHERE InvoiceID=@invoiceId;\r\n\r\n\tDECLARE @updatedBudgetCodeTable TABLE (BudgetCode VARCHAR(4));\r\n\r\n\tBEGIN TRY\r\n BEGIN TRAN @tranName;\r\n\r\n -- Delete account and billing\r\n DELETE FROM Invoice.InvoiceAccountBilling\r\n WHERE InvoiceBillingID = ISNULL(@invoiceBillingId, InvoiceBillingID)\r\n AND InvoiceGroupContractID = ISNULL(@invoiceGroupId, InvoiceGroupContractID);\r\n\r\n -- Create audit note\r\n INSERT INTO Common.Note(ParentType, ParentID, [Action], Note, CreatedBy)\r\n VALUES ('INVOICE', @invoiceId, 'DELETE ACCOUNT', @accountNumber + ' deleted: ' + @comments, @userId);\r\n\r\n -- Update Payment Allocations if there is any. Added on 4/16/2018\r\n INSERT INTO @updatedBudgetCodeTable(BudgetCode)\r\n SELECT DISTINCT d.BudgetCode\r\n FROM Billing.EC3_Billing_Account AS b\r\n LEFT JOIN Billing.EC3_Billing_AgencyFundingAssignments AS c ON b.AgencyAccount = c.AgencyDivisionSeqid\r\n LEFT JOIN Billing.EC3_Billing_AgencyFunding AS d ON c.AgencyFundingSeqid = d.AgencyFundingSeqid\r\n WHERE b.AccountSeqid = @accountID;\r\n\r\n IF @invoiceIsSplitFY = 0\r\n BEGIN\r\n DELETE FROM [Invoice].[InvoiceContractLineAllocation]\r\n WHERE InvoiceContractLineID IN (\r\n SELECT InvoiceContractLineID \r\n FROM invoice.InvoiceContractLine \r\n WHERE InvoiceID=@invoiceId AND FiscalYear = @fiscalYear AND ContractID=@contractID \r\n AND BudgetCode IN (SELECT BudgetCode FROM @updatedBudgetCodeTable)\r\n );\r\n\r\n DELETE FROM invoice.InvoiceContractLine \r\n WHERE InvoiceID=@invoiceId AND FiscalYear = @fiscalYear AND ContractID=@contractID \r\n AND BudgetCode IN (SELECT BudgetCode FROM @updatedBudgetCodeTable);\r\n END;\r\n ELSE\t\r\n BEGIN\r\n DELETE FROM [Invoice].[InvoiceContractLineAllocation]\r\n WHERE InvoiceContractLineID IN (\r\n SELECT InvoiceContractLineID \r\n FROM invoice.InvoiceContractLine \r\n WHERE InvoiceID=@invoiceId AND FiscalYear IN (@currentFY-1, @currentFY)\r\n AND ContractID IN (SELECT ContractID FROM Invoice.vwInvoiceGroupContracts WHERE invoiceid=@invoiceId AND groupid=@groupId) --=@contractID \r\n AND BudgetCode IN (SELECT BudgetCode FROM @updatedBudgetCodeTable)\r\n );\r\n\r\n DELETE FROM invoice.InvoiceContractLine \r\n WHERE InvoiceID=@invoiceId AND FiscalYear IN (@currentFY-1, @currentFY)\r\n AND ContractID IN (SELECT ContractID FROM Invoice.vwInvoiceGroupContracts WHERE invoiceid=@invoiceId AND groupid=@groupId) --=@contractID \r\n AND BudgetCode IN (SELECT BudgetCode FROM @updatedBudgetCodeTable);\r\n END;\r\n\r\n COMMIT TRAN @tranName;\r\n\tEND TRY\r\n\tBEGIN CATCH\r\n IF XACT_STATE() <> 0 ROLLBACK TRAN @tranName;\r\n\r\n SELECT @exceptionDetails = ERROR_MESSAGE();\r\n SET @severity\t= 'ERROR';\r\n SET @message\t= 'Failed to delete invoice account(s) and billing(s)';\r\n SET @sendEmail\t= 1;\r\n\tEND CATCH;\r\n\r\n\tSET @elapsedTime = DATEDIFF(MILLISECOND, GETDATE(), @startTime);\r\n\r\n\tEXEC dbo.USP_AppLogCreate @correlationId = @correlationId,@machineName = @machineName,@processName = @processName,@action = @action,@severity = @severity,@message = @message,@messageDetails = @messageDetails,@exceptionDetails = @exceptionDetails,@domain = @domain,@username = @username,@userId = @userId,@sendEmail = @sendEmail,@elapsedTime = @elapsedTime;\r\nEND;\r"
+        }
+      ]
+    }
+  ]
+}

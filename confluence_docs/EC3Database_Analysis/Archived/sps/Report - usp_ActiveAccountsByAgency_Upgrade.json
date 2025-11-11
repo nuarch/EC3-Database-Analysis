@@ -1,0 +1,962 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "bodiedExtension",
+      "attrs": {
+        "extensionType": "com.atlassian.confluence.macro.core",
+        "extensionKey": "details",
+        "parameters": {
+          "macroParams": {
+            "hidden": {
+              "value": "true"
+            }
+          },
+          "macroMetadata": {
+            "schemaVersion": {
+              "value": "1"
+            },
+            "title": "Page Properties"
+          }
+        }
+      },
+      "content": [
+        {
+          "type": "table",
+          "attrs": {
+            "isNumberColumnEnabled": false,
+            "layout": "default"
+          },
+          "content": [
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Schema Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Report",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Stored Procedure Name",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "usp_ActiveAccountsByAgency_Upgrade",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "content": [
+                {
+                  "type": "tableHeader",
+                  "attrs": {
+                    "colspan": 1,
+                    "background": "#f4f5f7",
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Complexity Level",
+                          "type": "text",
+                          "marks": [
+                            {
+                              "type": "strong"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "attrs": {
+                    "colspan": 1,
+                    "rowspan": 1
+                  },
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "text": "Medium",
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "1. Overview"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The stored procedure "
+        },
+        {
+          "type": "text",
+          "text": "usp_ActiveAccountsByAgency_Upgrade",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": " is designed to generate a report of active utility accounts associated with a specific agency, identified by the "
+        },
+        {
+          "type": "text",
+          "text": "AgencyCodeOEC",
+          "marks": [
+            {
+              "type": "code"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". It logs the usage of the report and retrieves account details, including facility and utility information. The procedure distinguishes between agency users and non-agency users to determine the billing period for the report."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "2. Complexity Level: Medium"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The procedure involves multiple SQL operations, including conditional logic, joins, subqueries, and a union operation. It also interacts with another stored procedure for logging purposes. The complexity arises from the combination of these elements and the need to handle different user types and data retrieval scenarios."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "3. Input Parameters"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@EmailAddress AS VARCHAR(100)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The email address of the user requesting the report. Used for logging purposes."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC AS VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The agency code used to filter accounts and facilities related to a specific agency."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "@IsAgencyUser AS BIT = 0",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": A flag indicating whether the user is an agency user (1) or not (0). This affects the selection of the billing period."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "4. Business Logic and Workflow"
+        }
+      ]
+    },
+    {
+      "type": "orderedList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Transaction Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure sets the transaction isolation level to "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ", allowing dirty reads for potentially faster performance at the risk of reading uncommitted data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Billing Period Selection",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "If "
+                        },
+                        {
+                          "type": "text",
+                          "text": "@IsAgencyUser",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " is 1, it selects the current processing period from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Billing.ApplicationTimeFrame",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "Otherwise, it selects the maximum published billing period from "
+                        },
+                        {
+                          "type": "text",
+                          "text": "Published.MonthlyPublishedSummaryData",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": "."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Logging",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Calls the "
+                },
+                {
+                  "type": "text",
+                  "text": "usp_AddReportUsageLog",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " procedure to log the report usage, including details like the report name, requested by, and the billing period."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Data Retrieval",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ":"
+                }
+              ]
+            },
+            {
+              "type": "bulletList",
+              "content": [
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The procedure constructs a complex query to retrieve account and facility details."
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "It uses a union of two subqueries:"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "bulletList",
+                      "content": [
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "The first subquery aggregates account counts by agency and utility."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "listItem",
+                          "content": [
+                            {
+                              "type": "paragraph",
+                              "content": [
+                                {
+                                  "type": "text",
+                                  "text": "The second subquery retrieves detailed account information, including facility and utility details."
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "listItem",
+                  "content": [
+                    {
+                      "type": "paragraph",
+                      "content": [
+                        {
+                          "type": "text",
+                          "text": "The results are ordered by "
+                        },
+                        {
+                          "type": "text",
+                          "text": "AgencyCodeOEC",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " and a custom sorting logic for the "
+                        },
+                        {
+                          "type": "text",
+                          "text": "h1",
+                          "marks": [
+                            {
+                              "type": "code"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "text": " column."
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "5. Performance Considerations"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Isolation Level",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Using "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can improve performance by reducing locking overhead but may lead to reading inconsistent data."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Joins and Subqueries",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure involves multiple joins and subqueries, which can be resource-intensive, especially with large datasets."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Union Operation",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The union of two subqueries can be costly in terms of performance, particularly if the datasets are large."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Indexes",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": Ensuring that appropriate indexes exist on the joined columns and filtered columns can help improve query performance."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "6. Potential Issues or Risks"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Dirty Reads",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "READ UNCOMMITTED",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " can lead to reading uncommitted or inconsistent data, which may not be suitable for all reporting scenarios."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Scalability",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": As the dataset grows, the complexity of the joins and union operation may lead to performance degradation."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Parameter Length",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The use of "
+                },
+                {
+                  "type": "text",
+                  "text": "VARCHAR(MAX)",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " for "
+                },
+                {
+                  "type": "text",
+                  "text": "@AgencyCodeOEC",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": " may be excessive if the agency codes are of a fixed or predictable length, potentially leading to inefficient memory usage."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Error Handling",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure lacks explicit error handling, which could lead to unhandled exceptions or failures without proper logging or notification."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Security",
+                  "marks": [
+                    {
+                      "type": "strong"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ": The procedure does not include any security checks or validations on the input parameters, which could be a risk if the procedure is exposed to untrusted users."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "7. Stored Procedure Definition"
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "sql"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "CREATE PROCEDURE [Report].[usp_ActiveAccountsByAgency_Upgrade]\n(\r\n    @EmailAddress AS VARCHAR(100)\r\n    ,@AgencyCodeOEC AS VARCHAR(MAX)\r\n\t,@IsAgencyUser AS BIT = 0\r\n)\r\nAS\r\nBEGIN\r\n\tSET NOCOUNT ON;\r\n\tSET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;\r\n\r\n\tDECLARE @PublishedBillingPeriod AS VARCHAR(6), @spname AS VARCHAR(100) = OBJECT_NAME(@@PROCID);\r\n\r\n\tIF (@IsAgencyUser = 1)\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = PublishedBillingPeriod FROM Billing.ApplicationTimeFrame WHERE CurrentProcessingPeriod = 'Y';\r\n\tEND;\r\n\tELSE\r\n\tBEGIN\r\n\t\tSELECT @PublishedBillingPeriod = MAX(PublishedBillingPeriod) FROM Published.MonthlyPublishedSummaryData;\r\n\tEND;\r\n\r\n\tEXEC [Audit].usp_AddReportUsageLog\r\n\t\t@ReportName = @spname,\r\n\t\t@StoredProcName = @spname,\r\n\t\t@RequestedBy = @EmailAddress,\r\n\t\t@prmPublishedBillingPeriod = @PublishedBillingPeriod,\r\n\t\t@prmBillingPeriod = NULL,\r\n\t\t@prmAgency_ies = @AgencyCodeOEC,\r\n\t\t@prmFacilityNumber_s = NULL,\r\n\t\t@prmStartingBillingPeriod = NULL,\r\n\t\t@prmEndingBillingPeriod = NULL;\r\n\t\r\n\tSELECT rpt.h1\r\n\t\t,rpt.h2\r\n\t\t,rpt.[OEC Facility ID] \r\n\t\t,rpt.[Facility Address]\r\n\t\t,rpt.[Facility Name]\r\n\t\t,rpt.[Account Number]\r\n\t\t,rpt.[Utility Company]\r\n\t\t,rpt.[Energy Type]\r\n\t\t,rpt.[Utility Service Address]\r\n\t\t,rpt.[City Planning BIN]\r\n\t\t,rpt.BBL\r\n\t\t,'' AS [Check if Account Does Not Belong to Agency]\r\n\tFROM (SELECT hc.AgencyCodeOEC\r\n\t\t\t,CASE WHEN hc.utility = '' THEN hc.AgencyCodeOEC ELSE hc.utility END h1\r\n\t\t\t,CASE WHEN hc.utility = '' THEN hc.AgencyName\tELSE CAST(hc.cnt AS VARCHAR(50)) END h2\r\n\t\t\t,'' [OEC Facility ID]\r\n\t\t\t,'' [Facility Address]\r\n\t\t\t,'' [Facility Name]\t\t\r\n\t\t\t,'' [Account Number]\r\n\t\t\t,'' [Utility Company]\r\n\t\t\t,'' [Energy Type]\r\n\t\t\t,'' [Utility Service Address]\r\n\t\t\t,'' [City Planning BIN]\r\n\t\t\t,'' BBL\r\n\t\tFROM (SELECT DISTINCT aa.AgencyCodeOEC, aa.AgencyName, '' utility, '' cnt \r\n\t\t\tFROM (SELECT DISTINCT AD.AgencyCodeOEC, ad.AgencyName, UC.ShortDesc\r\n\t\t\t\t\t,COUNT(*) OVER(PARTITION BY AD.AgencyCodeOEC, UC.ShortDesc ) AS cnt\r\n\t\t\t\tFROM Billing.Account AS A\r\n\t\t\t\t\tINNER JOIN Billing.AgencyDivision AS AD ON A.AgencyAccount = AD.AgencyDivisionSeqid\r\n\t\t\t\t\tINNER JOIN Billing.Facility AS F ON A.FacilityAccount = F.FacilitySeqid\r\n\t\t\t\t\tINNER JOIN Billing.UtilityCompany AS UC ON A.UtilityAccountProvider = UC.UtilityCompanySeqid\r\n\t\t\t\t\tINNER JOIN Billing.EnergyDeliveryType AS EDT ON A.EnergyAccountDescription = EDT.EnergyDeliveryType\r\n\t\t\t\t\tLEFT JOIN (SELECT OriginalAccountNumber, MAX(BillingPeriod) AS LastPeriodBilled FROM Billing.AccountBilling\r\n\t\t\t\t\t\tGROUP BY OriginalAccountNumber) AS AB ON AB.OriginalAccountNumber = A.OriginalAccountNumber\r\n\t\t\t\t\tINNER JOIN Billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress) AS AG\r\n\t\t\t\t\t\tON AD.AgencyCodeOEC = AG.AgencyCodeOEC\r\n\t\t\t\tWHERE AD.Inactive = 'N' AND A.AccountStatus IN ('46', '47', 'AC', 'LA', 'UA')) AS counts \r\n\t\t\t\tINNER JOIN Billing.AgencyDivision aa ON aa.AgencyCodeOEC = counts.AgencyCodeOEC\r\n\t\t\tUNION ALL\r\n\t\t\tSELECT c.AgencyCodeOEC, c.AgencyName, c.Utility, c.cnt\r\n\t\t\tFROM (SELECT DISTINCT AD.AgencyCodeOEC, ad.AgencyName, UC.ShortDesc AS Utility\r\n\t\t\t\t\t,COUNT(*) OVER(PARTITION BY AD.AgencyCodeOEC, UC.ShortDesc) AS cnt\r\n\t\t\t\tFROM Billing.Account AS A\r\n\t\t\t\t\tINNER JOIN Billing.AgencyDivision AS AD ON A.AgencyAccount = AD.AgencyDivisionSeqid\r\n\t\t\t\t\tINNER JOIN Billing.Facility AS F ON A.FacilityAccount = F.FacilitySeqid\r\n\t\t\t\t\tINNER JOIN Billing.UtilityCompany AS UC ON A.UtilityAccountProvider = UC.UtilityCompanySeqid\r\n\t\t\t\t\tINNER JOIN Billing.EnergyDeliveryType AS EDT ON A.EnergyAccountDescription = EDT.EnergyDeliveryType\r\n\t\t\t\t\tLEFT JOIN (SELECT OriginalAccountNumber, MAX(BillingPeriod) AS LastPeriodBilled FROM Billing.AccountBilling\r\n\t\t\t\t\t\tGROUP BY OriginalAccountNumber) AS AB ON AB.OriginalAccountNumber = A.OriginalAccountNumber\r\n\t\t\t\t\tINNER JOIN Billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress) AS AG\r\n\t\t\t\t\t\tON AD.AgencyCodeOEC = AG.AgencyCodeOEC\r\n\t\t\t\tWHERE AD.Inactive = 'N' AND A.AccountStatus IN ('46', '47', 'AC', 'LA', 'UA')) AS c \r\n\t\t\t\tINNER JOIN Billing.AgencyDivision aa ON aa.AgencyCodeOEC = c.AgencyCodeOEC) AS hc\r\n\t\tUNION ALL\r\n\t\tSELECT DISTINCT AD.AgencyCodeOEC , '' h1, '' h2\r\n\t\t\t,F.OecFacilityNumber AS [OEC Facility ID]\r\n\t\t\t,F.Address1 AS [Facility Address]\r\n\t\t\t,F.FacilityName AS [Facility Name]\t\t\r\n\t\t\t,A.CurrentAccountNumber AS [Account Number]\r\n\t\t\t,UC.ShortDesc AS [Utility Company]\r\n\t\t\t,EDT.EnergyType AS [Energy Type]\r\n\t\t\t,A.UtilityServiceAddress AS [Utility Service Address]\r\n\t\t\t,A.CityPlanningBIN AS [City Planning BIN]\r\n\t\t\t,CASE WHEN A.Borough IS NULL OR A.[Block] IS NULL OR A.LotNumber IS NULL THEN NULL\r\n\t\t\t\tELSE A.Borough + '-' + A.[Block]  + '-' + A.LotNumber END AS BBL\r\n\t\tFROM Billing.Account AS A\r\n\t\t\tINNER JOIN Billing.AgencyDivision AS AD ON A.AgencyAccount = AD.AgencyDivisionSeqid\r\n\t\t\tINNER JOIN Billing.Facility AS F ON A.FacilityAccount = F.FacilitySeqid\r\n\t\t\tINNER JOIN Billing.UtilityCompany AS UC ON A.UtilityAccountProvider = UC.UtilityCompanySeqid\r\n\t\t\tINNER JOIN Billing.EnergyDeliveryType AS EDT ON A.EnergyAccountDescription = EDT.EnergyDeliveryType\r\n\t\t\tLEFT JOIN (SELECT OriginalAccountNumber, MAX(BillingPeriod) AS LastPeriodBilled FROM Billing.AccountBilling\r\n\t\t\t\tGROUP BY OriginalAccountNumber) AS AB ON AB.OriginalAccountNumber = A.OriginalAccountNumber\r\n\t\t\tINNER JOIN Billing.uftn_TableGetAgencyChildrenByAgencyCodeOEC(@AgencyCodeOEC, @EmailAddress) AS AG\r\n\t\t\t\tON AD.AgencyCodeOEC = AG.AgencyCodeOEC\r\n\t\tWHERE AD.Inactive = 'N' AND A.AccountStatus IN ('46', '47', 'AC', 'LA', 'UA')) AS rpt\r\n\tORDER BY rpt.AgencyCodeOEC, CASE WHEN ISNUMERIC(rpt.h1)=1 THEN 1 WHEN LEN(rpt.h1)=0 THEN 3 ELSE 2 END, rpt.h1;\r\nEND;"
+        }
+      ]
+    }
+  ]
+}
