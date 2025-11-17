@@ -1,0 +1,295 @@
+# Execution flow for schema 'Report'
+
+This document explains, in everyday language, how the stored procedures that appear in the related diagram can trigger one another when they run.
+
+## Overview
+
+The following procedures act as **starting points** in this diagram. They can be run directly and then may trigger other procedures shown:
+
+- procedure 'CustomReportExport' in schema 'Report'
+- procedure 'usp_AccountInformationByAccountNumber' in schema 'Report'
+- procedure 'usp_AccountLevelBillingHistory' in schema 'Report'
+- procedure 'usp_AccountListForTariffReportExport' in schema 'Report'
+- procedure 'usp_ActiveAccountsByAgency' in schema 'Report'
+- procedure 'usp_ActiveAccountsByAgency_Upgrade' in schema 'Report'
+- procedure 'usp_ActiveEnergyAccountMeterList' in schema 'Report'
+- procedure 'usp_AgencyLevelAdjustmentsByBillingPeriod' in schema 'Report'
+- procedure 'usp_DataExport_AccountAdjustment' in schema 'Report'
+- procedure 'usp_DataExport_AccountReviewForClosure' in schema 'Report'
+- procedure 'usp_DataExport_AccountWithEstimatedReading' in schema 'Report'
+- procedure 'usp_DataExport_AccountWithLoadFactorLargerThanOne' in schema 'Report'
+- procedure 'usp_DataExport_ActiveAccountMeterList' in schema 'Report'
+- procedure 'usp_DataExport_ManualBillingCreditTransfer' in schema 'Report'
+- procedure 'usp_DataExport_TariffChangeTracking' in schema 'Report'
+- procedure 'usp_GetAllFacilitiesLinkedToAProperty' in schema 'Report'
+- procedure 'usp_GetAllPropertiesLinkedToAFacility' in schema 'Report'
+- procedure 'usp_GetHeatingCoolingDegreeDays_Updated' in schema 'Report'
+- procedure 'usp_GetMonthlyAgencyFacilityData' in schema 'Report'
+- procedure 'usp_GetMonthlyAgencyFacilityDataFor12Months' in schema 'Report'
+- procedure 'usp_GetMonthlyFacilityDataBySubtype' in schema 'Report'
+- procedure 'usp_HeatingCoolingDegreeDays_Export' in schema 'Report'
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformation' in schema 'Report'
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformationExport' in schema 'Report'
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformation_Upgrade' in schema 'Report'
+- procedure 'usp_LoadFactor_GetAllAccountLoadFactorInformation' in schema 'Report'
+- procedure 'usp_LookupAgencyAndFacilityInformation' in schema 'Report'
+- procedure 'usp_LookupAgencyAndFacilityInformation_Updated' in schema 'Report'
+- procedure 'usp_Lookup_AccountInformation' in schema 'Report'
+- procedure 'usp_Lookup_AccountInformation_Upgrade' in schema 'Report'
+- procedure 'usp_Lookup_FacilityInformation' in schema 'Report'
+- procedure 'usp_Lookup_GetAccountDetailForTariffReport' in schema 'Report'
+- procedure 'usp_Lookup_GetAccountDetailForTariffReport_Updated' in schema 'Report'
+- procedure 'usp_Lookup_GetAccountListForTariffReport' in schema 'Report'
+- procedure 'usp_Lookup_GetAccountListForTariffReport_Updated' in schema 'Report'
+- procedure 'usp_MonthlyAgencyDataByEnergyType' in schema 'Report'
+- procedure 'usp_MonthlyAgencyDataByEnergyType_Export' in schema 'Report'
+- procedure 'usp_NYPA_ActualAndMinimumDemandBilling' in schema 'Report'
+- procedure 'usp_Published_AccountAndMeterListing' in schema 'Report'
+- procedure 'usp_Published_AccountAndMeterListing_ExcelExport' in schema 'Report'
+- procedure 'usp_Published_AccountAndMeterListing_Upgrade' in schema 'Report'
+- procedure 'usp_Published_AccountsByUtilityCompanyandServiceClass' in schema 'Report'
+- procedure 'usp_Published_ActiveAccountsNotBilledReport' in schema 'Report'
+- procedure 'usp_Published_ActiveAccountsWithNoActiveMeters' in schema 'Report'
+- procedure 'usp_Published_AgencyExcelData' in schema 'Report'
+- procedure 'usp_Published_ClosedAccountsBilledReport' in schema 'Report'
+- procedure 'usp_Published_CoreReportCityWide' in schema 'Report'
+- procedure 'usp_Published_CoreReportReportAccountLevel' in schema 'Report'
+- procedure 'usp_Published_CoreReportReportAccountLevelSubReport' in schema 'Report'
+- procedure 'usp_Published_CoreReportReportAgencyLevel' in schema 'Report'
+- procedure 'usp_Published_CurrentPeriodAccountMeterchanges' in schema 'Report'
+- procedure 'usp_Published_EnergyChangeReportAllFacilities' in schema 'Report'
+- procedure 'usp_Published_EnergyChangeReportDataExport' in schema 'Report'
+- procedure 'usp_Published_EnergyChangeReportExcelExport' in schema 'Report'
+- procedure 'usp_Published_EnergyComparisonDashboardReport_Updated' in schema 'Report'
+- procedure 'usp_Published_EnergyComparisonReportAgencyLevel_Updated' in schema 'Report'
+- procedure 'usp_Published_EnergyComparisonReportCityWide' in schema 'Report'
+- procedure 'usp_Published_EnergyComparisonReportCityWide_Updated' in schema 'Report'
+- procedure 'usp_Published_EnergyDeviationReport' in schema 'Report'
+- procedure 'usp_Published_EnergyParametersForCustomPeriod' in schema 'Report'
+- procedure 'usp_Published_EnergyParametersForCustomPeriod_Updated' in schema 'Report'
+- procedure 'usp_Published_EstimatedMeterReadings' in schema 'Report'
+- procedure 'usp_Published_EstimatedMeterReadings_Upgrade' in schema 'Report'
+- procedure 'usp_Published_FacilityExcelData' in schema 'Report'
+- procedure 'usp_Published_FacilityExcelData_Upgrade' in schema 'Report'
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode' in schema 'Report'
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode_Added_ZecSCharges' in schema 'Report'
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode_Updated' in schema 'Report'
+- procedure 'usp_Published_GetAccountInformationByAgencyCode' in schema 'Report'
+- procedure 'usp_Published_GetMeterBillingHistoryInformation_ExcelExport' in schema 'Report'
+- procedure 'usp_Published_GetMeterExtentedBillingInformation' in schema 'Report'
+- procedure 'usp_Published_GetMeterExtentedBillingInformation_Updated' in schema 'Report'
+- procedure 'usp_Published_GetMeterExtentedBillingInformation_Updated_BACKUP_NOT_IN_USE' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyData' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly_Upgrade' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly_desc' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData12month' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData2' in schema 'Report'
+- procedure 'usp_Published_GetMonthlyCitywideSummaryData' in schema 'Report'
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType' in schema 'Report'
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyTypeThreeFiscalYears' in schema 'Report'
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyTypeThreeFiscalYears_Updated' in schema 'Report'
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType_CoreRepForSelFac' in schema 'Report'
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType_Upgrade' in schema 'Report'
+- procedure 'usp_Published_MonthlyFacilityData_Export' in schema 'Report'
+- procedure 'usp_Published_PartialLookupAccountBillingAllInfo' in schema 'Report'
+- procedure 'usp_Published_PartialLookupAccountBillingRevisedOnly' in schema 'Report'
+- procedure 'usp_Published_PartialLookupAccountBillingRevisedOnly_Upgrade' in schema 'Report'
+- procedure 'usp_Published_PartialLookupCurrentAccount' in schema 'Report'
+- procedure 'usp_Published_UsageandDemandDeviationReport' in schema 'Report'
+- procedure 'usp_Published_UsageandDemandDeviationReportDash' in schema 'Report'
+- procedure 'usp_ReportParam_GetUserFacilityAccessInXML' in schema 'Report'
+
+## Detailed call paths
+
+Below is a step-by-step description of how each procedure in the diagram can lead to others. Nested bullet points show what can be triggered next.
+
+- procedure 'CustomReportExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_AccountInformationByAccountNumber' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_AccountLevelBillingHistory' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_AccountListForTariffReportExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_ActiveAccountsByAgency' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_ActiveAccountsByAgency_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_ActiveEnergyAccountMeterList' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_AgencyLevelAdjustmentsByBillingPeriod' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_AccountAdjustment' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_AccountReviewForClosure' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_AccountWithEstimatedReading' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_AccountWithLoadFactorLargerThanOne' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_ActiveAccountMeterList' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_ManualBillingCreditTransfer' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_DataExport_TariffChangeTracking' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetAllFacilitiesLinkedToAProperty' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetAllPropertiesLinkedToAFacility' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetHeatingCoolingDegreeDays_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetMonthlyAgencyFacilityData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetMonthlyAgencyFacilityDataFor12Months' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_GetMonthlyFacilityDataBySubtype' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_HeatingCoolingDegreeDays_Export' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformationExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LoadFactor_GetAccountLoadFactorInformation_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LoadFactor_GetAllAccountLoadFactorInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LookupAgencyAndFacilityInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_LookupAgencyAndFacilityInformation_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_AccountInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_AccountInformation_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_FacilityInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_GetAccountDetailForTariffReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_GetAccountDetailForTariffReport_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_GetAccountListForTariffReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Lookup_GetAccountListForTariffReport_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_MonthlyAgencyDataByEnergyType' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_MonthlyAgencyDataByEnergyType_Export' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_NYPA_ActualAndMinimumDemandBilling' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_AccountAndMeterListing' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_AccountAndMeterListing_ExcelExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_AccountAndMeterListing_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_AccountsByUtilityCompanyandServiceClass' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_ActiveAccountsNotBilledReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_ActiveAccountsWithNoActiveMeters' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_AgencyExcelData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_ClosedAccountsBilledReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_CoreReportCityWide' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_CoreReportReportAccountLevel' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_CoreReportReportAccountLevelSubReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_CoreReportReportAgencyLevel' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_CurrentPeriodAccountMeterchanges' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyChangeReportAllFacilities' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyChangeReportDataExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyChangeReportExcelExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyComparisonDashboardReport_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyComparisonReportAgencyLevel_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyComparisonReportCityWide' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyComparisonReportCityWide_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyDeviationReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyParametersForCustomPeriod' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EnergyParametersForCustomPeriod_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EstimatedMeterReadings' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_EstimatedMeterReadings_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_FacilityExcelData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_FacilityExcelData_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode_Added_ZecSCharges' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetAccountExtentedBillingInformationByAgencyCode_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetAccountInformationByAgencyCode' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMeterBillingHistoryInformation_ExcelExport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMeterExtentedBillingInformation' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMeterExtentedBillingInformation_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMeterExtentedBillingInformation_Updated_BACKUP_NOT_IN_USE' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyDataOnly_desc' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData12month' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyAgencyFacilityData2' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_GetMonthlyCitywideSummaryData' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyTypeThreeFiscalYears' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyTypeThreeFiscalYears_Updated' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType_CoreRepForSelFac' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_LookupTotalDollarsBtusAndRunningTotalCO2ByEnergyType_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_MonthlyFacilityData_Export' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_PartialLookupAccountBillingAllInfo' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_PartialLookupAccountBillingRevisedOnly' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_PartialLookupAccountBillingRevisedOnly_Upgrade' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_PartialLookupCurrentAccount' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_UsageandDemandDeviationReport' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_Published_UsageandDemandDeviationReportDash' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)
+- procedure 'usp_ReportParam_GetUserFacilityAccessInXML' in schema 'Report' can trigger:
+  - procedure 'usp_AddReportUsageLog' in schema 'Audit' (in this diagram, this procedure does not trigger any other recorded procedures)

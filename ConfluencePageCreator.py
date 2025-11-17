@@ -1571,8 +1571,9 @@ def interactive_mode():
             print("\nChoose creation mode:")
             print("1. Create single page directly under parent")
             print("2. Create with schema hierarchy (parent -> schema -> procedure)")
+            print("3. Create a single page for each content file")
 
-            mode_choice = input("Select mode (1-2): ").strip()
+            mode_choice = input("Select mode (1-3): ").strip()
 
             if mode_choice == "2":
                 # Use schema hierarchy for all files
@@ -1614,6 +1615,23 @@ def interactive_mode():
                         print("Failed pages:")
                         for failed in result['failed_pages'][:5]:  # Show first 5
                             print(f"   - {failed['title']}: {failed['error']}")
+
+            elif mode_choice == "3":
+              # Use flat structure: create individual pages under the parent page for each file in the directory
+              print(f"\n📂 Creating individual pages for all files in {selected_dir} under parent page ID: {parent_page_id}")
+              labels = get_labels_from_user(default_labels)
+
+              result = create_child_pages_from_directory_by_ids(
+                creator, space_id, parent_page_id, selected_dir, labels
+              )
+
+              if result and result['success']:
+                print(f"✅ Successfully created individual pages for all files!")
+                print(f"   Created {len(result['created_pages'])} pages")
+                if result['failed_pages']:
+                  print(f"   ⚠️  {len(result['failed_pages'])} pages failed to create")
+              else:
+                print("❌ Failed to create pages")
 
             else:
                 # Original single page creation mode

@@ -70,7 +70,7 @@ def convert_mermaid_to_png(mermaid_file: str, output_dir: str):
 
 def generate_adf_with_page_properties(file_name: str, file_type: str, schema_name: str, png_image_path: str):
   """
-  Generate an ADF document that includes page properties and additional content.
+  Generate an ADF document that includes page properties and an embedded PNG image.
 
   :param file_name: Name of the file.
   :param file_type: Type of content represented by the file (e.g., Mermaid Diagram, Excel Summary, etc.).
@@ -80,7 +80,7 @@ def generate_adf_with_page_properties(file_name: str, file_type: str, schema_nam
   """
   generated_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-  # Generate page properties table
+  # Page properties macro
   page_properties = {
     "type": "bodiedExtension",
     "attrs": {
@@ -218,6 +218,7 @@ def generate_adf_with_page_properties(file_name: str, file_type: str, schema_nam
             "attrs": {
               "type": "file",
               "collection": "confluence-attachments",
+              # In a real integration this should be the attachment ID, not the local path.
               "id": png_image_path
             }
           }
@@ -265,31 +266,33 @@ def create_confluence_pages_with_png(output_dir: str, confluence_output_dir: str
     schema_name = os.path.splitext(os.path.basename(schema_file))[0]
     png_file_path = convert_mermaid_to_png(schema_file, confluence_output_dir)
 
-    if png_file_path:
-      # Generate ADF content
-      adf_with_properties = generate_adf_with_page_properties(
-        file_name=os.path.basename(png_file_path),
-        file_type="Schema Diagram (PNG)",
-        schema_name=schema_name,
-        png_image_path=png_file_path
-      )
+    if not png_file_path:
+      continue
 
-      # Save the ADF JSON file
-      adf_file = os.path.join(confluence_output_dir, f"{schema_name}.json")
-      with open(adf_file, "w", encoding="utf-8") as f:
-        json.dump(adf_with_properties, f, indent=2, ensure_ascii=False)
-      print(f"Generated Confluence ADF for schema: {schema_name}")
+    # Generate ADF content with embedded PNG
+    adf_with_properties = generate_adf_with_page_properties(
+      file_name=os.path.basename(png_file_path),
+      file_type="Schema Diagram (PNG)",
+      schema_name=schema_name,
+      png_image_path=png_file_path
+    )
 
-      # Generate and save metadata
-      metadata = generate_metadata(
-        file_name=os.path.basename(png_file_path),
-        file_type="Schema Diagram (PNG)",
-        schema_name=schema_name
-      )
-      metadata_file = os.path.join(confluence_output_dir, f"{schema_name}_metadata.json")
-      with open(metadata_file, "w", encoding="utf-8") as f:
-        json.dump(metadata, f, indent=2, ensure_ascii=False)
-      print(f"Generated metadata for schema: {schema_name}")
+    # Save the ADF JSON file
+    adf_file = os.path.join(confluence_output_dir, f"{schema_name}.json")
+    with open(adf_file, "w", encoding="utf-8") as f:
+      json.dump(adf_with_properties, f, indent=2, ensure_ascii=False)
+    print(f"Generated Confluence ADF for schema: {schema_name}")
+
+    # Generate and save metadata
+    metadata = generate_metadata(
+      file_name=os.path.basename(png_file_path),
+      file_type="Schema Diagram (PNG)",
+      schema_name=schema_name
+    )
+    metadata_file = os.path.join(confluence_output_dir, f"{schema_name}_metadata.json")
+    with open(metadata_file, "w", encoding="utf-8") as f:
+      json.dump(metadata, f, indent=2, ensure_ascii=False)
+    print(f"Generated metadata for schema: {schema_name}")
 
 
 def main():

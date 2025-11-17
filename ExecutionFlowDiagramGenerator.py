@@ -3,6 +3,8 @@ import re
 import json
 import shutil
 import openpyxl
+import subprocess
+import tempfile
 from collections import defaultdict
 from typing import Dict, List, Set, Tuple
 
@@ -41,24 +43,26 @@ def build_call_graph(recs: List[dict]) -> Tuple[Dict[str, Set[str]], Set[str], D
 
     for rec in recs:
         procedure_info = rec.get("procedure_info", {})
-        schema = procedure_info.get("schema", "dbo").lower()
-        name = procedure_info.get("name", "").lower()
+        # Keep original casing from input; do not normalize to lower-case
+        schema = procedure_info.get("schema", "dbo")
+        name = procedure_info.get("name", "")
         definition = procedure_info.get("definition", "")
 
         if not schema or not name:
             continue
 
-        # Fully qualified procedure name
+        # Fully qualified procedure name with original casing
         fqname = f"{schema}.{name}"
         known_procs.add(fqname)
 
-        # Add procedure to the schema map
+        # Add procedure to the schema map (keyed by original schema casing)
         schema_map[schema].add(fqname)
 
         # Parse and map calls within the procedure definition
         for match in re.findall(r"\bEXEC(?:UTE)?\s+(?:\[?(\w+)\]?\.)?\[?(\w+)\]?", definition, re.IGNORECASE):
-            target_schema = match[0].lower() if match[0] else "dbo"
-            target_name = match[1].lower()
+            # Keep captured schema and name casing as they appear in the definition
+            target_schema = match[0] if match[0] else "dbo"
+            target_name = match[1]
             target_fqname = f"{target_schema}.{target_name}"
             if target_fqname in known_procs:  # Only link to known stored procedures
                 edges[fqname].add(target_fqname)
@@ -100,9 +104,6 @@ def get_procedure_tree_depths(edges: Dict[str, Set[str]], max_depth: int) -> Dic
 def write_excel_summary(output_dir: str, procedure_depths: Dict[str, Dict[int, int]]):
     """
     Create an Excel sheet listing each stored procedure with its tree depth and call counts at each depth.
-
-    :param output_dir: Directory to save the Excel file.
-    :param procedure_depths: Dictionary of depth stats for each procedure.
     """
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -130,42 +131,206 @@ def write_excel_summary(output_dir: str, procedure_depths: Dict[str, Dict[int, i
     print(f"Excel summary saved to: {output_path}")
 
 
-def write_schema_mermaid_diagrams(edges: Dict[str, Set[str]], schema_map: Dict[str, Set[str]], output_dir: str):
+def write_schema_png_diagrams(edges: Dict[str, Set[str]], schema_map: Dict[str, Set[str]], output_dir: str):
     """
-    Generate one Mermaid diagram for each schema and save it to a separate file,
+    Generate one transparent PNG call-graph diagram for each schema using Mermaid CLI (mmdc),
     only if the schema contains valid relationships.
+
+    For each PNG image, also generate a Markdown file that explains the execution
+    call paths in non-technical language, limited to the stored procedures that
+    actually appear in the corresponding PNG.
+
+    A temporary Mermaid (.mmd) file is created per schema and removed after PNG generation.
 
     :param edges: Adjacency list representing the call graph.
     :param schema_map: Map of schemas to the procedures they contain.
-    :param output_dir: Directory to save the Mermaid diagrams.
+    :param output_dir: Directory to save the PNG diagrams and Markdown summaries.
     """
     schema_dir = os.path.join(output_dir, "schemas")
     os.makedirs(schema_dir, exist_ok=True)
 
+    def friendly_proc_name(fqname: str) -> str:
+        """
+        Convert a fully-qualified procedure name (schema.name) into a friendlier label
+        for non-technical readers.
+        """
+        parts = fqname.split(".", 1)
+        if len(parts) == 2:
+            schema, name = parts
+            return f"procedure '{name}' in schema '{schema}'"
+        return f"procedure '{fqname}'"
+
+    def write_schema_markdown(
+        schema: str,
+        nodes_in_image: Set[str],
+        local_edges: Dict[str, List[str]],
+        local_incoming: Dict[str, List[str]],
+        md_path: str,
+    ):
+        """
+        Write a Markdown explanation of the execution paths for all procedures that
+        appear in the PNG for this schema, using non-technical language.
+
+        :param schema: Name of the schema whose PNG this description belongs to.
+        :param nodes_in_image: Set of procedure names (fully qualified) that appear in the PNG.
+        :param local_edges: Map of procedure -> list of procedures it calls (restricted to the PNG).
+        :param local_incoming: Map of procedure -> list of procedures that call it (restricted to the PNG).
+        :param md_path: File path where the Markdown should be written.
+        """
+        # Determine starting procedures: those that are not called by any other
+        # procedure inside this PNG's subgraph.
+        starting_procs = [p for p in nodes_in_image if not local_incoming.get(p)]
+        starting_procs.sort()
+        all_procs_sorted = sorted(nodes_in_image)
+
+        lines: List[str] = []
+        lines.append(f"# Execution flow for schema '{schema}'\n")
+        lines.append(
+            "This document explains, in everyday language, how the stored procedures that appear "
+            "in the related diagram can trigger one another when they run.\n"
+        )
+
+        if not nodes_in_image:
+            lines.append("There are no stored procedures shown in the diagram for this schema.\n")
+        else:
+            # Overview
+            lines.append("## Overview\n")
+            if starting_procs:
+                lines.append(
+                    "The following procedures act as **starting points** in this diagram. "
+                    "They can be run directly and then may trigger other procedures shown:\n"
+                )
+                for proc in starting_procs:
+                    lines.append(f"- {friendly_proc_name(proc)}")
+                lines.append("")
+            else:
+                lines.append(
+                    "All procedures in this diagram are part of one or more chains of calls. "
+                    "There is no single obvious starting procedure in this picture.\n"
+                )
+
+            lines.append("## Detailed call paths\n")
+            lines.append(
+                "Below is a step-by-step description of how each procedure in the diagram "
+                "can lead to others. Nested bullet points show what can be triggered next.\n"
+            )
+
+            described: Set[str] = set()
+
+            def describe_proc(proc: str, indent: int, path: Set[str]):
+                """
+                Recursively describe how one procedure can trigger others in this PNG,
+                using nested bullet points and avoiding infinite loops.
+                """
+                indent_spaces = "  " * indent
+                display_name = friendly_proc_name(proc)
+
+                if proc in path:
+                    # Cycle detected within the subgraph
+                    lines.append(
+                        f"{indent_spaces}- {display_name} (this procedure can eventually call itself again "
+                        f"through a loop of calls shown in the diagram)"
+                    )
+                    return
+
+                if proc not in described:
+                    described.add(proc)
+
+                children = sorted(local_edges.get(proc, []))
+                if not children:
+                    lines.append(
+                        f"{indent_spaces}- {display_name} "
+                        f"(in this diagram, this procedure does not trigger any other recorded procedures)"
+                    )
+                    return
+
+                lines.append(f"{indent_spaces}- {display_name} can trigger:")
+                new_path = set(path)
+                new_path.add(proc)
+                for child in children:
+                    describe_proc(child, indent + 1, new_path)
+
+            # First describe starting procedures
+            if starting_procs:
+                for proc in starting_procs:
+                    describe_proc(proc, 0, set())
+
+            # Then describe any remaining procedures that appear in the image but
+            # were not already fully described from a starting point.
+            remaining = [p for p in all_procs_sorted if p not in described]
+            if remaining:
+                lines.append("")
+                lines.append(
+                    "## Additional procedures\n"
+                    "The following procedures are also shown in the diagram but mainly appear "
+                    "in the middle of call chains:"
+                )
+                for proc in remaining:
+                    describe_proc(proc, 0, set())
+
+        with open(md_path, "w", encoding="utf-8") as md_file:
+            md_file.write("\n".join(lines))
+
     for schema, procedures in schema_map.items():
-        # Create a Mermaid graph for the schema
         mermaid_content = "graph TD\n"
-        graph_has_content = False  # Flag to check if the schema has any valid relationships
+        graph_has_content = False
+
+        # These structures are restricted to what appears in THIS schema's PNG
+        nodes_in_image: Set[str] = set()
+        local_edges: Dict[str, List[str]] = defaultdict(list)
+        local_incoming: Dict[str, List[str]] = defaultdict(list)
 
         for procedure in procedures:
             for target_proc in edges.get(procedure, []):
-                if target_proc in procedures:  # Only include procedures within the same schema
-                    mermaid_content += f"    {procedure} --> {target_proc}\n"
-                    graph_has_content = True  # Mark that the graph will have content
+                # Every edge we draw in the diagram is also reflected in the local structures
+                mermaid_content += f"    {procedure} --> {target_proc}\n"
+                graph_has_content = True
 
-        if graph_has_content:  # Only write the file if the graph has content
-            safe_schema_name = re.sub(r"[^\w]", "_", schema)  # File-safe schema name
-            file_path = os.path.join(schema_dir, f"{safe_schema_name}.mmd")
+                # Track nodes and local relationships ONLY for procedures that appear in this image
+                nodes_in_image.add(procedure)
+                nodes_in_image.add(target_proc)
+                local_edges[procedure].append(target_proc)
+                local_incoming[target_proc].append(procedure)
 
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(mermaid_content)
+        if not graph_has_content:
+            # No relationships to draw or explain for this schema
+            continue
 
-    print(f"Mermaid diagrams for schemas saved to: {schema_dir}")
+        safe_schema_name = re.sub(r"[^\w]", "_", schema)
+        png_path = os.path.join(schema_dir, f"{safe_schema_name}.png")
+        md_path = os.path.join(schema_dir, f"{safe_schema_name}.md")
+
+        # Create a temporary Mermaid file for this schema
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mmd", mode="w", encoding="utf-8") as tmp_mmd:
+            tmp_mmd_path = tmp_mmd.name
+            tmp_mmd.write(mermaid_content)
+
+        try:
+            # Generate the PNG diagram
+            subprocess.run(
+                ["mmdc", "-i", tmp_mmd_path, "-o", png_path, "-b", "transparent", "-w", "8000", "-H", "4800"],
+                check=True,
+            )
+            print(f"Transparent PNG diagram for schema '{schema}' saved to: {png_path}")
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to generate PNG for schema '{schema}': {e}")
+        finally:
+            # Clean up the temporary .mmd file
+            try:
+                os.remove(tmp_mmd_path)
+            except OSError:
+                pass
+
+        # Generate the Markdown explanation limited to what appears in this PNG
+        write_schema_markdown(schema, nodes_in_image, local_edges, local_incoming, md_path)
+        print(f"Markdown summary for schema '{schema}' saved to: {md_path}")
+
+    print(f"Transparent PNG diagrams and Markdown summaries for schemas saved to: {schema_dir}")
 
 
 def write_outputs(edges: Dict[str, Set[str]], schema_map: Dict[str, Set[str]], output_dir: str, max_depth: int):
     """
-    Write all outputs including schema-based Mermaid diagrams, Excel summary, and CSV.
+    Write all outputs including schema-based PNG diagrams, Excel summary, and CSV.
 
     :param edges: Adjacency list representing the call graph.
     :param schema_map: Map of schemas to the procedures they contain.
@@ -182,8 +347,8 @@ def write_outputs(edges: Dict[str, Set[str]], schema_map: Dict[str, Set[str]], o
                     f.write(f"{src},{tgt}\n")
         print(f"Call graph written as CSV: {csv_path}")
 
-    # Write individual schema Mermaid diagrams
-    write_schema_mermaid_diagrams(edges, schema_map, output_dir)
+    # Write individual schema transparent PNG diagrams (no .mmd files)
+    write_schema_png_diagrams(edges, schema_map, output_dir)
 
     # Write procedure depth statistics to an Excel file
     procedure_depths = get_procedure_tree_depths(edges, max_depth)
