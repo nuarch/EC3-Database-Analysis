@@ -1,12 +1,47 @@
 import json
 import logging
 import os
-import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
+import requests
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
+
+
+# -----------------------------
+# ChatGPT configuration
+# -----------------------------
+
+def load_chatgpt_config() -> Dict[str, Any]:
+  """
+  Load ChatGPT configuration from an external file (chatgpt_config.py) or
+  from environment variables.
+
+  Expected keys:
+    - api_key
+    - base_url
+    - model
+    - timeout
+    - max_retries
+    - max_tokens
+    - temperature
+  """
+  try:
+    from chatgpt_config import CHATGPT_CONFIG  # type: ignore
+    return CHATGPT_CONFIG
+  except ImportError:
+    logger.warning("chatgpt_config.py not found, using environment variables for ChatGPT config")
+    return {
+      "api_key": os.getenv("OPENAI_API_KEY", ""),
+      "base_url": os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+      "model": os.getenv("OPENAI_MODEL", "gpt-4o"),
+      "timeout": int(os.getenv("OPENAI_TIMEOUT", "60")),
+      "max_retries": int(os.getenv("OPENAI_MAX_RETRIES", "3")),
+      "max_tokens": int(os.getenv("OPENAI_MAX_TOKENS", "4000")),
+      "temperature": float(os.getenv("OPENAI_TEMPERATURE", "0.1")),
+    }
 
 
 # -----------------------------
@@ -31,15 +66,16 @@ class ProcedureAnalysisEntry:
 
 @dataclass
 class ProcedureFlowDocumentation:
+  """
+  Output for one root procedure.
+
+  All human‑readable content (overview, flow diagram, step‑by‑step narrative)
+  is contained in markdown_section, which is generated entirely by ChatGPT.
+  """
   schema: str
   name: str
   title: str
-  mermaid_flowchart: str
-  high_level_summary: str
-  step_by_step_flow: List[str]
-  # Direct children are still useful metadata, but all their logic is embedded
-  # into the diagram and narrative; there is no separate section any more.
-  called_procedures: List[str]
+  markdown_section: str
 
 
 # -----------------------------
@@ -53,9 +89,16 @@ class StoredProcedureFlowDocumenter:
     2) /export/stored_procedures_to_process_logic.json
 
   And produces:
-    - A Markdown document that describes each selected stored procedure
-      and the complete call tree (including other procedures it calls)
-      as a flow diagram and a step‑by‑step narrative.
+    - A Markdown document where *ChatGPT* generates, for each selected
+      stored procedure, a non‑technical explanation of the complete call tree
+      (the procedure and any other procedures it calls), including:
+
+        * Overview in human, non‑technical language
+        * Flow diagram (Mermaid)
+        * Step‑by‑step narrative
+
+  This class does NOT attempt to parse SQL itself. All logic extraction and
+  diagram generation is delegated to ChatGPT.
   """
 
   def __init__(
@@ -81,6 +124,28 @@ class StoredProcedureFlowDocumenter:
 
     # Index: (schema.lower(), name.lower()) -> ProcedureAnalysisEntry
     self.procedure_index: Dict[Tuple[str, str], ProcedureAnalysisEntry] = {}
+
+    # ChatGPT config & HTTP session
+    cfg = load_chatgpt_config()
+    self.api_key: str = cfg.get("api_key", "")
+    self.base_url: str = cfg.get("base_url", "https://api.openai.com/v1")
+    self.model: str = cfg.get("model", "gpt-4o")
+    self.timeout: int = cfg.get("timeout", 60)
+    self.max_retries: int = cfg.get("max_retries", 3)
+    self.max_tokens: int = cfg.get("max_tokens", 4000)
+    self.temperature: float = cfg.get("temperature", 0.1)
+
+    self.session = requests.Session()
+    if self.api_key:
+      self.session.headers.update(
+        {
+          "Authorization": f"Bearer {self.api_key}",
+          "Content-Type": "application/json",
+        }
+      )
+      logger.info("ChatGPT API key loaded successfully")
+    else:
+      logger.warning("No ChatGPT API key found – the documenter will not be able to call the API")
 
   # -----------------------------
   # Loading JSON
@@ -117,7 +182,7 @@ class StoredProcedureFlowDocumenter:
 
   def load_procedures_to_process(self) -> List[ProcedureInfo]:
     """
-    Load the list of procedures whose logic/flow we should document.
+    Load the list of root procedures whose logic/flow we should document.
 
     Expected JSON format examples (flexible):
 
@@ -164,427 +229,184 @@ class StoredProcedureFlowDocumenter:
     return procedures
 
   # -----------------------------
-  # Flow & Logic Extraction
+  # ChatGPT Prompt & Call
   # -----------------------------
 
-  EXEC_PATTERN = re.compile(
-    r"""
-        \bEXEC(?:UTE)?        # EXEC or EXECUTE
-        \s+
-        (?:
-            \[?(?P<schema>\w+)\]?\.\[?(?P<name>\w+)\]?  # Optional [schema].[name]
-            |
-            \[?(?P<name_only>\w+)\]?                   # Or just [name]
-        )
-        """,
-    re.IGNORECASE | re.VERBOSE,
-    )
-
-  BEGIN_PATTERN = re.compile(r"\bBEGIN\b", re.IGNORECASE)
-  END_PATTERN = re.compile(r"\bEND\b", re.IGNORECASE)
-  IF_PATTERN = re.compile(r"\bIF\b", re.IGNORECASE)
-  TRY_PATTERN = re.compile(r"\bBEGIN\s+TRY\b", re.IGNORECASE)
-  CATCH_PATTERN = re.compile(r"\bBEGIN\s+CATCH\b", re.IGNORECASE)
-  INSERT_PATTERN = re.compile(r"\bINSERT\s+INTO\b", re.IGNORECASE)
-  UPDATE_PATTERN = re.compile(r"\bUPDATE\b", re.IGNORECASE)
-  DELETE_PATTERN = re.compile(r"\bDELETE\b", re.IGNORECASE)
-  SELECT_PATTERN = re.compile(r"\bSELECT\b", re.IGNORECASE)
-  TRUNCATE_PATTERN = re.compile(r"\bTRUNCATE\s+TABLE\b", re.IGNORECASE)
-
-  def find_called_procedures(self, proc: ProcedureInfo) -> List[str]:
+  def _build_call_tree_prompt(self, proc: ProcedureInfo) -> str:
     """
-    Very simple scan for EXEC/EXECUTE to identify called procedures.
-    Returns list like ["SchemaName.ProcName", "OtherProc"].
+    Build a prompt that gives ChatGPT everything it needs to:
+      - Inspect the SQL for one root stored procedure
+      - Detect any other procedures it calls (by reading the SQL)
+      - Reason about those calls conceptually
+      - Produce a non‑technical explanation, flow diagram, and narrative
     """
-    text = proc.definition
-    calls: List[str] = []
+    return f"""
+You are a senior data engineer documenting a Microsoft SQL Server system for non‑technical stakeholders.
 
-    for match in self.EXEC_PATTERN.finditer(text):
-      schema = match.group("schema")
-      name = match.group("name") or match.group("name_only")
-      if not name:
-        continue
+You are given the full SQL definition of ONE root stored procedure. Your job is to:
 
-      if schema:
-        full = f"{schema}.{name}"
-      else:
-        full = name
+1. Read this stored procedure's SQL.
+2. From the SQL alone, determine which OTHER stored procedures it calls (if any).
+3. Conceptually treat **the root procedure plus any called procedures** as a single end‑to‑end workflow.
+4. Produce documentation that explains the complete call chain in clear, non‑technical language.
 
-      # Avoid listing the procedure calling itself as a separate “call”
-      if full.lower() == f"{proc.schema}.{proc.name}".lower() or full.lower() == proc.name.lower():
-        continue
+Root stored procedure (schema and name):
+- {proc.schema}.{proc.name}
 
-      if full not in calls:
-        calls.append(full)
+SQL definition of the root stored procedure:
+  
+```sql
+{proc.definition}
+```
 
-    return calls
+Important instructions:
 
-  def classify_main_actions(self, proc: ProcedureInfo) -> List[str]:
+- You MUST infer called procedures by looking for EXEC / EXECUTE statements or similar in the SQL.
+- You SHOULD treat the root procedure and all called procedures as a unified flow when explaining the logic.
+- Use business‑oriented, human language. Avoid deep SQL jargon.
+- Explain the **overall purpose**, the **major steps**, and how control flows between procedures.
+- When you mention other procedures, use their full names as they appear in the SQL.
+
+Output format (Markdown):
+
+### 1. Overview
+
+- A few paragraphs in plain English explaining:
+  - The overall purpose of the root procedure.
+  - How it fits into a larger process (e.g., data loading, validation, reporting).
+  - The role of any other procedures it calls.
+
+### 2. Flow Diagram (Mermaid)
+
+Produce a single Mermaid **flowchart** that shows the complete call tree and the main phases of work.
+
+- Use this structure:
+  
+mermaid flowchart TD START([Start]) --> ROOT[Schema.RootProcedureName] %% Add nodes for important steps inside the root procedure %% Add nodes for any other procedures that are called %% Connect them so the call flow is clear %% End with an END node
+  
+
+- Use simple, human‑readable labels (short phrases like “Archive raw data”, “Clear staging tables”, “Log usage”, etc.).
+- Make sure the diagram clearly shows which procedure calls which.
+
+### 3. Step-by-Step Narrative (Complete Call Tree)
+
+Write a numbered list that walks through the entire flow in order, for example:
+
+1. What the root procedure does first.
+2. When and why it calls another procedure, and what that procedure does in business terms.
+3. What happens after each call returns.
+4. How the overall process finishes and what state the data ends up in.
+
+Guidelines:
+
+- Keep the language **non‑technical** and focused on business meaning.
+- Do NOT describe things in terms of “loops”, “cursors”, “joins”, etc.; instead say what is happening in business terms (e.g., “it looks up the current billing period”, “it copies billing records into a history area”).
+- Assume the reader understands what a “stored procedure” is at a high level, but not SQL syntax.
+
+Only produce the Markdown content requested above (no extra commentary).
+"""
+
+  def call_chatgpt_for_procedure(self, proc: ProcedureInfo) -> str:
     """
-    Heuristic-based classification of the main types of actions in the procedure,
-    used to build a human-friendly description.
+    Call ChatGPT to generate the full markdown section for a single root procedure.
     """
-    code = proc.definition
-
-    actions: List[str] = []
-
-    if self.TRUNCATE_PATTERN.search(code):
-      actions.append("clears one or more tables before new data is loaded")
-
-    if self.INSERT_PATTERN.search(code) and "archive" in code.lower():
-      actions.append("moves or archives data from one place to another")
-
-    if self.INSERT_PATTERN.search(code) and "log" in code.lower():
-      actions.append("records information into a log table")
-
-    if self.UPDATE_PATTERN.search(code):
-      actions.append("updates existing records to reflect new status or results")
-
-    if self.SELECT_PATTERN.search(code):
-      actions.append("retrieves data needed to decide what to do next")
-
-    if self.IF_PATTERN.search(code):
-      actions.append("makes decisions based on conditions")
-
-    if self.TRY_PATTERN.search(code) or self.CATCH_PATTERN.search(code):
-      actions.append("handles errors and records when something goes wrong")
-
-    # Remove duplicates while preserving order
-    seen = set()
-    unique_actions: List[str] = []
-    for act in actions:
-      if act not in seen:
-        seen.add(act)
-        unique_actions.append(act)
-
-    return unique_actions
-
-  def _lookup_procedure_by_full_name(self, full_name: str) -> Optional[ProcedureInfo]:
-    """
-    Given a string like 'Schema.ProcName' or just 'ProcName', try to
-    find the corresponding ProcedureInfo from the index.
-    """
-    schema = None
-    name = None
-
-    if "." in full_name:
-      parts = full_name.split(".", 1)
-      schema = parts[0].strip("[]")
-      name = parts[1].strip("[]")
-    else:
-      # If schema is not given, we can't reliably guess it
-      return None
-
-    key = (schema.lower(), name.lower())
-    entry = self.procedure_index.get(key)
-    if not entry:
-      return None
-
-    return ProcedureInfo(schema=entry.schema, name=entry.name, definition=entry.definition)
-
-  def _summarize_actions_sentence(self, proc: ProcedureInfo) -> Optional[str]:
-    """
-    Short non‑technical sentence summarizing what a given procedure does,
-    based on its main actions.
-    """
-    actions = self.classify_main_actions(proc)
-    if not actions:
-      return None
-
-    if len(actions) == 1:
-      actions_text = actions[0]
-    else:
-      actions_text = ", ".join(actions[:-1]) + ", and " + actions[-1]
-
-    return f"Inside **{proc.schema}.{proc.name}**, it {actions_text}."
-
-  def generate_high_level_summary(
-      self,
-      proc: ProcedureInfo,
-      called_procs: List[str],
-  ) -> str:
-    """Create a non-technical, high-level summary paragraph for the whole call tree."""
-    pieces: List[str] = []
-
-    pieces.append(
-      f"This stored procedure **{proc.schema}.{proc.name}** acts as a workflow step inside the billing system. "
-      f"It may call other stored procedures, so together they form a complete chain of actions."
-    )
-
-    root_actions = self.classify_main_actions(proc)
-    if root_actions:
-      if len(root_actions) == 1:
-        actions_text = root_actions[0]
-      else:
-        actions_text = ", ".join(root_actions[:-1]) + ", and " + root_actions[-1]
-      pieces.append(f"On its own, **{proc.schema}.{proc.name}** {actions_text}.")
-
-    if called_procs:
-      pieces.append(
-        "In addition, it calls other stored procedures. Each of these performs its own part of the job, "
-        "so together they complete the end‑to‑end flow."
-      )
-    else:
-      pieces.append(
-        "This particular procedure does not call any others; all of its work happens inside this one routine."
+    if not self.api_key:
+      raise RuntimeError(
+        "ChatGPT API key is not configured. Set OPENAI_API_KEY or provide chatgpt_config.py."
       )
 
-    pieces.append(
-      "Overall, you can think of the full call tree as a checklist of smaller tasks that are carried out in order, "
-      "so that the data ends up in the correct state for later steps and reports."
-    )
+    prompt = self._build_call_tree_prompt(proc)
 
-    return " ".join(pieces)
+    payload = {
+      "model": self.model,
+      "messages": [
+        {
+          "role": "system",
+          "content": (
+            "You are an expert SQL and data engineering documentation assistant. "
+            "You explain complex stored procedure workflows in simple, non‑technical language."
+          ),
+        },
+        {
+          "role": "user",
+          "content": prompt,
+        },
+      ],
+      "max_tokens": self.max_tokens,
+      "temperature": self.temperature,
+    }
 
-  # -----------------------------
-  # Recursive narrative builder
-  # -----------------------------
-
-  def _append_steps_for_proc(
-      self,
-      proc: ProcedureInfo,
-      steps: List[str],
-      counter: List[int],
-      visited: set,
-  ) -> None:
-    """
-    Recursive helper that appends narrative steps for a procedure AND its children.
-    `counter` is a single‑element list used to keep a running step number across recursion.
-    """
-    code = proc.definition
-
-    def add_step(text: str) -> None:
-      steps.append(f"{counter[0]}. {text}")
-      counter[0] += 1
-
-    # High‑level narrative for this procedure
-    summary_sentence = self._summarize_actions_sentence(proc)
-    if summary_sentence:
-      add_step(summary_sentence)
-
-    # More specific hints based on patterns
-    if "SET NOCOUNT ON" in code.upper():
-      add_step(
-        f"While running **{proc.schema}.{proc.name}**, it prepares the environment so that only meaningful results "
-        "are returned, avoiding extra technical messages."
-      )
-
-    if "DECLARE" in code.upper():
-      add_step(
-        f"**{proc.schema}.{proc.name}** sets up internal placeholders (variables) to keep track of things like "
-        "billing periods, status flags, or messages."
-      )
-
-    if re.search(r"\bBillingPeriod\b", code, re.IGNORECASE):
-      add_step(
-        f"**{proc.schema}.{proc.name}** figures out which billing period it should work on – usually the most recent "
-        "or currently active one."
-      )
-
-    if self.INSERT_PATTERN.search(code):
-      if "History" in code or "Archive" in code:
-        add_step(
-          f"**{proc.schema}.{proc.name}** copies existing data into a history or archive area so that past information "
-          "is preserved before new work is done."
-        )
-      elif "Log" in code or "Usage" in code:
-        add_step(
-          f"**{proc.schema}.{proc.name}** writes a log entry summarizing what report or process was requested, by whom, "
-          "and with which key settings."
-        )
-      else:
-        add_step(
-          f"**{proc.schema}.{proc.name}** adds new records into one or more tables, reflecting the latest information "
-          "received from external files or systems."
+    for attempt in range(self.max_retries):
+      try:
+        response = self.session.post(
+          f"{self.base_url}/chat/completions",
+          json=payload,
+          timeout=self.timeout,
         )
 
-    if self.TRUNCATE_PATTERN.search(code):
-      add_step(
-        f"**{proc.schema}.{proc.name}** completely clears temporary or staging tables so that the next run starts with "
-        "a clean slate and no leftover data."
-      )
+        if response.status_code == 200:
+          data = response.json()
+          content = data["choices"][0]["message"]["content"]
+          logger.info("Got ChatGPT documentation for %s.%s", proc.schema, proc.name)
+          return content
+        else:
+          logger.error(
+            "ChatGPT API request failed (status %s): %s",
+            response.status_code,
+            response.text,
+          )
+          if attempt < self.max_retries - 1:
+            continue
+          raise RuntimeError(
+            f"ChatGPT API request failed after {self.max_retries} attempts "
+            f"for {proc.schema}.{proc.name}"
+          )
+      except requests.RequestException as exc:
+        logger.error(
+          "ChatGPT API request error for %s.%s (attempt %d/%d): %s",
+          proc.schema,
+          proc.name,
+          attempt + 1,
+          self.max_retries,
+          exc,
+          )
+        if attempt < self.max_retries - 1:
+          continue
+        raise
 
-    if "IsSuccess" in code:
-      add_step(
-        f"**{proc.schema}.{proc.name}** marks whether this step finished successfully or ran into a problem, so that "
-        "progress can be tracked later."
-      )
-
-    if self.TRY_PATTERN.search(code) or self.CATCH_PATTERN.search(code):
-      add_step(
-        f"**{proc.schema}.{proc.name}** has its own error handling: if anything goes wrong, it captures the details and "
-        "records that the step failed."
-      )
-
-    # Now walk its children recursively
-    children = self.find_called_procedures(proc)
-    for full_child_name in children:
-      if full_child_name in visited:
-        # Avoid infinite loops in pathological call graphs
-        add_step(
-          f"**{proc.schema}.{proc.name}** also calls **{full_child_name}**, but that procedure has already been "
-          "described earlier in this flow."
-        )
-        continue
-
-      child_proc = self._lookup_procedure_by_full_name(full_child_name)
-      if not child_proc:
-        add_step(
-          f"**{proc.schema}.{proc.name}** hands off a portion of the work to another stored procedure "
-          f"(**{full_child_name}**), whose details are not available in this export."
-        )
-        continue
-
-      visited.add(full_child_name)
-      add_step(
-        f"Next, **{proc.schema}.{proc.name}** calls **{child_proc.schema}.{child_proc.name}** to handle a more "
-        "specialized part of the process."
-      )
-
-      # Recurse into the child so its logic becomes part of the same narrative
-      self._append_steps_for_proc(child_proc, steps, counter, visited)
-
-  def generate_step_by_step_flow(self, root_proc: ProcedureInfo) -> List[str]:
-    """
-    Produce a simplified, non-technical “step-by-step” description that covers
-    the complete call tree starting from `root_proc`.
-    """
-    steps: List[str] = []
-    counter = [1]
-    visited: set = {f"{root_proc.schema}.{root_proc.name}"}
-
-    self._append_steps_for_proc(root_proc, steps, counter, visited)
-
-    # Final overall step
-    steps.append(
-      f"{counter[0]}. Once all of these procedures have finished, the system is left in a consistent state so that "
-      "later steps or reports can rely on the updated data."
-    )
-    return steps
-
-  # -----------------------------
-  # Recursive call graph builder
-  # -----------------------------
-
-  def _collect_call_graph(
-      self,
-      proc: ProcedureInfo,
-      edges: List[Tuple[str, str]],
-      nodes: Dict[str, ProcedureInfo],
-      visited: set,
-  ) -> None:
-    """
-    Recursive helper to collect the full call graph starting at `proc`.
-    Fills:
-      - nodes: full_name -> ProcedureInfo
-      - edges: (caller_full_name, callee_full_name)
-    """
-    full_name = f"{proc.schema}.{proc.name}"
-    nodes[full_name] = proc
-
-    children = self.find_called_procedures(proc)
-    for full_child_name in children:
-      edges.append((full_name, full_child_name))
-
-      if full_child_name in visited:
-        continue
-
-      child_proc = self._lookup_procedure_by_full_name(full_child_name)
-      if not child_proc:
-        continue
-
-      visited.add(full_child_name)
-      self._collect_call_graph(child_proc, edges, nodes, visited)
-
-  def _node_id_from_full_name(self, full_name: str) -> str:
-    """
-    Turn 'Schema.ProcName' into a safe Mermaid node id.
-    """
-    return "N_" + re.sub(r"[^0-9A-Za-z_]", "_", full_name)
-
-  def generate_mermaid_flowchart(
-      self,
-      root_proc: ProcedureInfo,
-  ) -> str:
-    """
-    Build a Mermaid flowchart for the complete call tree starting at `root_proc`.
-
-    Each procedure in the tree is shown as its own node, with a short label
-    describing what it does. Edges represent “calls” (who calls whom).
-    """
-    root_full = f"{root_proc.schema}.{root_proc.name}"
-
-    edges: List[Tuple[str, str]] = []
-    nodes: Dict[str, ProcedureInfo] = {}
-    visited: set = {root_full}
-
-    self._collect_call_graph(root_proc, edges, nodes, visited)
-
-    mermaid_lines = [
-      "```mermaid",
-      "flowchart TD",
-      "    START([Start]) --> ROOT",
-    ]
-
-    # Define all nodes with short descriptions
-    for full_name, proc in nodes.items():
-      label_name = full_name
-      summary = self._summarize_actions_sentence(proc) or ""
-      # Keep label readable: procedure name on first line, short description on second line
-      if summary:
-        short = summary.replace("Inside", "").replace("it ", "").strip()
-        node_label = f"{label_name}\\n{short}"
-      else:
-        node_label = label_name
-
-      node_id = "ROOT" if full_name == root_full else self._node_id_from_full_name(full_name)
-      mermaid_lines.append(f"    {node_id}[[{node_label}]]")
-
-    # Add edges for calls
-    for caller, callee in edges:
-      caller_id = "ROOT" if caller == root_full else self._node_id_from_full_name(caller)
-      callee_id = "ROOT" if callee == root_full else self._node_id_from_full_name(callee)
-      mermaid_lines.append(f"    {caller_id} --> {callee_id}")
-
-    # Connect root to end
-    mermaid_lines.append("    ROOT --> END([End])")
-    mermaid_lines.append("```")
-
-    return "\n".join(mermaid_lines)
+    # Should never reach here
+    raise RuntimeError(f"Unexpected error calling ChatGPT for {proc.schema}.{proc.name}")
 
   # -----------------------------
   # Orchestration
   # -----------------------------
 
   def build_documentation_for_procedure(self, proc: ProcedureInfo) -> ProcedureFlowDocumentation:
-    # Direct children (first-level calls); their own children will be pulled
-    # into the diagram and narrative by the recursive helpers.
-    called_procs = self.find_called_procedures(proc)
-
-    summary = self.generate_high_level_summary(proc, called_procs)
-    steps = self.generate_step_by_step_flow(proc)
-    mermaid = self.generate_mermaid_flowchart(proc)
-
+    """
+    For a single root procedure, delegate all analysis and formatting to ChatGPT.
+    """
+    markdown_section = self.call_chatgpt_for_procedure(proc)
     title = f"{proc.schema}.{proc.name}"
 
     return ProcedureFlowDocumentation(
       schema=proc.schema,
       name=proc.name,
       title=title,
-      mermaid_flowchart=mermaid,
-      high_level_summary=summary,
-      step_by_step_flow=steps,
-      called_procedures=called_procs,
+      markdown_section=markdown_section,
     )
 
   def render_markdown(self, docs: List[ProcedureFlowDocumentation]) -> str:
+    """
+    Render a single Markdown document that simply wraps the sections
+    produced by ChatGPT for each procedure.
+    """
     lines: List[str] = []
     lines.append("# Stored Procedure Flow & Logic (Non‑Technical Overview)")
     lines.append("")
     lines.append(
-      "This document describes each selected stored procedure and its complete call tree. "
-      "The goal is to show, in plain language, how the main procedure and all the procedures it calls "
-      "work together to carry out a full business workflow."
+      "This document was generated by asking an AI assistant (ChatGPT) to read each stored procedure's SQL "
+      "and explain, in non‑technical language, what it does and how any other procedures it calls fit "
+      "into the overall flow."
     )
     lines.append("")
 
@@ -592,21 +414,8 @@ class StoredProcedureFlowDocumenter:
       lines.append("")
       lines.append(f"## {doc.title}")
       lines.append("")
-      lines.append("### 1. Big‑Picture Explanation")
+      lines.append(doc.markdown_section.strip())
       lines.append("")
-      lines.append(doc.high_level_summary)
-      lines.append("")
-      lines.append("### 2. Flow Diagram (Complete Call Tree)")
-      lines.append("")
-      lines.append(doc.mermaid_flowchart)
-      lines.append("")
-      lines.append("### 3. Step‑by‑Step Narrative (Complete Call Tree)")
-      lines.append("")
-      for step in doc.step_by_step_flow:
-        lines.append(f"- {step}")
-      lines.append("")
-      # No separate “Other Procedures Involved” section anymore; their logic
-      # is integrated into the diagram and narrative above.
       lines.append("---")
 
     return "\n".join(lines)
@@ -619,7 +428,7 @@ class StoredProcedureFlowDocumenter:
 
   def run(self) -> None:
     """Main entry point for generating the flow documentation."""
-    logger.info("Starting StoredProcedureFlowDocumenter run()")
+    logger.info("Starting StoredProcedureFlowDocumenter.run()")
 
     self.load_all_procedures()
     to_document = self.load_procedures_to_process()
@@ -630,7 +439,7 @@ class StoredProcedureFlowDocumenter:
 
     docs: List[ProcedureFlowDocumentation] = []
     for proc in to_document:
-      logger.info("Documenting procedure flow: %s.%s", proc.schema, proc.name)
+      logger.info("Documenting procedure flow via ChatGPT: %s.%s", proc.schema, proc.name)
       doc = self.build_documentation_for_procedure(proc)
       docs.append(doc)
 
@@ -647,11 +456,16 @@ def main():
   Command‑line entry point.
 
   Usage (from the directory containing this file and the export folder):
+
       python StoredProcedureFlowDocumentationGenerator.py
 
   Assumes the following files exist in the /export folder next to this script:
     - stored_procedures_analysis_all_schemas.json
     - stored_procedures_to_process_logic.json
+
+  Also assumes ChatGPT configuration is available via:
+    - chatgpt_config.py (CHATGPT_CONFIG dict), or
+    - environment variables (OPENAI_API_KEY, OPENAI_BASE_URL, etc.).
 
   Outputs:
     - /export/stored_procedures_logic_flows.md
